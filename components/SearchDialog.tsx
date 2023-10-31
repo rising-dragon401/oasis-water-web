@@ -77,11 +77,11 @@ export function SearchDialog() {
       <Dialog open={open}>
         <DialogContent className="sm:max-w-[850px] max-h-[80vh] overflow-y-auto text-black">
           <DialogHeader>
-            <DialogTitle>OpenAI powered doc search</DialogTitle>
-            <DialogDescription>
+            <DialogTitle>Search for water</DialogTitle>
+            {/* <DialogDescription>
               Build your own ChatGPT style search with Next.js, OpenAI & Supabase.
-            </DialogDescription>
-            <hr />
+            </DialogDescription> */}
+            {/* <hr /> */}
             <button className="absolute top-0 right-2 p-2" onClick={() => setOpen(false)}>
               <X className="h-4 w-4 dark:text-gray-100" />
             </button>
@@ -139,7 +139,7 @@ export function SearchDialog() {
                   }`}
                 />
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-100">
+              {/* <div className="text-xs text-gray-500 dark:text-gray-100">
                 Or try:{' '}
                 <button
                   type="button"
@@ -152,7 +152,7 @@ export function SearchDialog() {
                 >
                   What are embeddings?
                 </button>
-              </div>
+              </div> */}
             </div>
             <DialogFooter>
               <Button type="submit" className="bg-red-500">

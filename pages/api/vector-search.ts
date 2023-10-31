@@ -45,6 +45,8 @@ export default async function handler(req: NextRequest) {
 
     const { prompt: query } = requestData
 
+    console.log(`Query: ${query}`)
+
     if (!query) {
       throw new UserError('Missing query in request data')
     }
@@ -72,6 +74,8 @@ export default async function handler(req: NextRequest) {
       input: sanitizedQuery.replaceAll('\n', ' '),
     })
 
+    console.log(`Embedding response: ${embeddingResponse.status}`)
+
     if (embeddingResponse.status !== 200) {
       throw new ApplicationError('Failed to create embedding for question', embeddingResponse)
     }
@@ -89,6 +93,9 @@ export default async function handler(req: NextRequest) {
         min_content_length: 50,
       }
     )
+
+    console.log(`Match error: ${matchError}`)
+    console.log(`Page sections: ${JSON.stringify(pageSections)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
@@ -113,12 +120,10 @@ export default async function handler(req: NextRequest) {
 
     const prompt = codeBlock`
       ${oneLine`
-        You are a very enthusiastic Supabase representative who loves
-        to help people! Given the following sections from the Supabase
-        documentation, answer the question using only that information,
-        outputted in markdown format. If you are unsure and the answer
-        is not explicitly written in the documentation, say
-        "Sorry, I don't know how to help with that."
+        You are a very enthusiastic clear drinking water expert who loves
+        to help people! Given the following data about water, sources of water and ingredients about 
+        water sources, answer the question using only that information,
+        outputted in markdown format. 
       `}
 
       Context sections:
@@ -144,6 +149,8 @@ export default async function handler(req: NextRequest) {
       stream: true,
     })
 
+    console.log(`Chat completion response: ${response.status}`)
+
     if (!response.ok) {
       const error = await response.json()
       throw new ApplicationError('Failed to generate completion', error)
@@ -154,7 +161,7 @@ export default async function handler(req: NextRequest) {
 
     // Return a StreamingTextResponse, which can be consumed by the client
     return new StreamingTextResponse(stream)
-  } catch (err: unknown) {
+  } catch (err) {
     if (err instanceof UserError) {
       return new Response(
         JSON.stringify({
