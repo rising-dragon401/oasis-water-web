@@ -17,10 +17,20 @@ import { X, Loader, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-rea
 export function SearchDialog() {
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
+  const [assistantId, setAssistantId] = React.useState<string>('')
 
   const { complete, completion, isLoading, error } = useCompletion({
-    api: '/api/vector-search',
+    api: '/api/send-message',
+    body: {
+      assistant_id: assistantId,
+    },
   })
+
+  React.useEffect(() => {
+    if (open) {
+      createNewAssistant()
+    }
+  }, [open])
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -38,6 +48,28 @@ export function SearchDialog() {
     return () => document.removeEventListener('keydown', down)
   }, [])
 
+  async function createNewAssistant() {
+    try {
+      const response = await fetch('/api/create-new-assistant', {
+        method: 'POST',
+      })
+
+      console.log('createNewAssistant: ', response)
+
+      const data = await response.json()
+
+      console.log('data: ', data)
+
+      if (response.ok) {
+        setAssistantId(data.id)
+      } else {
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
+
   function handleModalToggle() {
     setOpen(!open)
     setQuery('')
@@ -46,8 +78,11 @@ export function SearchDialog() {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
     console.log(query)
+
     complete(query)
   }
+
+  console.log('completion: ', completion)
 
   return (
     <>

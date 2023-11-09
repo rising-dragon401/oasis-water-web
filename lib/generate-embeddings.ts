@@ -11,7 +11,7 @@ import { toMarkdown } from 'mdast-util-to-markdown'
 import { toString } from 'mdast-util-to-string'
 import { mdxjs } from 'micromark-extension-mdxjs'
 import 'openai'
-import { Configuration, OpenAIApi } from 'openai'
+import { OpenAI } from 'openai'
 import { basename, dirname, join } from 'path'
 import { u } from 'unist-builder'
 import { filter } from 'unist-util-filter'
@@ -276,7 +276,7 @@ async function generateEmbeddings() {
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
     !process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    !process.env.OPENAI_KEY
+    !process.env.OPENAI_API_KEY
   ) {
     return console.log(
       'Environment variables NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and OPENAI_KEY are required: skipping embeddings generation'
@@ -331,11 +331,13 @@ async function generateEmbeddings() {
 
       // We use checksum to determine if this page & its sections need to be regenerated
       if (!shouldRefresh && existingPage?.checksum === checksum) {
+        // @ts-ignore
         const existingParentPage = existingPage?.parentPage as Singular<
           typeof existingPage.parentPage
         >
 
         // If parent page changed, update it
+        // @ts-ignore
         if (existingParentPage?.path !== parentPath) {
           console.log(`[${path}] Parent page has changed. Updating to '${parentPath}'...`)
           const { error: fetchParentPageError, data: parentPage } = await supabaseClient
@@ -420,21 +422,14 @@ async function generateEmbeddings() {
         const input = content.replace(/\n/g, ' ')
 
         try {
-          const configuration = new Configuration({
-            apiKey: process.env.OPENAI_KEY,
-          })
-          const openai = new OpenAIApi(configuration)
+          const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-          const embeddingResponse = await openai.createEmbedding({
+          const embeddingResponse = await openai.embeddings.create({
             model: 'text-embedding-ada-002',
             input,
           })
 
-          if (embeddingResponse.status !== 200) {
-            throw new Error(inspect(embeddingResponse.data, false, 2))
-          }
-
-          const [responseData] = embeddingResponse.data.data
+          const [{ embedding }] = embeddingResponse.data
 
           const { error: insertPageSectionError, data: pageSection } = await supabaseClient
             .from('nods_page_section')
@@ -443,8 +438,8 @@ async function generateEmbeddings() {
               slug,
               heading,
               content,
-              token_count: embeddingResponse.data.usage.total_tokens,
-              embedding: responseData.embedding,
+              token_count: embeddingResponse.usage.total_tokens,
+              embedding: embedding,
             })
             .select()
             .limit(1)
