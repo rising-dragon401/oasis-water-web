@@ -14,8 +14,8 @@ export default function Footer() {
                 <Logo />
               </Link>
             </div>
-            <div className="text-sm text-slate-300">
-              © maia <span className="text-slate-500">-</span> All rights reserved.
+            <div className="text-sm text-secondary">
+              © oaisys <span className="text-secondary">-</span> All rights reserved.
             </div>
           </div>
 
@@ -29,8 +29,8 @@ export default function Footer() {
                     <Logo />
                   </Link>
                 </div>
-                <div className="text-sm text-slate-300">
-                  © maia <span className="text-slate-500">-</span> All rights reserved.
+                <div className="text-sm text-secondary">
+                  © oaisys <span className="text-secondary">-</span> All rights reserved.
                 </div>
               </div>
               {/* Social links */}
@@ -71,140 +71,13 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* 2nd block */}
-          {/* <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-slate-50 font-medium mb-2">Products</h6>
-            <ul className="text-sm space-y-2">
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Features
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Integrations
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Pricing & Plans
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Changelog
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Our method
-                </a>
-              </li>
-            </ul>
-          </div> */}
-
-          {/* 3rd block */}
-          {/* <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-slate-50 font-medium mb-2">Company</h6>
-            <ul className="text-sm space-y-2">
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  About us
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Diversity & Inclusion
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Financial statements
-                </a>
-              </li>
-            </ul>
-          </div> */}
-
-          {/* 4th block */}
-          {/* <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-slate-50 font-medium mb-2">
-              Resources
-            </h6>
-            <ul className="text-sm space-y-2">
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Community
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Terms of service
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Report a vulnerability
-                </a>
-              </li>
-            </ul>
-          </div> */}
-
           {/* 5th block */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
             <h6 className="text-sm text-slate-50 font-medium mb-2">Legal</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
+                  className="text-secondary hover:text-slate-200 transition duration-150 ease-in-out"
                   href="/legal/terms-of-use"
                 >
                   Terms & Conditions
@@ -212,7 +85,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  className="text-slate-400 hover:text-slate-200 transition duration-150 ease-in-out"
+                  className="text-secondary hover:text-slate-200 transition duration-150 ease-in-out"
                   href="/legal/privacy-policy"
                 >
                   Privacy policy

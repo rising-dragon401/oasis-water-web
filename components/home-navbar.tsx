@@ -11,14 +11,19 @@ import Link from 'next/link'
 import cn from 'classnames'
 import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
+import Logo from '@/components/logo'
 
 export default function HomeMenu() {
   return (
-    <NavigationMenu className="flex flex-row w-full justify-between">
+    <NavigationMenu className="flex flex-row w-full justify-between py-2 md:px-8 px-4 list-none">
       <NavigationMenuList>
         <NavigationMenuItem>
+          <Logo />
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
           <Link href="/manifesto" className={navigationMenuTriggerStyle()}>
-            Manifesto
+            About
           </Link>
         </NavigationMenuItem>
 

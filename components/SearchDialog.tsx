@@ -112,7 +112,7 @@ export function SearchDialog() {
       <Dialog open={open}>
         <DialogContent className="sm:max-w-[850px] max-h-[80vh] overflow-y-auto text-black">
           <DialogHeader>
-            <DialogTitle>Search for water</DialogTitle>
+            <DialogTitle>What kind of water do you drink?</DialogTitle>
             {/* <DialogDescription>
               Build your own ChatGPT style search with Next.js, OpenAI & Supabase.
             </DialogDescription> */}
@@ -162,7 +162,7 @@ export function SearchDialog() {
 
               <div className="relative">
                 <Input
-                  placeholder="Ask a question..."
+                  placeholder="Brand name (i.e. Dasani, Essentia, etc.)"
                   name="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -190,9 +190,7 @@ export function SearchDialog() {
               </div> */}
             </div>
             <DialogFooter>
-              <Button type="submit" className="bg-red-500">
-                Ask
-              </Button>
+              <Button type="submit">Ask</Button>
             </DialogFooter>
           </form>
         </DialogContent>

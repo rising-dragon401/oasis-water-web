@@ -1,16 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-type SizeType =
-  | 'xs'
-  | 'sm'
-  | 'base'
-  | 'lg'
-  | 'xl'
-  | '2xl'
-  | '3xl'
-  | '4xl'
-  | '5xl'
-  | '6xl';
+type SizeType = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl'
 type WeightType =
   | 'thin'
   | 'extralight'
@@ -20,13 +10,13 @@ type WeightType =
   | 'semibold'
   | 'bold'
   | 'extrabold'
-  | 'black';
+  | 'black'
 
 interface TypographyProps {
-  size?: SizeType;
-  fontWeight: WeightType;
-  children?: React.ReactNode;
-  className?: string;
+  size?: SizeType
+  fontWeight: WeightType
+  children?: React.ReactNode
+  className?: string
 }
 
 const sizes = {
@@ -39,8 +29,8 @@ const sizes = {
   '3xl': 'text-3xl',
   '4xl': 'text-4xl',
   '5xl': 'text-5xl',
-  '6xl': 'text-6xl'
-};
+  '6xl': 'text-6xl',
+}
 
 const weights = {
   thin: 'font-thin',
@@ -51,24 +41,13 @@ const weights = {
   semibold: 'font-semibold',
   bold: 'font-bold',
   extrabold: 'font-extrabold',
-  black: 'font-black'
-};
+  black: 'font-black',
+}
 
-const Typography: React.FC<TypographyProps> = ({
-  size,
-  fontWeight,
-  children,
-  className = ''
-}) => {
-  const textSize = size ? sizes[size] : '';
-  const textWeight = weights[fontWeight] || weights.normal;
-  return (
-    <p
-      className={`${textSize} ${textWeight} text-primary dark:text-primary ${className}`}
-    >
-      {children}
-    </p>
-  );
-};
+const Typography: React.FC<TypographyProps> = ({ size, fontWeight, children, className = '' }) => {
+  const textSize = size ? sizes[size] : ''
+  const textWeight = weights[fontWeight] || weights.normal
+  return <p className={`${textSize} ${textWeight} text-primary ${className}`}>{children}</p>
+}
 
-export default Typography;
+export default Typography
