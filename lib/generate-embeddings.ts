@@ -20,7 +20,7 @@ import yargs from 'yargs'
 
 dotenv.config()
 
-const ignoredFiles = ['pages/404.mdx']
+const ignoredFiles = ['app/404.mdx']
 
 /**
  * Extracts ES literals from an `estree` `ObjectExpression`
@@ -239,8 +239,8 @@ class MarkdownEmbeddingSource extends BaseEmbeddingSource {
   type: 'markdown' = 'markdown'
 
   constructor(source: string, public filePath: string, public parentFilePath?: string) {
-    const path = filePath.replace(/^pages/, '').replace(/\.mdx?$/, '')
-    const parentPath = parentFilePath?.replace(/^pages/, '').replace(/\.mdx?$/, '')
+    const path = filePath.replace(/^app/, '').replace(/\.mdx?$/, '')
+    const parentPath = parentFilePath?.replace(/^app/, '').replace(/\.mdx?$/, '')
 
     super(source, path, parentPath)
   }
@@ -273,11 +273,7 @@ async function generateEmbeddings() {
 
   const shouldRefresh = argv.refresh
 
-  if (
-    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    !process.env.OPENAI_API_KEY
-  ) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return console.log(
       'Environment variables NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and OPENAI_KEY are required: skipping embeddings generation'
     )
@@ -295,18 +291,18 @@ async function generateEmbeddings() {
   )
 
   const embeddingSources: EmbeddingSource[] = [
-    ...(await walk('pages'))
+    ...(await walk('app'))
       .filter(({ path }) => /\.mdx?$/.test(path))
       .filter(({ path }) => !ignoredFiles.includes(path))
       .map((entry) => new MarkdownEmbeddingSource('guide', entry.path)),
   ]
 
-  console.log(`Discovered ${embeddingSources.length} pages`)
+  console.log(`Discovered ${embeddingSources.length} app`)
 
   if (!shouldRefresh) {
-    console.log('Checking which pages are new or have changed')
+    console.log('Checking which app are new or have changed')
   } else {
-    console.log('Refresh flag set, re-generating all pages')
+    console.log('Refresh flag set, re-generating all app')
   }
 
   for (const embeddingSource of embeddingSources) {

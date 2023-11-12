@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cn(lato.className, 'bg-background')}>
+    <html lang="en" className={cn(lato.className, 'bg-background mx-auto max-w-6xl')}>
       <body>{children}</body>
     </html>
   )

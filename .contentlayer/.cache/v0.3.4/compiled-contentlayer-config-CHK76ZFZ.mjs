@@ -1,5 +1,6 @@
 // contentlayer.config.js
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import remarkGfm from "remark-gfm";
 var computedFields = {
   slug: {
     type: "string",
@@ -35,10 +36,13 @@ var Post = defineDocumentType(() => ({
 }));
 var contentlayer_config_default = makeSource({
   contentDirPath: "./content",
-  documentTypes: [Post]
+  documentTypes: [Post],
+  mdx: {
+    remarkPlugins: [remarkGfm]
+  }
 });
 export {
   Post,
   contentlayer_config_default as default
 };
-//# sourceMappingURL=compiled-contentlayer-config-YDQFW3KW.mjs.map
+//# sourceMappingURL=compiled-contentlayer-config-CHK76ZFZ.mjs.map

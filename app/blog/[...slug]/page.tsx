@@ -1,33 +1,32 @@
-import { notFound } from 'next/navigation';
-import { allPosts } from 'contentlayer/generated';
-import { Metadata } from 'next';
-import { Mdx } from '@/components/mdx-components';
-import { BLOG_IMAGE } from '@/lib/constants/images';
+import { notFound } from 'next/navigation'
+import { allPosts } from 'contentlayer/generated'
+import { Metadata } from 'next'
+import { Mdx } from '@/components/mdx-components'
+import { BLOG_IMAGE } from '@/lib/constants/images'
+import Typography from '@/components/typography'
 
 interface PostProps {
   params: {
-    slug: string[];
-  };
+    slug: string[]
+  }
 }
 
 async function getPostFromParams(params: PostProps['params']) {
-  const slug = params?.slug?.join('/');
-  const post = allPosts.find((post) => post.slugAsParams === slug);
+  const slug = params?.slug?.join('/')
+  const post = allPosts.find((post) => post.slugAsParams === slug)
 
   if (!post) {
-    null;
+    null
   }
 
-  return post;
+  return post
 }
 
-export async function generateMetadata({
-  params
-}: PostProps): Promise<Metadata> {
-  const post = await getPostFromParams(params);
+export async function generateMetadata({ params }: PostProps): Promise<Metadata> {
+  const post = await getPostFromParams(params)
 
   if (!post) {
-    return {};
+    return {}
   }
 
   return {
@@ -41,48 +40,50 @@ export async function generateMetadata({
         {
           url: post.image || BLOG_IMAGE,
           width: 800,
-          height: 600
+          height: 600,
         },
         {
           url: post.image || BLOG_IMAGE,
           width: 1800,
-          height: 1600
-        }
-      ]
+          height: 1600,
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.description,
       creator: '@tellmaia_to',
-      images: [post.image || BLOG_IMAGE]
-    }
-  };
+      images: [post.image || BLOG_IMAGE],
+    },
+  }
 }
 
 export async function generateStaticParams(): Promise<PostProps['params'][]> {
   return allPosts.map((post) => ({
-    slug: post.slugAsParams.split('/')
-  }));
+    slug: post.slugAsParams.split('/'),
+  }))
 }
 
 export default async function PostPage({ params }: PostProps) {
-  const post = await getPostFromParams(params);
+  const post = await getPostFromParams(params)
 
   if (!post) {
-    notFound();
+    notFound()
   }
 
   return (
-    <article className="py-6 prose dark:prose-invert">
-      <h1 className="mb-2">{post.title}</h1>
+    <article className="pt-6 prose">
+      <Typography size="4xl" fontWeight="normal" className="mb-2">
+        {post.title}
+      </Typography>
       {post.description && (
-        <p className="text-xl mt-0 text-slate-700 dark:text-slate-200">
+        <Typography size="base" fontWeight="normal" className="mb-2 text-secondary">
           {post.description}
-        </p>
+        </Typography>
       )}
       {/* <hr className="my-4" /> */}
       <Mdx code={post.body.code} />
     </article>
-  );
+  )
 }

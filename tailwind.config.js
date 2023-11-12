@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ['class'],
   content: [
-    './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './content/**/*.{md,mdx}',
   ],
   theme: {
     container: {
@@ -70,7 +70,18 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      typography: (theme) => ({
+        DEFAULT: {
+          css: {
+            '.line-clamp-N': {
+              display: '-webkit-box',
+              '-webkit-line-clamp': 'N',
+              '-webkit-box-orient': 'vertical',
+            },
+          },
+        },
+      }),
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
 }

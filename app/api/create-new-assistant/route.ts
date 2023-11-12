@@ -4,8 +4,6 @@ import { oneLine } from 'common-tags'
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
-  console.log('HEYYYYY')
-
   if (req.method === 'POST') {
     try {
       // Create an assistant

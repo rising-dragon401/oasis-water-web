@@ -1,6 +1,6 @@
 # Next.js OpenAI Doc Search Starter
 
-This starter takes all the `.mdx` files in the `pages` directory and processes them to use as custom context within [OpenAI Text Completion](https://platform.openai.com/docs/guides/completion) prompts.
+This starter takes all the `.mdx` files in the `app` directory and processes them to use as custom context within [OpenAI Text Completion](https://platform.openai.com/docs/guides/completion) prompts.
 
 ## Deploy
 
@@ -12,7 +12,7 @@ Deploy this starter to Vercel. The Supabase integration will automatically set t
 
 Building your own custom ChatGPT involves four steps:
 
-1. [👷 Build time] Pre-process the knowledge base (your `.mdx` files in your `pages` folder).
+1. [👷 Build time] Pre-process the knowledge base (your `.mdx` files in your `app` folder).
 2. [👷 Build time] Store embeddings in Postgres with [pgvector](https://supabase.com/docs/guides/database/extensions/pgvector).
 3. [🏃 Runtime] Perform vector similarity search to find the content that's relevant to the question.
 4. [🏃 Runtime] Inject content into OpenAI GPT-3 text completion prompt and stream response to the client.
@@ -27,7 +27,7 @@ sequenceDiagram
     participant DB (pgvector)
     participant OpenAI (API)
     loop 1. Pre-process the knowledge base
-        Vercel->>Vercel: Chunk .mdx pages into sections
+        Vercel->>Vercel: Chunk .mdx app into sections
         loop 2. Create & store embeddings
             Vercel->>OpenAI (API): create embedding for page section
             OpenAI (API)->>Vercel: embedding vector(1536)
@@ -61,7 +61,7 @@ sequenceDiagram
     end
 ```
 
-The relevant files for this are the [`SearchDialog` (Client)](./components/SearchDialog.tsx) component and the [`vector-search` (Edge Function)](./pages/api/vector-search.ts).
+The relevant files for this are the [`SearchDialog` (Client)](./components/SearchDialog.tsx) component and the [`vector-search` (Edge Function)](./app/api/vector-search.ts).
 
 The initialization of the database, including the setup of the `pgvector` extension is stored in the [`supabase/migrations` folder](./supabase/migrations/) which is automatically applied to your local Postgres instance when running `supabase start`.
 

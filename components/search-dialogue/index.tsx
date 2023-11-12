@@ -13,6 +13,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { useCompletion } from 'ai/react'
 import { X, Loader, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
+import Logo from '@/components/logo'
+import { SEARCH_PREVIEW_QUESTIONS } from './constants'
 
 export function SearchDialog() {
   const [open, setOpen] = React.useState(false)
@@ -77,23 +79,17 @@ export function SearchDialog() {
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    console.log(query)
 
     complete(query)
   }
-
-  console.log('completion: ', completion)
 
   return (
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-base flex gap-2 items-center px-4 py-2 z-50 relative
-        text-slate-500 dark:text-slate-400  hover:text-slate-700 dark:hover:text-slate-300
-        transition-colors
-        rounded-md
-        border border-slate-200 dark:border-slate-500 hover:border-slate-300 dark:hover:border-slate-500
-        min-w-[300px] "
+        className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors  rounded-md
+        border border-secondary-foreground 
+        min-w-[300px] shadow-md "
       >
         <Search width={15} />
         <span className="border border-l h-5"></span>
@@ -112,7 +108,7 @@ export function SearchDialog() {
       <Dialog open={open}>
         <DialogContent className="sm:max-w-[850px] max-h-[80vh] overflow-y-auto text-black">
           <DialogHeader>
-            <DialogTitle>What kind of water do you drink?</DialogTitle>
+            <DialogTitle>Ask me a question about your water</DialogTitle>
             {/* <DialogDescription>
               Build your own ChatGPT style search with Next.js, OpenAI & Supabase.
             </DialogDescription> */}
@@ -152,21 +148,23 @@ export function SearchDialog() {
 
               {completion && !error ? (
                 <div className="flex items-center gap-4 dark:text-white">
-                  <span className="bg-green-500 p-2 w-8 h-8 rounded-full text-center flex items-center justify-center">
-                    <Wand width={18} className="text-white" />
-                  </span>
-                  <h3 className="font-semibold">Answer:</h3>
-                  {completion}
+                  <Logo />
+
+                  {completion && JSON.parse(completion).data}
                 </div>
               ) : null}
 
               <div className="relative">
                 <Input
-                  placeholder="Brand name (i.e. Dasani, Essentia, etc.)"
+                  placeholder={
+                    SEARCH_PREVIEW_QUESTIONS[
+                      Math.floor(Math.random() * SEARCH_PREVIEW_QUESTIONS.length)
+                    ]
+                  }
                   name="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="col-span-3"
+                  className="col-span-3 bg-muted"
                 />
                 <CornerDownLeft
                   className={`absolute top-3 right-5 h-4 w-4 text-gray-300 transition-opacity ${

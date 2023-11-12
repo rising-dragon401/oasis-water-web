@@ -1,17 +1,22 @@
-import { SearchDialog } from '@/components/SearchDialog'
+import { SearchDialog } from '@/components/search-dialogue'
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
+import BlogPreviewSection from '@/components/blog-preview-section'
 
 export default function Home() {
   return (
     <SubpageLayout>
-      <div className="flex h-full flex-col justify-center py-28">
-        <div className="mb-8">
-          <Typography size="3xl" fontWeight="bold">
+      <div className="flex h-full flex-col justify-center pt-36 md:px-24">
+        <div className="mb-14">
+          <Typography size="5xl" fontWeight="bold">
             Do you know what&apos;s in your water?
           </Typography>
         </div>
         <SearchDialog />
+
+        <div className="md:mt-56 mt-32  mb-32">
+          <BlogPreviewSection />
+        </div>
       </div>
     </SubpageLayout>
   )

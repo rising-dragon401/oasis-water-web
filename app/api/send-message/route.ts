@@ -16,7 +16,6 @@ import OpenAI from 'openai'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-const openAiKey = process.env.OPENAI_API_KEY
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
@@ -29,10 +28,6 @@ export const runtime = 'edge'
 
 export async function POST(req: Request) {
   try {
-    if (!openAiKey) {
-      throw new ApplicationError('Missing environment variable OPENAI_KEY')
-    }
-
     if (!supabaseUrl) {
       throw new ApplicationError('Missing environment variable SUPABASE_URL')
     }
@@ -164,7 +159,7 @@ export async function POST(req: Request) {
 
     return new Response(
       JSON.stringify({
-        chatReplyText,
+        data: chatReplyText,
       }),
       {
         status: 200,
