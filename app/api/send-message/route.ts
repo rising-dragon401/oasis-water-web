@@ -121,6 +121,8 @@ export async function POST(req: Request) {
 
       If no clear answer help the user as a clean drinking water expert would.
 
+      If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
+
       Question: """
       ${sanitizedQuery}
       """

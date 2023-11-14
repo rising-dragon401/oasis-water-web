@@ -17,6 +17,8 @@ import Logo from '@/components/logo'
 import { SEARCH_PREVIEW_QUESTIONS } from './constants'
 
 export function SearchDialog() {
+  const inputRef = React.useRef<HTMLInputElement>(null)
+
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
   const [assistantId, setAssistantId] = React.useState<string>('')
@@ -50,17 +52,14 @@ export function SearchDialog() {
     return () => document.removeEventListener('keydown', down)
   }, [])
 
+  // TODO should be persistant for each user
   async function createNewAssistant() {
     try {
       const response = await fetch('/api/create-new-assistant', {
         method: 'POST',
       })
 
-      console.log('createNewAssistant: ', response)
-
       const data = await response.json()
-
-      console.log('data: ', data)
 
       if (response.ok) {
         setAssistantId(data.id)
@@ -70,6 +69,18 @@ export function SearchDialog() {
     } catch (error) {
       console.error('Error:', error)
     }
+  }
+
+  React.useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 0)
+    }
+  }, [open])
+
+  const handleSearchButtonClick = () => {
+    setOpen(true)
   }
 
   function handleModalToggle() {
@@ -86,7 +97,7 @@ export function SearchDialog() {
   return (
     <>
       <button
-        onClick={() => setOpen(true)}
+        onClick={handleSearchButtonClick}
         className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors  rounded-md
         border border-secondary-foreground 
         min-w-[300px] shadow-md "
@@ -156,6 +167,7 @@ export function SearchDialog() {
 
               <div className="relative">
                 <Input
+                  ref={inputRef}
                   placeholder={
                     SEARCH_PREVIEW_QUESTIONS[
                       Math.floor(Math.random() * SEARCH_PREVIEW_QUESTIONS.length)

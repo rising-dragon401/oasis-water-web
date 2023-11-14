@@ -12,7 +12,7 @@ export default function BlogPreviewSection() {
         </Typography>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-2 w-full">
+      <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
         {allPosts.map((post) => (
           <article key={post._id}>
             <Link href={post.slug}>

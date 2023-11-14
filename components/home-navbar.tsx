@@ -28,18 +28,17 @@ export default function HomeMenu() {
           </Link>
         </NavigationMenuItem>
 
+        <NavigationMenuItem>
+          <Link href="/blog" className={navigationMenuTriggerStyle()}>
+            Blog
+          </Link>
+        </NavigationMenuItem>
         {/* <NavigationMenuItem>
           <Link href="/manifesto" className={navigationMenuTriggerStyle()}>
             About
           </Link>
         </NavigationMenuItem> */}
       </NavigationMenuList>
-
-      <NavigationMenuItem>
-        <Link href="/blog" className={navigationMenuTriggerStyle()}>
-          Blog
-        </Link>
-      </NavigationMenuItem>
 
       <NavigationMenuList>
         {/* <NavigationMenuItem>
