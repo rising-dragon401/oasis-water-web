@@ -1,5 +1,6 @@
 import { lato } from './fonts'
 import cn from 'classnames'
+import { Analytics } from '@vercel/analytics/react'
 
 import '@/styles/globals.css'
 
@@ -51,7 +52,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sizes="<generated>"
       />
 
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }
