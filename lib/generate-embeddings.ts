@@ -239,8 +239,8 @@ class MarkdownEmbeddingSource extends BaseEmbeddingSource {
   type: 'markdown' = 'markdown'
 
   constructor(source: string, public filePath: string, public parentFilePath?: string) {
-    const path = filePath.replace(/^app/, '').replace(/\.mdx?$/, '')
-    const parentPath = parentFilePath?.replace(/^app/, '').replace(/\.mdx?$/, '')
+    const path = filePath.replace(/^content/, '').replace(/\.mdx?$/, '')
+    const parentPath = parentFilePath?.replace(/^content/, '').replace(/\.mdx?$/, '')
 
     super(source, path, parentPath)
   }
@@ -291,18 +291,18 @@ async function generateEmbeddings() {
   )
 
   const embeddingSources: EmbeddingSource[] = [
-    ...(await walk('app'))
+    ...(await walk('content'))
       .filter(({ path }) => /\.mdx?$/.test(path))
       .filter(({ path }) => !ignoredFiles.includes(path))
       .map((entry) => new MarkdownEmbeddingSource('guide', entry.path)),
   ]
 
-  console.log(`Discovered ${embeddingSources.length} app`)
+  console.log(`Discovered ${embeddingSources.length} pages`)
 
   if (!shouldRefresh) {
-    console.log('Checking which app are new or have changed')
+    console.log('Checking which pages are new or have changed')
   } else {
-    console.log('Refresh flag set, re-generating all app')
+    console.log('Refresh flag set, re-generating all pages')
   }
 
   for (const embeddingSource of embeddingSources) {

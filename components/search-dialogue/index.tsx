@@ -12,7 +12,8 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useCompletion } from 'ai/react'
-import { X, Loader, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
+import { X, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
+import Loader from '@/components/loader'
 import Logo from '@/components/logo'
 import { SEARCH_PREVIEW_QUESTIONS } from './constants'
 
@@ -141,7 +142,7 @@ export function SearchDialog() {
               )}
 
               {isLoading && (
-                <div className="animate-spin relative flex w-5 h-5 ml-2">
+                <div className="relative flex w-10 h-10 ml-2">
                   <Loader />
                 </div>
               )}
