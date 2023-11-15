@@ -13,11 +13,10 @@ import {
 import { Input } from '@/components/ui/input'
 import { useCompletion } from 'ai/react'
 import { X, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
-import Loader from '@/components/loader'
-import Logo from '@/components/logo'
 import { SEARCH_PREVIEW_QUESTIONS } from './constants'
 import { useAtom } from 'jotai'
-import { assistantIdAtom } from '@/lib/atoms'
+import { assistantIdAtom, messagesAtom } from '@/lib/atoms'
+import ChatList from './chat-list'
 
 export function SearchDialog() {
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -25,13 +24,9 @@ export function SearchDialog() {
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
   const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
-
-  const { complete, completion, isLoading, error } = useCompletion({
-    api: '/api/send-message',
-    body: {
-      assistant_id: assistantId,
-    },
-  })
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [messages, setMessages] = useAtom(messagesAtom)
+  const [abortController, setAbortController] = React.useState<AbortController>()
 
   React.useEffect(() => {
     if (open && !assistantId) {
@@ -91,12 +86,60 @@ export function SearchDialog() {
     setQuery('')
   }
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
 
-    complete(query)
+    try {
+      setIsLoading(true)
+      setQuery('')
+
+      const newMessage = {
+        role: 'user',
+        content: query,
+      }
+
+      setMessages((messages) => [...messages, newMessage])
+
+      // create instance of AbortController to handle stream cancellation
+      const abortController_ = new AbortController()
+      setAbortController(abortController_)
+      const { signal } = abortController_
+
+      const response = await fetch('/api/send-message', {
+        method: 'POST',
+        body: JSON.stringify({
+          query,
+          assistant_id: assistantId,
+        }),
+        signal,
+      })
+
+      const data = await response.json()
+
+      const newAssistantMessage = {
+        role: 'assistant',
+        content: data.data,
+      }
+
+      setMessages((messages) => [...messages, newAssistantMessage])
+
+      setIsLoading(false)
+    } catch (e) {
+      // remove the last message
+      setMessages((messages) => messages.slice(0, messages.length - 1))
+    }
   }
 
+  const handleReset = async () => {
+    setMessages([])
+  }
+
+  const handleCancel = async () => {
+    // Cancel the fetch operation
+    abortController?.abort()
+
+    setIsLoading(false)
+  }
   return (
     <>
       <button
@@ -122,7 +165,13 @@ export function SearchDialog() {
       <Dialog open={open}>
         <DialogContent className="sm:max-w-[850px] max-h-[80vh] overflow-y-auto text-black">
           <DialogHeader>
-            <DialogTitle>Ask me a question about your water</DialogTitle>
+            <div className="flex flex-row gap-2">
+              <DialogTitle>Ask me a question about your water</DialogTitle>
+
+              <Button variant="outline" onClick={handleReset}>
+                Reset
+              </Button>
+            </div>
             {/* <DialogDescription>
               Build your own ChatGPT style search with Next.js, OpenAI & Supabase.
             </DialogDescription> */}
@@ -134,22 +183,22 @@ export function SearchDialog() {
 
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4 text-slate-700">
-              {query && (
+              {/* {query && (
                 <div className="flex gap-4">
                   <span className="bg-slate-100 dark:bg-slate-300 p-2 w-8 h-8 rounded-full text-center flex items-center justify-center">
                     <User width={18} />{' '}
                   </span>
                   <p className="mt-0.5 font-semibold text-slate-700 dark:text-slate-100">{query}</p>
                 </div>
-              )}
+              )} */}
 
-              {isLoading && (
+              {/* {isLoading && (
                 <div className="relative flex w-10 h-10 ml-2">
                   <Loader />
                 </div>
-              )}
+              )} */}
 
-              {error && (
+              {/* {error && (
                 <div className="flex items-center gap-4">
                   <span className="bg-red-100 p-2 w-8 h-8 rounded-full text-center flex items-center justify-center">
                     <Frown width={18} />
@@ -158,15 +207,17 @@ export function SearchDialog() {
                     Sad news, the search has failed! Please try again.
                   </span>
                 </div>
-              )}
+              )} */}
 
-              {completion && !error ? (
+              <ChatList messages={messages} isLoading={isLoading} />
+
+              {/* {completion && !error ? (
                 <div className="flex items-center gap-4 dark:text-white">
                   <Logo />
 
-                  {completion && JSON.parse(completion).data}
+                  {completion && JSON.parse(completion).data} 
                 </div>
-              ) : null}
+              ) : null} */}
 
               <div className="relative">
                 <Input
@@ -203,6 +254,11 @@ export function SearchDialog() {
               </div> */}
             </div>
             <DialogFooter>
+              {isLoading && (
+                <Button variant="outline" onClick={handleCancel}>
+                  Cancel
+                </Button>
+              )}
               <Button type="submit">Ask</Button>
             </DialogFooter>
           </form>

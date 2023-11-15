@@ -36,13 +36,7 @@ export async function POST(req: Request) {
       throw new ApplicationError('Missing environment variable SUPABASE_SERVICE_ROLE_KEY')
     }
 
-    const requestData = await req.json()
-
-    if (!requestData) {
-      throw new UserError('Missing request data')
-    }
-
-    const { prompt: query, assistant_id } = requestData
+    const { query, assistant_id } = await req.json()
 
     if (!query) {
       throw new UserError('Missing query in request data')
