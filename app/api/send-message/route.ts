@@ -82,7 +82,7 @@ export async function POST(req: Request) {
       {
         embedding,
         match_threshold: 0.5,
-        match_count: 10,
+        match_count: 5,
         min_content_length: 50,
       }
     )

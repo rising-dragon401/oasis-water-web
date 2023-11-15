@@ -16,13 +16,15 @@ import { X, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
 import Loader from '@/components/loader'
 import Logo from '@/components/logo'
 import { SEARCH_PREVIEW_QUESTIONS } from './constants'
+import { useAtom } from 'jotai'
+import { assistantIdAtom } from '@/lib/atoms'
 
 export function SearchDialog() {
   const inputRef = React.useRef<HTMLInputElement>(null)
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
-  const [assistantId, setAssistantId] = React.useState<string>('')
+  const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
 
   const { complete, completion, isLoading, error } = useCompletion({
     api: '/api/send-message',
@@ -32,7 +34,7 @@ export function SearchDialog() {
   })
 
   React.useEffect(() => {
-    if (open) {
+    if (open && !assistantId) {
       createNewAssistant()
     }
   }, [open])

@@ -13,7 +13,7 @@ export default function Home() {
           </Typography>
         </div>
 
-        <div className="min-h-[60vh] grid grid-cols-1">
+        <div className="grid grid-cols-2 gap-10">
           {allPosts.map((post) => (
             <article key={post._id}>
               <Link href={post.slug}>

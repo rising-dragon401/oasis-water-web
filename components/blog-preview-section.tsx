@@ -1,19 +1,29 @@
 import { allPosts } from '@/.contentlayer/generated'
 import Link from 'next/link'
-import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
+import useDevice from '@/lib/hooks/use-device'
 
 export default function BlogPreviewSection() {
+  const sortedPosts = allPosts.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
+
   return (
     <div>
-      <div className="pt-4 pb-8">
+      <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="3xl" fontWeight="normal">
           Recent Posts
         </Typography>
+
+        <Link href="/blog">
+          <Typography size="base" fontWeight="normal" className="underline">
+            read more
+          </Typography>
+        </Link>
       </div>
 
       <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
-        {allPosts.map((post) => (
+        {sortedPosts.slice(0, 3).map((post) => (
           <article key={post._id}>
             <Link href={post.slug}>
               <div
@@ -32,9 +42,11 @@ export default function BlogPreviewSection() {
                     {post.title}
                   </Typography>
 
-                  <Typography size="base" fontWeight="normal" className="text-stone-100">
-                    {post.description}
-                  </Typography>
+                  <div className="md:block hidden">
+                    <Typography size="base" fontWeight="normal" className="text-stone-100 ">
+                      {post.description}
+                    </Typography>
+                  </div>
                 </div>
               </div>
             </Link>
