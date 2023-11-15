@@ -15,7 +15,7 @@ import { useCompletion } from 'ai/react'
 import { X, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
 import { SEARCH_PREVIEW_QUESTIONS } from './constants'
 import { useAtom } from 'jotai'
-import { assistantIdAtom, messagesAtom } from '@/lib/atoms'
+import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
 import ChatList from './chat-list'
 
 export function SearchDialog() {
@@ -26,6 +26,7 @@ export function SearchDialog() {
   const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
   const [isLoading, setIsLoading] = React.useState(false)
   const [messages, setMessages] = useAtom(messagesAtom)
+  const [threadId, setThreadId] = useAtom(threadIdAtom)
   const [abortController, setAbortController] = React.useState<AbortController>()
 
   React.useEffect(() => {
@@ -110,6 +111,7 @@ export function SearchDialog() {
         body: JSON.stringify({
           query,
           assistant_id: assistantId,
+          thread_id: threadId,
         }),
         signal,
       })
@@ -118,8 +120,10 @@ export function SearchDialog() {
 
       const newAssistantMessage = {
         role: 'assistant',
-        content: data.data,
+        content: data.content,
       }
+
+      setThreadId(data.thread_id)
 
       setMessages((messages) => [...messages, newAssistantMessage])
 
@@ -132,6 +136,7 @@ export function SearchDialog() {
 
   const handleReset = async () => {
     setMessages([])
+    setThreadId(null)
   }
 
   const handleCancel = async () => {
@@ -140,6 +145,7 @@ export function SearchDialog() {
 
     setIsLoading(false)
   }
+
   return (
     <>
       <button

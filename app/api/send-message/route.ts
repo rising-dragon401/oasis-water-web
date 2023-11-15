@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       throw new ApplicationError('Missing environment variable SUPABASE_SERVICE_ROLE_KEY')
     }
 
-    const { query, assistant_id } = await req.json()
+    const { query, assistant_id, thread_id } = await req.json()
 
     if (!query) {
       throw new UserError('Missing query in request data')
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
       {
         embedding,
         match_threshold: 0.5,
-        match_count: 5,
+        match_count: 3,
         min_content_length: 50,
       }
     )
@@ -124,17 +124,23 @@ export async function POST(req: Request) {
 
     console.log(`assistant_id: `, assistant_id)
 
+    let threadId = thread_id
     // Create a thread
-    const thread = await openai.beta.threads.create()
+    if (!thread_id) {
+      const thread = await openai.beta.threads.create()
+      threadId = thread.id
+    }
+
+    console.log(`threadId: `, threadId)
 
     // adds message to thread
-    const message = await openai.beta.threads.messages.create(thread.id, {
+    const message = await openai.beta.threads.messages.create(threadId, {
       role: 'user',
       content: prompt,
     })
 
     // runs assistant thread
-    let run = await openai.beta.threads.runs.create(thread.id, {
+    let run = await openai.beta.threads.runs.create(threadId, {
       assistant_id: assistant_id,
       // instructions: "Please address the user as Jane Doe. The user has a premium account."
     })
@@ -142,11 +148,11 @@ export async function POST(req: Request) {
     // create a timeout loop that checks if run.status === completed
     while (run.status !== 'completed') {
       await new Promise((resolve) => setTimeout(resolve, 1000)) // wait for 1 second before checking again
-      run = await openai.beta.threads.runs.retrieve(thread.id, run.id) // update the run status
+      run = await openai.beta.threads.runs.retrieve(threadId, run.id) // update the run status
     }
 
     // once completed, get updated messages
-    const messages = await openai.beta.threads.messages.list(thread.id)
+    const messages = await openai.beta.threads.messages.list(threadId)
 
     const chatReply = messages.data[messages.data.length - 1]
 
@@ -155,7 +161,8 @@ export async function POST(req: Request) {
 
     return new Response(
       JSON.stringify({
-        data: chatReplyText,
+        content: chatReplyText,
+        thread_id: threadId,
       }),
       {
         status: 200,
