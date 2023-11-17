@@ -1,18 +1,10 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import React from 'react'
-import { useToast } from '@/components/ui/use-toast'
 import Typography from '@/components/typography'
-import { useRouter } from 'next/navigation'
 
 export default function EmailSubscribe() {
-  const toast = useToast()
-  const router = useRouter()
-
-  const [email, setEmail] = React.useState('')
-
   return (
     <div className="flex flex-col max-w-lg justify-start  space-x-2">
       <div>

@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion'
 import CTAButton from '@/components/cta-button'
+import Typography from '@/components/typography'
 
 const meta = {
-  title: 'Maia manifesto',
-  description:
-    'We propose a new revolution, a one in which mindless unfulfilling work becomes a thing of the past. A world in which we spend more time imagining, connecting and creating.',
+  title: 'About Oaisys',
+  description: 'We are on a mission to empower people to live cleaner and healthier lives.',
   cardImage:
     'https://dcsladfmohmhomyxvhzz.supabase.co/storage/v1/object/public/general/website/twitter_open_graph.png',
 }
@@ -29,7 +29,6 @@ export const metadata = {
     card: 'summary_large_image',
     title: meta.title,
     description: meta.description,
-    creator: '@tellmaia_to',
     images: [meta.cardImage],
   },
 }
@@ -38,12 +37,14 @@ export default function ManifestoSection() {
   return (
     <>
       <motion.div
-        className="text-white p-20 min-h-screen flex justify-center items-center text-center"
+        className="text-white p-10 min-h-[80vh] flex justify-center items-center text-center"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-5xl">Humans are designed for creativity, we are not machines</h1>
+        <Typography size="5xl" className="text-primary" fontWeight="normal">
+          The world is sick
+        </Typography>
       </motion.div>
 
       {/* Blurred shape */}
@@ -54,8 +55,8 @@ export default function ManifestoSection() {
         <svg xmlns="http://www.w3.org/2000/svg" width="434" height="427">
           <defs>
             <linearGradient id="bs2-a" x1="19.609%" x2="50%" y1="14.544%" y2="100%">
-              <stop offset="0%" stopColor="#6366F1" />
-              <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
+              <stop offset="0%" stopColor="#232c74" />
+              <stop offset="100%" stopColor="#232c74" stopOpacity="0" />
             </linearGradient>
           </defs>
           <path
@@ -68,14 +69,18 @@ export default function ManifestoSection() {
       </div>
 
       <div className=" text-white p-20 min-h-screen">
-        <h1 className="text-5xl ">
-          Since the dawn of humanity humans have labored in fields, alongside conveyer belts and
-          behind desks, breaking their backs – victims to the clock to earn an everyday living.{' '}
-        </h1>
+        <Typography size="5xl" className="text-primary" fontWeight="normal">
+          Our tap water is polluted, bottled water is filled with hidden chemicals and clouded by
+          corporate brands that care more about the bottom line than our health. Food is marketed as
+          healthy but is filled with chemicals, preservatives and additives that are damaging our
+          wellbeing
+        </Typography>
       </div>
 
       <div className=" text-white p-20 min-h-screen relative">
-        <h1 className="text-5xl text-right">But this isn’t what we were made for. </h1>
+        <Typography size="5xl" className="text-primary" fontWeight="normal">
+          We have gone away from source.
+        </Typography>
         {/* <p className="text-xl">This is a description for section 3.</p> */}
 
         {/* Blurred shape */}
@@ -83,8 +88,8 @@ export default function ManifestoSection() {
           <svg xmlns="http://www.w3.org/2000/svg" width="342" height="393">
             <defs>
               <linearGradient id="bs-a" x1="19.609%" x2="50%" y1="14.544%" y2="100%">
-                <stop offset="0%" stopColor="#6366F1" />
-                <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
+                <stop offset="0%" stopColor="#232c74" />
+                <stop offset="100%" stopColor="#232c74" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path
@@ -99,21 +104,17 @@ export default function ManifestoSection() {
       </div>
 
       <div className="text-white p-20 min-h-screen">
-        <h1 className="text-5xl italic">
-          The best of humanity lives in the world of collaboration, creativity, exploration and
-          discovery. We have spent so much of our time doing manual labor we have forgotten what it
-          means to be human.
-        </h1>
+        <Typography size="5xl" className="text-primary" fontWeight="normal">
+          All is not lost. More and more people are becoming aware of what is in their water and
+          food. Amazing entrepreneurs are creating new brands built on transparency and quality.
+        </Typography>
         {/* <p className="text-xl">This is a description for section 3.</p> */}
       </div>
 
       <div className=" text-white p-20 min-h-screen relative">
-        <p className="text-xl">
-          Progress and computers have not damaged our quality of life. On the contrary personal
-          computers and the last decades have brought society tremendous freedom and improvements of
-          life. The personal computer allowed anyone to connect with and access any information from
-          anywhere in the world. With each revolution comes more personal freedom.
-        </p>
+        <Typography size="5xl" className="text-primary" fontWeight="normal">
+          Our bodies and earth are capable of healing themselves if we give the the right care.
+        </Typography>
 
         {/* Blurred shape */}
         <div
@@ -123,8 +124,8 @@ export default function ManifestoSection() {
           <svg xmlns="http://www.w3.org/2000/svg" width="434" height="427">
             <defs>
               <linearGradient id="bs3-a" x1="19.609%" x2="50%" y1="14.544%" y2="100%">
-                <stop offset="0%" stopColor="#6366F1" />
-                <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
+                <stop offset="0%" stopColor="#232c74" />
+                <stop offset="100%" stopColor="#232c74" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path
@@ -138,11 +139,12 @@ export default function ManifestoSection() {
       </div>
 
       <div className=" text-white p-20 min-h-screen relative">
-        <h1 className="text-5xl ">
-          We are proposing a new revolution, a one in which mindless unfulfilling work becomes a
-          thing of the past. A world in which we spend more time imagining, connecting and creating.
-        </h1>
-        <p className="text-xl mt-6">The more you use it the better you become</p>
+        <Typography size="5xl" className="text-primary" fontWeight="normal">
+          We are on a mission to promote transparency in the products we consume and help people
+          live cleaner and healthier lives.
+        </Typography>
+
+        {/* <p className="text-xl mt-6">The more you use it the better you become</p> */}
 
         {/* Blurred shape */}
         <div
@@ -152,8 +154,8 @@ export default function ManifestoSection() {
           <svg xmlns="http://www.w3.org/2000/svg" width="434" height="427">
             <defs>
               <linearGradient id="bs3-a" x1="19.609%" x2="50%" y1="14.544%" y2="100%">
-                <stop offset="0%" stopColor="#6366F1" />
-                <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
+                <stop offset="0%" stopColor="#232c74" />
+                <stop offset="100%" stopColor="#232c74" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path
@@ -166,11 +168,11 @@ export default function ManifestoSection() {
         </div>
       </div>
 
-      <div className=" text-white p-20 min-h-screen relative">
-        <h1 className="text-5xl text-center">
-          We do not settle for mediocrity, instead we rally around and support the best of human
-          achievement because we know this is what improves the world for us all.
-        </h1>
+      <div className=" text-white p-20 min-h-[70vh] relative">
+        <Typography size="5xl" className="text-primary" fontWeight="normal">
+          We are building a platform that will help you discover and learn about the best products
+          for your health and the health of our planet. Connecting you to source.
+        </Typography>
 
         {/* Blurred shape */}
         <div
@@ -180,8 +182,8 @@ export default function ManifestoSection() {
           <svg xmlns="http://www.w3.org/2000/svg" width="434" height="427">
             <defs>
               <linearGradient id="bs4-a" x1="19.609%" x2="50%" y1="14.544%" y2="100%">
-                <stop offset="0%" stopColor="#A855F7" />
-                <stop offset="100%" stopColor="#6366F1" stopOpacity="0" />
+                <stop offset="0%" stopColor="#232c74" />
+                <stop offset="100%" stopColor="#232c74" stopOpacity="0" />
               </linearGradient>
             </defs>
             <path

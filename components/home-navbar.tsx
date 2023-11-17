@@ -30,6 +30,12 @@ export default function HomeMenu() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
+          <Link href="/about" className={navigationMenuTriggerStyle()}>
+            About
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
           <Link href="/blog" className={navigationMenuTriggerStyle()}>
             Blog
           </Link>
