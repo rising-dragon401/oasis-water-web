@@ -4,8 +4,7 @@ import SubpageLayout from '@/components/home-layout'
 export const metadata = {
   openGraph: {
     title: 'About Oaisys',
-    description:
-      'We propose a new revolution, a one in which mindless unfulfilling work becomes a thing of the past. A world in which we spend more time imagining, connecting and creating.',
+    description: '.',
     images: [
       {
         url:

@@ -1,6 +1,7 @@
 import Logo from '@/components/logo'
 import Link from 'next/link'
 import { FaXTwitter, FaTiktok, FaYoutube, FaDiscord } from 'react-icons/fa6'
+import EmailSubscribe from '@/components/email-subscribe'
 
 export default function Footer() {
   return (
@@ -68,6 +69,12 @@ export default function Footer() {
                 </li>
               </ul> */}
             </div>
+          </div>
+
+          {/* Email signup */}
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+            <h6 className="text-sm text-slate-50 font-medium mb-2">Subscribe for updates</h6>
+            <EmailSubscribe />
           </div>
 
           {/* 5th block */}
