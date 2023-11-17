@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'framer-motion'
 import Logo from '@/components/logo'
 import Typography from './typography'
+import CTAButton from './cta-button'
 
 export default function HomeMenu() {
   return (
@@ -49,14 +50,7 @@ export default function HomeMenu() {
         <NavigationMenuItem>
           <NavigationMenuItem className="ml-2">
             <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.5 }}>
-              <Link
-                href="/"
-                className={cn(
-                  'bg-primary text-primary-foreground dark:text-secondary hover:bg-primary/90 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'
-                )}
-              >
-                <Button>Search water</Button>
-              </Link>
+              <CTAButton />
             </motion.div>
           </NavigationMenuItem>
         </NavigationMenuItem>

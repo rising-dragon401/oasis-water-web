@@ -117,6 +117,8 @@ export async function POST(req: Request) {
 
       If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
 
+      In your response include a full breakdown of the water data in a way that is easy to understand including the name, Oaisys score, source, company owner, full breakdown of the ingredients the benefits and harms of each one and detected chemicals inside in the testing report (if applicable).
+
       Question: """
       ${sanitizedQuery}
       """
