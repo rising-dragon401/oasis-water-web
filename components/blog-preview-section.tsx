@@ -22,7 +22,7 @@ export default function BlogPreviewSection() {
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
+      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
         {sortedPosts.slice(0, 3).map((post) => (
           <article key={post._id}>
             <Link href={post.slug}>
