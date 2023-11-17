@@ -6,14 +6,14 @@ import Typography from '@/components/typography'
 export default function Home() {
   return (
     <SubpageLayout>
-      <div className="px-8">
+      <div className="md:px-8 px-4">
         <div className="pt-4 pb-8">
           <Typography size="3xl" fontWeight="bold">
             Blog
           </Typography>
         </div>
 
-        <div className="grid grid-cols-2 gap-10">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
           {allPosts.map((post) => (
             <article key={post._id}>
               <Link href={post.slug}>
