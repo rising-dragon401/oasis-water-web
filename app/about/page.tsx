@@ -2,6 +2,7 @@ import ManifestoSection from './components/about-section'
 import SubpageLayout from '@/components/home-layout'
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oaisys.com'),
   openGraph: {
     title: 'About Oaisys',
     description: '.',

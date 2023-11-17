@@ -17,6 +17,7 @@ const meta = {
 }
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oaisys.com'),
   openGraph: {
     title: meta.title,
     description: meta.description,
