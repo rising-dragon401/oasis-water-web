@@ -38,6 +38,10 @@ export async function POST(req: Request) {
 
     const { query, assistant_id, thread_id } = await req.json()
 
+    const fullQuery = oneLine`
+      query: ${query}.
+    `
+
     if (!query) {
       throw new UserError('Missing query in request data')
     }
@@ -45,7 +49,7 @@ export async function POST(req: Request) {
     const supabaseClient = createClient(supabaseUrl, supabaseServiceKey)
 
     // Moderate the content to comply with OpenAI T&C
-    const sanitizedQuery = query.trim()
+    const sanitizedQuery = fullQuery.trim()
 
     const moderation = await openai.moderations.create({ input: sanitizedQuery })
 
@@ -75,14 +79,14 @@ export async function POST(req: Request) {
       'match_page_sections',
       {
         embedding,
-        match_threshold: 0.5,
-        match_count: 3,
+        match_threshold: 0.4,
+        match_count: 4,
         min_content_length: 50,
       }
     )
 
     // console.log(`Match error: }`, matchError)
-    // console.log(`Page sections: ${JSON.stringify(pageSections)}`)
+    console.log(`Page sections: ${JSON.stringify(pageSections)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
@@ -117,7 +121,11 @@ export async function POST(req: Request) {
 
       If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
 
-      In your response include a full breakdown of the water data in a way that is easy to understand including the name, Oaisys score, source, ph level, company owner, full breakdown of the ingredients the benefits and harms of each one and detected chemicals inside in the testing report (if applicable).
+      In your response include a full breakdown of the water data in a way that is easy to understand including the name, "Oaisys score", flouride level, source, ph level, company owner, full breakdown of the ingredients the benefits and harms of each one and detected chemicals and amounts of the ones detected inside in the testing results report .
+
+      Include all the chemicals detected and the amounts of each one over 0.0.
+
+      It's Oaisys not Oasys btw.
 
       Question: """
       ${sanitizedQuery}

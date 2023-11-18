@@ -31,11 +31,11 @@ export default function HomeMenu() {
     return (
       <NavigationMenu className="flex flex-row w-full justify-between py-2 md:px-8 px-4 list-none">
         <NavigationMenuList>
-          <NavigationMenuItem>
+          <NavigationMenuItem className="mr-4">
             <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
               <Logo />
 
-              <Typography size="2xl" fontWeight="normal">
+              <Typography size="2xl" fontWeight="normal" className="md:block hidden">
                 Oaisys
               </Typography>
             </Link>

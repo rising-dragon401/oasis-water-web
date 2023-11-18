@@ -12,11 +12,12 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { useCompletion } from 'ai/react'
-import { X, User, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
+import { X, RotateCcw, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
 import { SEARCH_PREVIEW_QUESTIONS } from './constants'
 import { useAtom } from 'jotai'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
 import ChatList from './chat-list'
+import useDevice from '@/lib/hooks/use-device'
 
 export function SearchDialog() {
   const inputRef = React.useRef<HTMLInputElement>(null)
@@ -28,6 +29,8 @@ export function SearchDialog() {
   const [messages, setMessages] = useAtom(messagesAtom)
   const [threadId, setThreadId] = useAtom(threadIdAtom)
   const [abortController, setAbortController] = React.useState<AbortController>()
+
+  const { isMobile } = useDevice()
 
   React.useEffect(() => {
     if (open && !assistantId) {
@@ -168,64 +171,32 @@ export function SearchDialog() {
           <span className="text-xs">⌘</span>K
         </kbd>{' '}
       </button>
-      <Dialog open={open}>
-        <DialogContent className="sm:max-w-[850px] max-h-[80vh] overflow-y-auto text-black">
-          <DialogHeader>
-            <div className="flex flex-row gap-2">
-              <DialogTitle>Ask me a question about your water</DialogTitle>
 
-              <Button variant="outline" onClick={handleReset}>
-                Reset
+      <Dialog open={open} modal={true}>
+        <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl h-full m-6 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
+          <DialogHeader className="sticky flex flex-row items-center w-full justify-between">
+            <DialogTitle className="text-left w-30">Ask me a question about your water</DialogTitle>
+
+            <div className="flex flex-row gap-2">
+              <Button variant="outline" className="h-8" onClick={handleReset}>
+                <RotateCcw className="h-4 w-4 mr-1" />
+
+                {!isMobile && <span className="hidden md:inline">Reset</span>}
+              </Button>
+
+              <Button variant="outline" className="h-8" onClick={() => setOpen(false)}>
+                <X className="h-4 w-4 dark:text-gray-100" />
               </Button>
             </div>
-            {/* <DialogDescription>
-              Build your own ChatGPT style search with Next.js, OpenAI & Supabase.
-            </DialogDescription> */}
-            {/* <hr /> */}
-            <button className="absolute top-0 right-2 p-2" onClick={() => setOpen(false)}>
-              <X className="h-4 w-4 dark:text-gray-100" />
-            </button>
           </DialogHeader>
 
           <form onSubmit={handleSubmit}>
-            <div className="grid gap-4 py-4 text-slate-700">
-              {/* {query && (
-                <div className="flex gap-4">
-                  <span className="bg-slate-100 dark:bg-slate-300 p-2 w-8 h-8 rounded-full text-center flex items-center justify-center">
-                    <User width={18} />{' '}
-                  </span>
-                  <p className="mt-0.5 font-semibold text-slate-700 dark:text-slate-100">{query}</p>
-                </div>
-              )} */}
-
-              {/* {isLoading && (
-                <div className="relative flex w-10 h-10 ml-2">
-                  <Loader />
-                </div>
-              )} */}
-
-              {/* {error && (
-                <div className="flex items-center gap-4">
-                  <span className="bg-red-100 p-2 w-8 h-8 rounded-full text-center flex items-center justify-center">
-                    <Frown width={18} />
-                  </span>
-                  <span className="text-slate-700 dark:text-slate-100">
-                    Sad news, the search has failed! Please try again.
-                  </span>
-                </div>
-              )} */}
-
+            <div className="grid gap-4 py-4 text-slate-700 overflow-y-scroll max-h-[62vh]">
               <ChatList messages={messages} isLoading={isLoading} />
+            </div>
 
-              {/* {completion && !error ? (
-                <div className="flex items-center gap-4 dark:text-white">
-                  <Logo />
-
-                  {completion && JSON.parse(completion).data} 
-                </div>
-              ) : null} */}
-
-              <div className="relative">
+            <DialogFooter className="flex md:flex-row flex-col gap-2 w-full pt-2">
+              <div className="w-full">
                 <Input
                   ref={inputRef}
                   placeholder={
@@ -236,7 +207,7 @@ export function SearchDialog() {
                   name="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="col-span-3 bg-muted"
+                  className="md:col-span-3 bg-muted"
                 />
                 <CornerDownLeft
                   className={`absolute top-3 right-5 h-4 w-4 text-gray-300 transition-opacity ${
@@ -244,28 +215,15 @@ export function SearchDialog() {
                   }`}
                 />
               </div>
-              {/* <div className="text-xs text-gray-500 dark:text-gray-100">
-                Or try:{' '}
-                <button
-                  type="button"
-                  className="px-1.5 py-0.5
-                  bg-slate-50 dark:bg-gray-500
-                  hover:bg-slate-100 dark:hover:bg-gray-600
-                  rounded border border-slate-200 dark:border-slate-600
-                  transition-colors"
-                  onClick={(_) => setQuery('What are embeddings?')}
-                >
-                  What are embeddings?
-                </button>
-              </div> */}
-            </div>
-            <DialogFooter>
+
               {isLoading && (
                 <Button variant="outline" onClick={handleCancel}>
                   Cancel
                 </Button>
               )}
-              <Button type="submit">Ask</Button>
+              <Button type="submit" className="md:w-40 w-full">
+                Ask Oaisys
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
