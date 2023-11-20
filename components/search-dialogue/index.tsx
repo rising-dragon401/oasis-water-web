@@ -159,7 +159,7 @@ export function SearchDialog() {
       >
         <Search width={15} />
         <span className="border border-l h-5"></span>
-        <span className="inline-block ml-4">Search...</span>
+        <span className="inline-block ml-4">Search water</span>
         <kbd
           className="absolute right-3 top-2.5
           pointer-events-none inline-flex h-5 select-none items-center gap-1
@@ -173,7 +173,7 @@ export function SearchDialog() {
       </button>
 
       <Dialog open={open} modal={true}>
-        <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl h-full m-6 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
+        <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl m-6 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
           <DialogHeader className="sticky flex flex-row items-center w-full justify-between">
             <DialogTitle className="text-left w-30">Ask me a question about your water</DialogTitle>
 

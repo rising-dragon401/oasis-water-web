@@ -40,6 +40,8 @@ export async function POST(req: Request) {
 
     const fullQuery = oneLine`
       query: ${query}.
+
+      What is the  ${query} flouride level, source, ph level, company owner, full breakdown of the  ${query} ingredients and the ${query} Full Testing Report of ${query} water?"
     `
 
     if (!query) {
@@ -79,14 +81,14 @@ export async function POST(req: Request) {
       'match_page_sections',
       {
         embedding,
-        match_threshold: 0.4,
-        match_count: 4,
+        match_threshold: 0.8,
+        match_count: 8,
         min_content_length: 50,
       }
     )
 
     // console.log(`Match error: }`, matchError)
-    console.log(`Page sections: ${JSON.stringify(pageSections)}`)
+    // console.log(`Page sections: ${JSON.stringify(pageSections)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
@@ -109,9 +111,14 @@ export async function POST(req: Request) {
       contextText += `${content.trim()}\n---\n`
     }
 
+    console.log(`Context text: `, contextText)
+
     const prompt = codeBlock`
       Context sections:
       ${contextText}
+
+       Question: """
+      ${sanitizedQuery}
 
       Prioritze the data from context sections to informat youre answer. Do not suggest looking for information elsewhere.
 
@@ -121,14 +128,15 @@ export async function POST(req: Request) {
 
       If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
 
-      In your response include a full breakdown of the water data in a way that is easy to understand including the name, "Oaisys score", flouride level, source, ph level, company owner, full breakdown of the ingredients the benefits and harms of each one and detected chemicals and amounts of the ones detected inside in the testing results report .
+      Respond with water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the full breakdown of the ingredients the benefits and harms of each one.
 
-      Include all the chemicals detected and the amounts of each one over 0.0.
+      Include all the chemicals detected in the Essentia Full Testing Report and the amounts of each one over 0.0.
 
-      It's Oaisys not Oasys btw.
+      If missing any of the above, just ignore it.
 
-      Question: """
-      ${sanitizedQuery}
+      Return the Essentia Oaisys Page url and hyperlink it at the bottom of your reply.
+
+      Reply in markdown to format each section and data point to make it human readable but not a code snippet.
       """
     `
 
