@@ -48,6 +48,7 @@
     "github-slugger": "^2.0.0",
     "gpt3-tokenizer": "^1.1.5",
     "jotai": "^2.5.1",
+    "langchain": "^0.0.195",
     "lucide-react": "^0.292.0",
     "mdast": "^3.0.0",
     "mdast-util-from-markdown": "^1.2.0",

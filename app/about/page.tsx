@@ -1,4 +1,4 @@
-import ManifestoSection from './components/about-section'
+import AboutSection from './components/about-section'
 import SubpageLayout from '@/components/home-layout'
 
 export const metadata = {
@@ -22,7 +22,7 @@ export const metadata = {
 export default async function ManifestoPage() {
   return (
     <SubpageLayout>
-      <ManifestoSection />
+      <AboutSection />
     </SubpageLayout>
   )
 }

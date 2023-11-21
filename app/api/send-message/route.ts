@@ -2,27 +2,16 @@ import type { NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { codeBlock, oneLine } from 'common-tags'
 import GPT3Tokenizer from 'gpt3-tokenizer'
-// import {
-//   Configuration,
-//   OpenAIApi,
-//   CreateModerationResponse,
-//   CreateEmbeddingResponse,
-//   ChatCompletionRequestMessage,
-// } from 'openai-edge'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
+import { OpenAIStream, StreamingTextResponse, LangChainStream } from 'ai'
 import { ApplicationError, UserError } from '@/lib/errors'
-
+import { getModel } from '@/app/api/utils/model'
 import OpenAI from 'openai'
+import { LLMChain } from 'langchain/chains'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
-// const config = new Configuration({
-//   apiKey: openAiKey,
-// })
-// const openai = new OpenAIApi(config)
 
 export const runtime = 'edge'
 
@@ -38,10 +27,28 @@ export async function POST(req: Request) {
 
     const { query, assistant_id, thread_id } = await req.json()
 
-    const fullQuery = oneLine`
-      query: ${query}.
+    const systemMessage = `
+      You are a clean drinking and water assistant. 
+    
+      Prioritze the data from context sections to informat youre answer. Do not suggest looking for information elsewhere.
 
-      What is the ${query} flouride level, ${query} source, ${query} ph level, company owner, ${query} Oaisys score, brief breakdown of the  ${query} ingredients and the ${query} Full Testing Report of ${query} water of any chemicals over 0.0?"
+      Provide concise short answers. Only refer to the data.
+
+      If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
+
+      Respond with Oaisys score, water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the brief breakdown of the ingredients and the benefits and harms of each one.
+
+      Include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND.
+
+      If missing any of the above, just ignore it.
+
+      Return the Oaisys Page url and hyperlink it at the bottom of your reply.
+
+      Reply in markdown to format each section and data point to make it human readable but not a code snippet.
+      `
+
+    const fullQuery = oneLine`
+      query: ${query}    
     `
 
     if (!query) {
@@ -54,10 +61,6 @@ export async function POST(req: Request) {
     const sanitizedQuery = fullQuery.trim()
 
     const moderation = await openai.moderations.create({ input: sanitizedQuery })
-
-    // const moderationResponse: CreateModerationResponse = await openai
-    //   .createModeration({ input: sanitizedQuery })
-    //   .then((res) => res.json())
 
     const [results] = moderation.results
 
@@ -126,72 +129,78 @@ export async function POST(req: Request) {
 
        Question: """
       ${sanitizedQuery}
-
-      Prioritze the data from context sections to informat youre answer. Do not suggest looking for information elsewhere.
-
-      Provide concise short answers. Only refer to the data.
-
-      If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
-
-      Respond with Oaisys score, water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the brief breakdown of the ingredients and the benefits and harms of each one.
-
-      Include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND.
-
-      If missing any of the above, just ignore it.
-
-      Return the Oaisys Page url and hyperlink it at the bottom of your reply.
-
-      Reply in markdown to format each section and data point to make it human readable but not a code snippet.
       """
     `
 
-    console.log(`assistant_id: `, assistant_id)
+    console.log(`systemMessage: `, systemMessage)
+    console.log(`prompt: `, prompt)
 
-    let threadId = thread_id
-    // Create a thread
-    if (!thread_id) {
-      const thread = await openai.beta.threads.create()
-      threadId = thread.id
-    }
+    /////// Legacy - Langchain    ///////
+    // Make query
 
-    console.log(`threadId: `, threadId)
-
-    // adds message to thread
-    const message = await openai.beta.threads.messages.create(threadId, {
-      role: 'user',
-      content: prompt,
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4-1106-preview',
+      stream: true,
+      messages: [
+        {
+          role: 'system',
+          content: systemMessage,
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
     })
+    const stream = OpenAIStream(response)
 
-    // runs assistant thread
-    let run = await openai.beta.threads.runs.create(threadId, {
-      assistant_id: assistant_id,
-      // instructions: "Please address the user as Jane Doe. The user has a premium account."
-    })
+    // Respond with the stream
+    return new StreamingTextResponse(stream)
 
-    // create a timeout loop that checks if run.status === completed
-    while (run.status !== 'completed') {
-      await new Promise((resolve) => setTimeout(resolve, 1000)) // wait for 1 second before checking again
-      run = await openai.beta.threads.runs.retrieve(threadId, run.id) // update the run status
-    }
+    /////// Assistants API - commenting out until stremaing is supported   ///////
+    // let threadId = thread_id
+    // // Create a thread
+    // if (!thread_id) {
+    //   const thread = await openai.beta.threads.create()
+    //   threadId = thread.id
+    // }
 
-    // once completed, get updated messages
-    const messages = await openai.beta.threads.messages.list(threadId)
+    // // adds message to thread
+    // const message = await openai.beta.threads.messages.create(threadId, {
+    //   role: 'user',
+    //   content: prompt,
+    // })
 
-    const chatReply = messages.data[messages.data.length - 1]
+    // // runs assistant thread
+    // let run = await openai.beta.threads.runs.create(threadId, {
+    //   assistant_id: assistant_id,
+    //   // instructions: "Please address the user as Jane Doe. The user has a premium account."
+    // })
 
-    // @ts-ignore
-    const chatReplyText = messages.data[0].content[0].text.value
+    // // create a timeout loop that checks if run.status === completed
+    // while (run.status !== 'completed') {
+    //   await new Promise((resolve) => setTimeout(resolve, 1000)) // wait for 1 second before checking again
+    //   run = await openai.beta.threads.runs.retrieve(threadId, run.id) // update the run status
+    // }
 
-    return new Response(
-      JSON.stringify({
-        content: chatReplyText,
-        thread_id: threadId,
-      }),
-      {
-        status: 200,
-        headers: { 'Content-Type': 'application/json' },
-      }
-    )
+    // // once completed, get updated messages
+    // const messages = await openai.beta.threads.messages.list(threadId)
+
+    // const chatReply = messages.data[messages.data.length - 1]
+
+    // // @ts-ignore
+    // const chatReplyText = messages.data[0].content[0].text.value
+
+    // return new Response(
+    //   JSON.stringify({
+    //     content: chatReplyText,
+    //     thread_id: threadId,
+    //   }),
+    //   {
+    //     status: 200,
+    //     headers: { 'Content-Type': 'application/json' },
+    //   }
+    // )
   } catch (err) {
     if (err instanceof UserError) {
       return new Response(

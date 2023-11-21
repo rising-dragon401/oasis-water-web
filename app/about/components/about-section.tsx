@@ -34,7 +34,7 @@ export const metadata = {
   },
 }
 
-export default function ManifestoSection() {
+export default function AboutSection() {
   return (
     <>
       <motion.div
@@ -69,7 +69,7 @@ export default function ManifestoSection() {
         </svg>
       </div>
 
-      <div className=" text-white p-20 min-h-screen">
+      <div className=" text-white md:p-20 min-h-screen">
         <Typography size="5xl" className="text-primary" fontWeight="normal">
           Our tap water is polluted, bottled water is filled with hidden chemicals and clouded by
           corporate brands that care more about the bottom line than our health. Food is marketed as
@@ -78,7 +78,7 @@ export default function ManifestoSection() {
         </Typography>
       </div>
 
-      <div className=" text-white p-20 min-h-screen relative">
+      <div className=" text-white md:p-20 min-h-screen relative">
         <Typography size="5xl" className="text-primary" fontWeight="normal">
           We have gone away from source.
         </Typography>
@@ -104,7 +104,7 @@ export default function ManifestoSection() {
         </div>
       </div>
 
-      <div className="text-white p-20 min-h-screen">
+      <div className="text-white md:p-20 min-h-screen">
         <Typography size="5xl" className="text-primary" fontWeight="normal">
           All is not lost. More and more people are becoming aware of what is in their water and
           food. Amazing entrepreneurs are creating new brands built on transparency and quality.
@@ -112,7 +112,7 @@ export default function ManifestoSection() {
         {/* <p className="text-xl">This is a description for section 3.</p> */}
       </div>
 
-      <div className=" text-white p-20 min-h-screen relative">
+      <div className=" text-white md:p-20 min-h-screen relative">
         <Typography size="5xl" className="text-primary" fontWeight="normal">
           Our bodies and earth are capable of healing themselves if we give the the right care.
         </Typography>
@@ -139,7 +139,7 @@ export default function ManifestoSection() {
         </div>
       </div>
 
-      <div className=" text-white p-20 min-h-screen relative">
+      <div className=" text-white md:p-20 min-h-screen relative">
         <Typography size="5xl" className="text-primary" fontWeight="normal">
           We are on a mission to promote transparency in the products we consume and help people
           live cleaner and healthier lives.
@@ -169,7 +169,7 @@ export default function ManifestoSection() {
         </div>
       </div>
 
-      <div className=" text-white p-20 min-h-[70vh] relative">
+      <div className=" text-white md:p-20 min-h-[70vh] relative">
         <Typography size="5xl" className="text-primary" fontWeight="normal">
           We are building a platform that will help you discover and learn about the best products
           for your health and the health of our planet. Connecting you to source.
@@ -197,7 +197,7 @@ export default function ManifestoSection() {
         </div>
       </div>
 
-      <div className="flex justify-center mb-60 ">
+      <div className="flex justify-center mt-32 mb-60 ">
         <div className="w-40">
           <CTAButton />
         </div>

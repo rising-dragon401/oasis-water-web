@@ -18,9 +18,11 @@ import { useAtom } from 'jotai'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
 import ChatList from './chat-list'
 import useDevice from '@/lib/hooks/use-device'
+import { useToast } from '@/components/ui/use-toast'
 
 export function SearchDialog() {
   const inputRef = React.useRef<HTMLInputElement>(null)
+  const { toast } = useToast()
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
@@ -34,7 +36,7 @@ export function SearchDialog() {
 
   React.useEffect(() => {
     if (open && !assistantId) {
-      createNewAssistant()
+      // createNewAssistant()
     }
   }, [open])
 
@@ -109,6 +111,14 @@ export function SearchDialog() {
       setAbortController(abortController_)
       const { signal } = abortController_
 
+      // Set filler AI message
+      const newAssistantMessage = {
+        role: 'assistant',
+        content: '',
+      }
+      // setThreadId(data.thread_id)
+      setMessages((messages) => [...messages, newAssistantMessage])
+
       const response = await fetch('/api/send-message', {
         method: 'POST',
         body: JSON.stringify({
@@ -119,22 +129,51 @@ export function SearchDialog() {
         signal,
       })
 
-      const data = await response.json()
+      let fullNewMessage = ''
 
-      const newAssistantMessage = {
-        role: 'assistant',
-        content: data.content,
+      if (response?.status === 400) {
+        const object = await response.json()
+        const err = object.error
+        toast({
+          title: err,
+        })
+        handleResetFailedSend()
+        return
       }
 
-      setThreadId(data.thread_id)
+      const textDecoder = new TextDecoder()
+      const reader = response?.body?.getReader()
 
-      setMessages((messages) => [...messages, newAssistantMessage])
+      let chunk = await reader?.read()
+      const chunkContent = textDecoder.decode(chunk?.value)
+
+      fullNewMessage += chunkContent
+
+      console.log('fullNewMessage: ', fullNewMessage)
+
+      // finish reading the response
+      while (!chunk?.done) {
+        chunk = await reader?.read()
+        const chunkContent = textDecoder.decode(chunk?.value)
+        fullNewMessage += chunkContent
+
+        setMessages((prevMessages) => {
+          const newMessages = [...prevMessages]
+          newMessages[newMessages.length - 1].content = fullNewMessage
+          return newMessages
+        })
+      }
+
+      // const data = await response.json()
 
       setIsLoading(false)
     } catch (e) {
-      // remove the last message
-      setMessages((messages) => messages.slice(0, messages.length - 1))
+      handleResetFailedSend()
     }
+  }
+
+  const handleResetFailedSend = () => {
+    setMessages((messages) => messages.slice(0, messages.length - 2))
   }
 
   const handleReset = async () => {
@@ -199,11 +238,12 @@ export function SearchDialog() {
               <div className="w-full">
                 <Input
                   ref={inputRef}
-                  placeholder={
-                    SEARCH_PREVIEW_QUESTIONS[
-                      Math.floor(Math.random() * SEARCH_PREVIEW_QUESTIONS.length)
-                    ]
-                  }
+                  // placeholder={
+                  //   SEARCH_PREVIEW_QUESTIONS[
+                  //     Math.floor(Math.random() * SEARCH_PREVIEW_QUESTIONS.length)
+                  //   ]
+                  // }
+                  placeholder="Smartwater"
                   name="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
