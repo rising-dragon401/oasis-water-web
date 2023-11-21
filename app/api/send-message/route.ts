@@ -41,7 +41,7 @@ export async function POST(req: Request) {
     const fullQuery = oneLine`
       query: ${query}.
 
-      What is the  ${query} flouride level, source, ph level, company owner, full breakdown of the  ${query} ingredients and the ${query} Full Testing Report of ${query} water?"
+      What is the ${query} flouride level, ${query} source, ${query} ph level, company owner, ${query} Oaisys score, brief breakdown of the  ${query} ingredients and the ${query} Full Testing Report of ${query} water of any chemicals over 0.0?"
     `
 
     if (!query) {
@@ -81,7 +81,7 @@ export async function POST(req: Request) {
       'match_page_sections',
       {
         embedding,
-        match_threshold: 0.8,
+        match_threshold: 0.85,
         match_count: 8,
         min_content_length: 50,
       }
@@ -97,18 +97,25 @@ export async function POST(req: Request) {
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
     let tokenCount = 0
     let contextText = ''
+    const maxTokenCount = 20000
 
     for (let i = 0; i < pageSections.length; i++) {
       const pageSection = pageSections[i]
       const content = pageSection.content
-      // const encoded = tokenizer.encode(content)
-      // tokenCount += encoded.text.length
+      const encoded = tokenizer.encode(content)
+      tokenCount += encoded.text.length
 
-      // if (tokenCount >= 1500) {
-      //   break
-      // }
-
-      contextText += `${content.trim()}\n---\n`
+      if (tokenCount + encoded.text.length > maxTokenCount) {
+        // If adding the entire content would exceed the limit, add a portion of it
+        const remainingSpace = maxTokenCount - tokenCount
+        const partialContent = content.slice(0, remainingSpace)
+        contextText += `${partialContent.trim()}\n---\n`
+        break
+      } else {
+        // If adding the entire content would not exceed the limit, add it all
+        tokenCount += encoded.text.length
+        contextText += `${content.trim()}\n---\n`
+      }
     }
 
     console.log(`Context text: `, contextText)
@@ -124,11 +131,9 @@ export async function POST(req: Request) {
 
       Provide concise short answers. Only refer to the data.
 
-      If no clear answer help the user as a clean drinking water expert would.
-
       If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
 
-      Respond with water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the full breakdown of the ingredients the benefits and harms of each one.
+      Respond with Oaisys score, water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the full breakdown of the ingredients the benefits and harms of each one.
 
       Include all the chemicals detected in the Essentia Full Testing Report and the amounts of each one over 0.0.
 

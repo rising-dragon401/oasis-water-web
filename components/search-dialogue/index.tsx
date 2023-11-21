@@ -175,7 +175,7 @@ export function SearchDialog() {
       <Dialog open={open} modal={true}>
         <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl m-6 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
           <DialogHeader className="sticky flex flex-row items-center w-full justify-between">
-            <DialogTitle className="text-left w-30">Ask me a question about your water</DialogTitle>
+            <DialogTitle className="text-left w-30">What bottled water do you drink?</DialogTitle>
 
             <div className="flex flex-row gap-2">
               <Button variant="outline" className="h-8" onClick={handleReset}>
