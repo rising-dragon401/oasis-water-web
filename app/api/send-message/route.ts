@@ -81,7 +81,7 @@ export async function POST(req: Request) {
       'match_page_sections',
       {
         embedding,
-        match_threshold: 0.85,
+        match_threshold: 0.7,
         match_count: 8,
         min_content_length: 50,
       }
@@ -133,13 +133,13 @@ export async function POST(req: Request) {
 
       If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality.
 
-      Respond with Oaisys score, water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the full breakdown of the ingredients the benefits and harms of each one.
+      Respond with Oaisys score, water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the brief breakdown of the ingredients and the benefits and harms of each one.
 
-      Include all the chemicals detected in the Essentia Full Testing Report and the amounts of each one over 0.0.
+      Include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND.
 
       If missing any of the above, just ignore it.
 
-      Return the Essentia Oaisys Page url and hyperlink it at the bottom of your reply.
+      Return the Oaisys Page url and hyperlink it at the bottom of your reply.
 
       Reply in markdown to format each section and data point to make it human readable but not a code snippet.
       """
