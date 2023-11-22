@@ -16,7 +16,7 @@ import Typography from './typography'
 import CTAButton from './cta-button'
 import { useState, useEffect } from 'react'
 
-export default function HomeMenu() {
+export default function HomeNavbar() {
   const [isMounted, setIsMounted] = useState(false)
 
   // This is a side effect that runs after the first render and sets the isMounted state to true
@@ -50,6 +50,12 @@ export default function HomeMenu() {
           <NavigationMenuItem>
             <Link href="/blog" className={navigationMenuTriggerStyle()}>
               Blog
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <Link href="/recommendations" className={navigationMenuTriggerStyle()}>
+              Top Water
             </Link>
           </NavigationMenuItem>
           {/* <NavigationMenuItem>
