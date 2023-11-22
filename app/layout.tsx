@@ -2,6 +2,7 @@ import { lato } from './fonts'
 import cn from 'classnames'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from '@/components/ui/toaster'
+import { CSPostHogProvider } from './providers'
 
 import '@/styles/globals.css'
 
@@ -54,11 +55,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sizes="<generated>"
       />
 
-      <body>
-        {children}
-        <Analytics />
-        <Toaster />
-      </body>
+      <CSPostHogProvider>
+        <body>
+          {children}
+          <Analytics />
+          <Toaster />
+        </body>
+      </CSPostHogProvider>
     </html>
   )
 }

@@ -10,6 +10,7 @@ import blog__is_flouride_bad_for_youMdx from './blog__is_flouride_bad_for_you.md
 import blog__primo_water_quality_reportMdx from './blog__primo_water_quality_report.mdx.json' assert { type: 'json' }
 import blog__pure_life_water_quality_reportMdx from './blog__pure_life_water_quality_report.mdx.json' assert { type: 'json' }
 import blog__smartwater_quality_reportMdx from './blog__smartwater_quality_report.mdx.json' assert { type: 'json' }
+import blog__top_water_bottlesMdx from './blog__top_water_bottles.mdx.json' assert { type: 'json' }
 import blog__water_ingredient_listMdx from './blog__water_ingredient_list.mdx.json' assert { type: 'json' }
 
-export const allPosts = [blog__acqua_panna_water_quality_reportMdx, blog__alkaline88_water_quality_reportMdx, blog__bottle_water_flouride_testsMdx, blog__essentia_water_quality_reportMdx, blog__evian_water_quality_reportMdx, blog__fiji_water_qualityMdx, blog__is_flouride_bad_for_youMdx, blog__primo_water_quality_reportMdx, blog__pure_life_water_quality_reportMdx, blog__smartwater_quality_reportMdx, blog__water_ingredient_listMdx]
+export const allPosts = [blog__acqua_panna_water_quality_reportMdx, blog__alkaline88_water_quality_reportMdx, blog__bottle_water_flouride_testsMdx, blog__essentia_water_quality_reportMdx, blog__evian_water_quality_reportMdx, blog__fiji_water_qualityMdx, blog__is_flouride_bad_for_youMdx, blog__primo_water_quality_reportMdx, blog__pure_life_water_quality_reportMdx, blog__smartwater_quality_reportMdx, blog__top_water_bottlesMdx, blog__water_ingredient_listMdx]
