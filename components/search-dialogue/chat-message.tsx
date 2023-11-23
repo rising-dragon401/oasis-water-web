@@ -4,8 +4,8 @@ import { MemoizedReactMarkdown } from '@/components/markdown'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import Loader from '@/components/loader'
 
-const MaiaChatAvatar =
-  'https://dcsladfmohmhomyxvhzz.supabase.co/storage/v1/object/public/general/elements/chat/maia%20chat%20avatar.png'
+const ChatAvatar =
+  'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/logo/icon.png'
 
 export interface ChatMessageProps {
   message: any
@@ -34,10 +34,12 @@ export function ChatMessage({
           message.role === 'user' ? 'bg-background ' : 'bg-primary text-primaryMuted'
         )}
       >
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="" alt="chat avatar" />
-          {/* <AvatarFallback>{name.charAt(0) || 'M'}</AvatarFallback> */}
-        </Avatar>
+        {message.role === 'assistant' && (
+          <Avatar className="h-8 w-8">
+            <AvatarImage src={ChatAvatar} alt="chat avatar" />
+            {/* <AvatarFallback>{name.charAt(0) || 'M'}</AvatarFallback> */}
+          </Avatar>
+        )}
       </div>
       <div className="flex-1 px-1 md:ml-4 ml-2 space-y-2 overflow-hidden">
         <MemoizedReactMarkdown
