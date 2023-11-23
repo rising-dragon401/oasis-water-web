@@ -43,7 +43,9 @@ export async function POST(req: Request) {
       `
 
     const fullQuery = oneLine`
-      query: ${query}    
+      Main query: ${query}
+
+      Find the ${query} ingredients, benefits, and harms of each ingredient in the water, and ${query} Full Testing Report:. Use this information for my main query if it's relevant.
     `
 
     if (!query) {
@@ -79,7 +81,7 @@ export async function POST(req: Request) {
       'match_page_sections',
       {
         embedding,
-        match_threshold: 0.7,
+        match_threshold: 0.8,
         match_count: 8,
         min_content_length: 50,
       }
@@ -126,9 +128,6 @@ export async function POST(req: Request) {
       ${sanitizedQuery}
       """
     `
-
-    console.log(`systemMessage: `, systemMessage)
-    console.log(`prompt: `, prompt)
 
     /////// Legacy - Langchain    ///////
     // Make query
