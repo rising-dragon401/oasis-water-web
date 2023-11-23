@@ -40,6 +40,7 @@ export async function POST(req: Request) {
 
       If you don't have data about a question say "We don't have data about that yet" then suggest to help the user with something else.
       
+      If someone asks a question that is not about water, respond with "I'm sorry, I can only answer questions about clean water."
       `
 
     const fullQuery = oneLine`
