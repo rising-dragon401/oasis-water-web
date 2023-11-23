@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     const fullQuery = oneLine`
       Main query: ${query}.
 
-      Find the ${query} ingredients, benefits, and harms of each ingredient in the water, and ${query} Full Testing Report:. Use this information for my main query if it's relevant.
+      Find the ${query} ingredients, benefits, and harms of each ingredient in the water, and ${query} Full Testing Report:. Use this information for my main query if it's relevant
     `
 
     if (!query) {
