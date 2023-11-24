@@ -86,6 +86,38 @@ function extractMetaExport(mdxTree: Root) {
 }
 
 /**
+ * Extracts the title section from an MDX file.
+ *
+ * The title section is the first `h2` heading in the file.
+ */
+function extractTitleSection(mdxTree: Root) {
+  const titleSection = mdxTree.children.find((node) => {
+    return node.type === 'heading' && node.depth === 2
+  })
+
+  if (!titleSection) {
+    return undefined
+  }
+
+  // @ts-ignore
+  return titleSection.children
+}
+
+/**
+ * Extracts the tags from the title section of an MDX file.
+ *
+ * The tags are the first `h2` heading in the file.
+ */
+function extractTagsFromHeading(heading: any[]) {
+  const headingText = heading[0]?.value
+  const tagsMatch = headingText.match(/tags:\s*\[\s*([\s\S]*?)\s*\]/)
+  if (tagsMatch && tagsMatch[1]) {
+    return tagsMatch[1].split(',').map((tag: any) => tag.trim().replace(/'/g, ''))
+  }
+  return undefined
+}
+
+/**
  * Splits a `mdast` tree into multiple trees based on
  * a predicate function. Will include the splitting node
  * at the beginning of each tree.
@@ -118,7 +150,10 @@ type ProcessedMdx = {
   checksum: string
   meta: Meta
   sections: Section[]
+  tags?: string[]
 }
+
+let documentTags: string[] = ['']
 
 /**
  * Processes MDX content for search indexing.
@@ -134,6 +169,14 @@ function processMdxForSearch(content: string): ProcessedMdx {
   })
 
   const meta = extractMetaExport(mdxTree)
+
+  const heading = extractTitleSection(mdxTree)
+
+  const newTags = extractTagsFromHeading(heading)
+
+  if (newTags) {
+    documentTags = newTags
+  }
 
   // Remove all MDX elements from markdown
   const mdTree = filter(
@@ -153,6 +196,7 @@ function processMdxForSearch(content: string): ProcessedMdx {
       checksum,
       meta,
       sections: [],
+      tags: documentTags,
     }
   }
 
@@ -248,7 +292,7 @@ class MarkdownEmbeddingSource extends BaseEmbeddingSource {
   async load() {
     const contents = await readFile(this.filePath, 'utf8')
 
-    const { checksum, meta, sections } = processMdxForSearch(contents)
+    const { checksum, meta, sections, tags } = processMdxForSearch(contents)
 
     this.checksum = checksum
     this.meta = meta
@@ -258,6 +302,7 @@ class MarkdownEmbeddingSource extends BaseEmbeddingSource {
       checksum,
       meta,
       sections,
+      tags,
     }
   }
 }
@@ -309,7 +354,7 @@ async function generateEmbeddings() {
     const { type, source, path, parentPath } = embeddingSource
 
     try {
-      const { checksum, meta, sections } = await embeddingSource.load()
+      const { checksum, meta, sections, tags } = await embeddingSource.load()
 
       // Check for existing page in DB and compare checksums
       const { error: fetchPageError, data: existingPage } = await supabaseClient
@@ -414,15 +459,23 @@ async function generateEmbeddings() {
 
       console.log(`[${path}] Adding ${sections.length} page sections (with embeddings)`)
       for (const { slug, heading, content } of sections) {
+        // Concatenate the tags to the content
+        const contentWithTags = documentTags
+          ? ` Tags (zip code, brand, location):${documentTags.join(' ')} 
+              Content:${content} `
+          : content
+
         // OpenAI recommends replacing newlines with spaces for best results (specific to embeddings)
-        const input = content.replace(/\n/g, ' ')
+        const input = contentWithTags.replace(/\n/g, ' ')
+
+        console.log('input: ', input)
 
         try {
           const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
           const embeddingResponse = await openai.embeddings.create({
             model: 'text-embedding-ada-002',
-            input,
+            input: contentWithTags,
           })
 
           const [{ embedding }] = embeddingResponse.data
@@ -433,7 +486,7 @@ async function generateEmbeddings() {
               page_id: page.id,
               slug,
               heading,
-              content,
+              content: contentWithTags,
               token_count: embeddingResponse.usage.total_tokens,
               embedding: embedding,
             })

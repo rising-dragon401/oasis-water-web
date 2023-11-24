@@ -1,12 +1,12 @@
 import { allPosts } from '@/.contentlayer/generated'
 import Link from 'next/link'
 import Typography from '@/components/typography'
-import useDevice from '@/lib/hooks/use-device'
+import React, { useMemo } from 'react'
 
 export default function BlogPreviewSection() {
-  const sortedPosts = allPosts.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  )
+  const sortedPosts = useMemo(() => {
+    return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  }, [])
 
   return (
     <div>

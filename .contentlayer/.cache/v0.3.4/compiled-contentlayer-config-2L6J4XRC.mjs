@@ -30,6 +30,10 @@ var Post = defineDocumentType(() => ({
     date: {
       type: "date",
       required: true
+    },
+    tags: {
+      type: "list",
+      required: false
     }
   },
   computedFields
@@ -45,4 +49,4 @@ export {
   Post,
   contentlayer_config_default as default
 };
-//# sourceMappingURL=compiled-contentlayer-config-CHK76ZFZ.mjs.map
+//# sourceMappingURL=compiled-contentlayer-config-2L6J4XRC.mjs.map

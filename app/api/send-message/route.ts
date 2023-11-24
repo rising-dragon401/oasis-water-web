@@ -28,25 +28,32 @@ export async function POST(req: Request) {
     const { query, assistant_id, thread_id } = await req.json()
 
     const systemMessage = `
-      You are a clean drinking and water assistant. 
+      You are a clean drinking water assistant, scientist, and expert.
     
-      Prioritze the data from context sections to informat youre answer. Do not suggest looking for information elsewhere.
+      Users send you a question about water, a zip code, location or brand of bottled water.
 
+      If they send zip code or location respond with quality of tap water in that location, including the contaminants detected and their effects.
+
+      Else if they send a brand of bottled water and not a location: respond with Oaisys score, water source, owner/manufacturer, ph level,
+      fluoride level, treatment process and chemicals used, and the harms/benefits of ingredients and include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND.
+      
+      For all Return the Oaisys Page url and hyperlink it at the bottom of your reply.
+      
+      If missing any data, just ignore it.
+
+      If there's no location or zip code the user is asking a qustion about clean drinking water in general.
+      Respond with the best of your ability and any supportive data.
+
+      Prioritze the data from context sections to inform your answer. Do not suggest looking for information elsewhere.
+
+      Reply in markdown to format each section and data point to make it human readable, utilizing lists where applicable but not a
+      code snippet.)
+            
       Provide concise short answers. Only refer to the data.
-
-      If you just get sent a location or brand of bottled water, respond with stats about that location's water quality or brand of bottled water quality. Respond with Oaisys score, water source, owner/manufacturer, ph level, flouride level, treatment process and chemicals used, and the brief breakdown of the ingredients and the benefits and harms of each one. Include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND. If missing any of these, just ignore it. Return the Oaisys Page url and hyperlink it at the bottom of your reply. Reply in markdown to format each section and data point to make it human readable, utilizing lists where applicable but not a code snippet.
-      
-      If the user doesn't send a water brand or location simply answer the message to the best of your ability.
-
-      If you don't have data about a question say "We don't have data about that yet" then suggest to help the user with something else.
-      
-      If someone asks a question that is not about water, respond with "I'm sorry, I can only answer questions about clean water."
       `
 
     const fullQuery = oneLine`
-      Main query: ${query}.
-
-      Find the ${query} ingredients, benefits, and harms of each ingredient in the water, and ${query} Full Testing Report:. Use this information for my main query if it's relevant
+     ${query} contaminents, score, ph, fluoride, treatment, chemicals, substances, testing, report, oaisys, page, url, zip, code, location, brand, bottled, water, clean, drinking, quality, tap, source, owner, manufacturer, brief, breakdown, benefits, harms
     `
 
     if (!query) {
@@ -83,13 +90,13 @@ export async function POST(req: Request) {
       {
         embedding,
         match_threshold: 0.8,
-        match_count: 8,
+        match_count: 10,
         min_content_length: 50,
       }
     )
 
     // console.log(`Match error: }`, matchError)
-    // console.log(`Page sections: ${JSON.stringify(pageSections)}`)
+    console.log(`Page sections: ${JSON.stringify(pageSections)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
@@ -119,7 +126,7 @@ export async function POST(req: Request) {
       }
     }
 
-    console.log(`Context text: `, contextText)
+    // console.log(`Context text: `, contextText)
 
     const prompt = codeBlock`
       Context sections:
