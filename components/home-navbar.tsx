@@ -8,13 +8,11 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
-import cn from 'classnames'
-import { Button } from '@/components/ui/button'
-import { motion } from 'framer-motion'
+
 import Logo from '@/components/logo'
 import Typography from './typography'
-import CTAButton from './cta-button'
 import { useState, useEffect } from 'react'
+import BasicSearch from '@/components/basic-search'
 
 export default function HomeNavbar() {
   const [isMounted, setIsMounted] = useState(false)
@@ -42,42 +40,39 @@ export default function HomeNavbar() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <Link href="/" className={navigationMenuTriggerStyle()}>
+              Home
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <Link href="/about" className={navigationMenuTriggerStyle()}>
               About
             </Link>
           </NavigationMenuItem>
 
-          <NavigationMenuItem>
+          {/* <NavigationMenuItem>
             <Link href="/blog" className={navigationMenuTriggerStyle()}>
               Blog
             </Link>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
 
           <NavigationMenuItem>
             <Link href="/recommendations" className={navigationMenuTriggerStyle()}>
-              Top Water
+              Recommended
             </Link>
           </NavigationMenuItem>
-          {/* <NavigationMenuItem>
-          <Link href="/manifesto" className={navigationMenuTriggerStyle()}>
-            About
-          </Link>
-        </NavigationMenuItem> */}
         </NavigationMenuList>
 
         <NavigationMenuList>
+          <BasicSearch showSearch={false} />
           {/* <NavigationMenuItem>
-          <Link href="/auth/signin" className={navigationMenuTriggerStyle()}>
-            Login
-          </Link>
-        </NavigationMenuItem> */}
-          <NavigationMenuItem>
             <NavigationMenuItem className="ml-2">
               <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.5 }}>
                 <CTAButton />
               </motion.div>
             </NavigationMenuItem>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
         </NavigationMenuList>
       </NavigationMenu>
     )

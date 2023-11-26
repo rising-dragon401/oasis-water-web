@@ -197,11 +197,11 @@ export default function AboutSection() {
         </div>
       </div>
 
-      <div className="flex justify-center mt-32 mb-60 ">
+      {/* <div className="flex justify-center mt-32 mb-60 ">
         <div className="w-40">
           <CTAButton />
         </div>
-      </div>
+      </div> */}
     </>
   )
 }

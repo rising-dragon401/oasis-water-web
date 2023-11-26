@@ -3,6 +3,12 @@
 import { supabase } from '@/utils/supabase'
 import { getSession } from '@/app/supabase-server'
 
+export const getItems = async () => {
+  const { data: items, error } = await supabase.from('items').select()
+
+  return items
+}
+
 export const searchItems = async (query: string) => {
   const { data: items, error } = await supabase.from('items').select().textSearch('name', query)
 

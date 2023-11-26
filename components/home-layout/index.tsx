@@ -5,7 +5,7 @@ import MobileNavbar from '@/components/mobile-navbar'
 import Link from 'next/link'
 import Logo from '@/components/logo'
 import Typography from '@/components/typography'
-import CTAButton from '@/components/cta-button'
+import BasicSearch from '@/components/basic-search'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
   return (
@@ -13,6 +13,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
       <div className="md:block hidden">
         <HomeNavbar />
       </div>
+
       <div className="md:hidden flex flex-row justify-between items-center px-4">
         <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
           <Logo />
@@ -22,12 +23,14 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
           </Typography>
         </Link>
 
-        <div className="flex flex-row items-center">
-          <CTAButton />
+        <div className="flex flex-row items-center gap-2">
+          <BasicSearch showSearch={false} />
           <MobileNavbar />
         </div>
       </div>
+
       <div className="px-8 py-3 w-full min-h-[70vh]">{children}</div>
+
       <Footer />
     </div>
   )

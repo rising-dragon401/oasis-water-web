@@ -15,7 +15,7 @@ type Props = {
 export default function IngredientsCard({ ingredients }: Props) {
   console.log({ ingredients })
   return (
-    <Card>
+    <Card className="bg-transparent">
       <CardHeader>
         <CardTitle>Ingredients</CardTitle>
         <CardDescription>

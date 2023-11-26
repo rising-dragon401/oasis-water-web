@@ -9,7 +9,7 @@ export default function EmailSubscribe() {
     <div className="flex flex-col max-w-lg justify-start  space-x-2">
       <div>
         <Typography size="lg" className="text-secondary" fontWeight="normal">
-          Share feedback
+          Join waitlist
         </Typography>
         <div className="max-w-xs">
           <Typography size="xs" className="text-secondary" fontWeight="normal">

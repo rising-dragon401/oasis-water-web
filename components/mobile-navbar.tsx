@@ -11,7 +11,6 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Menu, X } from 'lucide-react'
 import React from 'react'
-import CTAButton from '@/components/cta-button'
 
 export default function MobileNavbar() {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -23,7 +22,7 @@ export default function MobileNavbar() {
       }}
     >
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
+        <Button variant="ghost">
           {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </Button>
       </DropdownMenuTrigger>
@@ -34,16 +33,9 @@ export default function MobileNavbar() {
               Home
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem className="my-2 justify-center">
-            <Link href="/blog" legacyBehavior passHref>
-              Blog
-            </Link>
-          </DropdownMenuItem>
+
           <DropdownMenuItem className="my-2 justify-center">
             <Link href="/about">About</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="w-full justify-center flex">
-            <CTAButton />
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
