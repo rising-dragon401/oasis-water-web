@@ -55,13 +55,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sizes="<generated>"
       />
 
-      <CSPostHogProvider>
-        <body>
-          {children}
-          <Analytics />
-          <Toaster />
-        </body>
-      </CSPostHogProvider>
+      {/* <CSPostHogProvider> */}
+      <body>
+        {children}
+        <Analytics />
+        <Toaster />
+      </body>
+      {/* </CSPostHogProvider> */}
     </html>
   )
 }

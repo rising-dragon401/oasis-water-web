@@ -2,6 +2,7 @@ import { SearchDialog } from '@/components/search-dialogue'
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
 import BlogPreviewSection from '@/components/blog-preview-section'
+import BasicSearch from '@/components/basic-search'
 
 export default function Home() {
   return (
@@ -12,7 +13,8 @@ export default function Home() {
             Do you know what&apos;s in your water?
           </Typography>
         </div>
-        <SearchDialog />
+
+        <BasicSearch />
 
         <div className="md:mt-56 mt-32  mb-32">
           <BlogPreviewSection />

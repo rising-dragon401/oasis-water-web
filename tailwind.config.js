@@ -83,5 +83,20 @@ module.exports = {
       }),
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('@tailwindcss/typography'),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.stroke-primary': {
+          stroke: 'hsl(var(--primary))',
+        },
+        '.stroke-secondary': {
+          stroke: 'hsl(var(--secondary))',
+        },
+        // Add more classes as needed
+      }
+      addUtilities(newUtilities)
+    },
+  ],
 }

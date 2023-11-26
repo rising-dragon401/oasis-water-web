@@ -1,0 +1,56 @@
+
+
+// Ingredients
+- name
+- description
+- benefits
+- harms
+- health guideline
+- legal limit
+ amount
+
+- sources
+- research embeddings (TODO)
+
+
+// Items (skus)
+- id
+- name
+- score: number 
+- brand
+- owner
+- description
+- ingredients string[]
+- type enum (food | water | skincare | etc)
+- metadata
+    - treatment_process
+    - ph_level
+    - fluoride
+
+
+// Tap Water Location
+- id
+- name
+- cover_image
+- score: number 
+- source
+- zip_codes: number[array]
+- location: string
+- total_contaminants: number
+- contaminants_exceeding_guidelines: number
+- contaminants (fk: ingredients.id)
+- sources string[]
+
+
+
+// Brand 
+
+
+// Owner 
+
+
+// Location?
+- 
+
+
+Types: bottled_water, tap_water_location,  

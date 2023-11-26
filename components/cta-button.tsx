@@ -11,7 +11,7 @@ export default function CTAButton() {
   return (
     <Link href="/">
       {!isMobile ? (
-        <Button>Search water</Button>
+        <Button>Water Assistant</Button>
       ) : (
         <Button variant="ghost">
           <SearchIcon />
