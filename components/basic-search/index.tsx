@@ -7,6 +7,7 @@ import { searchItems } from '@/app/actions/items'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import ResultsRow from './results-row'
 import { Search } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 
 export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
@@ -42,12 +43,19 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
       <div className="flex flex-row gap-2 items-center">
         {isShowSearch ? (
           <div className="flex flex-col gap-2 relative md:w-full w-56">
-            <Input
-              placeholder="Enter brand of water"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors rounded-md border border-secondary-foreground md:min-w-[300px] shadow-md"
-            />
+            <div className="relative">
+              <Input
+                placeholder="Enter brand of water"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors rounded-md border border-secondary-foreground md:min-w-[300px] shadow-md"
+              />
+              {isLoading && (
+                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
+                  <Loader2 size={20} className="animate-spin text-secondary-foreground" />
+                </div>
+              )}
+            </div>
             {results.length > 0 && (
               <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-md absolute top-10 w-full">
                 {results.map((result) => (

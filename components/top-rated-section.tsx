@@ -48,11 +48,11 @@ export default function TopRatedSection({ items }: Props) {
                       {item.name}
                     </Typography>
 
-                    <div className="md:block hidden">
+                    {/* <div className="md:block hidden h-10 overflow-hidden text-ellipsis whitespace-nowrap">
                       <Typography size="base" fontWeight="normal" className="text-stone-100 ">
                         {item.description}
                       </Typography>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </Link>
