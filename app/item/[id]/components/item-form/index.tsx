@@ -8,6 +8,7 @@ import Score from '../score'
 import MetaDataCard from '../metadata-card'
 import IngredientsCard from '../ingredients-card'
 import ContaminantCard from '../contaminant-card'
+import ItemSkeleton from '../item-skeleton'
 
 type Props = {
   id: string
@@ -29,26 +30,34 @@ export default function ItemForm({ id }: Props) {
   }, [id])
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <ItemSkeleton />
   }
-
-  console.log('item.contaminants: ', item.contaminants)
 
   return (
     <div className="py-10">
       <Suspense fallback={<div>Loading...</div>}>
-        <div className="flex flex-row gap-6">
-          <Image src={item.image} alt={item.name} width={400} height={400} />
+        <div className="flex md:flex-row flex-col gap-6">
+          <Image
+            src={item.image}
+            alt={item.name}
+            width={400}
+            height={400}
+            // className="w-40 h-40 object-cover"
+          />
 
           <div className="flex flex-row gap-2">
-            <div className="flex flex-col gap-2 w-3/5">
-              <Typography size="4xl" fontWeight="normal">
+            <div className="flex flex-col gap-2 md:w-3/5">
+              <Typography size="3xl" fontWeight="normal">
                 {item.name}
               </Typography>
-              <Typography size="base" fontWeight="normal">
+              <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
                 {item.brand?.name} - {item.company?.name}
               </Typography>
-              <Typography size="base" fontWeight="normal" className="text-secondary">
+              <Typography
+                size="base"
+                fontWeight="normal"
+                className="text-secondary md:block hidden"
+              >
                 {item.description} / 100
               </Typography>
             </div>
@@ -58,7 +67,7 @@ export default function ItemForm({ id }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-row gap-6 mt-6">
+        <div className="grid grid-cols-2 gap-6 mt-6">
           <MetaDataCard title="Source" description={item.metadata?.source} />
           <MetaDataCard title="Treatment Process" description={item.metadata?.treatment_process} />
         </div>
@@ -72,13 +81,11 @@ export default function ItemForm({ id }: Props) {
             <Typography size="2xl" fontWeight="normal">
               Contaminants
             </Typography>
-            {item.contaminants.map((contaminant: any) => (
-              <ContaminantCard
-                key={contaminant.id}
-                title={contaminant.name}
-                description={contaminant.description}
-              />
-            ))}
+            <div className="grid grid-cols-2 gap-6">
+              {item.contaminants.map((contaminant: any) => (
+                <ContaminantCard key={contaminant.id} data={contaminant} />
+              ))}
+            </div>
           </div>
         )}
       </Suspense>

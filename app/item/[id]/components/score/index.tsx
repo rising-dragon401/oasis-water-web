@@ -1,15 +1,20 @@
 import React from 'react'
+import useDevice from '@/lib/hooks/use-device'
 
 type Props = {
   score: number
 }
 
 export default function Score({ score }: Props) {
-  const radius = 94 // Increased radius
+  const { isMobile } = useDevice()
+
+  const radius = isMobile ? 40 : 80
   const strokeWidth = 6
   const svgSize = 2 * (radius + strokeWidth) // Adjust SVG size to accommodate stroke
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (score / 100) * circumference
+
+  const fontSize = isMobile ? 14 : 20
 
   const grade = () => {
     if (score >= 90) {
@@ -54,7 +59,7 @@ export default function Score({ score }: Props) {
         stroke="text-secondary"
         strokeWidth="2px"
         dy=".3em"
-        fontSize="20" // Add this line
+        fontSize={fontSize}
       >
         {score} / 100
       </text>
@@ -64,6 +69,7 @@ export default function Score({ score }: Props) {
         textAnchor="middle"
         stroke="text-secondary"
         strokeWidth="2px"
+        fontSize={fontSize}
         dy="1.5em"
       >
         {grade()}

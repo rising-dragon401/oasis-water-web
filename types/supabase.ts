@@ -58,38 +58,38 @@ export interface Database {
       }
       ingredients: {
         Row: {
-          benefits: Json[] | null
+          benefits: string | null
           description: string | null
-          harms: Json[] | null
           health_guideline: number | null
           id: number
           legal_limit: number | null
           measure: string | null
           name: string
+          risks: string | null
           sources: Json[] | null
           updated_at: string | null
         }
         Insert: {
-          benefits?: Json[] | null
+          benefits?: string | null
           description?: string | null
-          harms?: Json[] | null
           health_guideline?: number | null
           id?: number
           legal_limit?: number | null
           measure?: string | null
           name: string
+          risks?: string | null
           sources?: Json[] | null
           updated_at?: string | null
         }
         Update: {
-          benefits?: Json[] | null
+          benefits?: string | null
           description?: string | null
-          harms?: Json[] | null
           health_guideline?: number | null
           id?: number
           legal_limit?: number | null
           measure?: string | null
           name?: string
+          risks?: string | null
           sources?: Json[] | null
           updated_at?: string | null
         }

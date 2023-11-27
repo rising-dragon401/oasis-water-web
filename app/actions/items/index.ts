@@ -85,14 +85,12 @@ export const getItemDetails = async (id: string) => {
     )
   }
 
-  console.log('contaminantData: ', contaminantData)
-
   const itemWithDetails = {
     ...item[0],
     brand,
     ingredients: ingredientsDetails,
     company,
-    contaminantData,
+    contaminants: contaminantData,
   }
 
   return itemWithDetails
