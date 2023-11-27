@@ -3,6 +3,8 @@
 import { supabase } from '@/utils/supabase'
 import { getSession } from '@/app/supabase-server'
 
+import { Ingredient } from '@/types/custom'
+
 export const getItems = async () => {
   const { data: items, error } = await supabase.from('items').select()
 
@@ -23,7 +25,7 @@ export const getItemDetails = async (id: string) => {
   }
 
   const brandId = item[0].brand
-  const ingredientIds = item[0].ingredients
+  const ingredients = item[0].ingredients
   const companyId = item[0].company
   const contaminants = item[0].contaminants
 
@@ -33,20 +35,25 @@ export const getItemDetails = async (id: string) => {
     brand = data ? data[0] : null
   }
 
-  let ingredients: any[] = []
-  if (ingredientIds && ingredientIds.length > 0) {
-    ingredients = await Promise.all(
-      ingredientIds.map(async (ingredientId) => {
-        const { data: ingredient, error: ingredientError } = await supabase
-          .from('ingredients')
-          .select()
-          .eq('id', ingredientId)
-
+  let ingredientsDetails: any[] = []
+  if (ingredients && ingredients.length > 0) {
+    ingredientsDetails = await Promise.all(
+      ingredients.map(async (ingredient) => {
         if (!ingredient) {
           return null
         }
 
-        return ingredient[0]
+        const { data, error: ingredientError } = await supabase
+          .from('ingredients')
+          .select()
+          // @ts-ignore
+          .eq('id', ingredient.ingredient_id)
+
+        if (!data) {
+          return null
+        }
+
+        return data[0]
       })
     )
   }
@@ -60,33 +67,33 @@ export const getItemDetails = async (id: string) => {
     company = data ? data[0] : null
   }
 
-  let contaminantData = []
+  let contaminantData: any[] = []
   if (contaminants && contaminants.length > 0) {
     contaminantData = await Promise.all(
       contaminants.map(async (contaminant: any) => {
-        const { data: contaminantData, error: contaminantError } = await supabase
-          .from('contaminants')
+        const { data, error: contaminantError } = await supabase
+          .from('ingredients')
           .select()
-          .eq('id', contaminant.ingedient_id)
+          .eq('id', contaminant.ingredient_id)
 
-        if (!contaminantData) {
+        if (!data) {
           return null
         }
 
-        return contaminantData[0]
+        return data[0]
       })
     )
   }
 
+  console.log('contaminantData: ', contaminantData)
+
   const itemWithDetails = {
     ...item[0],
     brand,
-    ingredients,
+    ingredients: ingredientsDetails,
     company,
     contaminantData,
   }
-
-  console.log('itemWithDetails: ', itemWithDetails)
 
   return itemWithDetails
 }

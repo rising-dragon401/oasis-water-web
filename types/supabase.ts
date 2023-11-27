@@ -58,37 +58,37 @@ export interface Database {
       }
       ingredients: {
         Row: {
-          amount: Json | null
           benefits: Json[] | null
           description: string | null
           harms: Json[] | null
-          health_guideline: Json | null
+          health_guideline: number | null
           id: number
-          legal_limit: Json | null
+          legal_limit: number | null
+          measure: string | null
           name: string
           sources: Json[] | null
           updated_at: string | null
         }
         Insert: {
-          amount?: Json | null
           benefits?: Json[] | null
           description?: string | null
           harms?: Json[] | null
-          health_guideline?: Json | null
+          health_guideline?: number | null
           id?: number
-          legal_limit?: Json | null
+          legal_limit?: number | null
+          measure?: string | null
           name: string
           sources?: Json[] | null
           updated_at?: string | null
         }
         Update: {
-          amount?: Json | null
           benefits?: Json[] | null
           description?: string | null
           harms?: Json[] | null
-          health_guideline?: Json | null
+          health_guideline?: number | null
           id?: number
-          legal_limit?: Json | null
+          legal_limit?: number | null
+          measure?: string | null
           name?: string
           sources?: Json[] | null
           updated_at?: string | null
@@ -104,7 +104,7 @@ export interface Database {
           description: string | null
           id: number
           image: string | null
-          ingredients: number[] | null
+          ingredients: Json[] | null
           metadata: Json | null
           name: string
           score: number | null
@@ -118,7 +118,7 @@ export interface Database {
           description?: string | null
           id?: number
           image?: string | null
-          ingredients?: number[] | null
+          ingredients?: Json[] | null
           metadata?: Json | null
           name: string
           score?: number | null
@@ -132,7 +132,7 @@ export interface Database {
           description?: string | null
           id?: number
           image?: string | null
-          ingredients?: number[] | null
+          ingredients?: Json[] | null
           metadata?: Json | null
           name?: string
           score?: number | null

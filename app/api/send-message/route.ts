@@ -154,6 +154,7 @@ export async function POST(req: Request) {
         },
       ],
     })
+
     const stream = OpenAIStream(response)
 
     // Respond with the stream

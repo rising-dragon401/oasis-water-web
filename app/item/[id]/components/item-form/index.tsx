@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Score from '../score'
 import MetaDataCard from '../metadata-card'
 import IngredientsCard from '../ingredients-card'
+import ContaminantCard from '../contaminant-card'
 
 type Props = {
   id: string
@@ -30,6 +31,8 @@ export default function ItemForm({ id }: Props) {
   if (isLoading) {
     return <div>Loading...</div>
   }
+
+  console.log('item.contaminants: ', item.contaminants)
 
   return (
     <div className="py-10">
@@ -69,7 +72,13 @@ export default function ItemForm({ id }: Props) {
             <Typography size="2xl" fontWeight="normal">
               Contaminants
             </Typography>
-            <IngredientsCard ingredients={item.ingredients} />
+            {item.contaminants.map((contaminant: any) => (
+              <ContaminantCard
+                key={contaminant.id}
+                title={contaminant.name}
+                description={contaminant.description}
+              />
+            ))}
           </div>
         )}
       </Suspense>
