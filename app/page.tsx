@@ -3,6 +3,7 @@ import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
 import { getItems } from '@/app/actions/items'
 import TopRatedSection from '@/components/top-rated-section'
+import LowestRatedSection from '@/components/lowest-rated-section'
 
 export default async function Home() {
   const items = await getItems()
@@ -22,8 +23,12 @@ export default async function Home() {
           <BlogPreviewSection />
         </div> */}
 
-        <div className="flex flex-col mt-20 mb-10">
+        <div className="flex flex-col mt-32 mb-10">
           <TopRatedSection items={items} />
+        </div>
+
+        <div className="flex flex-col mt-10 mb-20">
+          <LowestRatedSection items={items} />
         </div>
       </div>
     </SubpageLayout>

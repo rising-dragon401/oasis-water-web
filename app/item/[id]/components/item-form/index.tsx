@@ -73,12 +73,12 @@ export default function ItemForm({ id }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 mt-6">
+        <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-6">
           <MetaDataCard title="Source" description={item.metadata?.source} />
           <MetaDataCard title="Treatment Process" description={item.metadata?.treatment_process} />
         </div>
 
-        <div className="flex flex-col gap-6 mt-6">
+        <div className="flex flex-col gap-6 my-10">
           <Typography size="2xl" fontWeight="normal">
             Ingredients
           </Typography>
@@ -96,7 +96,7 @@ export default function ItemForm({ id }: Props) {
             <Typography size="2xl" fontWeight="normal">
               Contaminants
             </Typography>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
               {item.contaminants.map((contaminant: any) => (
                 <ContaminantCard key={contaminant.id} data={contaminant} />
               ))}

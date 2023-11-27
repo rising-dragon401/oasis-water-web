@@ -1,4 +1,3 @@
-import { allPosts } from '@/.contentlayer/generated'
 import Link from 'next/link'
 import Typography from '@/components/typography'
 import React, { useMemo } from 'react'
@@ -8,28 +7,22 @@ type Props = {
   items: Item[] | null
 }
 
-export default function TopRatedSection({ items }: Props) {
-  const topItems = useMemo(() => {
-    return items?.sort((a, b) => (b.score || 0) - (a.score || 0))
+export default function LowestRatedSection({ items }: Props) {
+  const lowestItems = useMemo(() => {
+    return items?.sort((a, b) => (a.score || 0) - (b.score || 0))
   }, [items])
 
   return (
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Highest rated
+          Lowest rated
         </Typography>
-
-        {/* <Link href="/blog">
-          <Typography size="base" fontWeight="normal" className="underline">
-            read more
-          </Typography>
-        </Link> */}
       </div>
 
       <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
-        {topItems &&
-          topItems?.slice(0, 3).map((item) => (
+        {lowestItems &&
+          lowestItems?.slice(0, 3).map((item) => (
             <article key={item.id}>
               <Link href={`/item/${item.id}`}>
                 <div
