@@ -45,7 +45,7 @@ export default function ItemForm({ id }: Props) {
             // className="w-40 h-40 object-cover"
           />
 
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 ">
             <div className="flex flex-col gap-2 md:w-3/5">
               <Typography size="3xl" fontWeight="normal">
                 {item.name}
@@ -53,12 +53,18 @@ export default function ItemForm({ id }: Props) {
               <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
                 {item.brand?.name} - {item.company?.name}
               </Typography>
-              <Typography
+              {/* <Typography
                 size="base"
                 fontWeight="normal"
                 className="text-secondary md:block hidden"
               >
-                {item.description} / 100
+                {item.description}
+              </Typography> */}
+              <Typography size="base" fontWeight="normal" className="text-secondary">
+                Fluoride: {item.metadata?.fluoride} ppm
+              </Typography>
+              <Typography size="base" fontWeight="normal" className="text-secondary">
+                pH: {item.metadata?.ph_level}
               </Typography>
             </div>
             <div className="flex flex-col gap-2 w-2/5 items-center">
@@ -72,8 +78,17 @@ export default function ItemForm({ id }: Props) {
           <MetaDataCard title="Treatment Process" description={item.metadata?.treatment_process} />
         </div>
 
-        <div className="flex flex-row gap-6 mt-6">
-          <IngredientsCard ingredients={item.ingredients} />
+        <div className="flex flex-col gap-6 mt-6">
+          <Typography size="2xl" fontWeight="normal">
+            Ingredients
+          </Typography>
+          {item.ingredients.length > 0 ? (
+            <IngredientsCard ingredients={item.ingredients} />
+          ) : (
+            <Typography size="base" fontWeight="normal" className="text-secondary">
+              Unclear ingredients found
+            </Typography>
+          )}
         </div>
 
         {item.contaminants && (

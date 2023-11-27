@@ -16,7 +16,7 @@ export default function IngredientsCard({ ingredients }: Props) {
   return (
     <Card className="bg-transparent">
       <CardHeader>
-        <CardTitle className="text-primary font-normal">Ingredients</CardTitle>
+        {/* <CardTitle className="text-primary font-normal">Ingredients</CardTitle> */}
         <CardDescription>
           {ingredients?.map((ingredient, index) => (
             <div key={index}>
