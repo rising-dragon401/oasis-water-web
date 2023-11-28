@@ -2,7 +2,6 @@
 
 import { supabase } from '@/utils/supabase'
 import { getSession } from '@/app/supabase-server'
-
 import { Ingredient } from '@/types/custom'
 
 export const getItems = async () => {
@@ -12,14 +11,15 @@ export const getItems = async () => {
 }
 
 export const searchItems = async (query: string) => {
-  // Saerch by city name, zipcode
-
-  // Text seearch zipcodes and locations
-
   // Text search items
   const { data: items, error } = await supabase.from('items').select().textSearch('name', query)
 
   return items || []
+}
+
+export const getItem = async (id: string) => {
+  const { data: item, error } = await supabase.from('items').select().eq('id', id)
+  return item
 }
 
 export const getItemDetails = async (id: string) => {
