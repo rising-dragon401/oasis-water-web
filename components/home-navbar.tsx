@@ -46,6 +46,18 @@ export default function HomeNavbar() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <Link href="/bottled-water" className={navigationMenuTriggerStyle()}>
+              Bottled Water
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <Link href="/recommendations" className={navigationMenuTriggerStyle()}>
+              Recommended
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <Link href="/about" className={navigationMenuTriggerStyle()}>
               About
             </Link>
@@ -56,12 +68,6 @@ export default function HomeNavbar() {
               Blog
             </Link>
           </NavigationMenuItem> */}
-
-          <NavigationMenuItem>
-            <Link href="/recommendations" className={navigationMenuTriggerStyle()}>
-              Recommended
-            </Link>
-          </NavigationMenuItem>
         </NavigationMenuList>
 
         <NavigationMenuList>

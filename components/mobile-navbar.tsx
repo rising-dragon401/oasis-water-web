@@ -29,8 +29,16 @@ export default function MobileNavbar() {
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuGroup>
           <DropdownMenuItem className="my-2 justify-center">
-            <Link href="/" legacyBehavior passHref>
-              Home
+            <Link href="/">Home</Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="my-2 justify-center">
+            <Link href="/bottled-water">Bottled water</Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="my-2 justify-center">
+            <Link href="/recommendations" legacyBehavior passHref>
+              Recommended
             </Link>
           </DropdownMenuItem>
 

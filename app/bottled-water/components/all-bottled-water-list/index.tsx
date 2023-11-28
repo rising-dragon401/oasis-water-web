@@ -7,22 +7,22 @@ type Props = {
   items: Item[] | null
 }
 
-export default function TopRatedSection({ items }: Props) {
-  const topItems = useMemo(() => {
-    return items?.sort((a, b) => (b.score || 0) - (a.score || 0))
+export default function BottledWaterList({ items }: Props) {
+  const sorted = useMemo(() => {
+    return items?.sort((a, b) => a.name.localeCompare(b.name))
   }, [items])
 
   return (
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Highest rated
+          All bottled water
         </Typography>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
-        {topItems &&
-          topItems?.slice(0, 3).map((item) => (
+      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6 ">
+        {sorted &&
+          sorted.map((item) => (
             <article key={item.id}>
               <Link href={`/item/${item.id}`}>
                 <div
