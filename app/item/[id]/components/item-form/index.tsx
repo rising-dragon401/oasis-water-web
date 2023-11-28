@@ -4,7 +4,7 @@ import Typography from '@/components/typography'
 import { getItemDetails } from '@/app/actions/items'
 import React, { useEffect, useState, Suspense } from 'react'
 import Image from 'next/image'
-import Score from '../score'
+import Score from '@/components/score'
 import MetaDataCard from '../metadata-card'
 import IngredientsCard from '../ingredients-card'
 import ContaminantCard from '../contaminant-card'
@@ -53,13 +53,7 @@ export default function ItemForm({ id }: Props) {
               <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
                 {item.brand?.name} - {item.company?.name}
               </Typography>
-              {/* <Typography
-                size="base"
-                fontWeight="normal"
-                className="text-secondary md:block hidden"
-              >
-                {item.description}
-              </Typography> */}
+
               <Typography size="base" fontWeight="normal" className="text-secondary">
                 Fluoride: {item.metadata?.fluoride} ppm
               </Typography>

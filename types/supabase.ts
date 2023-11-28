@@ -108,6 +108,7 @@ export interface Database {
           metadata: Json | null
           name: string
           score: number | null
+          sources: Json[] | null
           type: Database["public"]["Enums"]["item_type"] | null
         }
         Insert: {
@@ -122,6 +123,7 @@ export interface Database {
           metadata?: Json | null
           name: string
           score?: number | null
+          sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
         }
         Update: {
@@ -136,6 +138,7 @@ export interface Database {
           metadata?: Json | null
           name?: string
           score?: number | null
+          sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
         }
         Relationships: [
@@ -230,6 +233,42 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      tap_water_locations: {
+        Row: {
+          contaminants: Json[] | null
+          contaminants_exceeding_guidelines: number | null
+          created_at: string
+          id: number
+          image: string | null
+          name: string
+          score: number | null
+          total_contaminants: number | null
+          zip_codes: number[]
+        }
+        Insert: {
+          contaminants?: Json[] | null
+          contaminants_exceeding_guidelines?: number | null
+          created_at?: string
+          id?: number
+          image?: string | null
+          name: string
+          score?: number | null
+          total_contaminants?: number | null
+          zip_codes: number[]
+        }
+        Update: {
+          contaminants?: Json[] | null
+          contaminants_exceeding_guidelines?: number | null
+          created_at?: string
+          id?: number
+          image?: string | null
+          name?: string
+          score?: number | null
+          total_contaminants?: number | null
+          zip_codes?: number[]
+        }
+        Relationships: []
       }
     }
     Views: {

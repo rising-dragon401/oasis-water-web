@@ -10,9 +10,3 @@ export default function ItemPage({ params }: { params: { id: string } }) {
     </SubpageLayout>
   )
 }
-
-// search
-// most popular
-// highest score
-// lowest score
-// local water

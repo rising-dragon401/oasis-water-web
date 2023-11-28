@@ -28,18 +28,33 @@
     - fluoride
 
 
-// Tap Water Location
-- id
-- name
-- cover_image
-- score: number 
-- source
+// Locations
+- id: int8
+- name: string
 - zip_codes: number[array]
-- location: string
+- source: (i.e. Los Angeles WAter and Pwer)
+- tags: 
+- score: number 
+
+
+
+// zip_codes
+- id: int8
+- value: number 
+- water_department: fk
+
+
+// tap_water_location
+- id 
+- name 
+- zip_codes
+- score
+- department?: string
+- cover_image: string
 - total_contaminants: number
 - contaminants_exceeding_guidelines: number
-- contaminants (fk: ingredients.id)
-- sources string[]
+- contaminant: []
+- sources jsonb[]
 
 
 

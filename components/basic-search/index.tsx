@@ -4,6 +4,7 @@ import React, { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { searchItems } from '@/app/actions/items'
+import { searchLocations } from '@/app/actions/locations'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import ResultsRow from './results-row'
 import { Search } from 'lucide-react'
@@ -30,10 +31,13 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
 
     const data = await searchItems(query)
 
-    if (data) {
-      setResults(data)
-    }
+    const locations = await searchLocations(query)
 
+    const combinedResults = [...data, ...locations]
+
+    if (combinedResults) {
+      setResults(combinedResults)
+    }
     setIsLoading(false)
     return
   }
@@ -42,7 +46,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
     <>
       <div className="flex flex-row gap-2 items-center">
         {isShowSearch ? (
-          <div className="flex flex-col gap-2 relative md:w-full w-56">
+          <div className="flex flex-col gap-2 relative w-full">
             <div className="relative">
               <Input
                 placeholder="Enter brand of water"

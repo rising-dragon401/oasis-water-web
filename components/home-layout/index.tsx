@@ -24,7 +24,9 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
         </Link>
 
         <div className="flex flex-row items-center gap-2">
-          <BasicSearch showSearch={false} />
+          <div className="w-56 flex justify-end">
+            <BasicSearch showSearch={false} />
+          </div>
           <MobileNavbar />
         </div>
       </div>
