@@ -20,11 +20,8 @@ export async function generateMetadata(
   // fetch data
   const item = (await getItem(id)) as Item | null
 
-  const name = item && item.name
+  const name = item && item.name + ' Health Rating'
   const image = item && item.image
-
-  console.log('name:: ', name)
-  console.log('image:: ', image)
 
   return {
     title: name || 'Oaisys',
