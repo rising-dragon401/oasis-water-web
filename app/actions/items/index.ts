@@ -18,7 +18,7 @@ export const searchItems = async (query: string) => {
 }
 
 export const getItem = async (id: string) => {
-  const { data: item, error } = await supabase.from('items').select().eq('id', id)
+  const { data: item, error } = await supabase.from('items').select().eq('id', id).single()
   return item
 }
 

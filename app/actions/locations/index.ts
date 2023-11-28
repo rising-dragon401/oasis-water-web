@@ -67,7 +67,11 @@ export const getLocationDetails = async (id: string) => {
 }
 
 export const getLocation = async (id: string) => {
-  const { data: location, error } = await supabase.from('tap_water_locations').select().eq('id', id)
+  const { data: location, error } = await supabase
+    .from('tap_water_locations')
+    .select()
+    .eq('id', id)
+    .single()
 
   return location
 }

@@ -23,6 +23,9 @@ export async function generateMetadata(
   const name = item && item.name
   const image = item && item.image
 
+  console.log('name:: ', name)
+  console.log('image:: ', image)
+
   return {
     title: name || 'Oaisys',
     openGraph: {
