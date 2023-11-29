@@ -34,7 +34,7 @@ export const metadata = {
         url: meta.cardImage,
         width: 1800,
         height: 1600,
-        alt: 'train your ai agent',
+        alt: 'water health checker',
       },
     ],
 
@@ -55,13 +55,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sizes="<generated>"
       />
 
-      {/* <CSPostHogProvider> */}
-      <body>
-        {children}
-        <Analytics />
-        <Toaster />
-      </body>
-      {/* </CSPostHogProvider> */}
+      <CSPostHogProvider>
+        <body>
+          {children}
+          <Analytics />
+          <Toaster />
+        </body>
+      </CSPostHogProvider>
     </html>
   )
 }
