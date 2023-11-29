@@ -102,3 +102,9 @@ export const getItemDetails = async (id: string) => {
 
   return itemWithDetails
 }
+
+export const getRecommendedItems = async () => {
+  const { data: items, error } = await supabase.from('items').select().eq('recommended', true)
+
+  return items || []
+}

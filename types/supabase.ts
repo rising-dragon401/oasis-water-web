@@ -97,47 +97,56 @@ export interface Database {
       }
       items: {
         Row: {
+          affiliate_url: string | null
           brand: number | null
           company: number | null
           contaminants: Json[] | null
           created_at: string
           description: string | null
+          fts: unknown | null
           id: number
-          image: string | null
+          image: string
           ingredients: Json[] | null
           metadata: Json | null
           name: string
-          score: number | null
+          recommended: boolean | null
+          score: number
           sources: Json[] | null
           type: Database["public"]["Enums"]["item_type"] | null
         }
         Insert: {
+          affiliate_url?: string | null
           brand?: number | null
           company?: number | null
           contaminants?: Json[] | null
           created_at?: string
           description?: string | null
+          fts?: unknown | null
           id?: number
-          image?: string | null
+          image: string
           ingredients?: Json[] | null
           metadata?: Json | null
           name: string
-          score?: number | null
+          recommended?: boolean | null
+          score: number
           sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
         }
         Update: {
+          affiliate_url?: string | null
           brand?: number | null
           company?: number | null
           contaminants?: Json[] | null
           created_at?: string
           description?: string | null
+          fts?: unknown | null
           id?: number
-          image?: string | null
+          image?: string
           ingredients?: Json[] | null
           metadata?: Json | null
           name?: string
-          score?: number | null
+          recommended?: boolean | null
+          score?: number
           sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
         }
@@ -244,6 +253,7 @@ export interface Database {
           name: string
           score: number | null
           total_contaminants: number | null
+          utility: string | null
           zip_codes: number[]
         }
         Insert: {
@@ -255,6 +265,7 @@ export interface Database {
           name: string
           score?: number | null
           total_contaminants?: number | null
+          utility?: string | null
           zip_codes: number[]
         }
         Update: {
@@ -266,6 +277,7 @@ export interface Database {
           name?: string
           score?: number | null
           total_contaminants?: number | null
+          utility?: string | null
           zip_codes?: number[]
         }
         Relationships: []

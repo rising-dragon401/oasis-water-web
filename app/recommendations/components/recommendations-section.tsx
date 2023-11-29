@@ -1,12 +1,14 @@
-'use client'
-
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 import Typography from '@/components/typography'
-import { RECOMMENDATIONS } from '../constants'
 import Image from 'next/image'
 import Link from 'next/link'
+import { getRecommendedItems } from '@/app/actions/items'
 
-export default function RecommendationsSection() {
+export default async function RecommendationsSection() {
+  const recommended = await getRecommendedItems()
+
+  const ranked = recommended.sort((a, b) => b.score - a.score)
+
   return (
     <>
       <div className="flex flex-col justify-center items-center py-24 gap-4 mx-w-lg">
@@ -24,14 +26,15 @@ export default function RecommendationsSection() {
       </div>
 
       <div className="flex justify-center mb-32">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 space-y-4">
-          {RECOMMENDATIONS.map((recommendation, index) => (
-            <Link href={recommendation.link} passHref legacyBehavior key={index}>
-              <a target="_blank" rel="noopener noreferrer">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex flex-col justify-center items-center"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
+          {ranked &&
+            ranked.map((recommendation, index) => (
+              // @ts-ignore
+              <Link href={recommendation.affiliate_url} passHref legacyBehavior key={index}>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transform transition-transform duration-500 hover:scale-105"
                 >
                   <Image
                     src={recommendation.image}
@@ -44,12 +47,11 @@ export default function RecommendationsSection() {
                     {recommendation.name}
                   </Typography>
                   <Typography size="lg" fontWeight="normal" className="mt-2 text-center max-w-sm">
-                    {recommendation.description}
+                    {recommendation.score} /100
                   </Typography>
-                </motion.div>
-              </a>
-            </Link>
-          ))}
+                </a>
+              </Link>
+            ))}
         </div>
       </div>
     </>
