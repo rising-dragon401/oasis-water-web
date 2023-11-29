@@ -18,6 +18,10 @@ export default function LowestRatedSection({ items }: Props) {
         <Typography size="2xl" fontWeight="normal">
           Lowest rated
         </Typography>
+
+        <Link href="/bottled-water" className="underline italic text-primary">
+          see all
+        </Link>
       </div>
 
       <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
