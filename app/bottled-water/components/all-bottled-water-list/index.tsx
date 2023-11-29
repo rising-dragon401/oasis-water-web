@@ -16,7 +16,7 @@ export default function BottledWaterList({ items }: Props) {
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          All bottled water
+          All bottled water ratings
         </Typography>
       </div>
 
@@ -24,7 +24,7 @@ export default function BottledWaterList({ items }: Props) {
         {sorted &&
           sorted.map((item) => (
             <article key={item.id}>
-              <Link href={`/item/${item.id}`}>
+              <Link href={`/item/${item.name.toLowerCase().replace(/ /g, '-')}?id=${item.id}`}>
                 <div
                   className="relative h-72 bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-md flex flex-col justify-end hover:cursor-pointer"
                   style={{

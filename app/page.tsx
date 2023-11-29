@@ -4,9 +4,12 @@ import BasicSearch from '@/components/basic-search'
 import { getItems } from '@/app/actions/items'
 import TopRatedSection from '@/components/top-rated-section'
 import LowestRatedSection from '@/components/lowest-rated-section'
+import TapWaterSection from '@/components/tap-water-section'
+import { getLocations } from '@/app/actions/locations'
 
 export default async function Home() {
   const items = await getItems()
+  const locations = await getLocations()
 
   return (
     <SubpageLayout>
@@ -29,6 +32,10 @@ export default async function Home() {
 
         <div className="flex flex-col mt-10 mb-20">
           <LowestRatedSection items={items} />
+        </div>
+
+        <div className="flex flex-col mt-10 mb-20">
+          <TapWaterSection locations={locations} />
         </div>
       </div>
     </SubpageLayout>

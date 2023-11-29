@@ -37,6 +37,10 @@ export default function MobileNavbar() {
           </DropdownMenuItem>
 
           <DropdownMenuItem className="my-2 justify-center">
+            <Link href="/tap-water">Tap water</Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="my-2 justify-center">
             <Link href="/recommendations" legacyBehavior passHref>
               Recommended
             </Link>

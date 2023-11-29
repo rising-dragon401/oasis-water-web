@@ -1,32 +1,28 @@
 import Link from 'next/link'
 import Typography from '@/components/typography'
 import React, { useMemo } from 'react'
-import { Item } from '@/types/custom'
+import { TapWaterLocation } from '@/types/custom'
 
 type Props = {
-  items: Item[] | null
+  locations: TapWaterLocation[] | null
 }
 
-export default function TopRatedSection({ items }: Props) {
-  const topItems = useMemo(() => {
-    return items?.sort((a, b) => (b.score || 0) - (a.score || 0))
-  }, [items])
+export default function TapWaterList({ locations }: Props) {
+  const sorted = useMemo(() => {
+    return locations?.sort((a, b) => a.name.localeCompare(b.name))
+  }, [locations])
 
   return (
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Highest rated
+          All tap water ratings
         </Typography>
-
-        <Link href="/bottled-water" className="underline italic text-primary">
-          see all
-        </Link>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
-        {topItems &&
-          topItems?.slice(0, 3).map((item) => (
+      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6 ">
+        {sorted &&
+          sorted.map((item) => (
             <article key={item.id}>
               <Link href={`/item/${item.name.toLowerCase().replace(/ /g, '-')}?id=${item.id}`}>
                 <div

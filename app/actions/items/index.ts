@@ -12,7 +12,9 @@ export const getItems = async () => {
 
 export const searchItems = async (query: string) => {
   // Text search items
-  const { data: items, error } = await supabase.from('items').select().textSearch('name', query)
+  const { data: items, error } = await supabase.from('items').select().textSearch('fts', query, {
+    type: 'phrase',
+  })
 
   return items || []
 }

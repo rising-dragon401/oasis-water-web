@@ -52,6 +52,12 @@ export default function HomeNavbar() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <Link href="/tap-water" className={navigationMenuTriggerStyle()}>
+              Tap Water
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <Link href="/recommendations" className={navigationMenuTriggerStyle()}>
               Recommended
             </Link>

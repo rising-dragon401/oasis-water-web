@@ -6,7 +6,7 @@ import { getSession } from '@/app/supabase-server'
 import { Ingredient } from '@/types/custom'
 
 export const getLocations = async () => {
-  const { data: locations, error } = await supabase.from('locations').select()
+  const { data: locations, error } = await supabase.from('tap_water_locations').select()
 
   return locations
 }

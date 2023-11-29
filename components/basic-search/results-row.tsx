@@ -12,7 +12,12 @@ export default function ResultsRow({ itemResult }: Props) {
   return (
     <Link
       className="flex flex-row gap-2 px-2 py-1 justify-between items-center"
-      href={`/item/${itemResult.id}`}
+      href={
+        // @ts-ignore
+        itemResult?.zip_codes
+          ? `/location/${itemResult.name.toLowerCase().replace(/ /g, '-')}?id=${itemResult.id}`
+          : `/item/${itemResult.name.toLowerCase().replace(/ /g, '-')}?id=${itemResult.id}`
+      }
     >
       <div className="flex flex-row gap-2 items-center">
         <Image src={itemResult.image || ''} alt={itemResult.name} width={50} height={50} />
