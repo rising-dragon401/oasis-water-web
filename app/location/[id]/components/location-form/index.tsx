@@ -50,7 +50,7 @@ export default function LocationForm({ id }: Props) {
         </div>
 
         {location.contaminants && (
-          <div className="flex flex-col gap-6 mt-6">
+          <div className="flex flex-col gap-6 mt-14">
             <Typography size="2xl" fontWeight="normal">
               Contaminants
             </Typography>

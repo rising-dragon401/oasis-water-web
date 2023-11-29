@@ -15,7 +15,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const id = searchParams.id
+  const id = params.id
 
   // fetch data
   const item = (await getLocation(id)) as Item | null
@@ -32,7 +32,7 @@ export async function generateMetadata(
 }
 
 export default function LocationPage({ params, searchParams }: Props) {
-  const id = searchParams.id
+  const id = params.id
 
   return (
     <SubpageLayout>

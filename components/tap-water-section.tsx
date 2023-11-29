@@ -28,7 +28,7 @@ export default function TapWaterSection({ locations }: Props) {
         {topItems &&
           topItems?.slice(0, 3).map((item) => (
             <article key={item.id}>
-              <Link href={`/item/${item.name.toLowerCase().replace(/ /g, '-')}?id=${item.id}`}>
+              <Link href={`/location/${item.id}?id=${item.name.toLowerCase().replace(/ /g, '-')}`}>
                 <div
                   className="relative h-72 bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-md flex flex-col justify-end hover:cursor-pointer"
                   style={{

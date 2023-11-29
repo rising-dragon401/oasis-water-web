@@ -7,7 +7,7 @@ import { Item } from '@/types/custom'
 
 type Props = {
   params: { id: string }
-  searchParams: { id: string; [key: string]: string | string[] | undefined }
+  searchParams: { name: string; [key: string]: string | string[] | undefined }
 }
 
 export async function generateMetadata(
@@ -15,7 +15,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const id = searchParams.id
+  const id = params.id
 
   // fetch data
   const item = (await getItem(id)) as Item | null
@@ -32,7 +32,7 @@ export async function generateMetadata(
 }
 
 export default function ItemPage({ params, searchParams }: Props) {
-  const id = searchParams.id
+  const id = params.id
 
   return (
     <SubpageLayout>

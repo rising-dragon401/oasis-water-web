@@ -15,8 +15,8 @@ export default function ResultsRow({ itemResult }: Props) {
       href={
         // @ts-ignore
         itemResult?.zip_codes
-          ? `/location/${itemResult.name.toLowerCase().replace(/ /g, '-')}?id=${itemResult.id}`
-          : `/item/${itemResult.name.toLowerCase().replace(/ /g, '-')}?id=${itemResult.id}`
+          ? `/location/${itemResult.id}?name=${itemResult.name.toLowerCase().replace(/ /g, '-')}`
+          : `/item/${itemResult.id}?name=${itemResult.name.toLowerCase().replace(/ /g, '-')}`
       }
     >
       <div className="flex flex-row gap-2 items-center">
