@@ -1,32 +1,42 @@
+'use client'
+
 import Link from 'next/link'
 import Typography from '@/components/typography'
-import React, { useMemo } from 'react'
-import { TapWaterLocation } from '@/types/custom'
+import React from 'react'
+import { getRecommendedItems } from '@/app/actions/items'
+import { useEffect, useState } from 'react'
 
-type Props = {
-  locations: TapWaterLocation[] | null
-}
+export default function RecommendedRow() {
+  const [ranked, setRanked] = useState<any>([])
 
-export default function TapWaterList({ locations }: Props) {
-  const sorted = useMemo(() => {
-    return locations?.sort((a, b) => a.name.localeCompare(b.name))
-  }, [locations])
+  const fetchRecommendedItems = async () => {
+    const recommended = await getRecommendedItems()
+    const ranked_ = recommended.sort((a, b) => b.score - a.score)
+
+    setRanked(ranked_)
+  }
+
+  useEffect(() => {
+    fetchRecommendedItems()
+  }, [])
 
   return (
-    <div>
+    <div className="mb-10">
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          All tap water ratings
+          Recommended water
         </Typography>
+
+        {/* <Link href="/bottled-water" className="underline italic text-primary">
+          see all
+        </Link> */}
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6 ">
-        {sorted &&
-          sorted.map((item) => (
+      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
+        {ranked &&
+          ranked?.slice(0, 3).map((item: any) => (
             <article key={item.id}>
-              <Link
-                href={`/location/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
-              >
+              <Link href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}>
                 <div
                   className="relative h-72 bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-md flex flex-col justify-end hover:cursor-pointer"
                   style={{

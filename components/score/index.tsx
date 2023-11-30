@@ -47,6 +47,7 @@ export default function Score({ score }: Props) {
         strokeWidth={strokeWidth}
         strokeDasharray={`${circumference} ${circumference}`}
         strokeDashoffset={offset}
+        strokeLinecap="round"
         fill="transparent"
         r={radius}
         cx={svgSize / 2} // Center circle
@@ -58,7 +59,7 @@ export default function Score({ score }: Props) {
         textAnchor="middle"
         stroke="text-secondary"
         strokeWidth="2px"
-        dy=".3em"
+        dy="-0.1em"
         fontSize={fontSize}
       >
         {score} / 100
@@ -70,7 +71,7 @@ export default function Score({ score }: Props) {
         stroke="text-secondary"
         strokeWidth="2px"
         fontSize={fontSize}
-        dy="1.5em"
+        dy="1.0em"
       >
         {grade()}
       </text>
