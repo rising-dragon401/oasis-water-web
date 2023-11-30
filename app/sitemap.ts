@@ -1,11 +1,13 @@
-import { supabase } from '@/utils/supabase'
 import { MetadataRoute } from 'next'
+import { getItems } from './actions/items'
+import { getLocations } from './actions/locations'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { data: items, error } = await supabase.from('items').select()
-  const { data: locations, error: locationsError } = await supabase
-    .from('tap_water_locations')
-    .select()
+  const items = await getItems()
+  const locations = await getLocations()
+
+  console.log('items', items)
+  console.log('locations', locations)
 
   const itemsPaths = items
     ? items.map((item) => `/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`)
