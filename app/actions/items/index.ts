@@ -87,7 +87,10 @@ export const getItemDetails = async (id: string) => {
           return null
         }
 
-        return data[0]
+        return {
+          metadata: data[0],
+          amount: contaminant.amount,
+        }
       })
     )
   }

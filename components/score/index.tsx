@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import useDevice from '@/lib/hooks/use-device'
 
