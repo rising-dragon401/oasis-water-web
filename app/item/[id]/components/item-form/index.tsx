@@ -49,7 +49,7 @@ export default function ItemForm({ id }: Props) {
               className="rounded-lg"
             />
 
-            <div className="flex flex-row gap-2 w-full">
+            <div className="flex md:flex-row flex-col gap-2 w-full">
               <div className="flex flex-col md:gap-2 md:w-3/5">
                 <Typography size="3xl" fontWeight="normal">
                   {item.name}
@@ -89,8 +89,8 @@ export default function ItemForm({ id }: Props) {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col gap-2 w-2/5 items-center">
-                <Score score={item.score} />
+              <div className="flex flex-col gap-2 md:w-2/5 items-center">
+                <Score score={item.score} isFull={true} />
               </div>
             </div>
           </div>

@@ -3,18 +3,19 @@ import useDevice from '@/lib/hooks/use-device'
 
 type Props = {
   score: number
+  isFull?: boolean
 }
 
-export default function Score({ score }: Props) {
+export default function Score({ score, isFull }: Props) {
   const { isMobile } = useDevice()
 
-  const radius = isMobile ? 40 : 80
+  const radius = !isMobile || isFull ? 80 : 40
   const strokeWidth = 6
   const svgSize = 2 * (radius + strokeWidth) // Adjust SVG size to accommodate stroke
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (score / 100) * circumference
 
-  const fontSize = isMobile ? 14 : 20
+  const fontSize = !isMobile || isFull ? 20 : 14
 
   const grade = () => {
     if (score >= 90) {
