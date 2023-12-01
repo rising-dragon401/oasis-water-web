@@ -5,9 +5,9 @@ import { getLocationDetails } from '@/app/actions/locations'
 import React, { useEffect, useState, Suspense } from 'react'
 import Image from 'next/image'
 import Score from '@/components/score'
-import ContaminantCard from '../contaminant-card'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/recommended-row'
+import ContaminantCard from '@/components/contaminant-card'
 
 type Props = {
   id: string

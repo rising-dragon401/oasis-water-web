@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import Typography from '@/components/typography'
 import React, { useMemo, useState } from 'react'
 import { Item } from '@/types/custom'

@@ -7,11 +7,11 @@ import Image from 'next/image'
 import Score from '@/components/score'
 import MetaDataCard from '../metadata-card'
 import IngredientsCard from '../ingredients-card'
-import ContaminantCard from '../contaminant-card'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/recommended-row'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
+import ContaminantCard from '@/components/contaminant-card'
 
 type Props = {
   id: string
@@ -124,7 +124,8 @@ export default function ItemForm({ id }: Props) {
               <IngredientsCard ingredients={item.ingredients} />
             ) : (
               <Typography size="base" fontWeight="normal" className="text-secondary">
-                Unclear ingredients found
+                Unclear ingredients found. This could mean the water is pure or the manufacturer is
+                not being transparent
               </Typography>
             )}
           </div>
