@@ -34,15 +34,13 @@ export default function RecommendedRow() {
 
       <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
         {ranked &&
-          ranked
-            ?.slice(0, 3)
-            .map((item: any) => (
-              <ItemPreviewCard
-                key={item.id}
-                item={item}
-                href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
-              />
-            ))}
+          ranked.map((item: any) => (
+            <ItemPreviewCard
+              key={item.id}
+              item={item}
+              href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
+            />
+          ))}
       </div>
     </div>
   )
