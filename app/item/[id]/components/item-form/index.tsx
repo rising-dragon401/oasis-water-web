@@ -12,6 +12,7 @@ import RecommendedRow from '@/components/recommended-row'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
 import ContaminantCard from '@/components/contaminant-card'
+import Sources from '@/components/sources'
 
 type Props = {
   id: string
@@ -129,6 +130,15 @@ export default function ItemForm({ id }: Props) {
               </Typography>
             )}
           </div>
+
+          {item?.sources && (
+            <div className="flex flex-col gap-6 my-10">
+              <Typography size="2xl" fontWeight="normal">
+                Sources
+              </Typography>
+              {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
+            </div>
+          )}
         </Suspense>
       </div>
 

@@ -8,6 +8,7 @@ import Score from '@/components/score'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/recommended-row'
 import ContaminantCard from '@/components/contaminant-card'
+import Sources from '@/components/sources'
 
 type Props = {
   id: string
@@ -63,6 +64,15 @@ export default function LocationForm({ id }: Props) {
                   <ContaminantCard key={contaminant.id} data={contaminant} />
                 ))}
               </div>
+            </div>
+          )}
+
+          {location?.sources && (
+            <div className="flex flex-col gap-6 my-10">
+              <Typography size="2xl" fontWeight="normal">
+                Sources
+              </Typography>
+              {location && location?.sources?.length > 0 && <Sources data={location.sources} />}
             </div>
           )}
         </Suspense>
