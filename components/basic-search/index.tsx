@@ -9,6 +9,7 @@ import { useDebounce } from '@/lib/hooks/use-debounce'
 import ResultsRow from './results-row'
 import { Search } from 'lucide-react'
 import { Loader2 } from 'lucide-react'
+import { searchFilters } from '@/app/actions/filters'
 
 export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
@@ -29,11 +30,13 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const handleSearch = async (query: string) => {
     setIsLoading(true)
 
-    const data = await searchItems(query)
+    const [data, locations, filters] = await Promise.all([
+      searchItems(query),
+      searchLocations(query),
+      searchFilters(query),
+    ])
 
-    const locations = await searchLocations(query)
-
-    const combinedResults = [...data, ...locations]
+    const combinedResults = [...data, ...locations, ...filters]
 
     if (combinedResults) {
       setResults(combinedResults)

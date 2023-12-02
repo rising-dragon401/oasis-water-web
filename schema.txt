@@ -68,4 +68,15 @@
 - 
 
 
-Types: bottled_water, tap_water_location,  
+Types: bottled_water, tap_water_location, 
+
+
+
+
+// Filters 
+- id
+- name 
+- brand 
+- company 
+- contaminants it filters 
+- contaminants it doesn't

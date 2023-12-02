@@ -16,7 +16,18 @@ export const searchItems = async (query: string) => {
     type: 'phrase',
   })
 
-  return items || []
+  if (!items) {
+    return []
+  }
+
+  const taggedItems = items.map((item) => {
+    return {
+      ...item,
+      type: 'item',
+    }
+  })
+
+  return taggedItems || []
 }
 
 export const getItem = async (id: string) => {

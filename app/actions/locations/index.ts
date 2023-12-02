@@ -26,7 +26,18 @@ export const searchLocations = async (query: string) => {
 
   const locations = [...(locationsByZip || []), ...(locationsByName || [])]
 
-  return locations
+  if (!locations) {
+    return []
+  }
+
+  const taggedLocations = locations.map((location) => {
+    return {
+      ...location,
+      type: 'location',
+    }
+  })
+
+  return taggedLocations || []
 }
 
 export const getLocationDetails = async (id: string) => {
