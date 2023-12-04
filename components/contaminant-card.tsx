@@ -38,9 +38,11 @@ export default function ContaminantCard({ data }: Props) {
           <Typography size="base" fontWeight="normal" className="text-secondary">
             Risks: {data?.metadata.risks}
           </Typography>
-          <Typography size="base" fontWeight="normal" className="text-secondary mt-2">
-            • Amount: {data?.amount} {data?.metadata.unit} {data?.metadata.measure}
-          </Typography>
+          {data.amount && (
+            <Typography size="base" fontWeight="normal" className="text-secondary mt-2">
+              • Amount: {data?.amount} {data?.metadata.unit} {data?.metadata.measure}
+            </Typography>
+          )}
         </CardContent>
         {/* <CardFooter className="flex flex-col">
           <Typography size="base" fontWeight="normal" className="text-secondary">
