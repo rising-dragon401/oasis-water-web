@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import Typography from '@/components/typography'
-import React, { useMemo } from 'react'
-import { Item, TapWaterLocation } from '@/types/custom'
+import React from 'react'
+import { Item, TapWaterLocation, Filter } from '@/types/custom'
 import Image from 'next/image'
 
 type Props = {
-  item: Item | TapWaterLocation
+  item: Item | TapWaterLocation | Filter
   href: string
 }
 

@@ -294,7 +294,7 @@ export interface Database {
           description: string | null
           id: number
           image: string | null
-          name: string | null
+          name: string
           recommended: boolean | null
           score: number
           sources: Json[] | null
@@ -307,7 +307,7 @@ export interface Database {
           description?: string | null
           id?: number
           image?: string | null
-          name?: string | null
+          name: string
           recommended?: boolean | null
           score: number
           sources?: Json[] | null
@@ -320,7 +320,7 @@ export interface Database {
           description?: string | null
           id?: number
           image?: string | null
-          name?: string | null
+          name?: string
           recommended?: boolean | null
           score?: number
           sources?: Json[] | null

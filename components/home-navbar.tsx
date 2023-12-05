@@ -58,6 +58,12 @@ export default function HomeNavbar() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <Link href="/filters" className={navigationMenuTriggerStyle()}>
+              Filters
+            </Link>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <Link href="/recommendations" className={navigationMenuTriggerStyle()}>
               Recommended
             </Link>

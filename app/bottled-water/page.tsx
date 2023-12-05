@@ -7,7 +7,9 @@ export default async function BottledWater() {
 
   return (
     <SubpageLayout>
-      <BottledWaterList items={items} />
+      <div className="md:px-4">
+        <BottledWaterList items={items} />
+      </div>
     </SubpageLayout>
   )
 }

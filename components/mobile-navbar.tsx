@@ -41,6 +41,10 @@ export default function MobileNavbar() {
           </DropdownMenuItem>
 
           <DropdownMenuItem className="my-2 justify-center">
+            <Link href="/filters">Filters</Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="my-2 justify-center">
             <Link href="/recommendations">Recommended</Link>
           </DropdownMenuItem>
 
