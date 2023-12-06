@@ -1,50 +1,31 @@
 import { MetadataRoute } from 'next'
 import { TapWaterLocation, Filter, Item } from '@/types/custom'
+import { getLocations } from './api/actions/locations'
+import { getItems } from './api/actions/items'
+import { getFilters } from './api/actions/filters'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const items = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/items/get`).then((res) => {
-    if (!res.ok) {
-      console.log('Error fetching items:', res.statusText)
-      return
-    }
-    return res.json()
-  })
+  const items = await getItems()
+  const locations = await getLocations()
+  const filters = await getFilters()
 
-  const locations = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/locations/get`).then(
-    (res) => {
-      if (!res.ok) {
-        console.log('Error fetching locations:', res.statusText)
-        return
-      }
-      return res.json()
-    }
-  )
-
-  const filters = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/filters/get`).then((res) => {
-    if (!res.ok) {
-      console.log('Error fetching filters:', res.statusText)
-      return
-    }
-    return res.json()
-  })
-
-  const itemsPaths = items?.data
-    ? items.data.map(
+  const itemsPaths = items
+    ? items.map(
         (item: Item) => `/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`
       )
     : []
 
   const locationsPaths =
-    (locations?.data &&
-      locations.data.map(
+    (locations &&
+      locations.map(
         (location: TapWaterLocation) =>
           `/location/${location.id}?name=${location.name.toLowerCase().replace(/ /g, '-')}`
       )) ||
     []
 
   const filterPaths =
-    (filters?.data &&
-      filters.data.map(
+    (filters &&
+      filters.map(
         (filter: Filter) =>
           `/filter/${filter.id}?name=${filter.name.toLowerCase().replace(/ /g, '-')}`
       )) ||
