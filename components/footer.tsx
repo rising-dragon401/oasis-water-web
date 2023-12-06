@@ -34,28 +34,24 @@ export default function Footer() {
                   © oaisys <span className="text-secondary">-</span> All rights reserved.
                 </div>
               </div>
-              {/* <ul className="my-8 flex-row gap-4 flex list-none">
+              <ul className="my-8 flex-row gap-4 flex list-none">
                 <li>
                   <a
-                    href="https://twitter.com/tellmaia_to"
+                    href="https://www.tiktok.com/@oaisys.ai"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <FaXTwitter className="text-secondary"/>
+                    <FaXTwitter className="text-primary" />
                   </a>
                 </li>
-                <li className="ml-2">
-                  <a href="https://discord.gg/7qkxVkr78Q" target="_blank" rel="noopener noreferrer">
-                    <FaDiscord className="text-secondary"/>
-                  </a>
-                </li>
+
                 <li className="ml-2">
                   <a
                     href="https://www.tiktok.com/@tellmaia.to"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <FaTiktok className="text-secondary"/>
+                    <FaTiktok className="text-primary" />
                   </a>
                 </li>
                 <li className="ml-2">
@@ -64,11 +60,57 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <FaYoutube className="text-secondary"/>
+                    <FaYoutube className="text-primary" />
                   </a>
                 </li>
-              </ul> */}
+              </ul>
             </div>
+          </div>
+
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+            <h6 className="text-sm text-slate-50 font-medium mb-2">Legal</h6>
+            <ul className="text-sm space-y-2 list-none">
+              <li>
+                <Link
+                  href="/bottled-water"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  Bottled water
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/tap-water"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  Tap water
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/filters"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  Water filters
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+            <h6 className="text-sm text-slate-50 font-medium mb-2">Legal</h6>
+            <ul className="text-sm space-y-2 list-none">
+              <li>
+                <Link href="/about" className="text-secondary  transition duration-150 ease-in-out">
+                  Mission
+                </Link>
+              </li>
+              <li>
+                <Link href="/faqs" className="text-secondary  transition duration-150 ease-in-out">
+                  FAQs
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Email signup */}
@@ -76,29 +118,6 @@ export default function Footer() {
             <h6 className="text-sm text-slate-50 font-medium mb-2">Subscribe for updates</h6>
             <EmailSubscribe />
           </div>
-
-          {/* 5th block */}
-          {/* <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-slate-50 font-medium mb-2">Legal</h6>
-            <ul className="text-sm space-y-2 list-none">
-              <li>
-                <a
-                  className="text-secondary  transition duration-150 ease-in-out"
-                  href="/legal/terms-of-use"
-                >
-                  Terms & Conditions
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-secondary  transition duration-150 ease-in-out"
-                  href="/legal/privacy-policy"
-                >
-                  Privacy policy
-                </a>
-              </li>
-            </ul>
-          </div> */}
         </div>
       </div>
     </footer>

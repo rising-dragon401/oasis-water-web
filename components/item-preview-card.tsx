@@ -15,9 +15,9 @@ export default function ItemPreviewCard({ item, href }: Props) {
     if (item.score > 80) {
       return (
         <Typography
-          size="sm"
+          size="xs"
           fontWeight="normal"
-          className="!no-underline text-secondary  text-right"
+          className="!no-underline text-secondary text-right"
         >
           👍 {item.score} /100
         </Typography>
@@ -26,9 +26,9 @@ export default function ItemPreviewCard({ item, href }: Props) {
     } else if (item.score > 60) {
       return (
         <Typography
-          size="sm"
+          size="xs"
           fontWeight="normal"
-          className="!no-underline text-secondary  text-right"
+          className="!no-underline text-secondary text-right"
         >
           👎 {item.score} /100
         </Typography>
@@ -36,7 +36,7 @@ export default function ItemPreviewCard({ item, href }: Props) {
     } else {
       return (
         <Typography
-          size="sm"
+          size="xs"
           fontWeight="normal"
           className="!no-underline text-secondarytext-right"
         >
@@ -47,29 +47,22 @@ export default function ItemPreviewCard({ item, href }: Props) {
   }
 
   return (
-    <article key={item.id}>
-      <Link href={href}>
-        <div
-          className="rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-md flex flex-col justify-end hover:cursor-pointer"
-          style={{
-            backgroundImage: `url(${item.image})`,
-          }}
-        >
-          <Image
-            src={item.image || ''}
-            className="w-full h-56 rounded-md object-cover hover:cursor-pointer"
-            width={300}
-            height={300}
-            alt={item.name}
-          />
-        </div>
-        <div className="flex flex-row justify-between pt-1 gap-2">
-          <Typography size="xl" fontWeight="normal" className="!no-underline w-full">
-            {item.name}
-          </Typography>
-          {item.score && <div className="w-24 text-right">{renderScore()}</div>}
-        </div>
-      </Link>
-    </article>
+    <Link href={href} className="flex flex-col lg:w-80 md:w-64 w-40 hover:opacity-80">
+      <div className="lg:w-80 lg:h-80 md:w-64 md:h-64 h-40 w-40">
+        <Image
+          src={item.image || ''}
+          className="w-full h-full rounded-md object-cover hover:cursor-pointer"
+          width={400}
+          height={400}
+          alt={item.name}
+        />
+      </div>
+      <div className="flex flex-row justify-between w-full pt-1 md:gap-2 items-center">
+        <Typography size="sm" fontWeight="bold" className="!no-underline text-primary">
+          {item.name}
+        </Typography>
+        {item.score && <div className="w-24 text-right">{renderScore()}</div>}
+      </div>
+    </Link>
   )
 }

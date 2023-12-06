@@ -6,10 +6,13 @@ import TopRatedSection from '@/components/top-rated-section'
 import LowestRatedSection from '@/components/lowest-rated-section'
 import TapWaterSection from '@/components/tap-water-section'
 import { getLocations } from '@/app/actions/locations'
+import { getFilters } from '@/app/actions/filters'
+import FilterSection from '@/components/filter-section'
 
 export default async function Home() {
   const items = await getItems()
   const locations = await getLocations()
+  const filters = await getFilters()
 
   return (
     <SubpageLayout>
@@ -30,12 +33,16 @@ export default async function Home() {
           <TopRatedSection items={items} />
         </div>
 
-        <div className="flex flex-col mt-10 mb-20">
+        <div className="flex flex-col mt-10 mb-10">
           <LowestRatedSection items={items} />
         </div>
 
-        <div className="flex flex-col mt-10 mb-20">
+        <div className="flex flex-col mt-10 mb-10">
           <TapWaterSection locations={locations} />
+        </div>
+
+        <div className="flex flex-col mt-10 mb-20">
+          <FilterSection filters={filters} />
         </div>
       </div>
     </SubpageLayout>

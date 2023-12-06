@@ -52,7 +52,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
           <div className="flex flex-col gap-2 relative w-full">
             <div className="relative">
               <Input
-                placeholder="Enter brand of water"
+                placeholder="Search for bottled water, filters, or tap water locations"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors rounded-md border border-secondary-foreground md:min-w-[300px] shadow-md"

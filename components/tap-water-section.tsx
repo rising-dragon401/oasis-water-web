@@ -17,7 +17,7 @@ export default function TapWaterSection({ locations }: Props) {
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Tap water
+          Tap water ratings
         </Typography>
 
         <Link href="/tap-water" className="underline italic text-primary">
@@ -25,17 +25,17 @@ export default function TapWaterSection({ locations }: Props) {
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-2 grid-cols-1 w-full gap-6">
+      <div className="flex overflow-x-auto gap-6">
         {topItems &&
-          topItems
-            ?.slice(0, 3)
-            .map((item) => (
+          topItems?.slice(0, 3).map((item) => (
+            <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
               <ItemPreviewCard
                 key={item.name}
                 item={item}
                 href={`/location/${item.id}?id=${item.name.toLowerCase().replace(/ /g, '-')}`}
               />
-            ))}
+            </div>
+          ))}
       </div>
     </div>
   )

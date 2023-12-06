@@ -20,7 +20,7 @@ export default function TapWaterList({ locations }: Props) {
         </Typography>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6 ">
+      <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6 ">
         {sorted &&
           sorted.map((item) => (
             <ItemPreviewCard

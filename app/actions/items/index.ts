@@ -1,8 +1,6 @@
 'use server'
 
 import { supabase } from '@/utils/supabase'
-import { getSession } from '@/app/supabase-server'
-import { Ingredient } from '@/types/custom'
 
 export const getItems = async () => {
   const { data: items, error } = await supabase.from('items').select()

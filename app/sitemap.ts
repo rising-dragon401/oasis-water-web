@@ -1,32 +1,57 @@
 import { MetadataRoute } from 'next'
-import { getItems } from './actions/items'
-import { getLocations } from './actions/locations'
+import { TapWaterLocation, Filter, Item } from '@/types/custom'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const items = await getItems()
-  const locations = await getLocations()
+  const items = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/items/get`).then((res) => {
+    return res.json()
+  })
 
-  console.log('items', items)
-  console.log('locations', locations)
+  const locations = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/locations/get`).then(
+    (res) => {
+      return res.json()
+    }
+  )
 
-  const itemsPaths = items
-    ? items.map((item) => `/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`)
+  const filters = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/filters/get`).then((res) => {
+    return res.json()
+  })
+
+  console.log('locations: ', locations)
+  console.log('filters: ', filters)
+  console.log('items: ', items)
+
+  const itemsPaths = items?.data
+    ? items.data.map(
+        (item: Item) => `/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`
+      )
     : []
 
   const locationsPaths =
-    (locations &&
-      locations.map(
-        (location) =>
+    (locations?.data &&
+      locations.data.map(
+        (location: TapWaterLocation) =>
           `/location/${location.id}?name=${location.name.toLowerCase().replace(/ /g, '-')}`
       )) ||
     []
 
+  const filterPaths =
+    (filters?.data &&
+      filters.data.map(
+        (filter: Filter) =>
+          `/filter/${filter.id}?name=${filter.name.toLowerCase().replace(/ /g, '-')}`
+      )) ||
+    []
+
   return [
-    ...itemsPaths.map((path) => ({
+    ...itemsPaths.map((path: string) => ({
       url: `https://www.oaisys.ai${path}`,
       lastModified: new Date(),
     })),
-    ...locationsPaths.map((path) => ({
+    ...locationsPaths.map((path: string) => ({
+      url: `https://www.oaisys.ai${path}`,
+      lastModified: new Date(),
+    })),
+    ...filterPaths.map((path: string) => ({
       url: `https://www.oaisys.ai${path}`,
       lastModified: new Date(),
     })),
