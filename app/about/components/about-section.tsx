@@ -1,7 +1,6 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import CTAButton from '@/components/cta-button'
 import Typography from '@/components/typography'
 
 const meta = {
