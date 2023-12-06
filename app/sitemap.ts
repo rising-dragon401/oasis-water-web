@@ -3,22 +3,30 @@ import { TapWaterLocation, Filter, Item } from '@/types/custom'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const items = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/items/get`).then((res) => {
+    if (!res.ok) {
+      console.log('Error fetching items:', res.statusText)
+      return
+    }
     return res.json()
   })
 
   const locations = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/locations/get`).then(
     (res) => {
+      if (!res.ok) {
+        console.log('Error fetching locations:', res.statusText)
+        return
+      }
       return res.json()
     }
   )
 
   const filters = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/filters/get`).then((res) => {
+    if (!res.ok) {
+      console.log('Error fetching filters:', res.statusText)
+      return
+    }
     return res.json()
   })
-
-  console.log('locations: ', locations)
-  console.log('filters: ', filters)
-  console.log('items: ', items)
 
   const itemsPaths = items?.data
     ? items.data.map(
