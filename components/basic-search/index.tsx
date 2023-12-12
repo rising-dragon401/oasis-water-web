@@ -10,6 +10,7 @@ import ResultsRow from './results-row'
 import { Search } from 'lucide-react'
 import { Loader2 } from 'lucide-react'
 import { searchFilters } from '@/app/actions/filters'
+import { scoreItems } from '@/app/actions/scoring'
 
 export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
@@ -48,6 +49,9 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   return (
     <>
       <div className="flex flex-row gap-2 items-center">
+        {/* <Button variant="ghost" type="submit" loading={isLoading} onClick={() => scoreItems()}>
+          Calculate scores
+        </Button> */}
         {isShowSearch ? (
           <div className="flex flex-col gap-2 relative w-full">
             <div className="relative">
