@@ -50,7 +50,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
     <>
       <div className="flex flex-row gap-2 items-center">
         {/* <Button variant="ghost" type="submit" loading={isLoading} onClick={() => scoreItems()}>
-          Calculate scores
+          Calculate item scores
         </Button>
 
         <Button variant="ghost" type="submit" loading={isLoading} onClick={() => scoreLocations()}>

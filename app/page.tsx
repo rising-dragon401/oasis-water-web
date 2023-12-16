@@ -16,7 +16,7 @@ export default async function Home() {
 
   return (
     <SubpageLayout>
-      <div className="flex h-full flex-col justify-center pt-36 md:px-24">
+      <div className="flex h-full flex-col justify-center pt-36 md:px-8">
         <div className="mb-14 max-w-lg">
           <Typography size="5xl" fontWeight="bold">
             Do you know what&apos;s in your water?

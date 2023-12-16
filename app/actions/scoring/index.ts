@@ -1,49 +1,65 @@
 'use server'
 
 import { supabase } from '@/utils/supabase'
+import {
+  Ingredient,
+  Item,
+  TapWaterLocation,
+  WaterFilter,
+  Filter,
+  IngredientDescriptor,
+} from '@/types/custom'
 
 // export const scoreItems = async () => {
 //   // return false
 //   const { data: items, error } = await supabase.from('items').select('*')
 
+//   console.log('items: ', items)
+
 //   if (error) throw error
 
 //   const itemsWithContaminants = await Promise.all(
 //     items.map(async (item) => {
-//       const contaminants = item.contaminants // assuming contaminants is an array of objects
+//       const contaminants = item.contaminants as IngredientDescriptor[]
 
-//       if (!contaminants) return { id: item.id, amount_above_health_guideline: 0 }
+//       if (!contaminants)
+//         return {
+//           id: item.id,
+//           name: item.name,
+//           source: item.water_source || null,
+//           is_distilled: item.is_distilled,
+//           numberOfContaminants: 0,
+//           amount_above_health_guideline: 0,
+//         }
 
 //       let totalOver = 0
-//       const amount_above_health_guideline = await contaminants.reduce(
-//         async (totalPromise, contaminant) => {
-//           const amount = contaminant.amount
 
-//           const total = await totalPromise
+//       await contaminants.reduce(async (totalPromise, contaminant) => {
+//         const amount = contaminant.amount || 1
 
-//           const { data: ingredient, error } = await supabase
-//             .from('ingredients')
-//             .select('health_guideline')
-//             .eq('id', contaminant.ingredient_id)
-//             .single()
+//         const total = await totalPromise
 
-//           if (error) throw error
+//         const { data: ingredient, error } = (await supabase
+//           .from('ingredients')
+//           .select('health_guideline')
+//           .eq('id', contaminant.ingredient_id)
+//           .single()) as { data: Ingredient; error: any }
 
-//           const guideline = ingredient.health_guideline || ingredient.legal_limit
+//         if (error) throw error
 
-//           if (guideline === 0 || !guideline) return 1
+//         const guideline = ingredient.health_guideline || ingredient.legal_limit
 
-//           totalOver += Math.floor(amount / guideline)
-//           return totalOver
-//         },
-//         Promise.resolve(0)
-//       )
+//         if (guideline === 0 || !guideline) return 1
+
+//         totalOver += Math.floor(amount / guideline)
+//         return totalOver
+//       }, Promise.resolve(0))
 
 //       return {
 //         id: item.id,
 //         name: item.name,
-//         source: item.source || null,
-//         is_distilled: item.is_distilled || null,
+//         source: item.water_source || null,
+//         is_distilled: item.is_distilled,
 //         numberOfContaminants: contaminants.length,
 //         amount_above_health_guideline: totalOver,
 //       }
@@ -54,24 +70,42 @@ import { supabase } from '@/utils/supabase'
 //     let score = 100
 
 //     // Penalize for each contaminant
-//     let contaminantPenalty =
-//       item.numberOfContaminants * 4 + Math.floor(item.amount_above_health_guideline / 3)
+//     const maximumContaminantMultiplierPenalty = 30
+//     let contaminantMultiplierPenalty = Math.floor(item.amount_above_health_guideline)
 
-//     if (contaminantPenalty < 0) contaminantPenalty = 100
+//     if (contaminantMultiplierPenalty > maximumContaminantMultiplierPenalty) {
+//       contaminantMultiplierPenalty = maximumContaminantMultiplierPenalty
+//     }
+
+//     const maximumNumberOfContaminantsPenalty = 40
+//     let numberOfContaminantsPenalty = (item.numberOfContaminants || 0) * 3
+
+//     if (numberOfContaminantsPenalty > maximumNumberOfContaminantsPenalty) {
+//       numberOfContaminantsPenalty = maximumNumberOfContaminantsPenalty
+//     }
+
+//     let contaminantPenalty = contaminantMultiplierPenalty + numberOfContaminantsPenalty
+
+//     if (contaminantPenalty < 0) contaminantPenalty = 90
+
+//     console.log('contaminantPenalty: ', contaminantPenalty)
 
 //     score -= contaminantPenalty
+
+//     console.log('item.source: ', item.source)
 
 //     // Penalize for source
 //     let sourcePenalty = 0
 //     switch (item.source) {
 //       case 'municipal_supply':
-//         sourcePenalty = 20
+//         console.log('municipal_supply')
+//         sourcePenalty = 30
 //         break
 //       case 'well':
-//         sourcePenalty = 10
+//         sourcePenalty = 15
 //         break
 //       case null || undefined:
-//         sourcePenalty = 12
+//         sourcePenalty = 5
 //         break
 //       default:
 //         sourcePenalty = 0
@@ -79,12 +113,12 @@ import { supabase } from '@/utils/supabase'
 
 //     score -= sourcePenalty
 
-//     // Add points if not distilled
+//     // Add points if not distilled -- reward for natural minerals
 //     let mineralBonus = 0
-//     if (item.is_distilled === false) {
-//       mineralBonus = 12
-//     } else if (item.is_distilled === true) {
-//       mineralBonus = -12
+//     if (item.is_distilled) {
+//       mineralBonus = -30
+//     } else {
+//       mineralBonus = 0
 //     }
 
 //     score += mineralBonus
@@ -102,7 +136,7 @@ import { supabase } from '@/utils/supabase'
 
 //     if (score === 0) score = 1
 
-//     console.log('score: ', score)
+//     // console.log('score: ', score)
 
 //     return { ...item, score }
 //   })
@@ -114,7 +148,7 @@ import { supabase } from '@/utils/supabase'
 //       .match({ id: item.id })
 //   })
 
-//   console.log('scoredItems: ', scoredItems)
+//   //   console.log('scoredItems: ', scoredItems)
 
 //   console.log('done calculating item scores')
 

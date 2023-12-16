@@ -102,7 +102,7 @@ export default function Footer() {
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link href="/about" className="text-secondary  transition duration-150 ease-in-out">
-                  Mission
+                  About
                 </Link>
               </li>
               <li>

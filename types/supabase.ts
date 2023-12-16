@@ -110,12 +110,16 @@ export interface Database {
           id: number
           image: string
           ingredients: Json[] | null
+          is_distilled: boolean | null
           metadata: Json | null
           name: string
           recommended: boolean | null
           score: number
           sources: Json[] | null
           type: Database["public"]["Enums"]["item_type"] | null
+          water_source:
+            | Database["public"]["Enums"]["bottled_water_source"]
+            | null
         }
         Insert: {
           affiliate_url?: string | null
@@ -128,12 +132,16 @@ export interface Database {
           id?: number
           image: string
           ingredients?: Json[] | null
+          is_distilled?: boolean | null
           metadata?: Json | null
           name: string
           recommended?: boolean | null
           score: number
           sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
+          water_source?:
+            | Database["public"]["Enums"]["bottled_water_source"]
+            | null
         }
         Update: {
           affiliate_url?: string | null
@@ -146,12 +154,16 @@ export interface Database {
           id?: number
           image?: string
           ingredients?: Json[] | null
+          is_distilled?: boolean | null
           metadata?: Json | null
           name?: string
           recommended?: boolean | null
           score?: number
           sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
+          water_source?:
+            | Database["public"]["Enums"]["bottled_water_source"]
+            | null
         }
         Relationships: [
           {
@@ -418,6 +430,12 @@ export interface Database {
     }
     Enums: {
       bottled_water_metadata: "source" | "treatment_process" | "ph_level"
+      bottled_water_source:
+        | "municipal_supply"
+        | "mountain_spring"
+        | "aquifier"
+        | "iceberg"
+        | "well"
       item_type: "bottled_water"
     }
     CompositeTypes: {

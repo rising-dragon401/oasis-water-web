@@ -32,14 +32,15 @@ export default function RecommendedRow() {
         </Link> */}
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
+      <div className="flex overflow-x-auto gap-6">
         {ranked &&
           ranked.map((item: any) => (
-            <ItemPreviewCard
-              key={item.id}
-              item={item}
-              href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
-            />
+            <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
+              <ItemPreviewCard
+                item={item}
+                href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
+              />
+            </div>
           ))}
       </div>
     </div>
