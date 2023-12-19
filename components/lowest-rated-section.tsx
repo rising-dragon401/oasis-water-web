@@ -10,7 +10,9 @@ type Props = {
 
 export default function LowestRatedSection({ items }: Props) {
   const lowestItems = useMemo(() => {
-    return items?.sort((a, b) => (a.score || 0) - (b.score || 0))
+    return items
+      ?.filter((item) => item.score !== null)
+      .sort((a, b) => (a.score || 0) - (b.score || 0))
   }, [items])
 
   return (

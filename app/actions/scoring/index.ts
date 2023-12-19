@@ -77,7 +77,7 @@ import {
 //       contaminantMultiplierPenalty = maximumContaminantMultiplierPenalty
 //     }
 
-//     const maximumNumberOfContaminantsPenalty = 40
+//     const maximumNumberOfContaminantsPenalty = 30
 //     let numberOfContaminantsPenalty = (item.numberOfContaminants || 0) * 3
 
 //     if (numberOfContaminantsPenalty > maximumNumberOfContaminantsPenalty) {
@@ -236,6 +236,81 @@ import {
 //   })
 
 //   console.log('done calculating location scores')
+
+//   return scoredItems
+// }
+
+// export const scoreFilters = async () => {
+//   console.log('calculating filter scores')
+
+//   const { data: contaminants, error } = await supabase
+//     .from('ingredients')
+//     .select('*')
+//     .eq('is_contaminant', true)
+
+//   const { data: filters, error: filterError } = await supabase.from('water_filters').select('*')
+
+//   if (error) throw error
+
+//   if (!filters) return false
+
+//   const filterWithMetadata = await Promise.all(
+//     filters.map(async (filter) => {
+//       const contaminants_filtered = filter.contaminants_filtered
+
+//       if (!contaminants_filtered)
+//         return {
+//           id: filter.id,
+//           name: filter.name,
+//           numberOfContaminantsNotFilterd: 0,
+//         }
+
+//       let totalContaminantsNotFiltered = contaminants.length - contaminants_filtered.length
+
+//       return {
+//         id: filter.id,
+//         name: filter.name,
+//         numberOfContaminantsNotFilterd: totalContaminantsNotFiltered,
+//       }
+//     })
+//   )
+
+//   const scoredItems = await filterWithMetadata.map((filter) => {
+//     let score = 100
+
+//     // Penalize for each contaminant
+//     let contaminantPenalty = Math.floor(filter.numberOfContaminantsNotFilterd * 3.5)
+
+//     score -= contaminantPenalty
+
+//     // If score is negative, calculate the difference and scale it to [5, 50]
+//     if (score < 2) {
+//       const difference = Math.abs(score)
+
+//       console.log('difference: ', difference)
+
+//       const ratio = difference / 20
+
+//       console.log('ratio: ', ratio)
+
+//       score = 0 + Math.floor(ratio)
+
+//       if (score > 50) score = 50
+//     }
+
+//     if (score === 0) score = 1
+
+//     return { ...filter, score }
+//   })
+
+//   scoredItems.forEach(async (item) => {
+//     const { data, error } = await supabase
+//       .from('water_filters')
+//       .update({ score: item.score })
+//       .match({ id: item.id })
+//   })
+
+//   console.log('done calculating filter scores')
 
 //   return scoredItems
 // }
