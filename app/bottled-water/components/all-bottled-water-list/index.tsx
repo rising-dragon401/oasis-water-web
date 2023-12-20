@@ -28,7 +28,10 @@ export default function BottledWaterList({ items }: Props) {
     return [...items].sort((a, b) => {
       switch (sortMethod) {
         case 'score':
-          return b.score - a.score // assuming score is a number
+          if (b.score === null || a.score === null) {
+            return 0
+          }
+          return b.score - a.score
         case 'name':
           return a.name.localeCompare(b.name)
         default:

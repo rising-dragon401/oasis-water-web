@@ -1,22 +1,23 @@
 'use server'
 
-import { supabase } from '@/utils/supabase'
-import {
-  Ingredient,
-  Item,
-  TapWaterLocation,
-  WaterFilter,
-  Filter,
-  IngredientDescriptor,
-} from '@/types/custom'
+// import { supabase } from '@/utils/supabase'
+// import {
+//   Ingredient,
+//   Item,
+//   TapWaterLocation,
+//   WaterFilter,
+//   Filter,
+//   IngredientDescriptor,
+// } from '@/types/custom'
 
 // export const scoreItems = async () => {
-//   // return false
-//   const { data: items, error } = await supabase.from('items').select('*')
-
-//   console.log('items: ', items)
+//   let { data: items, error } = await supabase.from('items').select('*')
 
 //   if (error) throw error
+//   if (!items) return false
+
+//   // remove items with .is_indexed === false
+//   items = items.filter((item) => item.is_indexed)
 
 //   const itemsWithContaminants = await Promise.all(
 //     items.map(async (item) => {

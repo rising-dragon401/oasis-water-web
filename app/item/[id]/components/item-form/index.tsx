@@ -67,6 +67,11 @@ export default function ItemForm({ id }: Props) {
                     <Typography size="base" fontWeight="normal" className="text-secondary">
                       pH: {item.metadata?.ph_level}
                     </Typography>
+                    {item.metadata?.tds && (
+                      <Typography size="base" fontWeight="normal" className="text-secondary">
+                        TDS: {item.metadata?.tds} ppm
+                      </Typography>
+                    )}
 
                     <div className="flex flex-col md:w-40 w-full mt-2 gap-2">
                       {item.recommended && (

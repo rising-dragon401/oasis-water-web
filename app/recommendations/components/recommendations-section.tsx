@@ -6,7 +6,7 @@ import { getRecommendedItems } from '@/app/actions/items'
 export default async function RecommendationsSection() {
   const recommended = await getRecommendedItems()
 
-  const ranked = recommended.sort((a, b) => b.score - a.score)
+  const ranked = recommended.sort((a, b) => (b.score || 0) - (a.score || 0))
 
   return (
     <>

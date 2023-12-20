@@ -11,7 +11,7 @@ export default function RecommendedRow() {
 
   const fetchRecommendedItems = async () => {
     const recommended = await getRecommendedItems()
-    const ranked_ = recommended.sort((a, b) => b.score - a.score)
+    const ranked_ = recommended.sort((a, b) => (b.score || 0) - (a.score || 0))
 
     setRanked(ranked_)
   }

@@ -111,10 +111,11 @@ export interface Database {
           image: string
           ingredients: Json[] | null
           is_distilled: boolean | null
+          is_indexed: boolean | null
           metadata: Json | null
           name: string
           recommended: boolean | null
-          score: number
+          score: number | null
           sources: Json[] | null
           type: Database["public"]["Enums"]["item_type"] | null
           water_source:
@@ -133,10 +134,11 @@ export interface Database {
           image: string
           ingredients?: Json[] | null
           is_distilled?: boolean | null
+          is_indexed?: boolean | null
           metadata?: Json | null
           name: string
           recommended?: boolean | null
-          score: number
+          score?: number | null
           sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
           water_source?:
@@ -155,10 +157,11 @@ export interface Database {
           image?: string
           ingredients?: Json[] | null
           is_distilled?: boolean | null
+          is_indexed?: boolean | null
           metadata?: Json | null
           name?: string
           recommended?: boolean | null
-          score?: number
+          score?: number | null
           sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"] | null
           water_source?:
