@@ -3,6 +3,7 @@ import { TapWaterLocation, Filter, Item } from '@/types/custom'
 import { getLocations } from './api/actions/locations'
 import { getItems } from './api/actions/items'
 import { getFilters } from './api/actions/filters'
+import { allPosts } from 'contentlayer/generated'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const items = await getItems()
@@ -30,6 +31,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           `/filter/${filter.id}?name=${filter.name.toLowerCase().replace(/ /g, '-')}`
       )) ||
     []
+
+  const blogPaths = allPosts.map((post) => `${post.slug}`)
 
   return [
     ...itemsPaths.map((path: string) => ({
@@ -64,5 +67,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `https://www.oaisys.ai/about`,
       lastModified: new Date(),
     },
+    {
+      url: `https://www.oaisys.ai/faqs`,
+      lastModified: new Date(),
+    },
+    {
+      url: `https://www.oaisys.ai/blog`,
+      lastModified: new Date(),
+    },
+    ...blogPaths.map((path: string) => ({
+      url: `https://www.oaisys.ai${path}`,
+      lastModified: new Date(),
+    })),
   ]
 }

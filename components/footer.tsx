@@ -110,6 +110,11 @@ export default function Footer() {
                   FAQs
                 </Link>
               </li>
+              <li>
+                <Link href="/blog" className="text-secondary  transition duration-150 ease-in-out">
+                  Blog
+                </Link>
+              </li>
             </ul>
           </div>
 

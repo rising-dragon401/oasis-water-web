@@ -1,14 +1,14 @@
 'use server'
 
-// import { supabase } from '@/utils/supabase'
-// import {
-//   Ingredient,
-//   Item,
-//   TapWaterLocation,
-//   WaterFilter,
-//   Filter,
-//   IngredientDescriptor,
-// } from '@/types/custom'
+import { supabase } from '@/utils/supabase'
+import {
+  Ingredient,
+  Item,
+  TapWaterLocation,
+  WaterFilter,
+  Filter,
+  IngredientDescriptor,
+} from '@/types/custom'
 
 // export const scoreItems = async () => {
 //   let { data: items, error } = await supabase.from('items').select('*')
@@ -164,7 +164,7 @@
 
 //   const locationsWithContaminants = await Promise.all(
 //     locations.map(async (location) => {
-//       const contaminants = location.contaminants // assuming contaminants is an array of objects
+//       const contaminants = location.contaminants as IngredientDescriptor[]
 
 //       if (!contaminants) return { id: location.id, amount_above_health_guideline: 0 }
 
@@ -177,7 +177,7 @@
 
 //         const { data: ingredient, error } = await supabase
 //           .from('ingredients')
-//           .select('health_guideline')
+//           .select('health_guideline, legal_limit')
 //           .eq('id', contaminant.ingredient_id)
 //           .single()
 
