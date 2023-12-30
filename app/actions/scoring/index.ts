@@ -10,151 +10,151 @@ import {
   IngredientDescriptor,
 } from '@/types/custom'
 
-// export const scoreItems = async () => {
-//   let { data: items, error } = await supabase.from('items').select('*')
+export const scoreItems = async () => {
+  let { data: items, error } = await supabase.from('items').select('*')
 
-//   if (error) throw error
-//   if (!items) return false
+  if (error) throw error
+  if (!items) return false
 
-//   // remove items with .is_indexed === false
-//   items = items.filter((item) => item.is_indexed)
+  // remove items with .is_indexed === false
+  items = items.filter((item) => item.is_indexed)
 
-//   const itemsWithContaminants = await Promise.all(
-//     items.map(async (item) => {
-//       const contaminants = item.contaminants as IngredientDescriptor[]
+  const itemsWithContaminants = await Promise.all(
+    items.map(async (item) => {
+      const contaminants = item.contaminants as IngredientDescriptor[]
 
-//       if (!contaminants)
-//         return {
-//           id: item.id,
-//           name: item.name,
-//           source: item.water_source || null,
-//           is_distilled: item.is_distilled,
-//           numberOfContaminants: 0,
-//           amount_above_health_guideline: 0,
-//         }
+      if (!contaminants)
+        return {
+          id: item.id,
+          name: item.name,
+          source: item.water_source || null,
+          is_distilled: item.is_distilled,
+          numberOfContaminants: 0,
+          amount_above_health_guideline: 0,
+        }
 
-//       let totalOver = 0
+      let totalOver = 0
 
-//       await contaminants.reduce(async (totalPromise, contaminant) => {
-//         const amount = contaminant.amount || 1
+      await contaminants.reduce(async (totalPromise, contaminant) => {
+        const amount = contaminant.amount || 1
 
-//         const total = await totalPromise
+        const total = await totalPromise
 
-//         const { data: ingredient, error } = (await supabase
-//           .from('ingredients')
-//           .select('health_guideline')
-//           .eq('id', contaminant.ingredient_id)
-//           .single()) as { data: Ingredient; error: any }
+        const { data: ingredient, error } = (await supabase
+          .from('ingredients')
+          .select('health_guideline')
+          .eq('id', contaminant.ingredient_id)
+          .single()) as { data: Ingredient; error: any }
 
-//         if (error) throw error
+        if (error) throw error
 
-//         const guideline = ingredient.health_guideline || ingredient.legal_limit
+        const guideline = ingredient.health_guideline || ingredient.legal_limit
 
-//         if (guideline === 0 || !guideline) return 1
+        if (guideline === 0 || !guideline) return 1
 
-//         totalOver += Math.floor(amount / guideline)
-//         return totalOver
-//       }, Promise.resolve(0))
+        totalOver += Math.floor(amount / guideline)
+        return totalOver
+      }, Promise.resolve(0))
 
-//       return {
-//         id: item.id,
-//         name: item.name,
-//         source: item.water_source || null,
-//         is_distilled: item.is_distilled,
-//         numberOfContaminants: contaminants.length,
-//         amount_above_health_guideline: totalOver,
-//       }
-//     })
-//   )
+      return {
+        id: item.id,
+        name: item.name,
+        source: item.water_source || null,
+        is_distilled: item.is_distilled,
+        numberOfContaminants: contaminants.length,
+        amount_above_health_guideline: totalOver,
+      }
+    })
+  )
 
-//   const scoredItems = await itemsWithContaminants.map((item) => {
-//     let score = 100
+  const scoredItems = await itemsWithContaminants.map((item) => {
+    let score = 100
 
-//     // Penalize for each contaminant
-//     const maximumContaminantMultiplierPenalty = 30
-//     let contaminantMultiplierPenalty = Math.floor(item.amount_above_health_guideline)
+    // Penalize for each contaminant
+    const maximumContaminantMultiplierPenalty = 30
+    let contaminantMultiplierPenalty = Math.floor(item.amount_above_health_guideline)
 
-//     if (contaminantMultiplierPenalty > maximumContaminantMultiplierPenalty) {
-//       contaminantMultiplierPenalty = maximumContaminantMultiplierPenalty
-//     }
+    if (contaminantMultiplierPenalty > maximumContaminantMultiplierPenalty) {
+      contaminantMultiplierPenalty = maximumContaminantMultiplierPenalty
+    }
 
-//     const maximumNumberOfContaminantsPenalty = 30
-//     let numberOfContaminantsPenalty = (item.numberOfContaminants || 0) * 3
+    const maximumNumberOfContaminantsPenalty = 30
+    let numberOfContaminantsPenalty = (item.numberOfContaminants || 0) * 3
 
-//     if (numberOfContaminantsPenalty > maximumNumberOfContaminantsPenalty) {
-//       numberOfContaminantsPenalty = maximumNumberOfContaminantsPenalty
-//     }
+    if (numberOfContaminantsPenalty > maximumNumberOfContaminantsPenalty) {
+      numberOfContaminantsPenalty = maximumNumberOfContaminantsPenalty
+    }
 
-//     let contaminantPenalty = contaminantMultiplierPenalty + numberOfContaminantsPenalty
+    let contaminantPenalty = contaminantMultiplierPenalty + numberOfContaminantsPenalty
 
-//     if (contaminantPenalty < 0) contaminantPenalty = 90
+    if (contaminantPenalty < 0) contaminantPenalty = 90
 
-//     console.log('contaminantPenalty: ', contaminantPenalty)
+    console.log('contaminantPenalty: ', contaminantPenalty)
 
-//     score -= contaminantPenalty
+    score -= contaminantPenalty
 
-//     console.log('item.source: ', item.source)
+    console.log('item.source: ', item.source)
 
-//     // Penalize for source
-//     let sourcePenalty = 0
-//     switch (item.source) {
-//       case 'municipal_supply':
-//         console.log('municipal_supply')
-//         sourcePenalty = 30
-//         break
-//       case 'well':
-//         sourcePenalty = 15
-//         break
-//       case null || undefined:
-//         sourcePenalty = 5
-//         break
-//       default:
-//         sourcePenalty = 0
-//     }
+    // Penalize for source
+    let sourcePenalty = 0
+    switch (item.source) {
+      case 'municipal_supply':
+        console.log('municipal_supply')
+        sourcePenalty = 30
+        break
+      case 'well':
+        sourcePenalty = 15
+        break
+      case null || undefined:
+        sourcePenalty = 5
+        break
+      default:
+        sourcePenalty = 0
+    }
 
-//     score -= sourcePenalty
+    score -= sourcePenalty
 
-//     // Add points if not distilled -- reward for natural minerals
-//     let mineralBonus = 0
-//     if (item.is_distilled) {
-//       mineralBonus = -30
-//     } else {
-//       mineralBonus = 0
-//     }
+    // Add points if not distilled -- reward for natural minerals
+    let mineralBonus = 0
+    if (item.is_distilled) {
+      mineralBonus = -30
+    } else {
+      mineralBonus = 0
+    }
 
-//     score += mineralBonus
+    score += mineralBonus
 
-//     const maximumPossibleNegativeScore = 6
+    const maximumPossibleNegativeScore = 6
 
-//     // If score is negative, calculate the difference and scale it to [5, 50]
-//     if (score < 1) {
-//       const difference = Math.abs(score)
+    // If score is negative, calculate the difference and scale it to [5, 50]
+    if (score < 1) {
+      const difference = Math.abs(score)
 
-//       const ratio = difference / 50
+      const ratio = difference / 50
 
-//       score = 0 + Math.floor(ratio * maximumPossibleNegativeScore)
-//     }
+      score = 0 + Math.floor(ratio * maximumPossibleNegativeScore)
+    }
 
-//     if (score === 0) score = 1
+    if (score === 0) score = 1
 
-//     // console.log('score: ', score)
+    // console.log('score: ', score)
 
-//     return { ...item, score }
-//   })
+    return { ...item, score }
+  })
 
-//   scoredItems.forEach(async (item) => {
-//     const { data, error } = await supabase
-//       .from('items')
-//       .update({ score: item.score })
-//       .match({ id: item.id })
-//   })
+  scoredItems.forEach(async (item) => {
+    const { data, error } = await supabase
+      .from('items')
+      .update({ score: item.score })
+      .match({ id: item.id })
+  })
 
-//   //   console.log('scoredItems: ', scoredItems)
+  //   console.log('scoredItems: ', scoredItems)
 
-//   console.log('done calculating item scores')
+  console.log('done calculating item scores')
 
-//   return scoredItems
-// }
+  return scoredItems
+}
 
 // export const scoreLocations = async () => {
 //   // return false

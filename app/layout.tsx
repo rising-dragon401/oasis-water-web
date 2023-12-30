@@ -3,6 +3,7 @@ import cn from 'classnames'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from '@/components/ui/toaster'
 import { CSPostHogProvider } from './providers'
+import SupabaseProvider from './supabase-provider'
 
 import '@/styles/globals.css'
 
@@ -45,7 +46,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cn(lato.className, 'bg-background mx-auto max-w-6xl')}>
+    <html lang="en" className={cn(lato.className, 'bg-background mx-auto')}>
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
       <link
@@ -57,9 +58,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <CSPostHogProvider>
         <body>
-          {children}
-          <Analytics />
-          <Toaster />
+          <SupabaseProvider>
+            <main id="skip" className="h-[calc(100dvh)]">
+              {children}
+            </main>
+            <Analytics />
+            <Toaster />
+          </SupabaseProvider>
         </body>
       </CSPostHogProvider>
     </html>

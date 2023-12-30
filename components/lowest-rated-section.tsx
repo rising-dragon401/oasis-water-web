@@ -27,7 +27,7 @@ export default function LowestRatedSection({ items }: Props) {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6">
+      <div className="flex overflow-x-auto gap-6 hide-scrollbar">
         {lowestItems &&
           lowestItems?.slice(0, 5).map((item) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>

@@ -17,7 +17,7 @@ type Props = {
 
 export default function ResultsRow({ itemResult }: Props) {
   const determineLink = () => {
-    if (itemResult.type === 'location') {
+    if (itemResult.type === 'tap_water') {
       return `/location/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
     } else if (itemResult.type === 'filter') {
       return `/filter/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`

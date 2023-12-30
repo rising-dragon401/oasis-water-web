@@ -1,4 +1,4 @@
-const Logo = ({ className = '', ...props }) => (
+export const Logo = ({ className = '', ...props }) => (
   <svg
     width="56"
     height="70"

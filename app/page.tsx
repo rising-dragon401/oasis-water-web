@@ -16,20 +16,20 @@ export default async function Home() {
 
   return (
     <SubpageLayout>
-      <div className="flex h-full flex-col justify-center pt-36 md:px-8">
-        <div className="mb-14 max-w-lg">
+      <div className="flex h-full flex-col pt-28 md:px-8 ">
+        <div className="mb-14 flex flex-col w-full items-center justify-center gap-14">
           <Typography size="5xl" fontWeight="bold">
             Do you know what&apos;s in your water?
           </Typography>
-        </div>
 
-        <BasicSearch showSearch={true} />
+          <BasicSearch showSearch={true} />
+        </div>
 
         {/* <div className="md:mt-56 mt-32  mb-32">
           <BlogPreviewSection />
         </div> */}
 
-        <div className="flex flex-col mt-32 mb-10">
+        <div className="flex flex-col mt-14 mb-10">
           <TopRatedSection items={items} />
         </div>
 

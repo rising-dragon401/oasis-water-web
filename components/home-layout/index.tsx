@@ -1,7 +1,7 @@
 import Footer from '@/components/footer'
-import HomeNavbar from '@/components/home-navbar'
+import HomeNavbar from '@/components/menu/home-navbar'
 import { PropsWithChildren } from 'react'
-import MobileNavbar from '@/components/mobile-navbar'
+import MobileNavbar from '@/components/menu/mobile-navbar'
 import Link from 'next/link'
 import Logo from '@/components/logo'
 import Typography from '@/components/typography'
@@ -24,7 +24,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
         </Link>
 
         <div className="flex flex-row items-center gap-2">
-          <div className="w-56 flex justify-end">
+          <div className="flex justify-end">
             <BasicSearch showSearch={false} />
           </div>
           <MobileNavbar />

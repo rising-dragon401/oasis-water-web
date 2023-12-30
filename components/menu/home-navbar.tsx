@@ -8,11 +8,11 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
-
 import Logo from '@/components/logo'
-import Typography from './typography'
+import Typography from '../typography'
 import { useState, useEffect } from 'react'
 import BasicSearch from '@/components/basic-search'
+import { AccountMenu } from './account-menu'
 
 export default function HomeNavbar() {
   const [isMounted, setIsMounted] = useState(false)
@@ -78,13 +78,8 @@ export default function HomeNavbar() {
 
         <NavigationMenuList>
           <BasicSearch showSearch={false} />
-          {/* <NavigationMenuItem>
-            <NavigationMenuItem className="ml-2">
-              <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.5 }}>
-                <CTAButton />
-              </motion.div>
-            </NavigationMenuItem>
-          </NavigationMenuItem> */}
+
+          <AccountMenu />
         </NavigationMenuList>
       </NavigationMenu>
     )

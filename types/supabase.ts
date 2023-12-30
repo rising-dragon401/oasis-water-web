@@ -56,6 +56,38 @@ export interface Database {
         }
         Relationships: []
       }
+      favorites: {
+        Row: {
+          created_at: string
+          id: number
+          item_id: number
+          type: Database["public"]["Enums"]["item_type"] | null
+          uid: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          item_id: number
+          type?: Database["public"]["Enums"]["item_type"] | null
+          uid?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          item_id?: number
+          type?: Database["public"]["Enums"]["item_type"] | null
+          uid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "favorites_uid_fkey"
+            columns: ["uid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       ingredients: {
         Row: {
           benefits: string | null
@@ -117,7 +149,7 @@ export interface Database {
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
-          type: Database["public"]["Enums"]["item_type"] | null
+          type: Database["public"]["Enums"]["item_type"]
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -140,7 +172,7 @@ export interface Database {
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
-          type?: Database["public"]["Enums"]["item_type"] | null
+          type: Database["public"]["Enums"]["item_type"]
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -163,7 +195,7 @@ export interface Database {
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
-          type?: Database["public"]["Enums"]["item_type"] | null
+          type?: Database["public"]["Enums"]["item_type"]
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -271,6 +303,7 @@ export interface Database {
           name: string
           score: number | null
           total_contaminants: number | null
+          type: Database["public"]["Enums"]["item_type"]
           utility: string | null
           zip_codes: number[]
         }
@@ -283,6 +316,7 @@ export interface Database {
           name: string
           score?: number | null
           total_contaminants?: number | null
+          type: Database["public"]["Enums"]["item_type"]
           utility?: string | null
           zip_codes: number[]
         }
@@ -295,10 +329,43 @@ export interface Database {
           name?: string
           score?: number | null
           total_contaminants?: number | null
+          type?: Database["public"]["Enums"]["item_type"]
           utility?: string | null
           zip_codes?: number[]
         }
         Relationships: []
+      }
+      users: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       water_filters: {
         Row: {
@@ -313,6 +380,7 @@ export interface Database {
           recommended: boolean | null
           score: number
           sources: Json[] | null
+          type: Database["public"]["Enums"]["item_type"]
         }
         Insert: {
           affiliate_url?: string | null
@@ -326,6 +394,7 @@ export interface Database {
           recommended?: boolean | null
           score: number
           sources?: Json[] | null
+          type: Database["public"]["Enums"]["item_type"]
         }
         Update: {
           affiliate_url?: string | null
@@ -339,6 +408,7 @@ export interface Database {
           recommended?: boolean | null
           score?: number
           sources?: Json[] | null
+          type?: Database["public"]["Enums"]["item_type"]
         }
         Relationships: [
           {
@@ -439,7 +509,7 @@ export interface Database {
         | "aquifier"
         | "iceberg"
         | "well"
-      item_type: "bottled_water"
+      item_type: "bottled_water" | "tap_water" | "filter"
     }
     CompositeTypes: {
       [_ in never]: never

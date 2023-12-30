@@ -32,7 +32,7 @@ export default function RecommendedRow() {
         </Link> */}
       </div>
 
-      <div className="flex overflow-x-auto gap-6">
+      <div className="flex overflow-x-auto gap-6 hide-scrollbar">
         {ranked &&
           ranked.map((item: any) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>

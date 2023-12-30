@@ -25,7 +25,7 @@ export default function FilterSection({ filters }: Props) {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6">
+      <div className="flex overflow-x-auto gap-6 hide-scrollbar">
         {topFilters &&
           topFilters?.slice(0, 3).map((filter) => (
             <div key={filter.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
