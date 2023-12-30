@@ -18,35 +18,17 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
   const router = useRouter()
   const pathname = usePathname()
 
-  const homePages = [
-    '/',
-    '/manifesto',
-    '/legal/terms-of-use',
-    '/legal/privacy-policy',
-    '/blog',
-    '/auth/signin',
-  ]
+  const authPages = ['/favorites']
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        router.push('/')
+      console.log('auth state changed')
+      const userData = await getCurrentUserData()
 
-        // const userData = await getCurrentUserData();
-        // if (homePages.includes(pathname)) {
-        //   if (userData && !userData.has_onboarded) {
-        //     router.push('/onboarding');
-        //   } else {
-        //     router.push('/dashboard/assistant');
-        //   }
-        // }
-
-        router.refresh()
-      } else if (!session?.user && !homePages.includes(pathname)) {
-        // direct to home if not signed in
-        router.push('/')
+      if (authPages.includes(pathname) && !userData) {
+        router.push('/auth/signin')
       }
     })
 
