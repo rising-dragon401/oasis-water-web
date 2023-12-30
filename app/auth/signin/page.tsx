@@ -4,18 +4,15 @@ import { getSession } from '@/app/supabase-server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { AUTH_IMAGES } from '@/lib/constants/images'
-import { useSupabase } from '@/app/supabase-provider'
 
 export default async function SignIn() {
   const session = await getSession()
-
-  console.log('session: ', session)
 
   let showToast = false
   let toastMessage = ''
 
   if (session) {
-    // return redirect('/')
+    return redirect('/')
   }
 
   const image = AUTH_IMAGES[Math.floor(Math.random() * AUTH_IMAGES.length)]

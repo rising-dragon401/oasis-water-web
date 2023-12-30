@@ -7,13 +7,16 @@ import { Item, TapWaterLocation, Filter } from '@/types/custom'
 import useUser from '@/lib/hooks/use-user'
 import { FaHeart, FaRegHeart } from 'react-icons/fa6'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   item: Item | TapWaterLocation | Filter
+  size?: number
 }
 
-export default function FavoriteButton({ item }: Props) {
+export default function FavoriteButton({ item, size = 18 }: Props) {
   const { uid, userFavorites } = useUser()
+  const router = useRouter()
 
   const isItemInFavorites = useMemo(
     () =>
@@ -28,6 +31,7 @@ export default function FavoriteButton({ item }: Props) {
 
     // first check if user is logged in
     if (!uid) {
+      router.push('/auth/signin')
       return
     }
 
@@ -53,9 +57,9 @@ export default function FavoriteButton({ item }: Props) {
   return (
     <Button variant="ghost" onClick={(e) => handleFavoriteClick(e)}>
       {isItemInFavorites ? (
-        <FaHeart size={18} className="text-primary" />
+        <FaHeart size={size} className="text-primary" />
       ) : (
-        <FaRegHeart size={18} className="text-primary" />
+        <FaRegHeart size={size} className="text-primary" />
       )}
     </Button>
   )

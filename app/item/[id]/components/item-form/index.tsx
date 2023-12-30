@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
 import ContaminantCard from '@/components/contaminant-card'
 import Sources from '@/components/sources'
+import FavoriteButton from '@/components/favorite-button'
 
 type Props = {
   id: string
@@ -42,13 +43,18 @@ export default function ItemForm({ id }: Props) {
       <div className="py-10">
         <Suspense fallback={<div>Loading...</div>}>
           <div className="flex md:flex-row flex-col gap-6">
-            <Image
-              src={item.image}
-              alt={item.name}
-              width={400}
-              height={400}
-              className="rounded-lg"
-            />
+            <div className="relative">
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={400}
+                height={400}
+                className="rounded-lg"
+              />
+              <div className="absolute top-0 right-0 p-2 cursor-pointer">
+                <FavoriteButton item={item} size={28} />
+              </div>
+            </div>
 
             <div className="flex md:flex-row flex-col gap-2 w-full">
               <div className="flex flex-col md:gap-2 md:w-3/5">
