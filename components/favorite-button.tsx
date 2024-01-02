@@ -3,14 +3,14 @@
 import { removeFavorite, addFavorite } from '@/app/actions/user'
 import { mutate } from 'swr'
 import React, { useMemo } from 'react'
-import { Item, TapWaterLocation, Filter } from '@/types/custom'
+import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import useUser from '@/lib/hooks/use-user'
 import { FaHeart, FaRegHeart } from 'react-icons/fa6'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 
 type Props = {
-  item: Item | TapWaterLocation | Filter
+  item: Item | TapWaterLocation | WaterFilter
   size?: number
 }
 

@@ -36,10 +36,7 @@ export default function RecommendedRow() {
         {ranked &&
           ranked.map((item: any) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard
-                item={item}
-                href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
-              />
+              <ItemPreviewCard item={item} />
             </div>
           ))}
       </div>

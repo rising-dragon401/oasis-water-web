@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next'
-import { TapWaterLocation, Filter, Item } from '@/types/custom'
+import { TapWaterLocation, WaterFilter, Item } from '@/types/custom'
 import { getLocations } from './api/actions/locations'
 import { getItems } from './api/actions/items'
 import { getFilters } from './api/actions/filters'
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const filterPaths =
     (filters &&
       filters.map(
-        (filter: Filter) =>
+        (filter: WaterFilter) =>
           `/filter/${filter.id}?name=${filter.name.toLowerCase().replace(/ /g, '-')}`
       )) ||
     []

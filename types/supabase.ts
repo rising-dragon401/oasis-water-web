@@ -134,7 +134,7 @@ export interface Database {
         Row: {
           affiliate_url: string | null
           brand: number | null
-          company: number | null
+          company: number
           contaminants: Json[] | null
           created_at: string
           description: string | null
@@ -157,7 +157,7 @@ export interface Database {
         Insert: {
           affiliate_url?: string | null
           brand?: number | null
-          company?: number | null
+          company: number
           contaminants?: Json[] | null
           created_at?: string
           description?: string | null
@@ -180,7 +180,7 @@ export interface Database {
         Update: {
           affiliate_url?: string | null
           brand?: number | null
-          company?: number | null
+          company?: number
           contaminants?: Json[] | null
           created_at?: string
           description?: string | null
@@ -371,6 +371,7 @@ export interface Database {
         Row: {
           affiliate_url: string | null
           brand: number | null
+          company: number
           contaminants_filtered: number[] | null
           created_at: string
           description: string | null
@@ -385,6 +386,7 @@ export interface Database {
         Insert: {
           affiliate_url?: string | null
           brand?: number | null
+          company: number
           contaminants_filtered?: number[] | null
           created_at?: string
           description?: string | null
@@ -399,6 +401,7 @@ export interface Database {
         Update: {
           affiliate_url?: string | null
           brand?: number | null
+          company?: number
           contaminants_filtered?: number[] | null
           created_at?: string
           description?: string | null
@@ -416,6 +419,13 @@ export interface Database {
             columns: ["brand"]
             isOneToOne: false
             referencedRelation: "brands"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "water_filters_company_fkey"
+            columns: ["company"]
+            isOneToOne: false
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           }
         ]

@@ -6,7 +6,6 @@ import {
   Item,
   TapWaterLocation,
   WaterFilter,
-  Filter,
   IngredientDescriptor,
 } from '@/types/custom'
 

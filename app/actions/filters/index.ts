@@ -5,7 +5,25 @@ import { supabase } from '@/utils/supabase'
 export const getFilters = async () => {
   const { data: filters, error } = await supabase.from('water_filters').select()
 
-  return filters
+  if (!filters) {
+    return []
+  }
+
+  const filtersWithCompany = await Promise.all(
+    filters.map(async (filter) => {
+      const { data: company, error: companyError } = await supabase
+        .from('companies')
+        .select('name')
+        .eq('id', filter.company)
+
+      return {
+        ...filter,
+        company_name: company ? company[0].name : null,
+      }
+    })
+  )
+
+  return filtersWithCompany
 }
 
 export const searchFilters = async (query: string) => {
@@ -58,8 +76,28 @@ export const getFilterDetails = async (id: string) => {
     )
   }
 
+  const companyId = item[0].company
+  const brandId = item[0].brand
+
+  let brand = null
+  if (brandId) {
+    const { data, error: brandError } = await supabase.from('brands').select().eq('id', brandId)
+    brand = data ? data[0] : null
+  }
+
+  let company = null
+  if (companyId) {
+    const { data, error: companyError } = await supabase
+      .from('companies')
+      .select()
+      .eq('id', companyId)
+    company = data ? data[0] : null
+  }
+
   const filterWithDetails = {
     ...item[0],
+    brand,
+    company,
     contaminants_filtered: contaminantData,
   }
 

@@ -9,8 +9,8 @@ import RecommendedRow from '@/components/recommended-row'
 import ContaminantCard from '@/components/contaminant-card'
 import Sources from '@/components/sources'
 import { getFilterDetails, getAllContaminants } from '@/app/actions/filters'
-import { WATER_CONTAMINANTS } from '../../constants/contaminants'
 import useSWR from 'swr'
+import Link from 'next/link'
 
 type Props = {
   id: string
@@ -64,6 +64,11 @@ export default function FilterForm({ id }: Props) {
               <Typography size="3xl" fontWeight="normal">
                 {filter.name}
               </Typography>
+              <Link href={`/company/${filter.company?.name}`}>
+                <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
+                  {filter.brand?.name} - {filter.company?.name}
+                </Typography>
+              </Link>
               <Score score={filter.score} isFull={true} />
             </div>
           </div>

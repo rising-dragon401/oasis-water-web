@@ -79,13 +79,7 @@ export default function BottledWaterList({ items }: Props) {
         {sorted &&
           sorted
             .filter((item) => item.score !== null)
-            .map((item) => (
-              <ItemPreviewCard
-                key={item.id}
-                item={item}
-                href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
-              />
-            ))}
+            .map((item) => <ItemPreviewCard key={item.id} item={item} />)}
       </div>
 
       <div className="pt-4 pb-8 flex flex-row justify-between mt-24">
@@ -98,13 +92,7 @@ export default function BottledWaterList({ items }: Props) {
         {sorted &&
           sorted
             .filter((item) => item.score === null)
-            .map((item) => (
-              <ItemPreviewCard
-                key={item.id}
-                item={item}
-                href={`/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`}
-              />
-            ))}
+            .map((item) => <ItemPreviewCard key={item.id} item={item} />)}
       </div>
     </div>
   )

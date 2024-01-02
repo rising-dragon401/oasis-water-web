@@ -5,7 +5,25 @@ import { supabase } from '@/utils/supabase'
 export const getItems = async () => {
   const { data: items, error } = await supabase.from('items').select()
 
-  return items
+  if (!items) {
+    return []
+  }
+
+  const itemsWithCompany = await Promise.all(
+    items.map(async (item) => {
+      const { data: company, error: companyError } = await supabase
+        .from('companies')
+        .select('name')
+        .eq('id', item.company)
+
+      return {
+        ...item,
+        company_name: company ? company[0].name : null,
+      }
+    })
+  )
+
+  return itemsWithCompany
 }
 
 export const searchItems = async (query: string) => {

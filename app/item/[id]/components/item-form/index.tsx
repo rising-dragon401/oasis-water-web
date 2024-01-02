@@ -14,6 +14,7 @@ import { ArrowUpRight } from 'lucide-react'
 import ContaminantCard from '@/components/contaminant-card'
 import Sources from '@/components/sources'
 import FavoriteButton from '@/components/favorite-button'
+import Link from 'next/link'
 
 type Props = {
   id: string
@@ -61,9 +62,11 @@ export default function ItemForm({ id }: Props) {
                 <Typography size="3xl" fontWeight="normal">
                   {item.name}
                 </Typography>
-                <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
-                  {item.brand?.name} - {item.company?.name}
-                </Typography>
+                <Link href={`/company/${item.company?.name}`}>
+                  <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
+                    {item.brand?.name} - {item.company?.name}
+                  </Typography>
+                </Link>
 
                 {item.is_indexed !== false && (
                   <>

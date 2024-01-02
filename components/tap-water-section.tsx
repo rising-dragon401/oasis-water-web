@@ -29,11 +29,7 @@ export default function TapWaterSection({ locations }: Props) {
         {topItems &&
           topItems?.slice(0, 3).map((item) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard
-                key={item.name}
-                item={item}
-                href={`/location/${item.id}?id=${item.name.toLowerCase().replace(/ /g, '-')}`}
-              />
+              <ItemPreviewCard key={item.name} item={item} />
             </div>
           ))}
       </div>

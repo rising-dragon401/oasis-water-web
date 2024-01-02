@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import Typography from '@/components/typography'
 import React, { useMemo } from 'react'
-import { Filter } from '@/types/custom'
+import { WaterFilter } from '@/types/custom'
 import ItemPreviewCard from '@/components/item-preview-card'
 
 type Props = {
-  filters: Filter[] | null
+  filters: WaterFilter[] | null
 }
 
 export default function FilterSection({ filters }: Props) {
@@ -29,11 +29,7 @@ export default function FilterSection({ filters }: Props) {
         {topFilters &&
           topFilters?.slice(0, 3).map((filter) => (
             <div key={filter.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard
-                key={filter.name}
-                item={filter}
-                href={`/filter/${filter.id}?id=${filter.name.toLowerCase().replace(/ /g, '-')}`}
-              />
+              <ItemPreviewCard key={filter.name} item={filter} />
             </div>
           ))}
       </div>
