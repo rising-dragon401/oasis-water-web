@@ -11,7 +11,7 @@ import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/recommended-row'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
-import ContaminantCard from '@/components/contaminant-card'
+import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
 import FavoriteButton from '@/components/favorite-button'
 import Link from 'next/link'
@@ -92,7 +92,7 @@ export default function ItemForm({ id }: Props) {
                           Recommended
                         </Typography>
                       )}
-                      {item.recommended && item.affiliate_url && (
+                      {item.affiliate_url && (
                         <Button
                           variant="outline"
                           className="bg-card"

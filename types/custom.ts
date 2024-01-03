@@ -15,3 +15,7 @@ export type IngredientDescriptor = {
   ingredient_id: string
 }
 export type Company = Database['public']['Tables']['companies']['Row']
+export type Source = {
+  url: string
+  label: string
+}

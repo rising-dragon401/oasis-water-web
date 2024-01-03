@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Score from '@/components/score'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/recommended-row'
-import ContaminantCard from '@/components/contaminant-card'
+import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
 
 type Props = {

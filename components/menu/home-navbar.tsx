@@ -40,12 +40,6 @@ export default function HomeNavbar() {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <Link href="/" className={navigationMenuTriggerStyle()}>
-              Home
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
             <Link href="/bottled-water" className={navigationMenuTriggerStyle()}>
               Bottled Water
             </Link>

@@ -6,11 +6,13 @@ import Image from 'next/image'
 import Score from '@/components/score'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/recommended-row'
-import ContaminantCard from '@/components/contaminant-card'
+import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
 import { getFilterDetails, getAllContaminants } from '@/app/actions/filters'
 import useSWR from 'swr'
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 type Props = {
   id: string
@@ -71,6 +73,19 @@ export default function FilterForm({ id }: Props) {
               </Link>
               <Score score={filter.score} isFull={true} />
             </div>
+
+            {filter.affiliate_url && (
+              <Button
+                variant="outline"
+                className="bg-card"
+                onClick={() => {
+                  window.open(filter.affiliate_url, '_blank')
+                }}
+              >
+                {' '}
+                Shop <ArrowUpRight size={16} className="ml-2" />
+              </Button>
+            )}
           </div>
 
           {notFilteredContaminants && (
