@@ -5,7 +5,7 @@ export const Logo = ({ className = '', ...props }) => (
     viewBox="0 0 71.58 120"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="w-14 h-14 p-2"
+    className="w-8 h-8"
     {...props}
   >
     <g>

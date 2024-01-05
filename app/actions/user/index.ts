@@ -1,8 +1,8 @@
 'use server'
 
 import { getSession } from '@/app/supabase-server'
-import { supabase } from '@/utils/supabase'
 import { ItemType } from '@/types/custom'
+import { supabase } from '@/app/api/utils/supabase-server-client'
 
 export async function getUserId() {
   const session = await getSession()

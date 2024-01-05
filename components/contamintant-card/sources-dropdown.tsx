@@ -27,9 +27,7 @@ export function SourcesDropdown({ sources }: Props) {
         <DropdownMenuGroup>
           {sources.map((source: Source) => (
             <DropdownMenuItem key={source.url}>
-              <Link href={source.url}>
-                <a>{source.label}</a>
-              </Link>
+              <Link href={source.url}>{source.label} </Link>
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>

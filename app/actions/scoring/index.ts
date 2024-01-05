@@ -1,6 +1,6 @@
 'use server'
 
-import { supabase } from '@/utils/supabase'
+import { supabase } from '@/app/api/utils/supabase-server-client'
 import {
   Ingredient,
   Item,

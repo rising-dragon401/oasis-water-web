@@ -1,5 +1,4 @@
 import AuthUI from './auth-ui'
-import { getCurrentUserData } from '@/app/actions/user'
 import { getSession } from '@/app/supabase-server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'

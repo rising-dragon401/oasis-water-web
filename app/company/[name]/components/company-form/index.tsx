@@ -51,23 +51,21 @@ export default function CompanyForm({ name }: Props) {
   return (
     <>
       <div className="py-10 md:px-4">
-        <Suspense fallback={<div>Loading...</div>}>
-          <div className="flex md:flex-row flex-col gap-6">
-            <div className="flex flex-col gap-6 ">
-              <Typography size="3xl" fontWeight="normal">
-                {company.name}
-              </Typography>
-            </div>
-          </div>
-          <div className="flex flex-col gap-6 mt-10">
-            <Typography size="xl" fontWeight="normal">
-              Products
+        <div className="flex md:flex-row flex-col gap-6">
+          <div className="flex flex-col gap-6 ">
+            <Typography size="3xl" fontWeight="normal">
+              {company.name}
             </Typography>
-            <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
-              {items && items.map((item: any) => <ItemPreviewCard key={item.id} item={item} />)}
-            </div>
           </div>
-        </Suspense>
+        </div>
+        <div className="flex flex-col gap-6 mt-10">
+          <Typography size="xl" fontWeight="normal">
+            Products
+          </Typography>
+          <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
+            {items && items.map((item: any) => <ItemPreviewCard key={item.id} item={item} />)}
+          </div>
+        </div>
       </div>
     </>
   )

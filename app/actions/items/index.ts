@@ -1,6 +1,6 @@
 'use server'
 
-import { supabase } from '@/utils/supabase'
+import { supabase } from '@/app/api/utils/supabase-server-client'
 
 export const getItems = async () => {
   const { data: items, error } = await supabase.from('items').select()
@@ -72,7 +72,7 @@ export const getItemDetails = async (id: string) => {
   let ingredientsDetails: any[] = []
   if (ingredients && ingredients.length > 0) {
     ingredientsDetails = await Promise.all(
-      ingredients.map(async (ingredient) => {
+      ingredients.map(async (ingredient: any) => {
         if (!ingredient) {
           return null
         }

@@ -4,7 +4,6 @@ import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-  NavigationMenuLink,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
@@ -22,12 +21,12 @@ export default function HomeNavbar() {
     setIsMounted(true)
   }, [])
 
-  // This is a conditional rendering that returns null if the component is not mounted yet
+  // See: https://stackoverflow.com/questions/75094010/nextjs-13-hydration-failed-because-the-initial-ui-does-not-match-what-was-render
   if (!isMounted) {
     return null
   } else {
     return (
-      <NavigationMenu className="flex flex-row w-full justify-between py-2 md:px-8 px-4 list-none">
+      <NavigationMenu className="flex flex-row w-full justify-between py-2 list-none">
         <NavigationMenuList>
           <NavigationMenuItem className="mr-4">
             <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">

@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -12,13 +14,23 @@ import { WaterFilter } from '@/types/custom'
 import Link from 'next/link'
 import { getFiltersByContaminant } from '@/app/actions/filters'
 import Typography from '@/components/typography'
+import React, { useEffect, useState } from 'react'
 
 type Props = {
   contaminantId: number
 }
 
-export async function ContaminantFiltersDropdown({ contaminantId }: Props) {
-  const filters = await getFiltersByContaminant(contaminantId)
+export function ContaminantFiltersDropdown({ contaminantId }: Props) {
+  const [filters, setFilters] = useState<WaterFilter[]>([])
+
+  useEffect(() => {
+    const fetchFilters = async () => {
+      const result = await getFiltersByContaminant(contaminantId)
+      setFilters(result)
+    }
+
+    fetchFilters()
+  }, [contaminantId])
 
   return (
     <DropdownMenu>

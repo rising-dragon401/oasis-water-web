@@ -1,18 +1,20 @@
-import { Database } from '@/types/supabase'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import { cache } from 'react'
+'use server'
 
-export const createServerSupabaseClient = cache(() =>
-  createServerComponentClient<Database>({ cookies })
-)
+import { cookies } from 'next/headers'
+import { createClient } from '@/utils/supabase/server'
 
 export async function getSession() {
-  const supabase = createServerSupabaseClient()
+  const supabase = createClient(cookies())
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   try {
     const {
       data: { session },
     } = await supabase.auth.getSession()
+
     return session
   } catch (error) {
     console.error('Error:', error)
@@ -21,7 +23,7 @@ export async function getSession() {
 }
 
 export async function getUserDetails() {
-  const supabase = createServerSupabaseClient()
+  const supabase = createClient(cookies())
   try {
     const { data: userDetails } = await supabase.from('users').select('*').single()
     return userDetails

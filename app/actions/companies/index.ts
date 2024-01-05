@@ -1,6 +1,6 @@
 'use server'
 
-import { supabase } from '@/utils/supabase'
+import { supabase } from '@/app/api/utils/supabase-server-client'
 
 export const getCompanyByName = async (name: string) => {
   const { data: company, error } = await supabase.from('companies').select().eq('name', name)

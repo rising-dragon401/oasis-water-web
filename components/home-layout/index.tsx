@@ -9,7 +9,7 @@ import BasicSearch from '@/components/basic-search'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
   return (
-    <div className="min-h-[100vh]">
+    <div className="min-h-[100vh] px-8">
       <div className="md:block hidden">
         <HomeNavbar />
       </div>
@@ -31,7 +31,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
         </div>
       </div>
 
-      <div className="px-8 py-3 w-full min-h-[70vh]">{children}</div>
+      <div className=" py-3 w-full min-h-[70vh]">{children}</div>
 
       <Footer />
     </div>
