@@ -77,7 +77,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               )}
             </div>
             {results.length > 0 && (
-              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-md absolute top-10 w-full">
+              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-md absolute top-10 w-full z-10">
                 {results.map((result) => (
                   <ResultsRow key={result.id} itemResult={result} />
                 ))}

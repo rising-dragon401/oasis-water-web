@@ -45,14 +45,18 @@ export default function ContaminantCard({ data }: Props) {
               </div>
             )}
             {!exceedingHealthGuideline && exceedingLegalLimit && exceedingLegalLimit > 0 && (
-              <>
-                <Typography size="4xl" fontWeight="normal">
+              <div className=" rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
+                <Typography size="xl" fontWeight="normal" className="!text-background">
                   {exceedingLegalLimit}x
                 </Typography>
-                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                <Typography
+                  size="xs"
+                  fontWeight="normal"
+                  className="!text-secondary-foreground flex-wrap"
+                >
                   Limit
                 </Typography>
-              </>
+              </div>
             )}
           </div>
         </CardTitle>

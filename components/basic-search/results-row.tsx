@@ -28,7 +28,7 @@ export default function ResultsRow({ itemResult }: Props) {
 
   return (
     <Link
-      className="flex flex-row gap-2 px-2 py-1 justify-between items-center hover:opacity-70"
+      className="flex flex-row gap-2 px-2 py-1 justify-between items-center hover:opacity-70 "
       href={determineLink()}
     >
       <div className="flex flex-row gap-2 items-center">

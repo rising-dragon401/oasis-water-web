@@ -2,7 +2,7 @@
 
 import Typography from '@/components/typography'
 import { getItemDetails } from '@/app/actions/items'
-import React, { useEffect, useState, Suspense } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Score from '@/components/score'
 import MetaDataCard from '../metadata-card'
