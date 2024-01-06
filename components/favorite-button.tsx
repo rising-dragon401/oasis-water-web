@@ -4,7 +4,7 @@ import { removeFavorite, addFavorite } from '@/app/actions/user'
 import { mutate } from 'swr'
 import React, { useMemo } from 'react'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
-import useUser from '@/lib/hooks/use-user'
+import { useUserProvider } from '@/providers/UserProvider'
 import { FaHeart, FaRegHeart } from 'react-icons/fa6'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
@@ -15,11 +15,12 @@ type Props = {
 }
 
 export default function FavoriteButton({ item, size = 18 }: Props) {
-  const { uid, userFavorites } = useUser()
+  const { userFavorites, uid } = useUserProvider()
   const router = useRouter()
 
   const isItemInFavorites = useMemo(
     () =>
+      userFavorites &&
       userFavorites.some(
         (favorite) => favorite && favorite.id === item.id && favorite.type === item.type
       ),
@@ -35,7 +36,7 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
       return
     }
 
-    if (userFavorites.length === 0) {
+    if (userFavorites && userFavorites.length === 0) {
       console.log('add item to favorites')
       addFavorite(uid, item.type, item.id)
       return

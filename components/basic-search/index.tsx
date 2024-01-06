@@ -10,7 +10,7 @@ import ResultsRow from './results-row'
 import { Search } from 'lucide-react'
 import { Loader2 } from 'lucide-react'
 import { searchFilters } from '@/app/actions/filters'
-import { scoreItems } from '@/app/actions/scoring'
+// import { scoreItems } from '@/app/actions/scoring'
 
 export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)

@@ -50,7 +50,7 @@ export default function CompanyForm({ name }: Props) {
 
   return (
     <>
-      <div className="py-10 md:px-4">
+      <div className="md:py-10 py-6 md:px-4">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="flex flex-col gap-6 ">
             <Typography size="3xl" fontWeight="normal">

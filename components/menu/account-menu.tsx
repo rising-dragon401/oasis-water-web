@@ -6,20 +6,18 @@ import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
-import useUser from '@/lib/hooks/use-user'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
+import { useUserProvider } from '@/providers/UserProvider'
 
 export function AccountMenu() {
-  const { uid, userData } = useUser()
+  const { uid, userData } = useUserProvider()
 
   if (!uid || !userData) {
     return (

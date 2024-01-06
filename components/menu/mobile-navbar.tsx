@@ -13,11 +13,11 @@ import {
 import { Menu, X } from 'lucide-react'
 import React from 'react'
 import SignOutButton from './sign-out-button'
-import useUser from '@/lib/hooks/use-user'
 import { useEffect, useState } from 'react'
+import { useUserProvider } from '@/providers/UserProvider'
 
 export default function MobileNavbar() {
-  const { uid, userData } = useUser()
+  const { uid, userData } = useUserProvider()
   const [isOpen, setIsOpen] = React.useState(false)
   const [isMounted, setIsMounted] = useState(false)
 

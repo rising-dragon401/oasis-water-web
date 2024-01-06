@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from '@/components/ui/toaster'
 import { CSPostHogProvider } from './providers'
 import SupabaseProvider from './supabase-provider'
+import UserProvider from '@/providers/UserProvider'
 
 import '@/styles/globals.css'
 
@@ -59,9 +60,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <CSPostHogProvider>
         <body>
           <SupabaseProvider>
-            <main id="skip" className="h-[calc(100dvh)]">
-              {children}
-            </main>
+            <UserProvider>
+              <main id="skip" className="h-[calc(100dvh)]">
+                {children}
+              </main>
+            </UserProvider>
             <Analytics />
             <Toaster />
           </SupabaseProvider>

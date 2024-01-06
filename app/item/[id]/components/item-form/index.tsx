@@ -39,16 +39,18 @@ export default function ItemForm({ id }: Props) {
     return <ItemSkeleton />
   }
 
+  console.log(item)
+
   return (
     <>
-      <div className="py-10">
+      <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="relative">
             <Image
               src={item.image}
               alt={item.name}
-              width={400}
-              height={400}
+              width={700}
+              height={700}
               className="rounded-lg"
             />
             <div className="absolute top-0 right-0 p-2 cursor-pointer">
@@ -138,8 +140,8 @@ export default function ItemForm({ id }: Props) {
                   Contaminants ☠️
                 </Typography>
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                  {item.contaminants.map((contaminant: any) => (
-                    <ContaminantCard key={contaminant.id} data={contaminant} />
+                  {item.contaminants.map((contaminant: any, index: number) => (
+                    <ContaminantCard key={contaminant.id || index} data={contaminant} />
                   ))}
                 </div>
               </div>

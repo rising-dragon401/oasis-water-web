@@ -9,12 +9,12 @@ import BasicSearch from '@/components/basic-search'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
   return (
-    <div className="min-h-[100vh] px-8">
+    <div className="min-h-[100vh] ">
       <div className="md:block hidden">
         <HomeNavbar />
       </div>
 
-      <div className="md:hidden flex flex-row justify-between items-center px-4">
+      <div className="md:hidden flex flex-row justify-between items-center px-4 pt-1">
         <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
           <Logo />
 
@@ -31,7 +31,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
         </div>
       </div>
 
-      <div className=" py-3 w-full min-h-[70vh]">{children}</div>
+      <div className=" py-3 w-full min-h-[70vh] md:px-8 px-4">{children}</div>
 
       <Footer />
     </div>
