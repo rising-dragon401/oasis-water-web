@@ -2,7 +2,7 @@
 
 import { getSession } from '@/app/supabase-server'
 import { ItemType } from '@/types/custom'
-import { supabase } from '@/app/api/utils/supabase-server-client'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export async function getUserId() {
   const session = await getSession()
@@ -17,6 +17,7 @@ export async function getUserId() {
 }
 
 export async function getCurrentUserData() {
+  const supabase = await createSupabaseServerClient()
   const session = await getSession()
 
   const user = session?.user
@@ -48,6 +49,7 @@ export async function getCurrentUserEmail() {
 }
 
 export async function updateUserFullName(uid: string, fullName: string) {
+  const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
     .from('users')
     .update({ full_name: fullName })
@@ -62,6 +64,7 @@ export async function updateUserFullName(uid: string, fullName: string) {
 }
 
 export async function getUserFavorites() {
+  const supabase = await createSupabaseServerClient()
   const session = await getSession()
 
   const user = session?.user
@@ -123,6 +126,7 @@ export async function getUserFavorites() {
 }
 
 export async function addFavorite(uid: string, type: ItemType, itemId: number) {
+  const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
     .from('favorites')
     .insert({ uid: uid, type: type, item_id: itemId })
@@ -136,6 +140,7 @@ export async function addFavorite(uid: string, type: ItemType, itemId: number) {
 }
 
 export async function removeFavorite(uid: string, type: string, itemId: number) {
+  const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
     .from('favorites')
     .delete()

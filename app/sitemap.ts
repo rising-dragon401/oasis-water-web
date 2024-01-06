@@ -1,9 +1,9 @@
 import { MetadataRoute } from 'next'
 import { TapWaterLocation, WaterFilter, Item } from '@/types/custom'
-import { getLocations } from './api/actions/locations'
-import { getItems } from './api/actions/items'
-import { getFilters } from './api/actions/filters'
 import { allPosts } from 'contentlayer/generated'
+import { getLocations } from '@/app/actions/locations'
+import { getItems } from '@/app/actions/items'
+import { getFilters } from '@/app/actions/filters'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const items = await getItems()

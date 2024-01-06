@@ -7,8 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import Typography from '@/components/typography'
-import { SourcesDropdown } from './sources-dropdown'
-import { Button } from '@/components/ui/button'
+import { ArticlesDropdown } from './articles-dropdown'
 import { ContaminantFiltersDropdown } from './contaminant-filters-dropdown'
 
 type Props = {
@@ -75,7 +74,7 @@ export default function ContaminantCard({ data }: Props) {
           <ContaminantFiltersDropdown contaminantId={data?.metadata.id || ''} />
 
           {data?.metadata.sources ? (
-            <SourcesDropdown sources={data?.metadata.sources || []} />
+            <ArticlesDropdown sources={data?.metadata.sources || []} />
           ) : (
             <div></div>
           )}

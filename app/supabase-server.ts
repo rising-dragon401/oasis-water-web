@@ -1,10 +1,9 @@
 'use server'
 
-import { cookies } from 'next/headers'
-import { createClient } from '@/utils/supabase/server'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export async function getSession() {
-  const supabase = createClient(cookies())
+  const supabase = await createSupabaseServerClient()
 
   const {
     data: { user },
@@ -23,7 +22,8 @@ export async function getSession() {
 }
 
 export async function getUserDetails() {
-  const supabase = createClient(cookies())
+  const supabase = await createSupabaseServerClient()
+
   try {
     const { data: userDetails } = await supabase.from('users').select('*').single()
     return userDetails

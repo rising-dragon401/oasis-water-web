@@ -1,8 +1,10 @@
 'use server'
 
-import { supabase } from '@/app/api/utils/supabase-server-client'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export const getCompanyByName = async (name: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: company, error } = await supabase.from('companies').select().eq('name', name)
 
   if (!company) {
@@ -13,6 +15,8 @@ export const getCompanyByName = async (name: string) => {
 }
 
 export const getCompanyItems = async (id: number) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: items } = await supabase.from('items').select().eq('company', id)
 
   if (!items) {

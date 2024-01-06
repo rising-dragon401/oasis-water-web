@@ -1,6 +1,6 @@
 'use server'
 
-import { supabase } from '@/app/api/utils/supabase-server-client'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 import {
   Ingredient,
   Item,
@@ -10,6 +10,7 @@ import {
 } from '@/types/custom'
 
 // export const scoreItems = async () => {
+// const supabase = await createSupabaseServerClient()
 //   let { data: items, error } = await supabase.from('items').select('*')
 
 //   if (error) throw error
@@ -156,6 +157,7 @@ import {
 // }
 
 // export const scoreLocations = async () => {
+// const supabase = await createSupabaseServerClient()
 //   // return false
 //   const { data: locations, error } = await supabase.from('tap_water_locations').select('*')
 
@@ -241,6 +243,7 @@ import {
 // }
 
 // export const scoreFilters = async () => {
+// const supabase = await createSupabaseServerClient()
 //   console.log('calculating filter scores')
 
 //   const { data: contaminants, error } = await supabase

@@ -1,14 +1,18 @@
 'use server'
 
-import { supabase } from '@/app/api/utils/supabase-server-client'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export const getLocations = async () => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: locations, error } = await supabase.from('tap_water_locations').select()
 
   return locations
 }
 
 export const searchLocations = async (query: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const queryNumber = parseInt(query)
 
   const { data: locationsByZip, error: zipError } = await supabase
@@ -38,6 +42,8 @@ export const searchLocations = async (query: string) => {
 }
 
 export const getLocationDetails = async (id: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: item, error } = await supabase.from('tap_water_locations').select().eq('id', id)
 
   if (!item) {
@@ -75,6 +81,8 @@ export const getLocationDetails = async (id: string) => {
 }
 
 export const getLocation = async (id: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: location, error } = await supabase
     .from('tap_water_locations')
     .select()

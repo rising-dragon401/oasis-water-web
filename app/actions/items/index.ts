@@ -1,8 +1,10 @@
 'use server'
 
-import { supabase } from '@/app/api/utils/supabase-server-client'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export const getItems = async () => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: items, error } = await supabase.from('items').select()
 
   if (!items) {
@@ -27,6 +29,8 @@ export const getItems = async () => {
 }
 
 export const searchItems = async (query: string) => {
+  const supabase = await createSupabaseServerClient()
+
   // Text search items
   const { data: items, error } = await supabase.from('items').select().textSearch('fts', query, {
     type: 'phrase',
@@ -47,11 +51,15 @@ export const searchItems = async (query: string) => {
 }
 
 export const getItem = async (id: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: item, error } = await supabase.from('items').select().eq('id', id).single()
   return item
 }
 
 export const getItemDetails = async (id: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: item, error } = await supabase.from('items').select().eq('id', id)
 
   if (!item) {
@@ -134,6 +142,8 @@ export const getItemDetails = async (id: string) => {
 }
 
 export const getRecommendedItems = async () => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: items, error } = await supabase.from('items').select().eq('recommended', true)
 
   return items || []

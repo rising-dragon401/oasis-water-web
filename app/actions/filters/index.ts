@@ -1,8 +1,10 @@
 'use server'
 
-import { supabase } from '@/app/api/utils/supabase-server-client'
+import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export const getFilters = async () => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: filters, error } = await supabase.from('water_filters').select()
 
   if (!filters) {
@@ -27,6 +29,8 @@ export const getFilters = async () => {
 }
 
 export const searchFilters = async (query: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: filters, error: nameError } = await supabase
     .from('water_filters')
     .select()
@@ -47,6 +51,8 @@ export const searchFilters = async (query: string) => {
 }
 
 export const getFilterDetails = async (id: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: item, error } = await supabase.from('water_filters').select().eq('id', id)
 
   if (!item) {
@@ -105,6 +111,8 @@ export const getFilterDetails = async (id: string) => {
 }
 
 export const getFilter = async (id: string) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: filter, error } = await supabase
     .from('water_filters')
     .select()
@@ -115,6 +123,8 @@ export const getFilter = async (id: string) => {
 }
 
 export const getAllContaminants = async () => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: contaminants, error } = await supabase
     .from('ingredients')
     .select()
@@ -134,6 +144,8 @@ export const getAllContaminants = async () => {
 }
 
 export const getFiltersByContaminant = async (contaminantId: number) => {
+  const supabase = await createSupabaseServerClient()
+
   const { data: filters, error } = await supabase
     .from('water_filters')
     .select()
