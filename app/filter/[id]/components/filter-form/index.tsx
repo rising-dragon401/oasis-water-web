@@ -32,14 +32,12 @@ export default function FilterForm({ id }: Props) {
 
   const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
 
-  const notFilteredContaminants =
-    allContaminants &&
-    allContaminants.filter(
-      (contaminant: any) =>
-        !filter?.contaminants_filtered?.some(
-          (filteredContaminant: any) => filteredContaminant === contaminant.id
-        )
-    )
+  const notFilteredContaminants = allContaminants?.filter(
+    (contaminant) =>
+      !filter.contaminants_filtered?.some(
+        (filtered: any) => filtered.metadata.id === contaminant.metadata.id
+      )
+  )
 
   useEffect(() => {
     fetchFilter(id)
@@ -103,7 +101,7 @@ export default function FilterForm({ id }: Props) {
         {filter.contaminants_filtered && (
           <div className="flex flex-col gap-6 mt-10">
             <Typography size="2xl" fontWeight="normal">
-              Contaminants Filtered ☠️
+              Contaminants Filtered ✅
             </Typography>
             <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
               {filter.contaminants_filtered.map((contaminant: any) => (

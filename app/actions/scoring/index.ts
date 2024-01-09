@@ -243,7 +243,7 @@ import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 // }
 
 // export const scoreFilters = async () => {
-// const supabase = await createSupabaseServerClient()
+//   const supabase = await createSupabaseServerClient()
 //   console.log('calculating filter scores')
 
 //   const { data: contaminants, error } = await supabase
