@@ -1,6 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/utils/supabase/server'
+import { IngredientDescriptor } from '@/types/custom'
 
 export const getItems = async () => {
   const supabase = await createSupabaseServerClient()
@@ -67,9 +68,22 @@ export const getItemDetails = async (id: string) => {
   }
 
   const brandId = item[0].brand
-  const ingredients = item[0].ingredients
+  const ingredients = item[0].ingredients as IngredientDescriptor[]
   const companyId = item[0].company
-  const contaminants = item[0].contaminants
+
+  console.log('ingredients: ', ingredients)
+
+  let contaminants = await Promise.all(
+    (ingredients || []).map(async (ingredient) => {
+      if (!ingredient) {
+        return null
+      }
+      const isContaminant = await determineIfIngredientIsContaminant(ingredient.ingredient_id)
+      return isContaminant ? ingredient : null
+    })
+  )
+
+  contaminants = contaminants.filter((contaminant) => contaminant !== null)
 
   let brand = null
   if (brandId) {
@@ -147,4 +161,18 @@ export const getRecommendedItems = async () => {
   const { data: items, error } = await supabase.from('items').select().eq('recommended', true)
 
   return items || []
+}
+
+export const determineIfIngredientIsContaminant = async (ingredientId: number) => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: ingredient, error } = await supabase
+    .from('ingredients')
+    .select('is_contaminant')
+    .eq('id', ingredientId)
+    .single()
+
+  if (error) throw error
+
+  return ingredient.is_contaminant
 }

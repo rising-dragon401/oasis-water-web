@@ -1,27 +1,29 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/utils/supabase/server'
-import {
-  Ingredient,
-  Item,
-  TapWaterLocation,
-  WaterFilter,
-  IngredientDescriptor,
-} from '@/types/custom'
+import { Ingredient, IngredientDescriptor } from '@/types/custom'
+import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 
 // export const scoreItems = async () => {
-// const supabase = await createSupabaseServerClient()
+//   const supabase = await createSupabaseServerClient()
 //   let { data: items, error } = await supabase.from('items').select('*')
 
 //   if (error) throw error
 //   if (!items) return false
 
 //   // remove items with .is_indexed === false
-//   items = items.filter((item) => item.is_indexed)
+//   items = items.filter((item) => item.is_indexed !== false)
 
 //   const itemsWithContaminants = await Promise.all(
 //     items.map(async (item) => {
-//       const contaminants = item.contaminants as IngredientDescriptor[]
+//       const ingredients = (item.ingredients as IngredientDescriptor[]) || []
+
+//       const contaminants = await Promise.all(
+//         ingredients?.map(async (ingredient) => {
+//           const isContaminant = await determineIfIngredientIsContaminant(ingredient.ingredient_id)
+//           return isContaminant ? ingredient : null
+//         })
+//       ).then((results) => results.filter((result) => result !== null))
 
 //       if (!contaminants)
 //         return {
@@ -149,15 +151,13 @@ import {
 //       .match({ id: item.id })
 //   })
 
-//   //   console.log('scoredItems: ', scoredItems)
-
 //   console.log('done calculating item scores')
 
 //   return scoredItems
 // }
 
 // export const scoreLocations = async () => {
-// const supabase = await createSupabaseServerClient()
+//   const supabase = await createSupabaseServerClient()
 //   // return false
 //   const { data: locations, error } = await supabase.from('tap_water_locations').select('*')
 
