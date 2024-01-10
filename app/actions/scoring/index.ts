@@ -73,15 +73,15 @@ import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 //     let score = 100
 
 //     // Penalize for each contaminant
-//     const maximumContaminantMultiplierPenalty = 30
-//     let contaminantMultiplierPenalty = Math.floor(item.amount_above_health_guideline)
+//     const maximumContaminantMultiplierPenalty = 40
+//     let contaminantMultiplierPenalty = Math.floor(item.amount_above_health_guideline * 2.5)
 
 //     if (contaminantMultiplierPenalty > maximumContaminantMultiplierPenalty) {
 //       contaminantMultiplierPenalty = maximumContaminantMultiplierPenalty
 //     }
 
-//     const maximumNumberOfContaminantsPenalty = 30
-//     let numberOfContaminantsPenalty = (item.numberOfContaminants || 0) * 3
+//     const maximumNumberOfContaminantsPenalty = 40
+//     let numberOfContaminantsPenalty = (item.numberOfContaminants || 0) * 5
 
 //     if (numberOfContaminantsPenalty > maximumNumberOfContaminantsPenalty) {
 //       numberOfContaminantsPenalty = maximumNumberOfContaminantsPenalty
@@ -91,25 +91,22 @@ import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 
 //     if (contaminantPenalty < 0) contaminantPenalty = 90
 
-//     console.log('contaminantPenalty: ', contaminantPenalty)
-
 //     score -= contaminantPenalty
-
-//     console.log('item.source: ', item.source)
 
 //     // Penalize for source
 //     let sourcePenalty = 0
 //     switch (item.source) {
 //       case 'municipal_supply':
-//         console.log('municipal_supply')
 //         sourcePenalty = 30
 //         break
 //       case 'well':
-//         sourcePenalty = 15
+//         sourcePenalty = 20
 //         break
 //       case null || undefined:
 //         sourcePenalty = 5
 //         break
+//       case 'mountain_spring':
+//         sourcePenalty = -10
 //       default:
 //         sourcePenalty = 0
 //     }
@@ -123,6 +120,13 @@ import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 //     } else {
 //       mineralBonus = 0
 //     }
+
+//     // console.log('item.name: ', item.name)
+//     // console.log('contaminantMultiplierPenalty: ', contaminantMultiplierPenalty)
+//     // console.log('numberOfContaminantsPenalty: ', numberOfContaminantsPenalty)
+//     // console.log('contaminantPenalty: ', contaminantPenalty)
+//     // console.log('sourcePenalty: ', sourcePenalty)
+//     // console.log('mineralBonus: ', mineralBonus)
 
 //     score += mineralBonus
 

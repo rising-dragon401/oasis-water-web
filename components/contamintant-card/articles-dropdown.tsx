@@ -28,7 +28,12 @@ export function ArticlesDropdown({ sources }: Props) {
         <DropdownMenuGroup>
           {sources.map((source: Source) => (
             <DropdownMenuItem key={source.url} className="relative hover:opacity-70">
-              <Link href={source.url} className="flex items-center justify-between w-full pr-4">
+              <Link
+                href={source.url}
+                className="flex items-center justify-between w-full pr-4"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {source.label}
                 <ArrowUpRight className="absolute top-1 right-1 text-muted-foreground" size={16} />
               </Link>
