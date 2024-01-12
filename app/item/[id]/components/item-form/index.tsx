@@ -69,7 +69,7 @@ export default function ItemForm({ id }: Props) {
                 </Typography>
               </Link>
 
-              {item.is_indexed !== false && (
+              {item.is_indexed !== false ? (
                 <>
                   <Typography size="base" fontWeight="normal" className="text-secondary">
                     Fluoride: {item.metadata?.fluoride} ppm
@@ -107,6 +107,10 @@ export default function ItemForm({ id }: Props) {
                     )}
                   </div>
                 </>
+              ) : (
+                <Typography size="base" fontWeight="normal" className="text-secondary">
+                  ⚠️ NO WATER REPORTS LOCATED
+                </Typography>
               )}
             </div>
             {item.is_indexed !== false && (
@@ -120,8 +124,8 @@ export default function ItemForm({ id }: Props) {
         {item.is_indexed === false ? (
           <div className="flex flex-col gap-6 mt-6">
             <Typography size="base" fontWeight="normal" className="text-secondary">
-              This item has not been tested and rated yet. This usally means they have not made
-              their water quality report public.
+              This item has not been tested and rated yet. This usally means the company has not
+              publicized their water quality report.
             </Typography>
           </div>
         ) : (
