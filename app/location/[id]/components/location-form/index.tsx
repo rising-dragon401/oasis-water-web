@@ -6,7 +6,7 @@ import React, { useEffect, useState, Suspense } from 'react'
 import Image from 'next/image'
 import Score from '@/components/score'
 import ItemSkeleton from '../item-skeleton'
-import RecommendedRow from '@/components/recommended-row'
+import RecommendedRow from '@/components/sections/recommended-row'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
 
@@ -34,7 +34,7 @@ export default function LocationForm({ id }: Props) {
   }
 
   return (
-    <>
+    <div className="flex-col flex w-full">
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
           <Image
@@ -76,6 +76,6 @@ export default function LocationForm({ id }: Props) {
         )}
       </div>
       <RecommendedRow />
-    </>
+    </div>
   )
 }

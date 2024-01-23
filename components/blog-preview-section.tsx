@@ -12,7 +12,7 @@ export default function BlogPreviewSection() {
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="3xl" fontWeight="normal">
-          Recent Posts
+          Learn more
         </Typography>
 
         <Link href="/blog">

@@ -1,19 +1,11 @@
 import Link from 'next/link'
 import Typography from '@/components/typography'
-import React, { useMemo } from 'react'
-import { Item } from '@/types/custom'
+import React from 'react'
 import ItemPreviewCard from '@/components/item-preview-card'
+import { getWorstItems } from '@/app/actions/items'
 
-type Props = {
-  items: Item[] | null
-}
-
-export default function LowestRatedSection({ items }: Props) {
-  const lowestItems = useMemo(() => {
-    return items
-      ?.filter((item) => item.score !== null)
-      .sort((a, b) => (a.score || 0) - (b.score || 0))
-  }, [items])
+export default async function LowestRatedSection() {
+  const lowestItems = await getWorstItems()
 
   return (
     <div>
@@ -27,7 +19,7 @@ export default function LowestRatedSection({ items }: Props) {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar">
+      <div className="flex overflow-x-auto gap-6 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {lowestItems &&
           lowestItems?.slice(0, 5).map((item) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>

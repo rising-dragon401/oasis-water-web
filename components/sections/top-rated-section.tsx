@@ -1,17 +1,11 @@
 import Link from 'next/link'
 import Typography from '@/components/typography'
-import React, { useMemo } from 'react'
-import { Item } from '@/types/custom'
+import React from 'react'
 import ItemPreviewCard from '@/components/item-preview-card'
+import { getTopItems } from '@/app/actions/items'
 
-type Props = {
-  items: Item[] | null | []
-}
-
-export default function TopRatedSection({ items }: Props) {
-  const topItems = useMemo(() => {
-    return items?.sort((a, b) => (b.score || 0) - (a.score || 0))
-  }, [items])
+export default async function TopRatedSection() {
+  const topItems = await getTopItems()
 
   return (
     <div>
@@ -25,7 +19,7 @@ export default function TopRatedSection({ items }: Props) {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar">
+      <div className="flex overflow-x-auto gap-6 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {topItems &&
           topItems?.slice(0, 5).map((item) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>

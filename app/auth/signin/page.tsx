@@ -46,7 +46,7 @@ export default async function SignIn() {
           <div className="mx-auto flex w-full flex-col justify-center md:mt-14 mt-16 space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">Welcome back to your Oaisys</h1>
-              <p className="text-sm text-muted-foreground">Unlock your cleanest way of life.</p>
+              <p className="text-sm text-muted-foreground">Live your cleanest way of life.</p>
             </div>
 
             <AuthUI showToast={showToast} toastMessage={toastMessage} />

@@ -9,9 +9,9 @@ export default async function RecommendationsSection() {
   const ranked = recommended.sort((a, b) => (b.score || 0) - (a.score || 0))
 
   return (
-    <>
+    <div className="flex flex-col">
       <div className="flex flex-col justify-center items-center py-24 gap-4 mx-w-lg">
-        <Typography size="5xl" className="text-primary text-center" fontWeight="normal">
+        <Typography size="5xl" className="text-primary text-center max-w-md" fontWeight="normal">
           Our recommended bottled water brands
         </Typography>
         <Typography
@@ -29,7 +29,7 @@ export default async function RecommendationsSection() {
           {ranked &&
             ranked.map((recommendation, index) => (
               // @ts-ignore
-              <Link href={recommendation.affiliate_url} passHref legacyBehavior key={index}>
+              <Link href={`item/${recommendation.id}`} passHref legacyBehavior key={index}>
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -53,6 +53,6 @@ export default async function RecommendationsSection() {
             ))}
         </div>
       </div>
-    </>
+    </div>
   )
 }

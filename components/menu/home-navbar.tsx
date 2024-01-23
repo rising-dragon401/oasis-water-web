@@ -26,7 +26,7 @@ export default function HomeNavbar() {
     return null
   } else {
     return (
-      <NavigationMenu className="flex flex-row w-full justify-between py-2 list-none">
+      <NavigationMenu className="flex flex-row w-full justify-between py-2 list-none ">
         <NavigationMenuList>
           <NavigationMenuItem className="mr-4">
             <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">

@@ -10,7 +10,6 @@ import ResultsRow from './results-row'
 import { Search } from 'lucide-react'
 import { Loader2 } from 'lucide-react'
 import { searchFilters } from '@/app/actions/filters'
-// import { scoreItems } from '@/app/actions/scoring'
 
 export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
@@ -65,7 +64,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
           <div className="flex flex-col gap-2 relative w-full max-w-xl">
             <div className="relative">
               <Input
-                placeholder="Search for bottled water, filters, or tap water locations"
+                placeholder="Search water..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors rounded-md border border-secondary-foreground md:min-w-[300px] shadow-md"

@@ -84,7 +84,7 @@ export default function BottledWaterList({ items }: Props) {
 
       <div className="pt-4 pb-8 flex flex-row justify-between mt-24">
         <Typography size="3xl" fontWeight="normal">
-          Unrated bottled water
+          ⚠️ NO WATER REPORTS LOCATED
         </Typography>
       </div>
 

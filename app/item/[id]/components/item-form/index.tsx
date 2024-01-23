@@ -8,7 +8,7 @@ import Score from '@/components/score'
 import MetaDataCard from '../metadata-card'
 import IngredientsCard from '../ingredients-card'
 import ItemSkeleton from '../item-skeleton'
-import RecommendedRow from '@/components/recommended-row'
+import RecommendedRow from '@/components/sections/recommended-row'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
 import ContaminantCard from '@/components/contamintant-card'
@@ -39,10 +39,8 @@ export default function ItemForm({ id }: Props) {
     return <ItemSkeleton />
   }
 
-  console.log(item)
-
   return (
-    <>
+    <div className="flex-col flex w-full">
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="relative">
@@ -178,6 +176,6 @@ export default function ItemForm({ id }: Props) {
       </div>
 
       <RecommendedRow />
-    </>
+    </div>
   )
 }

@@ -66,6 +66,8 @@ export default function ItemPreviewCard({ item }: Props) {
           className="w-full h-full rounded-md object-cover hover:cursor-pointer"
           width={400}
           height={400}
+          quality={70}
+          blurDataURL={item.image || ''}
           alt={item.name}
         />
         <div className="absolute top-0 right-0 p-2 cursor-pointer">

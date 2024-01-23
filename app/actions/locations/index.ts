@@ -91,3 +91,27 @@ export const getLocation = async (id: string) => {
 
   return location
 }
+
+export const getRandomLocationBunch = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { count } = await supabase.from('tap_water_locations').select('*', { count: 'exact' })
+
+  if (!count) {
+    console.error('Error fetching tap_water_locations count')
+    return []
+  }
+
+  const randomIds = Array.from({ length: 5 }, () => Math.floor(Math.random() * count))
+  const { data: locations, error } = await supabase
+    .from('tap_water_locations')
+    .select()
+    .in('id', randomIds)
+
+  if (error) {
+    console.error('Error fetching random locations:', error)
+    return []
+  }
+
+  return locations || []
+}

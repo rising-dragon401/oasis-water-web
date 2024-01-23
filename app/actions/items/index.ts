@@ -71,8 +71,6 @@ export const getItemDetails = async (id: string) => {
   const ingredients = item[0].ingredients as IngredientDescriptor[]
   const companyId = item[0].company
 
-  console.log('ingredients: ', ingredients)
-
   let contaminants = await Promise.all(
     (ingredients || []).map(async (ingredient) => {
       if (!ingredient) {
@@ -153,6 +151,32 @@ export const getItemDetails = async (id: string) => {
   }
 
   return itemWithDetails
+}
+
+export const getTopItems = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: items, error } = await supabase
+    .from('items')
+    .select()
+    .or('is_indexed.is.null,is_indexed.eq.true')
+    .order('score', { ascending: false })
+    .range(0, 10)
+
+  return items || []
+}
+
+export const getWorstItems = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: items, error } = await supabase
+    .from('items')
+    .select()
+    .or('is_indexed.is.null,is_indexed.eq.true')
+    .order('score', { ascending: true })
+    .range(0, 10)
+
+  return items || []
 }
 
 export const getRecommendedItems = async () => {
