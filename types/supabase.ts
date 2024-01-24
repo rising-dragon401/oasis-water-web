@@ -14,18 +14,21 @@ export interface Database {
           company: number | null
           created_at: string
           id: number
+          image: string | null
           name: string
         }
         Insert: {
           company?: number | null
           created_at?: string
           id?: number
+          image?: string | null
           name: string
         }
         Update: {
           company?: number | null
           created_at?: string
           id?: number
+          image?: string | null
           name?: string
         }
         Relationships: [
@@ -42,16 +45,19 @@ export interface Database {
         Row: {
           created_at: string
           id: number
+          image: string | null
           name: string
         }
         Insert: {
           created_at?: string
           id?: number
+          image?: string | null
           name: string
         }
         Update: {
           created_at?: string
           id?: number
+          image?: string | null
           name?: string
         }
         Relationships: []
@@ -94,6 +100,7 @@ export interface Database {
           description: string | null
           health_guideline: number | null
           id: number
+          image: string | null
           is_contaminant: boolean | null
           legal_limit: number | null
           measure: string | null
@@ -107,6 +114,7 @@ export interface Database {
           description?: string | null
           health_guideline?: number | null
           id?: number
+          image?: string | null
           is_contaminant?: boolean | null
           legal_limit?: number | null
           measure?: string | null
@@ -120,6 +128,7 @@ export interface Database {
           description?: string | null
           health_guideline?: number | null
           id?: number
+          image?: string | null
           is_contaminant?: boolean | null
           legal_limit?: number | null
           measure?: string | null
@@ -135,7 +144,6 @@ export interface Database {
           affiliate_url: string | null
           brand: number | null
           company: number
-          contaminants: Json[] | null
           created_at: string
           description: string | null
           fts: unknown | null
@@ -146,6 +154,7 @@ export interface Database {
           is_indexed: boolean | null
           metadata: Json | null
           name: string
+          packaging: Database["public"]["Enums"]["packaging"] | null
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
@@ -158,7 +167,6 @@ export interface Database {
           affiliate_url?: string | null
           brand?: number | null
           company: number
-          contaminants?: Json[] | null
           created_at?: string
           description?: string | null
           fts?: unknown | null
@@ -169,6 +177,7 @@ export interface Database {
           is_indexed?: boolean | null
           metadata?: Json | null
           name: string
+          packaging?: Database["public"]["Enums"]["packaging"] | null
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
@@ -181,7 +190,6 @@ export interface Database {
           affiliate_url?: string | null
           brand?: number | null
           company?: number
-          contaminants?: Json[] | null
           created_at?: string
           description?: string | null
           fts?: unknown | null
@@ -192,6 +200,7 @@ export interface Database {
           is_indexed?: boolean | null
           metadata?: Json | null
           name?: string
+          packaging?: Database["public"]["Enums"]["packaging"] | null
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
@@ -342,6 +351,7 @@ export interface Database {
           email: string | null
           full_name: string | null
           id: string
+          permissions: Database["public"]["Enums"]["permission"] | null
         }
         Insert: {
           avatar_url?: string | null
@@ -349,6 +359,7 @@ export interface Database {
           email?: string | null
           full_name?: string | null
           id: string
+          permissions?: Database["public"]["Enums"]["permission"] | null
         }
         Update: {
           avatar_url?: string | null
@@ -356,6 +367,7 @@ export interface Database {
           email?: string | null
           full_name?: string | null
           id?: string
+          permissions?: Database["public"]["Enums"]["permission"] | null
         }
         Relationships: [
           {
@@ -379,7 +391,7 @@ export interface Database {
           image: string | null
           name: string
           recommended: boolean | null
-          score: number
+          score: number | null
           sources: Json[] | null
           type: Database["public"]["Enums"]["item_type"]
         }
@@ -394,7 +406,7 @@ export interface Database {
           image?: string | null
           name: string
           recommended?: boolean | null
-          score: number
+          score?: number | null
           sources?: Json[] | null
           type: Database["public"]["Enums"]["item_type"]
         }
@@ -409,7 +421,7 @@ export interface Database {
           image?: string | null
           name?: string
           recommended?: boolean | null
-          score?: number
+          score?: number | null
           sources?: Json[] | null
           type?: Database["public"]["Enums"]["item_type"]
         }
@@ -520,6 +532,8 @@ export interface Database {
         | "iceberg"
         | "well"
       item_type: "bottled_water" | "tap_water" | "filter"
+      packaging: "plastic" | "glass" | "cardboard" | "aluminum"
+      permission: "admin" | "manager" | "user"
     }
     CompositeTypes: {
       [_ in never]: never

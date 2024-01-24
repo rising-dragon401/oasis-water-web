@@ -14,7 +14,7 @@ type Props = {
 export default function ItemPreviewCard({ item }: Props) {
   const renderScore = () => {
     // @ts-ignore
-    if (item.score > 80) {
+    if (item.score > 70) {
       return (
         <Typography
           size="xs"

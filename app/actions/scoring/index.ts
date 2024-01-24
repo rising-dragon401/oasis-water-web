@@ -63,6 +63,7 @@ import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 //         name: item.name,
 //         source: item.water_source || null,
 //         is_distilled: item.is_distilled,
+//         packaging: item.packaging,
 //         numberOfContaminants: contaminants.length,
 //         amount_above_health_guideline: totalOver,
 //       }
@@ -132,6 +133,16 @@ import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 
 //     const maximumPossibleNegativeScore = 6
 
+//     // Plastic penalty
+//     let plasticPenalty = 0
+//     if (item.packaging === 'plastic') {
+//       plasticPenalty = 10
+//     } else {
+//       plasticPenalty = 0
+//     }
+
+//     score -= plasticPenalty
+
 //     // If score is negative, calculate the difference and scale it to [5, 50]
 //     if (score < 1) {
 //       const difference = Math.abs(score)
@@ -153,6 +164,8 @@ import { determineIfIngredientIsContaminant } from '@/app/actions/items'
 //       .from('items')
 //       .update({ score: item.score })
 //       .match({ id: item.id })
+
+//     if (error) throw error
 //   })
 
 //   console.log('done calculating item scores')

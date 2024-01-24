@@ -80,6 +80,9 @@ export default function ItemForm({ id }: Props) {
                       TDS: {item.metadata?.tds} ppm
                     </Typography>
                   )}
+                  <Typography size="base" fontWeight="normal" className="text-secondary">
+                    Packaging: {item.packaging}
+                  </Typography>
 
                   <div className="flex flex-col md:w-40 w-full mt-2 gap-2">
                     {item.recommended && (
