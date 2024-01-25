@@ -4,7 +4,7 @@ import { useSupabase } from '@/app/supabase-provider'
 import { useToast } from '@/components/ui/use-toast'
 import { getURL } from '@/utils/helpers'
 import { Auth } from '@supabase/auth-ui-react'
-import { ThemeSupa, ThemeMinimal } from '@supabase/auth-ui-shared'
+import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useEffect } from 'react'
 
 type Props = {

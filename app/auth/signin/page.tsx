@@ -1,18 +1,29 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import AuthUI from './auth-ui'
 import { getSession } from '@/app/supabase-server'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { AUTH_IMAGES } from '@/lib/constants/images'
+import { useUserProvider } from '@/providers/UserProvider'
 
-export default async function SignIn() {
-  const session = await getSession()
+export default function SignIn() {
+  const { refreshUserData } = useUserProvider()
+
+  useEffect(() => {
+    const fetch = async () => {
+      const session = await getSession()
+      if (session) {
+        refreshUserData()
+        redirect('/')
+      }
+    }
+    fetch()
+  }, [])
 
   let showToast = false
   let toastMessage = ''
-
-  if (session) {
-    return redirect('/')
-  }
 
   const image = AUTH_IMAGES[Math.floor(Math.random() * AUTH_IMAGES.length)]
 

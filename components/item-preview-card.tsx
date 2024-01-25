@@ -79,12 +79,10 @@ export default function ItemPreviewCard({ item }: Props) {
           <Typography size="sm" fontWeight="bold" className="!no-underline text-primary">
             {item.name}
           </Typography>
-          {'company' in item && (
-            <Link href={`/company/${item.company_name}`}>
-              <Typography size="sm" fontWeight="normal" className="!no-underline text-primary">
-                {item.company_name}
-              </Typography>
-            </Link>
+          {item.company_name && (
+            <Typography size="sm" fontWeight="normal" className="!no-underline text-primary">
+              {item.company_name}
+            </Typography>
           )}
         </div>
 

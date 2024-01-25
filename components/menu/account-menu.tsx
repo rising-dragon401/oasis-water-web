@@ -1,6 +1,6 @@
 'use client'
 
-import SignOutButton from './sign-out-button'
+import SignOutButton from './log-out-button'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {

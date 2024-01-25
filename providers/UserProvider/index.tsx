@@ -1,6 +1,6 @@
 'use client'
 
-import useSWR from 'swr'
+import useSWR, { mutate } from 'swr'
 import { getUserId, getCurrentUserData, getUserFavorites } from '@/app/actions/user'
 import React, { ReactNode, createContext, useContext } from 'react'
 
@@ -8,6 +8,7 @@ interface UserContextType {
   uid: string | null | undefined
   userData: any
   userFavorites: any[] | null | undefined
+  refreshUserData: () => void
 }
 
 const UserContext = createContext<UserContextType | null>(null)
@@ -25,8 +26,16 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { data: currentUserData } = useSWR('userData', getCurrentUserData)
   const { data: userFavorites } = useSWR('userFavorites', getUserFavorites)
 
+  const refreshUserData = () => {
+    mutate('userData')
+    mutate('userFavorites')
+    mutate('uid')
+  }
+
   return (
-    <UserContext.Provider value={{ uid, userData: currentUserData, userFavorites }}>
+    <UserContext.Provider
+      value={{ uid, userData: currentUserData, userFavorites, refreshUserData }}
+    >
       {children}
     </UserContext.Provider>
   )

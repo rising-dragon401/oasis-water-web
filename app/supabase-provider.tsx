@@ -23,6 +23,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('auth state changed')
+
       const userData = await getCurrentUserData()
 
       if (authPages.includes(pathname) && !userData) {

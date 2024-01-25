@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Menu, X } from 'lucide-react'
 import React from 'react'
-import SignOutButton from './sign-out-button'
+import SignOutButton from './log-out-button'
 import { useEffect, useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
 
