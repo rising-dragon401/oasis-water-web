@@ -9,12 +9,11 @@ export default function EmailSubscribe() {
     <div className="flex flex-col max-w-lg justify-start space-x-2">
       <div>
         <Typography size="lg" className="text-secondary" fontWeight="normal">
-          Upgrade your water source
+          Join the club
         </Typography>
         <div className="max-w-xs">
           <Typography size="xs" className="text-secondary" fontWeight="normal">
-            {`We are working on the creating the cleanest source of water filled with the world's
-            healthiest and most natural ingredients.`}
+            Learn more about Oaisys and get early access to new releases.
           </Typography>
         </div>
       </div>
@@ -26,7 +25,7 @@ export default function EmailSubscribe() {
             window.open('https://3efs5kbf7k4.typeform.com/to/AIFR8ZFm', '_blank')
           }}
         >
-          Join Waitlist
+          Join
         </Button>
       </div>
     </div>

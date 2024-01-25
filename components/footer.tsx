@@ -47,7 +47,7 @@ export default function Footer() {
 
                 <li className="ml-2">
                   <a
-                    href="https://www.tiktok.com/@tellmaia.to"
+                    href="https://www.tiktok.com/@oaisys.ai"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -56,7 +56,7 @@ export default function Footer() {
                 </li>
                 <li className="ml-2">
                   <a
-                    href="https://www.youtube.com/channel/UCQYF1i-jCCzLlN1OlDpBa3w"
+                    href="https://www.youtube.com/@oaisys_ai"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -113,6 +113,19 @@ export default function Footer() {
               <li>
                 <Link href="/blog" className="text-secondary  transition duration-150 ease-in-out">
                   Blog
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/privacy-policy"
+                  className="text-secondary  transition duration-150 ease-in-out"
+                >
+                  Privacy policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms" className="text-secondary  transition duration-150 ease-in-out">
+                  Terms
                 </Link>
               </li>
             </ul>

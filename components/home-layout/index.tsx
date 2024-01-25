@@ -10,7 +10,7 @@ import BasicSearch from '@/components/basic-search'
 export default async function SubpageLayout({ children }: PropsWithChildren) {
   return (
     <div className="min-h-[100vh] flex justify-center">
-      <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-3xl max-w-sm">
+      <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-3xl max-w-sm w-full">
         <div className="hidden  md:flex w-full justify-center">
           <HomeNavbar />
         </div>
