@@ -1,22 +1,23 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import AuthUI from './auth-ui'
 import { getSession } from '@/app/supabase-server'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { AUTH_IMAGES } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 
 export default function SignIn() {
   const { refreshUserData } = useUserProvider()
+  const router = useRouter()
 
   useEffect(() => {
     const fetch = async () => {
       const session = await getSession()
-      if (session) {
+      if (session && session.user) {
         refreshUserData()
-        redirect('/')
+        router.push('/')
       }
     }
     fetch()
