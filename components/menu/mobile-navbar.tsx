@@ -55,10 +55,6 @@ export default function MobileNavbar() {
               <Link href="/filters">Filters</Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/recommendations">Recommended</Link>
-            </DropdownMenuItem>
-
             {uid && userData ? (
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />

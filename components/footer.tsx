@@ -7,8 +7,7 @@ export default function Footer() {
   return (
     <footer className="overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        {/* Blocks */}
-        <div className="flex md:flex-row md:gap-2 flex-col justify-between gap-4">
+        <div className="flex md:flex-row md:gap-2 flex-col-reverse justify-between gap-4">
           <div className="mb-4 sm:mb-0 block md:hidden">
             <div className="mb-4">
               <Link href="/" aria-label="Logo">

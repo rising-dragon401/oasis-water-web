@@ -94,7 +94,7 @@ export default function ItemForm({ id }: Props) {
                         Recommended
                       </Typography>
                     )}
-                    {item.affiliate_url && (
+                    {item.affiliate_url && item.score > 80 && (
                       <Button
                         variant="outline"
                         className="bg-card"

@@ -11,15 +11,22 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
   return (
     <div className="min-h-[100vh] flex justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-3xl max-w-sm w-full">
-        <div className="hidden  md:flex w-full justify-center">
+        <div className="md:flex hidden flex-w w-full justify-between">
           <HomeNavbar />
+
+          <div className="flex justify-end">
+            <BasicSearch showSearch={false} />
+          </div>
         </div>
 
         <div className="md:hidden flex flex-row justify-between items-center  pt-1">
-          <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
+          <Link
+            href="/"
+            className="flex  flex-row items-center justify-center hover:cursor-pointer"
+          >
             <Logo />
 
-            <Typography size="2xl" fontWeight="normal" className="md:block hidden">
+            <Typography size="2xl" fontWeight="normal">
               Oaisys
             </Typography>
           </Link>

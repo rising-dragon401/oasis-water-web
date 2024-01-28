@@ -71,7 +71,7 @@ export default function FilterForm({ id }: Props) {
             <Score score={filter.score} isFull={true} />
           </div>
 
-          {filter.affiliate_url && (
+          {filter.affiliate_url && filter.score > 80 && (
             <Button
               variant="outline"
               className="bg-card"

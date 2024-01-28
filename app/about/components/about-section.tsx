@@ -35,7 +35,7 @@ export const metadata = {
 
 export default function AboutSection() {
   return (
-    <>
+    <div className="flex flex-col">
       <motion.div
         className="text-white p-10 min-h-[80vh] flex justify-center items-center text-center"
         initial={{ opacity: 0 }}
@@ -201,6 +201,6 @@ export default function AboutSection() {
           <CTAButton />
         </div>
       </div> */}
-    </>
+    </div>
   )
 }
