@@ -5,7 +5,8 @@ import { mutate } from 'swr'
 import React, { useMemo } from 'react'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { useUserProvider } from '@/providers/UserProvider'
-import { FaHeart, FaRegHeart } from 'react-icons/fa6'
+import { TbCirclePlus, TbCircleCheckFilled } from 'react-icons/tb'
+
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 
@@ -58,9 +59,9 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
   return (
     <Button variant="ghost" onClick={(e) => handleFavoriteClick(e)}>
       {isItemInFavorites ? (
-        <FaHeart size={size} className="text-primary" />
+        <TbCircleCheckFilled size={size} className="text-primary" />
       ) : (
-        <FaRegHeart size={size} className="text-primary" />
+        <TbCirclePlus size={size} className="text-primary" />
       )}
     </Button>
   )

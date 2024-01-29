@@ -15,6 +15,8 @@ import React from 'react'
 import SignOutButton from './log-out-button'
 import { useEffect, useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
+import cn from 'classnames'
+import { buttonVariants } from '@/components/ui/button'
 
 export default function MobileNavbar() {
   const { uid, userData } = useUserProvider()
@@ -64,7 +66,7 @@ export default function MobileNavbar() {
                 <SignOutButton />
               </DropdownMenuGroup>
             ) : (
-              <DropdownMenuItem className="my-2 justify-start">
+              <DropdownMenuItem className={cn(buttonVariants(), 'w-32')}>
                 <Link href="/auth/signin">Login</Link>
               </DropdownMenuItem>
             )}

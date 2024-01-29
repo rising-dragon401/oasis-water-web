@@ -35,6 +35,13 @@ export default function ItemForm({ id }: Props) {
     fetchItem(id)
   }, [id])
 
+  const contaminants = item.contaminants || []
+
+  const sortedContaminants = contaminants.sort(
+    (a: { exceedingRecommendedLimit: number }, b: { exceedingRecommendedLimit: number }) => {
+      return b.exceedingRecommendedLimit - a.exceedingRecommendedLimit
+    }
+  )
   if (isLoading) {
     return <ItemSkeleton />
   }
@@ -56,7 +63,7 @@ export default function ItemForm({ id }: Props) {
             </div>
           </div>
 
-          <div className="flex md:flex-row flex-col gap-2 w-full">
+          <div className="flex flex-row gap-2 w-full">
             <div className="flex flex-col md:gap-2 md:w-3/5">
               <Typography size="3xl" fontWeight="normal">
                 {item.name}
@@ -139,13 +146,13 @@ export default function ItemForm({ id }: Props) {
               />
             </div>
 
-            {item.contaminants && (
+            {sortedContaminants && (
               <div className="flex flex-col gap-6 mt-6">
                 <Typography size="2xl" fontWeight="normal">
                   Contaminants ☠️
                 </Typography>
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                  {item.contaminants.map((contaminant: any, index: number) => (
+                  {sortedContaminants.map((contaminant: any, index: number) => (
                     <ContaminantCard key={contaminant.id || index} data={contaminant} />
                   ))}
                 </div>

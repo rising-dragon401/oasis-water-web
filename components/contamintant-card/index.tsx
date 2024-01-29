@@ -15,24 +15,16 @@ type Props = {
 }
 
 export default function ContaminantCard({ data }: Props) {
-  const exceedingHealthGuideline = data.metadata?.health_guideline
-    ? Math.floor(data?.amount / data.metadata?.health_guideline) || false
-    : false
-
-  const exceedingLegalLimit = data.metadata?.legal_limit
-    ? Math.floor(data?.amount / data.metadata?.legal_limit) || false
-    : false
-
   return (
     <Card>
       <CardHeader className="">
         <CardTitle className="flex flex-col w-full justify-between relative">
           <div className="w-full flex flex-row justify-between items-center">
             <div>{data?.metadata.name}</div>
-            {exceedingHealthGuideline && exceedingHealthGuideline > 0 && (
+            {data.exceedingRecommendedLimit && (
               <div className=" rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
                 <Typography size="xl" fontWeight="normal" className="!text-background">
-                  {exceedingHealthGuideline}x
+                  {data.exceedingRecommendedLimit}x
                 </Typography>
                 <Typography
                   size="xs"
@@ -40,20 +32,6 @@ export default function ContaminantCard({ data }: Props) {
                   className="!text-secondary-foreground flex-wrap"
                 >
                   Guidelines
-                </Typography>
-              </div>
-            )}
-            {!exceedingHealthGuideline && exceedingLegalLimit && exceedingLegalLimit > 0 && (
-              <div className=" rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
-                <Typography size="xl" fontWeight="normal" className="!text-background">
-                  {exceedingLegalLimit}x
-                </Typography>
-                <Typography
-                  size="xs"
-                  fontWeight="normal"
-                  className="!text-secondary-foreground flex-wrap"
-                >
-                  Limit
                 </Typography>
               </div>
             )}

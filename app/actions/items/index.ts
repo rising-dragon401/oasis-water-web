@@ -29,28 +29,6 @@ export const getItems = async () => {
   return itemsWithCompany
 }
 
-export const searchItems = async (query: string) => {
-  const supabase = await createSupabaseServerClient()
-
-  // Text search items
-  const { data: items, error } = await supabase.from('items').select().textSearch('fts', query, {
-    type: 'phrase',
-  })
-
-  if (!items) {
-    return []
-  }
-
-  const taggedItems = items.map((item) => {
-    return {
-      ...item,
-      type: 'item',
-    }
-  })
-
-  return taggedItems || []
-}
-
 export const getItem = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 
@@ -134,9 +112,22 @@ export const getItemDetails = async (id: string) => {
           return null
         }
 
+        const ingredient = data[0]
+
+        const exceedingHealthGuideline = ingredient.health_guideline
+          ? Math.floor(contaminant?.amount / ingredient.health_guideline) || false
+          : false
+
+        const exceedingLegalLimit = ingredient?.legal_limit
+          ? Math.floor(contaminant?.amount / ingredient.legal_limit) || false
+          : false
+
+        const exceedingRecommendedLimit = exceedingHealthGuideline || exceedingLegalLimit || false
+
         return {
           metadata: data[0],
           amount: contaminant.amount,
+          exceedingRecommendedLimit,
         }
       })
     )
@@ -151,6 +142,28 @@ export const getItemDetails = async (id: string) => {
   }
 
   return itemWithDetails
+}
+
+export const searchItems = async (query: string) => {
+  const supabase = await createSupabaseServerClient()
+
+  // Text search items
+  const { data: items, error } = await supabase.from('items').select().textSearch('fts', query, {
+    type: 'phrase',
+  })
+
+  if (!items) {
+    return []
+  }
+
+  const taggedItems = items.map((item) => {
+    return {
+      ...item,
+      type: 'item',
+    }
+  })
+
+  return taggedItems || []
 }
 
 export const getTopItems = async () => {

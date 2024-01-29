@@ -11,7 +11,7 @@ export default function FavoritesList({ favorites }: Props) {
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          My Favorites
+          My Oaisys
         </Typography>
       </div>
 
