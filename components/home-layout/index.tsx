@@ -8,20 +8,28 @@ import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
 import { buttonVariants } from '@/components/ui/button'
 import cn from 'classnames'
+import { AccountMenu } from '@/components/menu/account-menu'
+import { getCurrentUserData } from '@/app/actions/user'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
+  const userData = await getCurrentUserData()
+
   return (
-    <div className="min-h-[100vh] flex justify-center">
+    <div className="min-h-[100vh] flex justify-center ">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-3xl max-w-sm w-full">
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
 
-          <div className="flex justify-end">
+          <div className="flex justify-end items-center">
             <BasicSearch showSearch={false} />
 
-            <Link href="/auth/signin" className={cn(buttonVariants(), 'w-32')}>
-              Login
-            </Link>
+            {userData ? (
+              <AccountMenu />
+            ) : (
+              <Link href="/auth/signin" className={cn(buttonVariants(), 'w-32')}>
+                Login
+              </Link>
+            )}
           </div>
         </div>
 
