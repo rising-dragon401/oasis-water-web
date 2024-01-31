@@ -8,7 +8,7 @@ export default function Home() {
     <SubpageLayout>
       <div className="md:px-8 px-4">
         <div className="pt-4 pb-8">
-          <Typography size="3xl" fontWeight="bold">
+          <Typography size="3xl" fontWeight="normal">
             Blog
           </Typography>
         </div>
@@ -18,7 +18,7 @@ export default function Home() {
             <article key={post._id}>
               <Link href={post.slug}>
                 <div
-                  className="relative max-w-lg h-72 bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2"
+                  className="relative w-full h-72 bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2"
                   style={{
                     backgroundImage: `url(${post.image})`,
                   }}

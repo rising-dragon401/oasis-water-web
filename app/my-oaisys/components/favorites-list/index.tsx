@@ -1,12 +1,13 @@
+'use client'
+
 import Typography from '@/components/typography'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import ItemPreviewCard from '@/components/item-preview-card'
+import { useUserProvider } from '@/providers/UserProvider'
 
-type Props = {
-  favorites: any
-}
+export default function FavoritesList() {
+  const { userFavorites } = useUserProvider()
 
-export default function FavoritesList({ favorites }: Props) {
   return (
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
@@ -16,8 +17,8 @@ export default function FavoritesList({ favorites }: Props) {
       </div>
 
       <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
-        {favorites &&
-          favorites.map((fav: Item | TapWaterLocation | WaterFilter) => (
+        {userFavorites &&
+          userFavorites.map((fav: Item | TapWaterLocation | WaterFilter) => (
             <ItemPreviewCard key={fav.id} item={fav} />
           ))}
       </div>

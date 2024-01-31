@@ -16,7 +16,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
   const router = useRouter()
   const pathname = usePathname()
 
-  const authPages = ['/favorites']
+  const authPages = ['/my-oaisys']
 
   useEffect(() => {
     const {

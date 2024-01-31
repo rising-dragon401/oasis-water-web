@@ -14,8 +14,6 @@ import Link from 'next/link'
 import Logo from '@/components/logo'
 import Typography from '../typography'
 import { useState, useEffect } from 'react'
-import BasicSearch from '@/components/basic-search'
-import { AccountMenu } from './account-menu'
 import { cn } from '@/lib/utils'
 
 const components: { title: string; href: string; description: string }[] = [
@@ -53,6 +51,29 @@ const components: { title: string; href: string; description: string }[] = [
   // },
 ]
 
+const aboutComponents: { title: string; href: string; description: string }[] = [
+  {
+    title: 'About',
+    href: '/about',
+    description: 'We make living a clean healthy life easy',
+  },
+  {
+    title: 'Manifesto',
+    href: '/manifesto',
+    description: 'We are dedicated to simplifying the journey towards conscious consumption.',
+  },
+  {
+    title: 'Blog',
+    href: '/blog',
+    description: 'Discover and read more about the water industry and Oaisys.',
+  },
+  {
+    title: 'FAQs',
+    href: '/faqs',
+    description: 'Frequently asked questions about Oaisys.',
+  },
+]
+
 export default function HomeNavbar() {
   const [isMounted, setIsMounted] = useState(false)
 
@@ -61,51 +82,51 @@ export default function HomeNavbar() {
     setIsMounted(true)
   }, [])
 
-  // See: https://stackoverflow.com/questions/75094010/nextjs-13-hydration-failed-because-the-initial-ui-does-not-match-what-was-render
-  if (!isMounted) {
-    return null
-  } else {
-    return (
-      <NavigationMenu className="flex w-full justify-between py-2">
-        <NavigationMenuList>
-          <NavigationMenuItem className="mr-4">
-            <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
-              <Logo />
+  return (
+    <NavigationMenu className="flex w-full justify-between py-2">
+      <NavigationMenuList>
+        <NavigationMenuItem className="mr-4">
+          <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
+            <Logo />
 
-              <Typography size="2xl" fontWeight="normal">
-                Oaisys
-              </Typography>
-            </Link>
-          </NavigationMenuItem>
+            <Typography size="2xl" fontWeight="normal">
+              Oaisys
+            </Typography>
+          </Link>
+        </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Water</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                {components.map((component) => (
-                  <ListItem key={component.title} title={component.title} href={component.href}>
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/about" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                About
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="/blog" legacyBehavior passHref>
-              <NavigationMenuLink className={navigationMenuTriggerStyle()}>Blog</NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    )
-  }
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Water</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+              {components.map((component) => (
+                <ListItem key={component.title} title={component.title} href={component.href}>
+                  {component.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>About</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+              {aboutComponents.map((component) => (
+                <ListItem key={component.title} title={component.title} href={component.href}>
+                  {component.description}
+                </ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        {/* <NavigationMenuItem>
+          <Link href="/blog" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>Blog</NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem> */}
+      </NavigationMenuList>
+    </NavigationMenu>
+  )
 }
 
 const ListItem = React.forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(

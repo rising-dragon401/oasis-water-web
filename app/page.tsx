@@ -6,6 +6,7 @@ import LowestRatedSection from '@/components/sections/lowest-rated-section'
 import TapWaterSection from '@/components/sections/tap-water-section'
 import FilterSection from '@/components/filter-section'
 import BlogPreviewSection from '@/components/blog-preview-section'
+import CTASection from '@/components/sections/cta-section'
 
 export default async function Home() {
   return (
@@ -42,6 +43,10 @@ export default async function Home() {
 
         <div className="mb-32">
           <BlogPreviewSection />
+        </div>
+
+        <div className="mb-32">
+          <CTASection />
         </div>
       </div>
     </SubpageLayout>

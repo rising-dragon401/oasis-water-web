@@ -16,9 +16,5 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  const redirectUrl = process.env.NEXT_PUBLIC_BASE_URL
-  //  const redirectUrl = requestUrl.origin
-
-  // URL to redirect to after sign in process completes
-  return NextResponse.redirect(redirectUrl + '/auth/signin')
+  return NextResponse.redirect(requestUrl.origin)
 }

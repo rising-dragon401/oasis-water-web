@@ -67,7 +67,7 @@ export default function Footer() {
           </div>
 
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-slate-50 font-medium mb-2">Legal</h6>
+            <h6 className="text-sm text-secondary font-bold mb-2">Legal</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link
@@ -97,7 +97,7 @@ export default function Footer() {
           </div>
 
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-slate-50 font-medium mb-2">Legal</h6>
+            <h6 className="text-sm text-secondary font-bold mb-2">Information</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link href="/about" className="text-secondary  transition duration-150 ease-in-out">
@@ -107,6 +107,14 @@ export default function Footer() {
               <li>
                 <Link href="/faqs" className="text-secondary  transition duration-150 ease-in-out">
                   FAQs
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/manifesto"
+                  className="text-secondary  transition duration-150 ease-in-out"
+                >
+                  Manifesto
                 </Link>
               </li>
               <li>
@@ -132,7 +140,7 @@ export default function Footer() {
 
           {/* Email signup */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-slate-50 font-medium mb-2">Subscribe for updates</h6>
+            <h6 className="text-sm text-secondary font-medium mb-2">Subscribe for updates</h6>
             <EmailSubscribe />
           </div>
         </div>

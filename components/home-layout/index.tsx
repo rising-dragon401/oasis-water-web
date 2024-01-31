@@ -1,3 +1,5 @@
+'use client'
+
 import Footer from '@/components/footer'
 import HomeNavbar from '@/components/menu/home-navbar'
 import { PropsWithChildren } from 'react'
@@ -9,10 +11,10 @@ import BasicSearch from '@/components/basic-search'
 import { buttonVariants } from '@/components/ui/button'
 import cn from 'classnames'
 import { AccountMenu } from '@/components/menu/account-menu'
-import { getCurrentUserData } from '@/app/actions/user'
+import { useUserProvider } from '@/providers/UserProvider'
 
-export default async function SubpageLayout({ children }: PropsWithChildren) {
-  const userData = await getCurrentUserData()
+export default function SubpageLayout({ children }: PropsWithChildren) {
+  const { userData } = useUserProvider()
 
   return (
     <div className="min-h-[100vh] flex justify-center ">
@@ -53,7 +55,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
           </div>
         </div>
 
-        <div className="py-3 min-h-[70vh] flex justify-center">{children}</div>
+        <div className="py-3 min-h-[70vh] flex justify-center w-full">{children}</div>
 
         <Footer />
       </div>
