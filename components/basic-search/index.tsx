@@ -48,18 +48,6 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   return (
     <>
       <div className="flex flex-row gap-2 items-center justify-center w-full">
-        {/* <Button variant="ghost" type="submit" loading={isLoading} onClick={() => scoreItems()}>
-          Calculate item scores
-        </Button> */}
-
-        {/* <Button variant="ghost" type="submit" loading={isLoading} onClick={() => scoreLocations()}>
-          Calculate locations
-        </Button> */}
-
-        {/* <Button variant="ghost" type="submit" loading={isLoading} onClick={() => scoreFilters()}>
-          Calculate filter score
-        </Button> */}
-
         {isShowSearch ? (
           <div className="flex flex-col gap-2 relative w-full max-w-xl">
             <div className="relative">
