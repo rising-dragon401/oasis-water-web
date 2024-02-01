@@ -2,7 +2,7 @@
 
 import useSWR, { mutate } from 'swr'
 import { getUserId, getCurrentUserData, getUserFavorites } from '@/app/actions/user'
-import React, { ReactNode, createContext, useContext } from 'react'
+import React, { ReactNode, createContext, useContext, useEffect } from 'react'
 
 interface UserContextType {
   uid: string | null | undefined
@@ -31,6 +31,10 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     mutate('userFavorites')
     mutate('uid')
   }
+
+  useEffect(() => {
+    refreshUserData()
+  }, [uid])
 
   return (
     <UserContext.Provider
