@@ -1,5 +1,3 @@
-'use client'
-
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
@@ -10,7 +8,7 @@ import FilterSection from '@/components/filter-section'
 import BlogPreviewSection from '@/components/blog-preview-section'
 import CTASection from '@/components/sections/cta-section'
 
-export default function Home() {
+export default async function Home() {
   return (
     <SubpageLayout>
       <div className="flex h-full flex-col pt-28 max-w-full">

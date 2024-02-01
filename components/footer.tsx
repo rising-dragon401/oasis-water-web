@@ -140,7 +140,7 @@ export default function Footer() {
 
           {/* Email signup */}
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-secondary font-medium mb-2">Subscribe for updates</h6>
+            <h6 className="text-sm text-secondary font-bold mb-2">Subscribe for updates</h6>
             <EmailSubscribe />
           </div>
         </div>
