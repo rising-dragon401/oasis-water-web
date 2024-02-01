@@ -1,20 +1,30 @@
+'use client'
+
 import AuthUI from './auth-ui'
 import Link from 'next/link'
 import { AUTH_IMAGES } from '@/lib/constants/images'
 import { getCurrentUserData } from '@/app/actions/user'
 import { redirect } from 'next/navigation'
+import { useUserProvider } from '@/providers/UserProvider'
+import { useEffect } from 'react'
 
-export default async function SignIn() {
-  const userData = await getCurrentUserData()
+export default function SignIn() {
+  const { refreshUserData } = useUserProvider()
+
+  useEffect(() => {
+    const fetch = async () => {
+      const userData = await getCurrentUserData()
+      if (userData) {
+        redirect('/')
+      } else {
+        console.log('No user found')
+      }
+    }
+    fetch()
+  }, [])
 
   let showToast = false
   let toastMessage = ''
-
-  if (userData) {
-    redirect('/')
-  } else {
-    console.log('No user found')
-  }
 
   const image = AUTH_IMAGES[Math.floor(Math.random() * AUTH_IMAGES.length)]
 

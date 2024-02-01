@@ -34,7 +34,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     refreshUserData()
-  }, [uid])
+  }, [])
 
   return (
     <UserContext.Provider
