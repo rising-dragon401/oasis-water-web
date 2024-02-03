@@ -10,37 +10,6 @@ export const getLocations = async () => {
   return locations
 }
 
-export const searchLocations = async (query: string) => {
-  const supabase = await createSupabaseServerClient()
-
-  const queryNumber = parseInt(query)
-
-  const { data: locationsByZip, error: zipError } = await supabase
-    .from('tap_water_locations')
-    .select()
-    .contains('zip_codes', [queryNumber])
-
-  const { data: locationsByName, error: nameError } = await supabase
-    .from('tap_water_locations')
-    .select()
-    .ilike('name', `%${query}%`)
-
-  const locations = [...(locationsByZip || []), ...(locationsByName || [])]
-
-  if (!locations) {
-    return []
-  }
-
-  const taggedLocations = locations.map((location) => {
-    return {
-      ...location,
-      type: 'location',
-    }
-  })
-
-  return taggedLocations || []
-}
-
 export const getLocationDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 

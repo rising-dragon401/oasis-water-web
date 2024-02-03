@@ -28,28 +28,6 @@ export const getFilters = async () => {
   return filtersWithCompany
 }
 
-export const searchFilters = async (query: string) => {
-  const supabase = await createSupabaseServerClient()
-
-  const { data: filters, error: nameError } = await supabase
-    .from('water_filters')
-    .select()
-    .ilike('name', `%${query}%`)
-
-  if (!filters) {
-    return []
-  }
-
-  const taggedFilters = filters.map((filter) => {
-    return {
-      ...filter,
-      type: 'filter',
-    }
-  })
-
-  return taggedFilters || []
-}
-
 export const getFilterDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 

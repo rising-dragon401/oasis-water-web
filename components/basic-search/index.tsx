@@ -3,13 +3,16 @@
 import React, { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { searchItems } from '@/app/actions/items'
-import { searchLocations } from '@/app/actions/locations'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import ResultsRow from './results-row'
 import { Search } from 'lucide-react'
 import { Loader2 } from 'lucide-react'
-import { searchFilters } from '@/app/actions/filters'
+import algoliasearch from 'algoliasearch'
+
+const client = algoliasearch(
+  process.env.NEXT_PUBLIC_ALGOIA_APP_ID!,
+  process.env.NEXT_PUBLIC_ALGOIA_SEARCH_KEY!
+)
 
 export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
@@ -30,19 +33,36 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const handleSearch = async (query: string) => {
     setIsLoading(true)
 
-    const [data, locations, filters] = await Promise.all([
-      searchItems(query),
-      searchLocations(query),
-      searchFilters(query),
-    ])
+    const queries = [
+      {
+        indexName: 'items',
+        query: query,
+        params: {
+          hitsPerPage: 5,
+        },
+      },
+      {
+        indexName: 'tap_water_locations',
+        query: query,
+        params: {
+          hitsPerPage: 5,
+        },
+      },
+      {
+        indexName: 'water_filters',
+        query: query,
+        params: {
+          hitsPerPage: 10,
+        },
+      },
+    ]
 
-    const combinedResults = [...data, ...locations, ...filters]
+    client.multipleQueries(queries).then(({ results }) => {
+      const hits = results.map((result: any) => result.hits)
+      setResults(hits.flat())
 
-    if (combinedResults) {
-      setResults(combinedResults)
-    }
-    setIsLoading(false)
-    return
+      setIsLoading(false)
+    })
   }
 
   return (
