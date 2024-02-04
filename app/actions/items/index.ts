@@ -191,3 +191,21 @@ export const determineIfIngredientIsContaminant = async (ingredientId: number) =
 
   return ingredient.is_contaminant
 }
+
+export const getItemsWithIngredient = async (ingredientId: number) => {
+  const supabase = await createSupabaseServerClient()
+
+  try {
+    // @ts-ignore
+    const { data: items, error } = await supabase.rpc('get_items_with_ingredient', {
+      ingredient_id: ingredientId,
+    })
+
+    if (error) throw error
+
+    return items || []
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}

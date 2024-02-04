@@ -34,8 +34,8 @@ export const metadata = {
 
 export default function AboutSection() {
   return (
-    <div className="flex flex-col">
-      <Typography size="5xl" className="text-primary" fontWeight="normal">
+    <div className="flex flex-col px-8 py-20">
+      <Typography size="lg" className="text-primary" fontWeight="normal">
         “At Oaisys, we’re dedicated to simplifying the journey towards conscious consumption. We
         believe everyone deserves to know exactly what they’re putting into their bodies,
         effortlessly. In a world where water labels and food packaging may not disclose contaminants

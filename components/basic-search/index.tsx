@@ -55,6 +55,13 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
           hitsPerPage: 10,
         },
       },
+      {
+        indexName: 'ingredients',
+        query: query,
+        params: {
+          hitsPerPage: 3,
+        },
+      },
     ]
 
     client.multipleQueries(queries).then(({ results }) => {
@@ -84,7 +91,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               )}
             </div>
             {results.length > 0 && (
-              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-md absolute top-10 w-full z-10">
+              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-md absolute top-10 w-full z-10 h-56 overflow-y-scroll">
                 {results.map((result) => (
                   <ResultsRow key={result.id} itemResult={result} />
                 ))}

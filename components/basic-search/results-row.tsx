@@ -1,4 +1,4 @@
-import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
+import { Item, TapWaterLocation, WaterFilter, Ingredient } from '@/types/custom'
 import Image from 'next/image'
 import Typography from '@/components/typography'
 import Link from 'next/link'
@@ -13,14 +13,21 @@ type Props = {
     | (Item & ExtendedType)
     | (TapWaterLocation & ExtendedType)
     | (WaterFilter & ExtendedType)
+    | (Ingredient & ExtendedType)
 }
 
 export default function ResultsRow({ itemResult }: Props) {
   const determineLink = () => {
+    console.log('itemResult: ', itemResult)
+
     if (itemResult.type === 'tap_water') {
       return `/location/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
     } else if (itemResult.type === 'filter') {
       return `/filter/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
+    } else if (itemResult.type === 'ingredient') {
+      return `/ingredient/${itemResult.id}?name=${itemResult?.name
+        ?.toLowerCase()
+        .replace(/ /g, '-')}`
     } else {
       return `/item/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
     }
