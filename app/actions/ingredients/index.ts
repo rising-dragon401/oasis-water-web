@@ -18,3 +18,20 @@ export const getIngredient = async (id: string) => {
     return null
   }
 }
+
+export const getIngredients = async () => {
+  try {
+    const supabase = await createSupabaseServerClient()
+
+    const { data: ingredients, error } = await supabase.from('ingredients').select()
+
+    if (!ingredients || error) {
+      throw new Error('No ingredients found')
+    }
+
+    return ingredients
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}

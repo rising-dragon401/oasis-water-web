@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/lib/hooks/use-debounce'
@@ -19,8 +19,27 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [query, setQuery] = React.useState<string>('')
   const [results, setResults] = React.useState<any[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
+  const [inputFocused, setInputFocused] = React.useState(false)
 
-  const debouncedQuery = useDebounce(query, 500) // 500ms delay
+  const debouncedQuery = useDebounce(query, 500)
+
+  const searchContainerRef = useRef<HTMLDivElement>(null) // Create a ref for the search container
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setInputFocused(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   useEffect(() => {
     if (debouncedQuery) {
@@ -76,13 +95,19 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
     <>
       <div className="flex flex-row gap-2 items-center justify-center w-full">
         {isShowSearch ? (
-          <div className="flex flex-col gap-2 relative w-full max-w-xl">
+          <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
             <div className="relative">
               <Input
                 placeholder="Search water..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors rounded-md border border-secondary-foreground md:min-w-[300px] shadow-md"
+                onFocus={() => setInputFocused(true)}
+                className={`text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
+                  inputFocused && results.length > 0
+                    ? 'rounded-b-none rounded-t-md border-b-0'
+                    : 'rounded-md'
+                }
+                `}
               />
               {isLoading && (
                 <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
@@ -90,8 +115,8 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
                 </div>
               )}
             </div>
-            {results.length > 0 && (
-              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-md absolute top-10 w-full z-10 h-56 overflow-y-scroll">
+            {results.length > 0 && inputFocused && (
+              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-b-md absolute top-10 w-full z-10 h-56 overflow-y-scroll">
                 {results.map((result) => (
                   <ResultsRow key={result.id} itemResult={result} />
                 ))}

@@ -2,7 +2,7 @@ import { Item, TapWaterLocation, WaterFilter, Ingredient } from '@/types/custom'
 import Image from 'next/image'
 import Typography from '@/components/typography'
 import Link from 'next/link'
-import { MapPin } from 'lucide-react'
+import { MapPin, Droplet, Filter, Milk } from 'lucide-react'
 
 type ExtendedType = {
   type?: string
@@ -18,8 +18,6 @@ type Props = {
 
 export default function ResultsRow({ itemResult }: Props) {
   const determineLink = () => {
-    console.log('itemResult: ', itemResult)
-
     if (itemResult.type === 'tap_water') {
       return `/location/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
     } else if (itemResult.type === 'filter') {
@@ -30,6 +28,18 @@ export default function ResultsRow({ itemResult }: Props) {
         .replace(/ /g, '-')}`
     } else {
       return `/item/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
+    }
+  }
+
+  const getIcon = () => {
+    if (itemResult.type === 'tap_water') {
+      return <Droplet className="text-secondary-foreground" />
+    } else if (itemResult.type === 'filter') {
+      return <Filter className="text-secondary-foreground" />
+    } else if (itemResult.type === 'ingredient') {
+      return <MapPin className="text-secondary-foreground" />
+    } else {
+      return <Milk className="text-secondary-foreground" />
     }
   }
 
@@ -45,15 +55,16 @@ export default function ResultsRow({ itemResult }: Props) {
           width={50}
           height={50}
           quality={40}
-          className="rounded-md h-10 w-10 object-contain"
+          blurDataURL={itemResult.image || ''}
+          placeholder="blur"
+          className="rounded-md h-10 w-10 object-cover"
         />
         <Typography size="base" fontWeight="normal">
           {itemResult.name}
         </Typography>
       </div>
 
-      {/* @ts-ignore */}
-      {itemResult?.zip_codes && <MapPin className="text-secondary-foreground" />}
+      {getIcon()}
     </Link>
   )
 }
