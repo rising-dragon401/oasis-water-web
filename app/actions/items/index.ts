@@ -42,6 +42,8 @@ export const getItemDetails = async (id: string) => {
   try {
     const { data: item, error } = await supabase.from('items').select().eq('id', id)
 
+    console.log('item: ', item)
+
     if (!item) {
       return null
     }
@@ -60,7 +62,7 @@ export const getItemDetails = async (id: string) => {
       })
     )
 
-    contaminants = contaminants.filter((contaminant) => contaminant !== null)
+    contaminants = contaminants?.filter((contaminant) => contaminant !== null)
 
     let brand = null
     if (brandId) {
@@ -76,14 +78,18 @@ export const getItemDetails = async (id: string) => {
             return null
           }
 
+          console.log('ingredient: ', ingredient)
+
           const { data, error: ingredientError } = await supabase
             .from('ingredients')
             .select()
             // @ts-ignore
             .eq('id', ingredient.ingredient_id)
 
+          console.log('ingredient data: ', data)
+
           if (!data) {
-            return null
+            return {}
           }
 
           return data[0]
@@ -101,7 +107,7 @@ export const getItemDetails = async (id: string) => {
     }
 
     let contaminantData: any[] = []
-    if (contaminants && contaminants.length > 0) {
+    if (contaminants && contaminants?.length > 0) {
       contaminantData = await Promise.all(
         contaminants.map(async (contaminant: any) => {
           const { data, error: contaminantError } = await supabase
@@ -144,8 +150,8 @@ export const getItemDetails = async (id: string) => {
 
     return itemWithDetails
   } catch (error) {
-    console.error('getItemDetails: ', error)
-    return null
+    console.error('getItemDetails error: ', error)
+    return error
   }
 }
 
@@ -186,15 +192,20 @@ export const getRecommendedItems = async () => {
 export const determineIfIngredientIsContaminant = async (ingredientId: number) => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: ingredient, error } = await supabase
-    .from('ingredients')
-    .select('is_contaminant')
-    .eq('id', ingredientId)
-    .single()
+  try {
+    const { data: ingredient, error } = await supabase
+      .from('ingredients')
+      .select('is_contaminant')
+      .eq('id', ingredientId)
+      .single()
 
-  if (error) throw error
+    if (error) throw error
 
-  return ingredient.is_contaminant
+    return ingredient.is_contaminant
+  } catch (error) {
+    console.error(error)
+    return false
+  }
 }
 
 export const getItemsWithIngredient = async (ingredientId: number) => {

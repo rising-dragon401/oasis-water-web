@@ -27,8 +27,10 @@ export default function ItemForm({ id }: Props) {
   const fetchItem = async (id: string) => {
     const item = await getItemDetails(id)
 
-    console.log('fetchItem item', item)
-    setItem(item)
+    if (item) {
+      setItem(item)
+    }
+
     setIsLoading(false)
     return item
   }
@@ -37,14 +39,15 @@ export default function ItemForm({ id }: Props) {
     fetchItem(id)
   }, [id])
 
-  const contaminants = item.contaminants || []
+  const contaminants = item?.contaminants || []
 
   const sortedContaminants = contaminants.sort(
     (a: { exceedingRecommendedLimit: number }, b: { exceedingRecommendedLimit: number }) => {
       return b.exceedingRecommendedLimit - a.exceedingRecommendedLimit
     }
   )
-  if (isLoading) {
+
+  if (isLoading || !item) {
     return <ItemSkeleton />
   }
 
@@ -165,7 +168,7 @@ export default function ItemForm({ id }: Props) {
               <Typography size="2xl" fontWeight="normal">
                 Ingredients
               </Typography>
-              {item.ingredients.length > 0 ? (
+              {item?.ingredients.length > 0 ? (
                 <IngredientsCard ingredients={item.ingredients} />
               ) : (
                 <Typography size="base" fontWeight="normal" className="text-secondary">

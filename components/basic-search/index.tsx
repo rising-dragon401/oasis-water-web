@@ -116,7 +116,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               )}
             </div>
             {results.length > 0 && inputFocused && (
-              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-b-md absolute top-10 w-full z-10 h-56 overflow-y-scroll">
+              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-b-md absolute top-10 w-full z-10 max-h-56 overflow-y-scroll">
                 {results.map((result) => (
                   <ResultsRow key={result.id} itemResult={result} />
                 ))}
