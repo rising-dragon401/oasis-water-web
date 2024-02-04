@@ -39,109 +39,114 @@ export const getItem = async (id: string) => {
 export const getItemDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: item, error } = await supabase.from('items').select().eq('id', id)
+  try {
+    const { data: item, error } = await supabase.from('items').select().eq('id', id)
 
-  if (!item) {
-    return null
-  }
+    if (!item) {
+      return null
+    }
 
-  const brandId = item[0].brand
-  const ingredients = item[0].ingredients as IngredientDescriptor[]
-  const companyId = item[0].company
+    const brandId = item[0].brand
+    const ingredients = item[0].ingredients as IngredientDescriptor[]
+    const companyId = item[0].company
 
-  let contaminants = await Promise.all(
-    (ingredients || []).map(async (ingredient) => {
-      if (!ingredient) {
-        return null
-      }
-      const isContaminant = await determineIfIngredientIsContaminant(ingredient.ingredient_id)
-      return isContaminant ? ingredient : null
-    })
-  )
-
-  contaminants = contaminants.filter((contaminant) => contaminant !== null)
-
-  let brand = null
-  if (brandId) {
-    const { data, error: brandError } = await supabase.from('brands').select().eq('id', brandId)
-    brand = data ? data[0] : null
-  }
-
-  let ingredientsDetails: any[] = []
-  if (ingredients && ingredients.length > 0) {
-    ingredientsDetails = await Promise.all(
-      ingredients.map(async (ingredient: any) => {
+    let contaminants = await Promise.all(
+      (ingredients || []).map(async (ingredient) => {
         if (!ingredient) {
           return null
         }
-
-        const { data, error: ingredientError } = await supabase
-          .from('ingredients')
-          .select()
-          // @ts-ignore
-          .eq('id', ingredient.ingredient_id)
-
-        if (!data) {
-          return null
-        }
-
-        return data[0]
+        const isContaminant = await determineIfIngredientIsContaminant(ingredient.ingredient_id)
+        return isContaminant ? ingredient : null
       })
     )
+
+    contaminants = contaminants.filter((contaminant) => contaminant !== null)
+
+    let brand = null
+    if (brandId) {
+      const { data, error: brandError } = await supabase.from('brands').select().eq('id', brandId)
+      brand = data ? data[0] : null
+    }
+
+    let ingredientsDetails: any[] = []
+    if (ingredients && ingredients.length > 0) {
+      ingredientsDetails = await Promise.all(
+        ingredients.map(async (ingredient: any) => {
+          if (!ingredient) {
+            return null
+          }
+
+          const { data, error: ingredientError } = await supabase
+            .from('ingredients')
+            .select()
+            // @ts-ignore
+            .eq('id', ingredient.ingredient_id)
+
+          if (!data) {
+            return null
+          }
+
+          return data[0]
+        })
+      )
+    }
+
+    let company = null
+    if (companyId) {
+      const { data, error: companyError } = await supabase
+        .from('companies')
+        .select()
+        .eq('id', companyId)
+      company = data ? data[0] : null
+    }
+
+    let contaminantData: any[] = []
+    if (contaminants && contaminants.length > 0) {
+      contaminantData = await Promise.all(
+        contaminants.map(async (contaminant: any) => {
+          const { data, error: contaminantError } = await supabase
+            .from('ingredients')
+            .select()
+            .eq('id', contaminant.ingredient_id)
+
+          if (!data) {
+            return null
+          }
+
+          const ingredient = data[0]
+
+          const exceedingHealthGuideline = ingredient.health_guideline
+            ? Math.floor(contaminant?.amount / ingredient.health_guideline) || false
+            : false
+
+          const exceedingLegalLimit = ingredient?.legal_limit
+            ? Math.floor(contaminant?.amount / ingredient.legal_limit) || false
+            : false
+
+          const exceedingRecommendedLimit = exceedingHealthGuideline || exceedingLegalLimit || false
+
+          return {
+            metadata: data[0],
+            amount: contaminant.amount,
+            exceedingRecommendedLimit,
+          }
+        })
+      )
+    }
+
+    const itemWithDetails = {
+      ...item[0],
+      brand,
+      ingredients: ingredientsDetails,
+      company,
+      contaminants: contaminantData,
+    }
+
+    return itemWithDetails
+  } catch (error) {
+    console.error('getItemDetails: ', error)
+    return null
   }
-
-  let company = null
-  if (companyId) {
-    const { data, error: companyError } = await supabase
-      .from('companies')
-      .select()
-      .eq('id', companyId)
-    company = data ? data[0] : null
-  }
-
-  let contaminantData: any[] = []
-  if (contaminants && contaminants.length > 0) {
-    contaminantData = await Promise.all(
-      contaminants.map(async (contaminant: any) => {
-        const { data, error: contaminantError } = await supabase
-          .from('ingredients')
-          .select()
-          .eq('id', contaminant.ingredient_id)
-
-        if (!data) {
-          return null
-        }
-
-        const ingredient = data[0]
-
-        const exceedingHealthGuideline = ingredient.health_guideline
-          ? Math.floor(contaminant?.amount / ingredient.health_guideline) || false
-          : false
-
-        const exceedingLegalLimit = ingredient?.legal_limit
-          ? Math.floor(contaminant?.amount / ingredient.legal_limit) || false
-          : false
-
-        const exceedingRecommendedLimit = exceedingHealthGuideline || exceedingLegalLimit || false
-
-        return {
-          metadata: data[0],
-          amount: contaminant.amount,
-          exceedingRecommendedLimit,
-        }
-      })
-    )
-  }
-
-  const itemWithDetails = {
-    ...item[0],
-    brand,
-    ingredients: ingredientsDetails,
-    company,
-    contaminants: contaminantData,
-  }
-
-  return itemWithDetails
 }
 
 export const getTopItems = async () => {

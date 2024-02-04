@@ -26,6 +26,8 @@ export default function ItemForm({ id }: Props) {
 
   const fetchItem = async (id: string) => {
     const item = await getItemDetails(id)
+
+    console.log('fetchItem item', item)
     setItem(item)
     setIsLoading(false)
     return item
