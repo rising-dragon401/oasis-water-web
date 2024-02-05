@@ -42,8 +42,6 @@ export const getItemDetails = async (id: string) => {
   try {
     const { data: item, error } = await supabase.from('items').select().eq('id', id)
 
-    console.log('item: ', item)
-
     if (!item) {
       return null
     }
@@ -77,16 +75,11 @@ export const getItemDetails = async (id: string) => {
           if (!ingredient) {
             return null
           }
-
-          console.log('ingredient: ', ingredient)
-
           const { data, error: ingredientError } = await supabase
             .from('ingredients')
             .select()
             // @ts-ignore
             .eq('id', ingredient.ingredient_id)
-
-          console.log('ingredient data: ', data)
 
           if (!data) {
             return {}

@@ -2,7 +2,7 @@
 
 import Typography from '@/components/typography'
 import React from 'react'
-import { getRecommendedItems } from '@/app/actions/items'
+import { getTopItems } from '@/app/actions/items'
 import { useEffect, useState } from 'react'
 import ItemPreviewCard from '@/components/item-preview-card'
 
@@ -10,7 +10,7 @@ export default function RecommendedRow() {
   const [ranked, setRanked] = useState<any>([])
 
   const fetchRecommendedItems = async () => {
-    const recommended = await getRecommendedItems()
+    const recommended = await getTopItems()
     const ranked_ = recommended.sort((a, b) => (b.score || 0) - (a.score || 0))
 
     setRanked(ranked_)
@@ -24,7 +24,7 @@ export default function RecommendedRow() {
     <div className="mb-10">
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Recommended water
+          Top water
         </Typography>
 
         {/* <Link href="/bottled-water" className="underline italic text-primary">
