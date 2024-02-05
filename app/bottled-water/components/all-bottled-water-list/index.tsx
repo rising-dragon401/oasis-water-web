@@ -10,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 
 type Props = {
@@ -24,17 +23,14 @@ export default function BottledWaterList({ items }: Props) {
     if (!items) return null
 
     return [...items].sort((a, b) => {
-      switch (sortMethod) {
-        case 'score':
-          if (b.score === null || a.score === null) {
-            return 0
-          }
-          return b.score - a.score
-        case 'name':
-          return a.name.localeCompare(b.name)
-        default:
-          return 0
+      if (sortMethod === 'score') {
+        if (a.score === null) return 1
+        if (b.score === null) return -1
+        return b.score - a.score
+      } else if (sortMethod === 'name') {
+        return a.name.localeCompare(b.name)
       }
+      return 0
     })
   }, [items, sortMethod])
 
@@ -46,11 +42,9 @@ export default function BottledWaterList({ items }: Props) {
         </Typography>
 
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="outline" className="flex flex-row items-center gap-2">
-              Sort
-              <ChevronDown className="w-4 h-4" />
-            </Button>
+          <DropdownMenuTrigger className="flex flex-row items-center gap-2">
+            Sort
+            <ChevronDown className="w-4 h-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem
