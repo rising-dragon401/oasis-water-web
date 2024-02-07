@@ -151,14 +151,20 @@ export const getItemDetails = async (id: string) => {
 export const getTopItems = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: items, error } = await supabase
-    .from('items')
-    .select()
-    .or('is_indexed.is.null,is_indexed.eq.true')
-    .order('score', { ascending: false })
-    .range(0, 10)
+  try {
+    const { data: items, error } = await supabase
+      .from('items')
+      .select()
+      .not('score', 'is', null) // Exclude items with a score of null
+      .or('is_indexed.is.null,is_indexed.eq.true')
+      .order('score', { ascending: false })
+      .range(0, 10)
 
-  return items || []
+    return items || []
+  } catch (error) {
+    console.error(error)
+    return []
+  }
 }
 
 export const getWorstItems = async () => {
