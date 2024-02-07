@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { useMemo } from 'react'
 import Typography from '@/components/typography'
 
 type Props = {
@@ -13,9 +6,14 @@ type Props = {
 }
 
 export default function IngredientsCard({ ingredients }: Props) {
+  const nonContaminantIngredients = useMemo(
+    () => ingredients.filter((ingredient) => !ingredient.is_contaminant),
+    [ingredients]
+  )
+
   return (
     <>
-      {ingredients?.map((ingredient, index) => (
+      {nonContaminantIngredients?.map((ingredient, index) => (
         <div key={index}>
           <Typography size="lg" fontWeight="normal" className="mb-4 text-secondary">
             {ingredient.name}
