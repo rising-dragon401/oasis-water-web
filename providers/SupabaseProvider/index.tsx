@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import { getCurrentUserData } from '@/app/actions/user'
 import { createClient } from '@/utils/supabase/client'
 
@@ -22,7 +22,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('auth state changed')
+      console.log('auth state changed: ', event, session)
 
       const userData = await getCurrentUserData()
 
@@ -34,6 +34,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
     return () => {
       subscription.unsubscribe()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, supabase])
 
   return (

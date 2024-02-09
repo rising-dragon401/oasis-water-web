@@ -3,7 +3,7 @@ import cn from 'classnames'
 import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from '@/components/ui/toaster'
 import { CSPostHogProvider } from './providers'
-import SupabaseProvider from './supabase-provider'
+import SupabaseProvider from '../providers/SupabaseProvider'
 import UserProvider from '@/providers/UserProvider'
 
 import '@/styles/globals.css'

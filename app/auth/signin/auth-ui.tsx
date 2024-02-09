@@ -1,6 +1,6 @@
 'use client'
 
-import { useSupabase } from '@/app/supabase-provider'
+import { useSupabase } from '@/providers/SupabaseProvider'
 import { useToast } from '@/components/ui/use-toast'
 import { getURL } from '@/utils/helpers'
 import { Auth } from '@supabase/auth-ui-react'

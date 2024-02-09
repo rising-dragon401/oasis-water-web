@@ -1,6 +1,6 @@
 'use server'
 
-import { getSession } from '@/app/supabase-server'
+import { getSession } from '@/utils/supabase/server'
 import { ItemType } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 

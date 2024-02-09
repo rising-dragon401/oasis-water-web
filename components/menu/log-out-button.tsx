@@ -1,6 +1,6 @@
 'use client'
 
-import { useSupabase } from '@/app/supabase-provider'
+import { useSupabase } from '@/providers/SupabaseProvider'
 import { useRouter } from 'next/navigation'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { LogOut } from 'lucide-react'
