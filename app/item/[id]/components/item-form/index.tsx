@@ -178,14 +178,7 @@ export default function ItemForm({ id }: Props) {
               )}
             </div>
 
-            {item?.sources && (
-              <div className="flex flex-col gap-6 my-10">
-                <Typography size="2xl" fontWeight="normal">
-                  Sources
-                </Typography>
-                {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
-              </div>
-            )}
+            {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
           </>
         )}
       </div>

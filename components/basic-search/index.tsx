@@ -64,14 +64,14 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
         indexName: 'tap_water_locations',
         query: query,
         params: {
-          hitsPerPage: 5,
+          hitsPerPage: 3,
         },
       },
       {
         indexName: 'water_filters',
         query: query,
         params: {
-          hitsPerPage: 10,
+          hitsPerPage: 3,
         },
       },
       {
