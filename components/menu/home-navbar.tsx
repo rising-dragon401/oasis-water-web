@@ -58,8 +58,8 @@ const aboutComponents: { title: string; href: string; description: string }[] = 
     description: 'We make living a clean healthy life easy',
   },
   {
-    title: 'Manifesto',
-    href: '/manifesto',
+    title: 'Mission',
+    href: '/mission',
     description: 'We are dedicated to simplifying the journey towards conscious consumption.',
   },
   {
@@ -75,13 +75,6 @@ const aboutComponents: { title: string; href: string; description: string }[] = 
 ]
 
 export default function HomeNavbar() {
-  const [isMounted, setIsMounted] = useState(false)
-
-  // This is a side effect that runs after the first render and sets the isMounted state to true
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
   return (
     <NavigationMenu className="flex w-full justify-between py-2">
       <NavigationMenuList>

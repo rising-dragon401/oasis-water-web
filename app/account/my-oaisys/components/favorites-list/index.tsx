@@ -10,7 +10,7 @@ export default function FavoritesList() {
 
   return (
     <div>
-      <div className="pt-4 pb-8 flex flex-row justify-between">
+      <div className="pt-4 pb-8 flex w-full flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
           My Oaisys
         </Typography>

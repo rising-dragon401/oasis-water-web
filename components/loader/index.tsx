@@ -1,14 +1,12 @@
-if (typeof window !== 'undefined') import('@dotlottie/player-component')
+import { DotLottiePlayer } from '@dotlottie/react-player'
+import '@dotlottie/react-player/dist/index.css'
 
-export default function Loader() {
-  return (
-    <>
-      <dotlottie-player
-        src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/animations/waves.lottie"
-        autoplay
-        loop
-        style={{ height: '100%', width: '100%' }}
-      />
-    </>
-  )
+export default function Loader({
+  height = '100%',
+  width = '100%',
+}: {
+  height?: string
+  width?: string
+}) {
+  return <DotLottiePlayer src="/animations/waves.lottie" autoplay loop style={{ height, width }} />
 }

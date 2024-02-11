@@ -27,6 +27,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { data: userFavorites } = useSWR('userFavorites', getUserFavorites)
 
   const refreshUserData = () => {
+    console.log('refreshing user data')
     mutate('userData')
     mutate('userFavorites')
     mutate('uid')

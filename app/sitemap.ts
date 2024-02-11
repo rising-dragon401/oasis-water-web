@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const itemsPaths = items
     ? items.map(
-        (item: Item) => `/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`
+        (item: Item) => `/search/item/${item.id}?name=${item.name.toLowerCase().replace(/ /g, '-')}`
       )
     : []
 
@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     (locations &&
       locations.map(
         (location: TapWaterLocation) =>
-          `/location/${location.id}?name=${location.name.toLowerCase().replace(/ /g, '-')}`
+          `/search/location/${location.id}?name=${location.name.toLowerCase().replace(/ /g, '-')}`
       )) ||
     []
 
@@ -30,7 +30,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     (filters &&
       filters.map(
         (filter: WaterFilter) =>
-          `/filter/${filter.id}?name=${filter.name.toLowerCase().replace(/ /g, '-')}`
+          `/search/filter/${filter.id}?name=${filter.name.toLowerCase().replace(/ /g, '-')}`
       )) ||
     []
 
@@ -38,7 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     (ingredients &&
       ingredients.map(
         (ingredient: Ingredient) =>
-          `/ingredient/${ingredient.id}?name=${ingredient.name.toLowerCase().replace(/ /g, '-')}`
+          `/search/ingredient/${ingredient.id}?name=${ingredient.name
+            .toLowerCase()
+            .replace(/ /g, '-')}`
       )) ||
     []
 

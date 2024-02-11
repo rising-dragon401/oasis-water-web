@@ -50,11 +50,11 @@ export default function ItemPreviewCard({ item }: Props) {
 
   const determineLink = () => {
     if (item.type === 'tap_water') {
-      return `/location/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
+      return `/search/location/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
     } else if (item.type === 'filter') {
-      return `/filter/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
+      return `/search/filter/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
     } else {
-      return `/item/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
+      return `/search/item/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
     }
   }
 

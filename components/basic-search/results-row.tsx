@@ -19,15 +19,21 @@ type Props = {
 export default function ResultsRow({ itemResult }: Props) {
   const determineLink = () => {
     if (itemResult.type === 'tap_water') {
-      return `/location/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
+      return `/search/location/${itemResult.id}?name=${itemResult?.name
+        ?.toLowerCase()
+        .replace(/ /g, '-')}`
     } else if (itemResult.type === 'filter') {
-      return `/filter/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
+      return `/search/filter/${itemResult.id}?name=${itemResult?.name
+        ?.toLowerCase()
+        .replace(/ /g, '-')}`
     } else if (itemResult.type === 'ingredient') {
-      return `/ingredient/${itemResult.id}?name=${itemResult?.name
+      return `/search/ingredient/${itemResult.id}?name=${itemResult?.name
         ?.toLowerCase()
         .replace(/ /g, '-')}`
     } else {
-      return `/item/${itemResult.id}?name=${itemResult?.name?.toLowerCase().replace(/ /g, '-')}`
+      return `/search/item/${itemResult.id}?name=${itemResult?.name
+        ?.toLowerCase()
+        .replace(/ /g, '-')}`
     }
   }
 

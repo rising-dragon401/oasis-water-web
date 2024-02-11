@@ -16,14 +16,12 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
   const router = useRouter()
   const pathname = usePathname()
 
-  const authPages = ['/my-oaisys']
+  const authPages = ['/account/my-oaisys']
 
   useEffect(() => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('auth state changed: ', event, session)
-
       const userData = await getCurrentUserData()
 
       if (authPages.includes(pathname) && !userData) {

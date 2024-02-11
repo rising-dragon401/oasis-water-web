@@ -61,7 +61,7 @@ export default function MobileNavbar() {
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="my-2 justify-start">
-                  <Link href="/my-oaisys">Favorites</Link>
+                  <Link href="/account/my-oaisys">Favorites</Link>
                 </DropdownMenuItem>
                 <SignOutButton />
               </DropdownMenuGroup>

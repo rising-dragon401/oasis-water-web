@@ -16,7 +16,7 @@ export const metadata = {
   },
 }
 
-export default async function ManifestoPage() {
+export default async function RecommendationsPage() {
   return (
     <SubpageLayout>
       <RecommendationsSection />

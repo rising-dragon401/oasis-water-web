@@ -19,7 +19,7 @@ import { useUserProvider } from '@/providers/UserProvider'
 export function AccountMenu() {
   const { uid, userData } = useUserProvider()
 
-  if (!uid || !userData) {
+  if (!userData) {
     return (
       <Link
         href="/auth/signin"
@@ -57,7 +57,7 @@ export function AccountMenu() {
           </DropdownMenuItem> */}
 
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/my-oaisys" className="flex flex-row items-center">
+            <Link href="/account/my-oaisys" className="flex flex-row items-center">
               <Heart className="mr-2 h-4 w-4" />
               My Oaisys
             </Link>

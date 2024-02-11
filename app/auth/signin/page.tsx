@@ -13,6 +13,8 @@ export default function SignIn() {
 
   useEffect(() => {
     const fetch = async () => {
+      refreshUserData()
+
       const userData = await getCurrentUserData()
       if (userData) {
         redirect('/')
