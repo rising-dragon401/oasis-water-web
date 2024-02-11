@@ -2,7 +2,7 @@ import { Item, TapWaterLocation, WaterFilter, Ingredient } from '@/types/custom'
 import Image from 'next/image'
 import Typography from '@/components/typography'
 import Link from 'next/link'
-import { MapPin, Droplet, Filter, Milk } from 'lucide-react'
+import { MapPin, Droplet, Filter, Milk, Building } from 'lucide-react'
 
 type ExtendedType = {
   type?: string
@@ -44,6 +44,8 @@ export default function ResultsRow({ itemResult }: Props) {
       return <Filter className="text-secondary-foreground" />
     } else if (itemResult.type === 'ingredient') {
       return <MapPin className="text-secondary-foreground" />
+    } else if (itemResult.type === 'company') {
+      return <Building className="text-secondary-foreground" />
     } else {
       return <Milk className="text-secondary-foreground" />
     }
@@ -62,7 +64,7 @@ export default function ResultsRow({ itemResult }: Props) {
           height={50}
           quality={40}
           blurDataURL={itemResult.image || ''}
-          placeholder="blur"
+          placeholder={itemResult.image ? 'blur' : 'empty'}
           className="rounded-md h-10 w-10 object-cover"
         />
         <Typography size="base" fontWeight="normal">
