@@ -62,7 +62,7 @@ export default function CompanyForm({ name }: Props) {
           <Typography size="xl" fontWeight="normal">
             Products
           </Typography>
-          <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
+          <div className="flex flex-wrap flex-row gap-6">
             {items && items.map((item: any) => <ItemPreviewCard key={item.id} item={item} />)}
           </div>
         </div>

@@ -71,7 +71,7 @@ export default function Footer() {
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link
-                  href="/bottled-water"
+                  href="/search/bottled-water"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
                   Bottled water

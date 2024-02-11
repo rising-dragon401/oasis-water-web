@@ -18,7 +18,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
 
   return (
     <div className="min-h-[100vh] flex justify-center">
-      <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-3xl sm:max-w-xl max-w-sm w-full">
+      <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-3xl sm:max-w-xl max-w-sm w-full">
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
 

@@ -46,7 +46,7 @@ export default function MobileNavbar() {
         <DropdownMenuContent className="w-full" align="end">
           <DropdownMenuGroup>
             <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/bottled-water">Bottled water</Link>
+              <Link href="/search/bottled-water">Bottled water</Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem className="my-2 justify-start">

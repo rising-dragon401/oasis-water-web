@@ -63,7 +63,7 @@ export default function FilterForm({ id }: Props) {
             <Typography size="3xl" fontWeight="normal">
               {filter.name}
             </Typography>
-            <Link href={`/company/${filter.company?.name}`}>
+            <Link href={`/search/company/${filter.company?.name}`}>
               <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
                 {filter.brand?.name} - {filter.company?.name}
               </Typography>

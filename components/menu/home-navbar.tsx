@@ -19,36 +19,19 @@ import { cn } from '@/lib/utils'
 const components: { title: string; href: string; description: string }[] = [
   {
     title: 'Bottled water',
-    href: '/bottled-water',
+    href: '/search/bottled-water',
     description: 'Discover the health rating of your bottled water.',
   },
   {
     title: 'Tap water',
-    href: '/tap-water',
+    href: '/search/tap-water',
     description: 'Lookup what contaminants are inside your tap water',
   },
   {
     title: 'Filters',
-    href: '/filters',
+    href: '/search/filters',
     description: 'Find the best filter for your water.',
   },
-  // {
-  //   title: 'Scroll-area',
-  //   href: '/docs/primitives/scroll-area',
-  //   description: 'Visually or semantically separates content.',
-  // },
-  // {
-  //   title: 'Tabs',
-  //   href: '/docs/primitives/tabs',
-  //   description:
-  //     'A set of layered sections of content—known as tab panels—that are displayed one at a time.',
-  // },
-  // {
-  //   title: 'Tooltip',
-  //   href: '/docs/primitives/tooltip',
-  //   description:
-  //     'A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.',
-  // },
 ]
 
 const aboutComponents: { title: string; href: string; description: string }[] = [

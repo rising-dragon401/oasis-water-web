@@ -81,6 +81,13 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
           hitsPerPage: 3,
         },
       },
+      {
+        indexName: 'companies',
+        query: query,
+        params: {
+          hitsPerPage: 3,
+        },
+      },
     ]
 
     client.multipleQueries(queries).then(({ results }) => {
