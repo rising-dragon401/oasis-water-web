@@ -26,10 +26,6 @@ export default function RecommendedRow() {
         <Typography size="2xl" fontWeight="normal">
           Top water
         </Typography>
-
-        {/* <Link href="/bottled-water" className="underline italic text-primary">
-          see all
-        </Link> */}
       </div>
 
       <div className="flex overflow-x-auto gap-6 hide-scrollbar">

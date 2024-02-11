@@ -14,7 +14,7 @@ export default async function TapWaterSection() {
           Tap water ratings
         </Typography>
 
-        <Link href="/tap-water" className="underline italic text-primary">
+        <Link href="/search/tap-water" className="underline italic text-primary">
           see all
         </Link>
       </div>

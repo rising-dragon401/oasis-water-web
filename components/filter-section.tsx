@@ -14,7 +14,7 @@ export default async function FilterSection() {
           Filter ratings
         </Typography>
 
-        <Link href="/filters" className="underline italic text-primary">
+        <Link href="/search/filters" className="underline italic text-primary">
           see all
         </Link>
       </div>

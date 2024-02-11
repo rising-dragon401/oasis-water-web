@@ -14,7 +14,7 @@ export default async function LowestRatedSection() {
           Lowest rated
         </Typography>
 
-        <Link href="/bottled-water" className="underline italic text-primary">
+        <Link href="/search/bottled-water" className="underline italic text-primary">
           see all
         </Link>
       </div>
