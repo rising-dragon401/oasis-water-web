@@ -61,9 +61,9 @@ export default function ItemPreviewCard({ item }: Props) {
   return (
     <Link
       href={determineLink()}
-      className="flex flex-col lg:max-w-80 md:max-w-64 max-w-40 hover:opacity-80"
+      className="flex flex-col lg:max-w-72 md:max-w-52 max-w-40 hover:opacity-80"
     >
-      <div className="lg:w-80 lg:h-80 md:w-64 md:h-64 h-40 w-40 relative">
+      <div className="lg:w-72 lg:h-72 md:w-64 md:h-64 h-40 w-40 relative">
         <Image
           src={item.image || ''}
           className="w-full h-full rounded-md object-cover hover:cursor-pointer"
