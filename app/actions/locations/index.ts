@@ -13,42 +13,45 @@ export const getLocations = async () => {
 export const getLocationDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 
+  // Fetch location details
   const { data: item, error } = await supabase.from('tap_water_locations').select().eq('id', id)
-
   if (!item) {
     return null
   }
+
   const contaminants = item[0].contaminants
-
-  let contaminantData: any[] = []
-  if (contaminants && contaminants.length > 0) {
-    contaminantData = await Promise.all(
-      contaminants.map(async (contaminant: any) => {
-        const { data, error: contaminantError } = await supabase
-          .from('ingredients')
-          .select()
-          .eq('id', contaminant.ingredient_id)
-
-        if (!data) {
-          return null
-        }
-
-        return {
-          metadata: data[0],
-          amount: contaminant.amount,
-        }
-      })
-    )
+  if (!contaminants || contaminants.length === 0) {
+    return { ...item[0], contaminants: [] }
   }
 
-  const locationithDetails = {
+  // Fetch all ingredients in a single query
+  const ingredientIds = contaminants.map((c: any) => c.ingredient_id)
+  const { data: ingredients, error: ingredientsError } = await supabase
+    .from('ingredients')
+    .select()
+    .in('id', ingredientIds)
+
+  if (!ingredients) {
+    return { ...item[0], contaminants: [] }
+  }
+
+  // Map the fetched ingredients to their contaminants
+  const contaminantData = contaminants
+    .map((contaminant: any) => {
+      const ingredientData = ingredients.find(
+        (ingredient) => ingredient.id === contaminant.ingredient_id
+      )
+      return ingredientData ? ingredientData : null
+    })
+    .filter(Boolean) // Filter out any nulls in case of missing data
+
+  const locationWithDetails = {
     ...item[0],
     contaminants: contaminantData,
   }
 
-  return locationithDetails
+  return locationWithDetails
 }
-
 export const getLocation = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 

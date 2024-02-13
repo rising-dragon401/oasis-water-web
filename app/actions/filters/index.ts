@@ -39,25 +39,26 @@ export const getFilterDetails = async (id: string) => {
 
   const contaminants = item[0].contaminants_filtered
 
+  console.log('contaminantssss: ', contaminants)
+
   let contaminantData: any[] = []
   if (contaminants && contaminants.length > 0) {
-    contaminantData = await Promise.all(
-      contaminants.map(async (contaminant: any) => {
-        const { data, error: contaminantError } = await supabase
-          .from('ingredients')
-          .select()
-          .eq('id', contaminant)
+    contaminantData = (
+      await Promise.all(
+        contaminants.map(async (contaminant: any) => {
+          const { data, error: contaminantError } = await supabase
+            .from('ingredients')
+            .select()
+            .eq('id', contaminant)
 
-        if (!data) {
-          return null
-        }
+          if (!data) {
+            return null
+          }
 
-        return {
-          metadata: data[0],
-          amount: contaminant.amount,
-        }
-      })
-    )
+          return data[0]
+        })
+      )
+    ).filter((contaminant) => contaminant !== null) // Filter out null values
   }
 
   const companyId = item[0].company
@@ -113,9 +114,7 @@ export const getAllContaminants = async () => {
   }
 
   const contaminantsWithMetadata = contaminants.map((contaminant) => {
-    return {
-      metadata: contaminant,
-    }
+    return contaminant
   })
 
   return contaminantsWithMetadata

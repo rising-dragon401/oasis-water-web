@@ -34,8 +34,6 @@ export async function generateMetadata(
 export default function ItemPage({ params, searchParams }: Props) {
   const id = params.id
 
-  console.log('id', id)
-
   return (
     <SubpageLayout>
       <ItemForm id={id} />

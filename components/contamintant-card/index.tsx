@@ -20,7 +20,7 @@ export default function ContaminantCard({ data }: Props) {
       <CardHeader className="">
         <CardTitle className="flex flex-col w-full justify-between relative">
           <div className="w-full flex flex-row justify-between items-center">
-            <div>{data?.metadata.name}</div>
+            <div>{data?.name}</div>
             {data.exceedingRecommendedLimit && (
               <div className=" rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
                 <Typography size="xl" fontWeight="normal" className="!text-background">
@@ -37,25 +37,21 @@ export default function ContaminantCard({ data }: Props) {
             )}
           </div>
         </CardTitle>
-        <CardDescription>{data?.metadata.description}</CardDescription>
+        <CardDescription>{data?.description}</CardDescription>
         <CardContent className="pl-0">
           <Typography size="base" fontWeight="normal" className="text-secondary">
-            Risks: {data?.metadata.risks}
+            Risks: {data?.risks}
           </Typography>
           {data.amount && (
             <Typography size="base" fontWeight="normal" className="text-secondary mt-2">
-              • Amount: {data?.amount} {data?.metadata.unit} {data?.metadata.measure}
+              • Amount: {data?.amount} {data?.unit} {data?.measure}
             </Typography>
           )}
         </CardContent>
         <CardFooter className="flex flex-row  w-full justify-between p-0">
-          <ContaminantFiltersDropdown contaminantId={data?.metadata.id || ''} />
+          <ContaminantFiltersDropdown contaminantId={data?.id || ''} />
 
-          {data?.metadata.sources ? (
-            <ArticlesDropdown sources={data?.metadata.sources || []} />
-          ) : (
-            <div></div>
-          )}
+          {data?.sources ? <ArticlesDropdown sources={data?.sources || []} /> : <div></div>}
         </CardFooter>
       </CardHeader>
     </Card>

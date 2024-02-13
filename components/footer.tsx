@@ -67,7 +67,7 @@ export default function Footer() {
           </div>
 
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-secondary font-bold mb-2">Legal</h6>
+            <h6 className="text-sm text-secondary font-bold mb-2">Quick links</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link
@@ -93,12 +93,6 @@ export default function Footer() {
                   Water filters
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-sm text-secondary font-bold mb-2">Information</h6>
-            <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link href="/about" className="text-secondary  transition duration-150 ease-in-out">
                   About
@@ -109,6 +103,12 @@ export default function Footer() {
                   FAQs
                 </Link>
               </li>
+            </ul>
+          </div>
+
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+            <h6 className="text-sm text-secondary font-bold mb-2">Information</h6>
+            <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link
                   href="/mission"

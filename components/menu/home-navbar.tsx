@@ -13,24 +13,37 @@ import {
 import Link from 'next/link'
 import Logo from '@/components/logo'
 import Typography from '../typography'
-import { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import { MapPin, Droplet, Filter, Milk, Building } from 'lucide-react'
 
-const components: { title: string; href: string; description: string }[] = [
+interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
+  logo?: React.ReactNode
+  title: string
+}
+
+const components: {
+  title: string
+  href: string
+  description: string
+  logo: React.ReactNode
+}[] = [
   {
     title: 'Bottled water',
     href: '/search/bottled-water',
     description: 'Discover the health rating of your bottled water.',
+    logo: <Milk className="text-secondary w-4 h-4" />,
   },
   {
     title: 'Tap water',
     href: '/search/tap-water',
     description: 'Lookup what contaminants are inside your tap water',
+    logo: <Droplet className="text-secondary w-4 h-4" />,
   },
   {
     title: 'Filters',
     href: '/search/filters',
     description: 'Find the best filter for your water.',
+    logo: <Filter className="text-secondary w-4 h-4" />,
   },
 ]
 
@@ -76,7 +89,12 @@ export default function HomeNavbar() {
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               {components.map((component) => (
-                <ListItem key={component.title} title={component.title} href={component.href}>
+                <ListItem
+                  key={component.title}
+                  title={component.title}
+                  href={component.href}
+                  logo={component.logo}
+                >
                   {component.description}
                 </ListItem>
               ))}
@@ -105,8 +123,8 @@ export default function HomeNavbar() {
   )
 }
 
-const ListItem = React.forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
-  ({ className, title, children, ...props }, ref) => {
+const ListItem = React.forwardRef<React.ElementRef<'a'>, ListItemProps>(
+  ({ className, title, logo, children, ...props }, ref) => {
     return (
       <li>
         <NavigationMenuLink asChild>
@@ -118,7 +136,10 @@ const ListItem = React.forwardRef<React.ElementRef<'a'>, React.ComponentPropsWit
             )}
             {...props}
           >
-            <div className="text-sm font-medium leading-none">{title}</div>
+            <div className="flex flex-row gap-2">
+              {logo}
+              <div className="text-sm font-medium leading-none">{title}</div>
+            </div>
             <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
           </a>
         </NavigationMenuLink>

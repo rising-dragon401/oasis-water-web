@@ -32,11 +32,11 @@ export default function FilterForm({ id }: Props) {
 
   const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
 
+  console.log('filter.contaminants_filtered: ', filter.contaminants_filtered)
+
   const notFilteredContaminants = allContaminants?.filter(
     (contaminant) =>
-      !filter.contaminants_filtered?.some(
-        (filtered: any) => filtered.metadata.id === contaminant.metadata.id
-      )
+      !filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
   )
 
   useEffect(() => {
