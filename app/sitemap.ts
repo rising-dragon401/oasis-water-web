@@ -49,51 +49,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...itemsPaths.map((path: string) => ({
       url: `https://www.oaisys.ai${path}`,
-      lastModified: new Date(),
+      // lastModified: new Date(),
     })),
     ...locationsPaths.map((path: string) => ({
       url: `https://www.oaisys.ai${path}`,
-      lastModified: new Date(),
     })),
     ...filterPaths.map((path: string) => ({
       url: `https://www.oaisys.ai${path}`,
-      lastModified: new Date(),
     })),
     ...ingredientPaths.map((path: string) => ({
       url: `https://www.oaisys.ai${path}`,
-      lastModified: new Date(),
     })),
     {
       url: `https://www.oaisys.ai/`,
-      lastModified: new Date(),
     },
     {
       url: `https://www.oaisys.ai/recommendations`,
-      lastModified: new Date(),
     },
     {
-      url: `https://www.oaisys.ai/bottled/bottled-water`,
-      lastModified: new Date(),
+      url: `https://www.oaisys.ai/search/bottled-water`,
     },
     {
-      url: `https://www.oaisys.ai/tap-water`,
-      lastModified: new Date(),
+      url: `https://www.oaisys.ai/search/tap-water`,
     },
     {
       url: `https://www.oaisys.ai/about`,
-      lastModified: new Date(),
     },
     {
       url: `https://www.oaisys.ai/faqs`,
-      lastModified: new Date(),
     },
     {
       url: `https://www.oaisys.ai/blog`,
-      lastModified: new Date(),
     },
     ...blogPaths.map((path: string) => ({
       url: `https://www.oaisys.ai${path}`,
-      lastModified: new Date(),
     })),
   ]
 }
