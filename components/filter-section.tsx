@@ -11,7 +11,7 @@ export default async function FilterSection() {
     <div>
       <div className="pt-4 pb-8 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Filter ratings
+          Filters
         </Typography>
 
         <Link href="/search/filters" className="underline italic text-primary">
@@ -19,13 +19,9 @@ export default async function FilterSection() {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
+      <div className="flex overflow-x-auto gap-8 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {filters &&
-          filters?.slice(0, 3).map((filter) => (
-            <div key={filter.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard key={filter.name} item={filter} />
-            </div>
-          ))}
+          filters?.slice(0, 5).map((filter) => <ItemPreviewCard key={filter.name} item={filter} />)}
       </div>
     </div>
   )

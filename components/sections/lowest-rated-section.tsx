@@ -19,13 +19,9 @@ export default async function LowestRatedSection() {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
+      <div className="flex overflow-x-auto gap-8 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {lowestItems &&
-          lowestItems?.slice(0, 5).map((item) => (
-            <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard key={item.id} item={item} />
-            </div>
-          ))}
+          lowestItems?.slice(0, 5).map((item) => <ItemPreviewCard key={item.id} item={item} />)}
       </div>
     </div>
   )

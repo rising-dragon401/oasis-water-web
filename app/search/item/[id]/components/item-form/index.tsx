@@ -172,8 +172,7 @@ export default function ItemForm({ id }: Props) {
                 <IngredientsCard ingredients={item.ingredients} />
               ) : (
                 <Typography size="base" fontWeight="normal" className="text-secondary">
-                  Unclear ingredients found. This could mean the water is pure or the manufacturer
-                  is not being transparent
+                  None
                 </Typography>
               )}
             </div>

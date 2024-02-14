@@ -19,13 +19,11 @@ export default async function TapWaterSection() {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
+      <div className="flex overflow-x-auto gap-8 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {randomLocations &&
-          randomLocations?.slice(0, 3).map((location) => (
-            <div key={location.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard key={location.name} item={location} />
-            </div>
-          ))}
+          randomLocations
+            ?.slice(0, 3)
+            .map((location) => <ItemPreviewCard key={location.name} item={location} />)}
       </div>
     </div>
   )

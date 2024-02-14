@@ -19,13 +19,12 @@ export default async function TopRatedSection() {
         </Link>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
+      <div
+        className="flex flex-row gap-8 hide-scrollbar overflow-x-scroll"
+        style={{ animation: 'fadeIn 1s' }}
+      >
         {topItems &&
-          topItems?.slice(0, 5).map((item) => (
-            <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard key={item.id} item={item} />
-            </div>
-          ))}
+          topItems?.slice(0, 5).map((item) => <ItemPreviewCard key={item.id} item={item} />)}
       </div>
     </div>
   )

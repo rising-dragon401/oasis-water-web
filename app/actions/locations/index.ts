@@ -1,6 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/utils/supabase/server'
+import { IngredientDescriptor } from '@/types/custom'
 
 export const getLocations = async () => {
   const supabase = await createSupabaseServerClient()
@@ -35,41 +36,51 @@ export const getLocationDetails = async (id: string) => {
     return null
   }
 
-  const contaminants = items[0].contaminants
-  if (!contaminants || contaminants.length === 0) {
-    return { ...items[0], contaminants: [] }
-  }
+  const location = items[0]
 
-  // Fetch all ingredients in a single query
-  const ingredientIds = contaminants.map((c: any) => c.ingredient_id)
-  const { data: ingredients, error: ingredientsError } = await supabase
-    .from('ingredients')
-    .select()
-    .in('id', ingredientIds)
+  // Fetch all ingredients once
+  const { data: ingredients, error: ingredientsError } = await supabase.from('ingredients').select()
 
   if (!ingredients) {
-    return { ...items[0], contaminants: [] }
+    return null
   }
 
-  // Map the fetched ingredients to their contaminants
-  const contaminantData = contaminants
-    .map((contaminant: any) => {
-      const ingredientData = ingredients.find(
-        (ingredient) => ingredient.id === contaminant.ingredient_id
+  const cleanUtilities = await Promise.all(
+    location.utilities?.map(async (utility: any) => {
+      if (!utility) return null
+
+      const cleanedContaminants = await Promise.all(
+        utility.contaminants.map(async (contaminant: IngredientDescriptor) => {
+          // Find the matching ingredient from the fetched ingredients
+          const ingredient = ingredients.find(
+            (ingredient) => ingredient.id === contaminant.ingredient_id
+          )
+
+          return {
+            ...ingredient,
+            ingredient_id: contaminant.ingredient_id,
+            amount: contaminant.amount,
+          }
+        })
       )
-      return ingredientData ? ingredientData : null
-    })
-    .filter(Boolean) // Filter out any nulls in case of missing data
+
+      return {
+        ...utility,
+        contaminants: cleanedContaminants,
+      }
+    }) || []
+  )
 
   const locationWithDetails = {
-    ...items[0],
-    // @ts-ignore
-    score: items[0]?.utilities[0].score || 0,
-    contaminants: contaminantData,
+    ...location,
+    utilities: cleanUtilities,
   }
+
+  // console.log('locationWithDetails: ', locationWithDetails)
 
   return locationWithDetails
 }
+
 export const getLocation = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 

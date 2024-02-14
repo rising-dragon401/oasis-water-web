@@ -9,6 +9,12 @@ import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/sections/recommended-row'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 
 type Props = {
   id: string
@@ -19,10 +25,10 @@ export default function LocationForm({ id }: Props) {
   const [isLoading, setIsLoading] = useState(true)
 
   const fetchLocation = async (id: string) => {
-    const item = await getLocationDetails(id)
-    setLocation(item)
+    const location = await getLocationDetails(id)
+    setLocation(location)
     setIsLoading(false)
-    return item
+    return location
   }
 
   useEffect(() => {
@@ -56,13 +62,33 @@ export default function LocationForm({ id }: Props) {
         {location.contaminants && (
           <div className="flex flex-col gap-6 mt-10">
             <Typography size="2xl" fontWeight="normal">
-              Contaminants ☠️
+              Utilities
             </Typography>
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-              {location.contaminants.map((contaminant: any) => (
-                <ContaminantCard key={contaminant.id} data={contaminant} />
+            <Accordion type="single" collapsible>
+              {location.utilities.map((utility: any, index: number) => (
+                <AccordionItem key={index} value={index.toString()}>
+                  <AccordionTrigger className="w-full flex flex-row justify-start">
+                    <div className="w-full">
+                      <Typography size="lg" fontWeight="normal" className="text-left">
+                        {utility.name}
+                      </Typography>
+                    </div>
+                    <div className="flex justify-end w-full md:mr-10 mr-4">
+                      <Typography size="base" fontWeight="normal">
+                        Score: {utility.score}
+                      </Typography>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                      {utility.contaminants.map((contaminant: any) => (
+                        <ContaminantCard key={contaminant.id} data={contaminant} />
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           </div>
         )}
 

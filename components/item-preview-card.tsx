@@ -59,16 +59,13 @@ export default function ItemPreviewCard({ item }: Props) {
   }
 
   return (
-    <Link
-      href={determineLink()}
-      className="flex flex-col lg:max-w-72 md:max-w-52 max-w-40 hover:opacity-80 mt-4"
-    >
-      <div className="lg:w-72 lg:h-72 md:w-64 md:h-64 h-40 w-40 relative">
+    <Link href={determineLink()} className="flex flex-col hover:opacity-80 mt-4">
+      <div className="md:w-80 md:h-80 w-40 h-40 relative">
         <Image
           src={item.image || ''}
           className="w-full h-full rounded-md object-cover hover:cursor-pointer"
-          width={400}
-          height={400}
+          width={300}
+          height={300}
           quality={70}
           blurDataURL={item.image || ''}
           alt={item.name}
@@ -77,9 +74,13 @@ export default function ItemPreviewCard({ item }: Props) {
           <FavoriteButton item={item} />
         </div>
       </div>
-      <div className="flex flex-row justify-between w-full pt-1 md:gap-2 items-start">
+      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
         <div className="flex flex-col gap-1">
-          <Typography size="sm" fontWeight="bold" className="!no-underline text-primary max-h-14">
+          <Typography
+            size="sm"
+            fontWeight="bold"
+            className="!no-underline text-primary max-h-14 max-w-48"
+          >
             {item.name}
           </Typography>
           {item.company_name && (
