@@ -5,23 +5,39 @@ import { createSupabaseServerClient } from '@/utils/supabase/server'
 export const getLocations = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: locations, error } = await supabase.from('tap_water_locations').select()
+  try {
+    const { data: locations, error } = await supabase.from('tap_water_locations').select()
 
-  return locations
+    const locationsWithScores =
+      locations &&
+      locations.map((location: any) => {
+        return {
+          ...location,
+          // @ts-ignore
+          score: location?.utilities?.length > 0 ? location?.utilities[0].score : 0,
+        }
+      })
+
+    return locationsWithScores
+  } catch (error) {
+    console.error('Error fetching locations:', error)
+    return []
+  }
 }
 
 export const getLocationDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 
   // Fetch location details
-  const { data: item, error } = await supabase.from('tap_water_locations').select().eq('id', id)
-  if (!item) {
+  const { data: items, error } = await supabase.from('tap_water_locations').select().eq('id', id)
+
+  if (!items) {
     return null
   }
 
-  const contaminants = item[0].contaminants
+  const contaminants = items[0].contaminants
   if (!contaminants || contaminants.length === 0) {
-    return { ...item[0], contaminants: [] }
+    return { ...items[0], contaminants: [] }
   }
 
   // Fetch all ingredients in a single query
@@ -32,7 +48,7 @@ export const getLocationDetails = async (id: string) => {
     .in('id', ingredientIds)
 
   if (!ingredients) {
-    return { ...item[0], contaminants: [] }
+    return { ...items[0], contaminants: [] }
   }
 
   // Map the fetched ingredients to their contaminants
@@ -46,7 +62,9 @@ export const getLocationDetails = async (id: string) => {
     .filter(Boolean) // Filter out any nulls in case of missing data
 
   const locationWithDetails = {
-    ...item[0],
+    ...items[0],
+    // @ts-ignore
+    score: items[0]?.utilities[0].score || 0,
     contaminants: contaminantData,
   }
 

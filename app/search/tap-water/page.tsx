@@ -7,9 +7,7 @@ export default async function TapWater() {
 
   return (
     <SubpageLayout>
-      <div className="md:px-4">
-        <TapWaterList locations={locations} />
-      </div>
+      <TapWaterList locations={locations} />
     </SubpageLayout>
   )
 }

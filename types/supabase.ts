@@ -6,7 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       brands: {
@@ -313,8 +313,9 @@ export interface Database {
           score: number | null
           total_contaminants: number | null
           type: Database["public"]["Enums"]["item_type"]
+          utilities: Json[] | null
           utility: string | null
-          zip_codes: number[]
+          zip_codes: number[] | null
         }
         Insert: {
           contaminants?: Json[] | null
@@ -326,8 +327,9 @@ export interface Database {
           score?: number | null
           total_contaminants?: number | null
           type: Database["public"]["Enums"]["item_type"]
+          utilities?: Json[] | null
           utility?: string | null
-          zip_codes: number[]
+          zip_codes?: number[] | null
         }
         Update: {
           contaminants?: Json[] | null
@@ -339,8 +341,9 @@ export interface Database {
           score?: number | null
           total_contaminants?: number | null
           type?: Database["public"]["Enums"]["item_type"]
+          utilities?: Json[] | null
           utility?: string | null
-          zip_codes?: number[]
+          zip_codes?: number[] | null
         }
         Relationships: []
       }
@@ -447,6 +450,34 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      get_items_with_ingredient: {
+        Args: {
+          ingredient_id: number
+        }
+        Returns: {
+          affiliate_url: string | null
+          brand: number | null
+          company: number
+          created_at: string
+          description: string | null
+          fts: unknown | null
+          id: number
+          image: string
+          ingredients: Json[] | null
+          is_distilled: boolean | null
+          is_indexed: boolean | null
+          metadata: Json | null
+          name: string
+          packaging: Database["public"]["Enums"]["packaging"] | null
+          recommended: boolean | null
+          score: number | null
+          sources: Json[] | null
+          type: Database["public"]["Enums"]["item_type"]
+          water_source:
+            | Database["public"]["Enums"]["bottled_water_source"]
+            | null
+        }[]
+      }
       get_page_parents: {
         Args: {
           page_id: number
