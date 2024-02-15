@@ -55,11 +55,14 @@ export default function LocationForm({ id }: Props) {
             <Typography size="3xl" fontWeight="normal">
               {location.name} Tap Water
             </Typography>
-            <Score score={location.score} isFull={true} />
+            <Score
+              score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
+              isFull={true}
+            />
           </div>
         </div>
 
-        {location.contaminants && (
+        {location?.utilities && (
           <div className="flex flex-col gap-6 mt-10">
             <Typography size="2xl" fontWeight="normal">
               Utilities
