@@ -1,6 +1,6 @@
 import Logo from '@/components/logo'
 import Link from 'next/link'
-import { FaXTwitter, FaTiktok, FaYoutube, FaDiscord } from 'react-icons/fa6'
+import { FaXTwitter, FaTiktok, FaYoutube, FaInstagram, FaDiscord } from 'react-icons/fa6'
 import EmailSubscribe from '@/components/email-subscribe'
 
 export default function Footer() {
@@ -36,17 +36,25 @@ export default function Footer() {
               <ul className="my-8 flex-row gap-4 flex list-none">
                 <li>
                   <a
-                    href="https://www.tiktok.com/@oasis.ai"
+                    href="https://twitter.com/oasiswatersco"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <FaXTwitter className="text-primary" />
                   </a>
                 </li>
-
                 <li className="ml-2">
                   <a
-                    href="https://www.tiktok.com/@oasis.ai"
+                    href="https://www.instagram.com/oasiswatersco"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaInstagram className="text-primary" />
+                  </a>
+                </li>
+                <li className="ml-2">
+                  <a
+                    href="https://www.tiktok.com/@oasiswatersco"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -55,11 +63,16 @@ export default function Footer() {
                 </li>
                 <li className="ml-2">
                   <a
-                    href="https://www.youtube.com/@oaisys_ai"
+                    href="https://www.youtube.com/@oasiswatersco"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <FaYoutube className="text-primary" />
+                  </a>
+                </li>
+                <li className="ml-2">
+                  <a href="https://discord.gg/AhapvnXxAy" target="_blank" rel="noopener noreferrer">
+                    <FaDiscord className="text-primary" />
                   </a>
                 </li>
               </ul>
