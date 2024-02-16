@@ -2,9 +2,9 @@ import AboutSection from './components/about-section'
 import SubpageLayout from '@/components/home-layout'
 
 export const metadata = {
-  // metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oaisys.com'),
+  // metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasis.com'),
   // openGraph: {
-  //   title: 'About Oaisys',
+  //   title: 'About Oasis',
   //   description: '.',
   //   images: [
   //     {

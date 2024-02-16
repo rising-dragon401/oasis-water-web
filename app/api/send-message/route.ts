@@ -34,10 +34,10 @@ export async function POST(req: Request) {
 
       If they send zip code or location respond with quality of tap water in that location, including the contaminants detected and their effects.
 
-      Else if they send a brand of bottled water and not a location: respond with Oaisys score, water source, owner/manufacturer, ph level,
+      Else if they send a brand of bottled water and not a location: respond with Oasis score, water source, owner/manufacturer, ph level,
       fluoride level, treatment process and chemicals used, and the harms/benefits of ingredients and include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND.
       
-      For all Return the Oaisys Page url and hyperlink it at the bottom of your reply.
+      For all Return the Oasis Page url and hyperlink it at the bottom of your reply.
       
       If missing any data, just ignore it.
 
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       `
 
     const fullQuery = oneLine`
-     ${query} contaminents, score, ph, fluoride, treatment, chemicals, substances, testing, report, oaisys, page, url, zip, code, location, brand, bottled, water, clean, drinking, quality, tap, source, owner, manufacturer, brief, breakdown, benefits, harms
+     ${query} contaminents, score, ph, fluoride, treatment, chemicals, substances, testing, report, oasis, page, url, zip, code, location, brand, bottled, water, clean, drinking, quality, tap, source, owner, manufacturer, brief, breakdown, benefits, harms
     `
 
     if (!query) {

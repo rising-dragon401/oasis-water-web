@@ -4,14 +4,14 @@ import { motion } from 'framer-motion'
 import Typography from '@/components/typography'
 
 const meta = {
-  title: 'About Oaisys',
+  title: 'About Oasis',
   description: 'We are on a mission to empower people to live cleaner and healthier lives.',
   cardImage:
     'https://dcsladfmohmhomyxvhzz.supabase.co/storage/v1/object/public/general/website/twitter_open_graph.png',
 }
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oaisys.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasis.com'),
   openGraph: {
     title: meta.title,
     description: meta.description,

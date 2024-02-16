@@ -9,10 +9,10 @@ import Typography from '@/components/typography'
 
 const FAQ_LIST = [
   {
-    value: 'what-is-oaisys',
-    trigger: 'What is Oaisys?',
+    value: 'what-is-oasis',
+    trigger: 'What is Oasis?',
     content:
-      'Oaisys is a project we started to help find a healthier, cleaner source of water. We collect all the hard to find scientific data surrounding water, brands and filters and put it into one searchable website. Long-term we are on a mission to source the cleanest and healthiest source of water to you. ',
+      'Oasis is a project we started to help find a healthier, cleaner source of water. We collect all the hard to find scientific data surrounding water, brands and filters and put it into one searchable website. Long-term we are on a mission to source the cleanest and healthiest source of water to you. ',
   },
   {
     value: 'data',
@@ -24,7 +24,7 @@ const FAQ_LIST = [
     value: 'affiliate-links',
     trigger: 'Do you use affilite links?',
     content:
-      'We do add affiliate links to the highest recommended products, usually those with a score above 80. We do this to provide to help direct people to the best products and to help fund Oaisys.',
+      'We do add affiliate links to the highest recommended products, usually those with a score above 80. We do this to provide to help direct people to the best products and to help fund Oasis.',
   },
 ]
 

@@ -15,7 +15,7 @@ export default function Footer() {
               </Link>
             </div>
             <div className="text-sm text-secondary">
-              © oaisys <span className="text-secondary">-</span> All rights reserved.
+              © oasis <span className="text-secondary">-</span> All rights reserved.
             </div>
           </div>
 
@@ -30,13 +30,13 @@ export default function Footer() {
                   </Link>
                 </div>
                 <div className="text-sm text-secondary">
-                  © oaisys <span className="text-secondary">-</span> All rights reserved.
+                  © oasis <span className="text-secondary">-</span> All rights reserved.
                 </div>
               </div>
               <ul className="my-8 flex-row gap-4 flex list-none">
                 <li>
                   <a
-                    href="https://www.tiktok.com/@oaisys.ai"
+                    href="https://www.tiktok.com/@oasis.ai"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -46,7 +46,7 @@ export default function Footer() {
 
                 <li className="ml-2">
                   <a
-                    href="https://www.tiktok.com/@oaisys.ai"
+                    href="https://www.tiktok.com/@oasis.ai"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

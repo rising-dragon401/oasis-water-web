@@ -1,7 +1,7 @@
 import { atomWithStorage } from 'jotai/utils'
 
-export const assistantIdAtom = atomWithStorage<string | null>('oaisys-assistant_id', null)
+export const assistantIdAtom = atomWithStorage<string | null>('oasis-assistant_id', null)
 
-export const messagesAtom = atomWithStorage<any[]>('oaisys-messages', [])
+export const messagesAtom = atomWithStorage<any[]>('oasis-messages', [])
 
-export const threadIdAtom = atomWithStorage<string | null>('oaisys-thread-id', null)
+export const threadIdAtom = atomWithStorage<string | null>('oasis-thread-id', null)

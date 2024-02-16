@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import Typography from '@/components/typography'
 
 const meta = {
-  title: 'About Oaisys',
+  title: 'About Oasis',
   description:
     'Making conscious water purchases is now just a click away. Our platform ensures only water products rated over 70 are available for your selection, guaranteeing your choices are healthy and informed. With us, it’s no guesswork, only good decisions.',
   cardImage:
@@ -36,7 +36,7 @@ export default function AboutSection() {
   return (
     <div className="flex flex-col px-8 py-20">
       <Typography size="lg" className="text-primary" fontWeight="normal">
-        “At Oaisys, we’re dedicated to simplifying the journey towards conscious consumption. We
+        “At Oasis, we’re dedicated to simplifying the journey towards conscious consumption. We
         believe everyone deserves to know exactly what they’re putting into their bodies,
         effortlessly. In a world where water labels and food packaging may not disclose contaminants
         like nitrates, we step in to remove the guesswork. Our mission is to centralize all

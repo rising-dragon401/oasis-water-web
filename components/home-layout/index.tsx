@@ -43,7 +43,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
             <Logo />
 
             <Typography size="2xl" fontWeight="normal">
-              Oaisys
+              Oasis
             </Typography>
           </Link>
 

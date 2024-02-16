@@ -48,41 +48,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...itemsPaths.map((path: string) => ({
-      url: `https://www.oaisys.ai${path}`,
+      url: `https://www.oasis.ai${path}`,
       // lastModified: new Date(),
     })),
     ...locationsPaths.map((path: string) => ({
-      url: `https://www.oaisys.ai${path}`,
+      url: `https://www.oasis.ai${path}`,
     })),
     ...filterPaths.map((path: string) => ({
-      url: `https://www.oaisys.ai${path}`,
+      url: `https://www.oasis.ai${path}`,
     })),
     ...ingredientPaths.map((path: string) => ({
-      url: `https://www.oaisys.ai${path}`,
+      url: `https://www.oasis.ai${path}`,
     })),
     {
-      url: `https://www.oaisys.ai/`,
+      url: `https://www.oasis.ai/`,
     },
     {
-      url: `https://www.oaisys.ai/recommendations`,
+      url: `https://www.oasis.ai/recommendations`,
     },
     {
-      url: `https://www.oaisys.ai/search/bottled-water`,
+      url: `https://www.oasis.ai/search/bottled-water`,
     },
     {
-      url: `https://www.oaisys.ai/search/tap-water`,
+      url: `https://www.oasis.ai/search/tap-water`,
     },
     {
-      url: `https://www.oaisys.ai/about`,
+      url: `https://www.oasis.ai/about`,
     },
     {
-      url: `https://www.oaisys.ai/faqs`,
+      url: `https://www.oasis.ai/faqs`,
     },
     {
-      url: `https://www.oaisys.ai/blog`,
+      url: `https://www.oasis.ai/blog`,
     },
     ...blogPaths.map((path: string) => ({
-      url: `https://www.oaisys.ai${path}`,
+      url: `https://www.oasis.ai${path}`,
     })),
   ]
 }

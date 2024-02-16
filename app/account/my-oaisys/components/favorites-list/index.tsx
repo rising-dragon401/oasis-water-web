@@ -12,7 +12,7 @@ export default function FavoritesList() {
     <div>
       <div className="pt-4 pb-8 flex w-full flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          My Oaisys
+          My oasis
         </Typography>
       </div>
 

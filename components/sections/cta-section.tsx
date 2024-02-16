@@ -16,7 +16,7 @@ export default async function CTASection() {
             not just healthy, but informed. No guesswork, just good decisions.
           </Typography>
           <Typography size="base" fontWeight="normal" className="text-secondary mt-6">
-            At Oaisys, we’re dedicated to simplifying the journey towards conscious consumption. We
+            At Oasis, we’re dedicated to simplifying the journey towards conscious consumption. We
             believe everyone deserves to know exactly what they’re putting into their bodies,
             effortlessly. In a world where water labels and food packaging may not disclose
             contaminants like nitrates, we step in to remove the guesswork. Our mission is to
@@ -27,7 +27,7 @@ export default async function CTASection() {
           </Typography>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link href="/auth/signin" className={`w-48 ${buttonVariants()}`}>
-              Create my Oaisys
+              Create my oasis
             </Link>
           </div>
           <svg

@@ -9,18 +9,18 @@ import UserProvider from '@/providers/UserProvider'
 import '@/styles/globals.css'
 
 const meta = {
-  title: 'Oaisys',
+  title: 'Oasis',
   description: 'Your source of clean water.',
   cardImage:
     'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
   robots: 'follow, index',
   favicon: '/favicon.ico',
-  url: 'https://oaisys.ai',
+  url: 'https://oasis.ai',
   type: 'website',
 }
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oaisys.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasis.com'),
   openGraph: {
     title: meta.title,
     description: meta.description,

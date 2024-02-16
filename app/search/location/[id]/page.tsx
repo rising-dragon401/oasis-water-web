@@ -24,7 +24,7 @@ export async function generateMetadata(
   const image = item && item.image
 
   return {
-    title: name || 'Oaisys',
+    title: name || 'Oasis',
     openGraph: {
       images: [image || OG_IMAGE],
     },

@@ -57,9 +57,9 @@ export function AccountMenu() {
           </DropdownMenuItem> */}
 
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/account/my-oaisys" className="flex flex-row items-center">
+            <Link href="/account/my-oasis" className="flex flex-row items-center">
               <Heart className="mr-2 h-4 w-4" />
-              My Oaisys
+              My oasis
             </Link>
           </DropdownMenuItem>
 

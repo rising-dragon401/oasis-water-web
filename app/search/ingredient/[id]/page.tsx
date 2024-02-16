@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const image = ingredient && ingredient.image
 
   return {
-    title: name || 'Oaisys',
+    title: name || 'Oasis',
     openGraph: {
       images: [image || OG_IMAGE],
     },

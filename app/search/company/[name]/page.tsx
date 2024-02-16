@@ -18,7 +18,7 @@ export async function generateMetadata(
   const fullName = name + ' Products'
 
   return {
-    title: fullName || 'Oaisys',
+    title: fullName || 'Oasis',
     openGraph: {
       images: [OG_IMAGE],
     },

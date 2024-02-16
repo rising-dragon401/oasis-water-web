@@ -262,7 +262,7 @@ export function SearchDialog() {
                 </Button>
               )}
               <Button type="submit" className="md:w-40 w-full">
-                Ask Oaisys
+                Ask Oasis
               </Button>
             </DialogFooter>
           </form>

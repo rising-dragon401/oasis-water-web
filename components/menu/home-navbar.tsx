@@ -61,12 +61,12 @@ const aboutComponents: { title: string; href: string; description: string }[] = 
   {
     title: 'Blog',
     href: '/blog',
-    description: 'Discover and read more about the water industry and Oaisys.',
+    description: 'Discover and read more about the water industry and Oasis.',
   },
   {
     title: 'FAQs',
     href: '/faqs',
-    description: 'Frequently asked questions about Oaisys.',
+    description: 'Frequently asked questions about Oasis.',
   },
 ]
 
@@ -79,7 +79,7 @@ export default function HomeNavbar() {
             <Logo />
 
             <Typography size="2xl" fontWeight="normal">
-              Oaisys
+              Oasis
             </Typography>
           </Link>
         </NavigationMenuItem>
