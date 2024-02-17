@@ -54,7 +54,9 @@ export const getItemDetails = async (id: string) => {
       : Promise.resolve(null)
     const ingredients = item.ingredients as IngredientDescriptor[]
 
-    const ingredientIds = ingredients.map((ingredient) => ingredient.ingredient_id)
+    const ingredientIds = ingredients
+      .map((ingredient) => ingredient.ingredient_id)
+      .filter((id) => id !== undefined)
     const ingredientsPromise = supabase.from('ingredients').select().in('id', ingredientIds)
 
     const [brandResult, companyResult, ingredientsResult] = await Promise.all([
