@@ -1,7 +1,7 @@
 import SubpageLayout from '@/components/home-layout'
 import FilterForm from './components/filter-form'
 import type { Metadata, ResolvingMetadata } from 'next'
-import { getLocation } from '@/app/actions/locations'
+import { getFilter } from '@/app/actions/filters'
 import { OG_IMAGE } from '@/lib/constants/images'
 import { Item } from '@/types/custom'
 
@@ -18,7 +18,7 @@ export async function generateMetadata(
   const id = params.id
 
   // fetch data
-  const item = (await getLocation(id)) as Item | null
+  const item = (await getFilter(id)) as Item | null
 
   const name = item && item.name + ' Filter Rating'
   const image = item && item.image

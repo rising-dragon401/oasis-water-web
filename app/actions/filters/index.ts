@@ -28,6 +28,25 @@ export const getFilters = async () => {
   return filtersWithCompany
 }
 
+export const getTopFilters = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  try {
+    const { data: items, error } = await supabase
+      .from('water_filters')
+      .select()
+      .not('score', 'is', null)
+      // .or('is_indexed.is.null,is_indexed.eq.true')
+      .order('score', { ascending: false })
+      .range(0, 5)
+
+    return items || []
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
 export const getFilterDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 
@@ -38,8 +57,6 @@ export const getFilterDetails = async (id: string) => {
   }
 
   const contaminants = item[0].contaminants_filtered
-
-  console.log('contaminantssss: ', contaminants)
 
   let contaminantData: any[] = []
   if (contaminants && contaminants.length > 0) {

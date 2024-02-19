@@ -1,11 +1,11 @@
 'use client'
 
 import Typography from '@/components/typography'
-import React, { useEffect, useState, Suspense } from 'react'
+import React, { useEffect, useState } from 'react'
+import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
 import Image from 'next/image'
 import Score from '@/components/score'
 import ItemSkeleton from '../item-skeleton'
-import RecommendedRow from '@/components/sections/recommended-row'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
 import { getFilterDetails, getAllContaminants } from '@/app/actions/filters'
@@ -31,8 +31,6 @@ export default function FilterForm({ id }: Props) {
   }
 
   const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
-
-  console.log('filter.contaminants_filtered: ', filter.contaminants_filtered)
 
   const notFilteredContaminants = allContaminants?.filter(
     (contaminant) =>
@@ -120,7 +118,7 @@ export default function FilterForm({ id }: Props) {
           </div>
         )}
       </div>
-      <RecommendedRow />
+      <RecommendedFiltersRow />
     </div>
   )
 }
