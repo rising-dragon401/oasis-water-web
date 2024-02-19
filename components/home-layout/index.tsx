@@ -1,5 +1,3 @@
-'use client'
-
 import Footer from '@/components/footer'
 import HomeNavbar from '@/components/menu/home-navbar'
 import { PropsWithChildren } from 'react'
@@ -8,14 +6,10 @@ import Link from 'next/link'
 import Logo from '@/components/logo'
 import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
-import { buttonVariants } from '@/components/ui/button'
-import cn from 'classnames'
-import { AccountMenu } from '@/components/menu/account-menu'
-import { useUserProvider } from '@/providers/UserProvider'
+import { Button } from '@/components/ui/button'
+import JoinWaitListButton from '@/components/shared/JoinWaitlistButton'
 
-export default function SubpageLayout({ children }: PropsWithChildren) {
-  const { userData } = useUserProvider()
-
+export default async function SubpageLayout({ children }: PropsWithChildren) {
   return (
     <div className="min-h-[100vh] flex justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-3xl sm:max-w-xl max-w-sm w-full">
@@ -25,13 +19,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           <div className="flex justify-end items-center">
             <BasicSearch showSearch={false} />
 
-            {userData ? (
-              <AccountMenu />
-            ) : (
-              <Link href="/auth/signin" className={cn(buttonVariants(), 'w-32')}>
-                Login
-              </Link>
-            )}
+            <JoinWaitListButton />
           </div>
         </div>
 

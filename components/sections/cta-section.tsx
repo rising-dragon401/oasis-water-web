@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button'
+'use default'
+
 import Typography from '@/components/typography'
-import Link from 'next/link'
-import { buttonVariants } from '@/components/ui/button'
+import JoinWaitListButton from '@/components/shared/JoinWaitlistButton'
 
 export default async function CTASection() {
   return (
@@ -26,9 +26,7 @@ export default async function CTASection() {
             Together, we’re not just making choices; we’re making a difference.
           </Typography>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <Link href="/auth/signin" className={`w-48 ${buttonVariants()}`}>
-              Create my oasis
-            </Link>
+            <JoinWaitListButton />
           </div>
           <svg
             viewBox="0 0 1024 1024"
