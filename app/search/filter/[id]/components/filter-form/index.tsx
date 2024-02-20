@@ -107,7 +107,7 @@ export default function FilterForm({ id }: Props) {
           </div>
         )}
 
-        {filter?.sources && (
+        {filter?.sources && filter?.sources?.length > 0 && (
           <div className="flex flex-col gap-6 my-10">
             <Typography size="2xl" fontWeight="normal">
               Sources

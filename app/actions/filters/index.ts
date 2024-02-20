@@ -36,7 +36,6 @@ export const getTopFilters = async () => {
       .from('water_filters')
       .select()
       .not('score', 'is', null)
-      // .or('is_indexed.is.null,is_indexed.eq.true')
       .order('score', { ascending: false })
       .range(0, 5)
 

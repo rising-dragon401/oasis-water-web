@@ -30,16 +30,19 @@ export const getLocationDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 
   // Fetch location details
-  const { data: items, error } = await supabase.from('tap_water_locations').select().eq('id', id)
+  const { data: locations, error } = await supabase
+    .from('tap_water_locations')
+    .select()
+    .eq('id', id)
 
-  if (!items) {
+  if (!locations) {
     return null
   }
 
-  const location = items[0]
+  const location = locations[0]
 
   // Fetch all ingredients once
-  const { data: ingredients, error: ingredientsError } = await supabase.from('ingredients').select()
+  const { data: ingredients } = await supabase.from('ingredients').select()
 
   if (!ingredients) {
     return null
@@ -56,13 +59,26 @@ export const getLocationDetails = async (id: string) => {
             (ingredient) => ingredient.id === contaminant.ingredient_id
           )
 
+          let limit = ingredient?.legal_limit || ingredient?.health_guideline || 0
+
+          let exceedingRecommendedLimit = 0
+          if (limit && contaminant.amount) {
+            exceedingRecommendedLimit = Math.round(limit / contaminant.amount)
+          }
+
           return {
             ...ingredient,
             ingredient_id: contaminant.ingredient_id,
             amount: contaminant.amount,
+            exceedingRecommendedLimit:
+              exceedingRecommendedLimit > 0 ? exceedingRecommendedLimit : null,
           }
         })
       )
+
+      console.log('cleanedContaminants: ', cleanedContaminants)
+
+      cleanedContaminants.sort((a, b) => b.exceedingRecommendedLimit - a.exceedingRecommendedLimit)
 
       return {
         ...utility,

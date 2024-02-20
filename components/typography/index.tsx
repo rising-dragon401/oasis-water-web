@@ -47,7 +47,11 @@ const weights = {
 const Typography: React.FC<TypographyProps> = ({ size, fontWeight, children, className = '' }) => {
   const textSize = size ? sizes[size] : ''
   const textWeight = weights[fontWeight] || weights.normal
-  return <p className={`${textSize} ${textWeight} text-primary ${className}`}>{children}</p>
+  return (
+    <p className={`${textSize} ${textWeight} text-primary text-ellipsis	 ${className}`}>
+      {children}
+    </p>
+  )
 }
 
 export default Typography

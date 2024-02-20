@@ -7,9 +7,7 @@ export default async function FiltersPage() {
 
   return (
     <SubpageLayout>
-      <div className="md:px-4">
-        <FilterList filters={filters} />
-      </div>
+      <FilterList filters={filters} />
     </SubpageLayout>
   )
 }
