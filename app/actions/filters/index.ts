@@ -1,5 +1,6 @@
 'use server'
 
+import { Ingredient } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export const getFilters = async () => {
@@ -46,7 +47,7 @@ export const getTopFilters = async () => {
   }
 }
 
-export const getFilterDetails = async (id: string) => {
+export const getFilterDetails = async (id: string, allIngredients: Ingredient[] | []) => {
   const supabase = await createSupabaseServerClient()
 
   const { data: item, error } = await supabase.from('water_filters').select().eq('id', id)
@@ -62,10 +63,9 @@ export const getFilterDetails = async (id: string) => {
     contaminantData = (
       await Promise.all(
         contaminants.map(async (contaminant: any) => {
-          const { data, error: contaminantError } = await supabase
-            .from('ingredients')
-            .select()
-            .eq('id', contaminant)
+          const data = allIngredients.find((ingredient) => ingredient.id === contaminant)
+            ? [allIngredients.find((ingredient) => ingredient.id === contaminant)]
+            : null
 
           if (!data) {
             return null

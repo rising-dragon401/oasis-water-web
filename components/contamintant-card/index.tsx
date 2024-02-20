@@ -37,7 +37,7 @@ export default function ContaminantCard({ data }: Props) {
             )}
           </div>
         </CardTitle>
-        <CardDescription className="h-24 overflow-hidden">{data?.description}</CardDescription>
+        <CardDescription className="h-10 overflow-hidden">{data?.description}</CardDescription>
         <CardContent className="pl-0">
           <div className="h-24 overflow-hidden">
             <Typography size="base" fontWeight="normal" className="text-secondary ">

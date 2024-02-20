@@ -9,6 +9,7 @@ import ItemSkeleton from '../item-skeleton'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
 import { getFilterDetails, getAllContaminants } from '@/app/actions/filters'
+import { getIngredients } from '@/app/actions/ingredients'
 import useSWR from 'swr'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
@@ -22,15 +23,20 @@ export default function FilterForm({ id }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<any>({})
 
+  const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
+  const { data: allIngredients } = useSWR('ingredients', getIngredients)
+
   const fetchFilter = async (id: string) => {
-    const filter = await getFilterDetails(id)
+    if (!allIngredients) {
+      return
+    }
+
+    const filter = await getFilterDetails(id, allIngredients)
     setFilter(filter)
 
     setIsLoading(false)
     return filter
   }
-
-  const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
 
   const notFilteredContaminants = allContaminants?.filter(
     (contaminant) =>
@@ -39,7 +45,8 @@ export default function FilterForm({ id }: Props) {
 
   useEffect(() => {
     fetchFilter(id)
-  }, [id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, allIngredients])
 
   if (isLoading) {
     return <ItemSkeleton />
