@@ -37,7 +37,7 @@ export function ContaminantFiltersDropdown({ contaminantId }: Props) {
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Filtered by</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="start">
+      <DropdownMenuContent className="w-72" align="start">
         <DropdownMenuLabel>Filters</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

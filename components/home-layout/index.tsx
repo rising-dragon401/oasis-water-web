@@ -6,7 +6,6 @@ import Link from 'next/link'
 import Logo from '@/components/logo'
 import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
-import { Button } from '@/components/ui/button'
 import JoinWaitListButton from '@/components/shared/JoinWaitlistButton'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
@@ -16,7 +15,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
 
-          <div className="flex justify-end items-center">
+          <div className="flex justify-end items-center gap-2">
             <BasicSearch showSearch={false} />
 
             <JoinWaitListButton />

@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
-import FavoriteButton from '@/components/favorite-button'
 import Link from 'next/link'
 
 type Props = {
@@ -63,9 +62,6 @@ export default function ItemForm({ id }: Props) {
               height={700}
               className="rounded-lg"
             />
-            <div className="absolute top-0 right-0 p-2 cursor-pointer">
-              <FavoriteButton item={item} size={28} />
-            </div>
           </div>
 
           <div className="flex flex-row gap-2 w-full">
@@ -108,14 +104,13 @@ export default function ItemForm({ id }: Props) {
                     )}
                     {item.affiliate_url && item.score > 80 && (
                       <Button
-                        variant="outline"
-                        className="bg-card"
+                        variant="default"
                         onClick={() => {
                           window.open(item.affiliate_url, '_blank')
                         }}
                       >
-                        {' '}
-                        Shop <ArrowUpRight size={16} className="ml-2" />
+                        Buy Now
+                        <ArrowUpRight size={16} className="ml-2" />
                       </Button>
                     )}
                   </div>

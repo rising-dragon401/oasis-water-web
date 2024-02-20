@@ -17,7 +17,7 @@ import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 
 export function AccountMenu() {
-  const { uid, userData } = useUserProvider()
+  const { userData } = useUserProvider()
 
   if (!userData) {
     return (

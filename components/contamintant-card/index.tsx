@@ -20,7 +20,7 @@ export default function ContaminantCard({ data }: Props) {
       <CardHeader className="">
         <CardTitle className="flex flex-col w-full justify-between relative">
           <div className="w-full flex flex-row justify-between items-center">
-            <div>{data?.name}</div>
+            <div className="max-w-72">{data?.name}</div>
             {data.exceedingRecommendedLimit && (
               <div className=" rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
                 <Typography size="xl" fontWeight="normal" className="!text-background">
@@ -39,12 +39,14 @@ export default function ContaminantCard({ data }: Props) {
         </CardTitle>
         <CardDescription>{data?.description}</CardDescription>
         <CardContent className="pl-0">
-          <Typography size="base" fontWeight="normal" className="text-secondary">
-            Risks: {data?.risks}
-          </Typography>
+          <div className="h-24 overflow-hidden">
+            <Typography size="base" fontWeight="normal" className="text-secondary ">
+              Risks: {data?.risks}
+            </Typography>
+          </div>
           {data.amount && (
             <Typography size="base" fontWeight="normal" className="text-secondary mt-2">
-              • Amount: {data?.amount} {data?.unit} {data?.measure}
+              Amount: {data?.amount} {data?.unit} {data?.measure}
             </Typography>
           )}
         </CardContent>

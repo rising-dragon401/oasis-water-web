@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import ResultsRow from './results-row'
-import { Search, Loader2 } from 'lucide-react'
+import { Search, Loader2, X } from 'lucide-react'
 import algoliasearch from 'algoliasearch'
+import { motion } from 'framer-motion'
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_APP_ID!,
@@ -99,47 +100,54 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
 
   return (
     <>
-      <div className="flex flex-row gap-2 items-center justify-center w-full">
-        {isShowSearch ? (
-          <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
-            <div className="relative">
-              <Input
-                placeholder="Search water..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onFocus={() => setInputFocused(true)}
-                className={`text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
-                  inputFocused && results.length > 0
-                    ? 'rounded-b-none rounded-t-md border-b-0'
-                    : 'rounded-md'
-                }
+      {isShowSearch && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col gap-2 relative w-full max-w-xl"
+          ref={searchContainerRef}
+        >
+          <div className="relative">
+            <Input
+              placeholder="Search water..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onFocus={() => setInputFocused(true)}
+              className={`text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
+                inputFocused && results.length > 0
+                  ? 'rounded-b-none rounded-t-md border-b-0'
+                  : 'rounded-md'
+              }
                 `}
-              />
-              {isLoading && (
-                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
-                  <Loader2 size={20} className="animate-spin text-secondary-foreground" />
-                </div>
-              )}
-            </div>
-            {results.length > 0 && inputFocused && (
-              <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-b-md absolute top-10 w-full z-10 max-h-56 overflow-y-scroll">
-                {results.map((result) => (
-                  <ResultsRow key={result.id} itemResult={result} />
-                ))}
+            />
+            {isLoading && (
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
+                <Loader2 size={20} className="animate-spin text-secondary-foreground" />
               </div>
             )}
           </div>
-        ) : (
-          <Button
-            variant="ghost"
-            type="submit"
-            loading={isLoading}
-            onClick={() => setIsShowSearch(true)}
-          >
-            <Search size={20} />
-          </Button>
-        )}
-      </div>
+          {results.length > 0 && inputFocused && (
+            <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-b-md absolute top-10 w-full z-10 max-h-56 overflow-y-scroll">
+              {results.map((result) => (
+                <ResultsRow key={result.id} itemResult={result} />
+              ))}
+            </div>
+          )}
+        </motion.div>
+      )}
+
+      {!isShowSearch && (
+        <Button
+          variant="ghost"
+          type="submit"
+          loading={isLoading}
+          onClick={() => setIsShowSearch(true)}
+        >
+          <Search size={20} />
+        </Button>
+      )}
     </>
   )
 }

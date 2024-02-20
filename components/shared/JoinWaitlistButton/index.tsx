@@ -6,7 +6,7 @@ export default function JoinWaitListButton() {
   return (
     <Button
       type="submit"
-      className="w-48"
+      className="max-w-48 !min-w-32"
       onClick={() => {
         window.open('https://3efs5kbf7k4.typeform.com/to/AIFR8ZFm', '_blank')
       }}

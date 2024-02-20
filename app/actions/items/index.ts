@@ -1,7 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/utils/supabase/server'
-import { IngredientDescriptor } from '@/types/custom'
+import { IngredientDescriptor, Ingredient } from '@/types/custom'
 
 export const getItems = async () => {
   const supabase = await createSupabaseServerClient()
@@ -55,9 +55,11 @@ export const getItemDetails = async (id: string) => {
     const ingredients = item.ingredients as IngredientDescriptor[]
 
     const ingredientIds = ingredients
-      .map((ingredient) => ingredient.ingredient_id)
+      .map((ingredient) => ingredient?.ingredient_id)
       .filter((id) => id !== undefined)
-    const ingredientsPromise = supabase.from('ingredients').select().in('id', ingredientIds)
+
+    // Fetching ingredients with their legal limits and health guidelines
+    const ingredientsPromise = supabase.from('ingredients').select('*').in('id', ingredientIds)
 
     const [brandResult, companyResult, ingredientsResult] = await Promise.all([
       brandPromise,
@@ -69,22 +71,32 @@ export const getItemDetails = async (id: string) => {
     let company = companyResult?.data ? companyResult.data : null
     let ingredientsDetails = ingredientsResult?.data ? ingredientsResult.data : []
 
-    // Assuming determineIfIngredientIsContaminant can be optimized or batched as well
-    let contaminants = await Promise.all(
-      ingredients.map(async (ingredient) => {
-        const isContaminant = await determineIfIngredientIsContaminant(ingredient.ingredient_id)
-        return isContaminant ? ingredient : null
-      })
-    ).then((results) => results.filter((contaminant) => contaminant !== null))
+    // Map through ingredients to compare amount with legal_limit and health_guideline
+    const detailedIngredients = ingredients.map((ingredient: IngredientDescriptor) => {
+      const detail = ingredientsDetails.find((d) => d.id === ingredient.ingredient_id) as any
 
-    // Further processing for contaminants can be optimized based on the new approach
+      let limit = detail?.legal_limit || detail?.health_guideline || 0
+
+      let exceedingRecommendedLimit = 0
+      if (limit && ingredient.amount) {
+        exceedingRecommendedLimit = Math.round(limit / ingredient.amount)
+      }
+
+      return {
+        ...detail,
+        amount: ingredient.amount,
+        legal_limit: detail?.legal_limit,
+        health_guideline: detail?.health_guideline,
+        exceedingRecommendedLimit: exceedingRecommendedLimit,
+      }
+    })
 
     const itemWithDetails = {
       ...item,
       brand,
-      ingredients: ingredientsDetails,
+      ingredients: detailedIngredients,
       company,
-      contaminants: ingredientsDetails.filter((ingredient) => ingredient.is_contaminant),
+      contaminants: detailedIngredients.filter((ingredient) => ingredient.is_contaminant),
     }
 
     return itemWithDetails

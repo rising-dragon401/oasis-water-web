@@ -13,7 +13,7 @@ export type WaterFilter = Database['public']['Tables']['water_filters']['Row'] &
 }
 export type Favorite = Database['public']['Tables']['favorites']['Row']
 export type IngredientDescriptor = {
-  amount: number | null
+  amount: number
   ingredient_id: number
 }
 export type Company = Database['public']['Tables']['companies']['Row']

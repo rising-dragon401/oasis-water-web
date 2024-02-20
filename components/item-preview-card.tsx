@@ -5,7 +5,6 @@ import Typography from '@/components/typography'
 import React from 'react'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import Image from 'next/image'
-import FavoriteButton from './favorite-button'
 
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
@@ -70,9 +69,6 @@ export default function ItemPreviewCard({ item }: Props) {
           blurDataURL={item.image || ''}
           alt={item.name}
         />
-        <div className="absolute top-0 right-0 p-2 cursor-pointer">
-          <FavoriteButton item={item} />
-        </div>
       </div>
       <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
         <div className="flex flex-col gap-1">

@@ -71,14 +71,12 @@ export default function FilterForm({ id }: Props) {
 
           {filter.affiliate_url && filter.score > 80 && (
             <Button
-              variant="outline"
-              className="bg-card"
+              variant="default"
               onClick={() => {
                 window.open(filter.affiliate_url, '_blank')
               }}
             >
-              {' '}
-              Shop <ArrowUpRight size={16} className="ml-2" />
+              Buy Now <ArrowUpRight size={16} className="ml-2" />
             </Button>
           )}
         </div>
