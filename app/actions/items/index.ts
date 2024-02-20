@@ -36,7 +36,7 @@ export const getItem = async (id: string) => {
   return item
 }
 
-export const getItemDetails = async (id: string) => {
+export const getItemDetails = async (id: string, allIngredients: Ingredient[]) => {
   const supabase = await createSupabaseServerClient()
 
   try {
@@ -54,26 +54,15 @@ export const getItemDetails = async (id: string) => {
       : Promise.resolve(null)
     const ingredients = item.ingredients as IngredientDescriptor[]
 
-    const ingredientIds = ingredients
-      .map((ingredient) => ingredient?.ingredient_id)
-      .filter((id) => id !== undefined)
-
     // Fetching ingredients with their legal limits and health guidelines
-    const ingredientsPromise = supabase.from('ingredients').select('*').in('id', ingredientIds)
-
-    const [brandResult, companyResult, ingredientsResult] = await Promise.all([
-      brandPromise,
-      companyPromise,
-      ingredientsPromise,
-    ])
+    const [brandResult, companyResult] = await Promise.all([brandPromise, companyPromise])
 
     let brand = brandResult?.data ? brandResult.data : null
     let company = companyResult?.data ? companyResult.data : null
-    let ingredientsDetails = ingredientsResult?.data ? ingredientsResult.data : []
 
     // Map through ingredients to compare amount with legal_limit and health_guideline
     const detailedIngredients = ingredients.map((ingredient: IngredientDescriptor) => {
-      const detail = ingredientsDetails.find((d) => d.id === ingredient.ingredient_id) as any
+      const detail = allIngredients.find((d) => d.id === ingredient.ingredient_id) as any
 
       let limit = detail?.legal_limit || detail?.health_guideline || 0
 

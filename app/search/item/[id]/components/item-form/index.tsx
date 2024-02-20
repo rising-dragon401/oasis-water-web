@@ -14,6 +14,8 @@ import { ArrowUpRight } from 'lucide-react'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/sources'
 import Link from 'next/link'
+import useSWR from 'swr'
+import { getIngredients } from '@/app/actions/ingredients'
 
 type Props = {
   id: string
@@ -23,8 +25,14 @@ export default function ItemForm({ id }: Props) {
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
 
+  const { data: allIngredients } = useSWR('ingredients', getIngredients)
+
   const fetchItem = async (id: string) => {
-    const item = await getItemDetails(id)
+    if (!allIngredients) {
+      return
+    }
+
+    const item = await getItemDetails(id, allIngredients)
 
     if (item) {
       setItem(item)
@@ -36,7 +44,8 @@ export default function ItemForm({ id }: Props) {
 
   useEffect(() => {
     fetchItem(id)
-  }, [id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, allIngredients])
 
   const contaminants = item?.contaminants || []
 
@@ -60,8 +69,19 @@ export default function ItemForm({ id }: Props) {
               alt={item.name}
               width={700}
               height={700}
+              blurDataURL={item.image}
+              placeholder="blur"
               className="rounded-lg"
             />
+            {item.score > 70 && (
+              <Typography
+                size="base"
+                fontWeight="normal"
+                className="absolute top-0 right-0 text-secondary-foreground text-center italic bg-card border-2 px-2 border-secondary-foreground rounded-full m-2"
+              >
+                Recommended
+              </Typography>
+            )}
           </div>
 
           <div className="flex flex-row gap-2 w-full">
@@ -93,15 +113,6 @@ export default function ItemForm({ id }: Props) {
                   </Typography>
 
                   <div className="flex flex-col md:w-40 w-full mt-2 gap-2">
-                    {item.recommended && (
-                      <Typography
-                        size="base"
-                        fontWeight="normal"
-                        className="text-white text-center italic bg-primary rounded-full"
-                      >
-                        Recommended
-                      </Typography>
-                    )}
                     {item.affiliate_url && item.score > 80 && (
                       <Button
                         variant="default"

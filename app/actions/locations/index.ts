@@ -1,7 +1,7 @@
 'use server'
 
 import { createSupabaseServerClient } from '@/utils/supabase/server'
-import { IngredientDescriptor } from '@/types/custom'
+import { IngredientDescriptor, Ingredient } from '@/types/custom'
 
 export const getLocations = async () => {
   const supabase = await createSupabaseServerClient()
@@ -26,25 +26,17 @@ export const getLocations = async () => {
   }
 }
 
-export const getLocationDetails = async (id: string) => {
+export const getLocationDetails = async (id: string, allIngredients: Ingredient[]) => {
   const supabase = await createSupabaseServerClient()
 
   // Fetch location details
-  const { data: locations, error } = await supabase
+  const { data: location } = await supabase
     .from('tap_water_locations')
     .select()
     .eq('id', id)
+    .single()
 
-  if (!locations) {
-    return null
-  }
-
-  const location = locations[0]
-
-  // Fetch all ingredients once
-  const { data: ingredients } = await supabase.from('ingredients').select()
-
-  if (!ingredients) {
+  if (!location) {
     return null
   }
 
@@ -55,7 +47,7 @@ export const getLocationDetails = async (id: string) => {
       const cleanedContaminants = await Promise.all(
         utility.contaminants.map(async (contaminant: IngredientDescriptor) => {
           // Find the matching ingredient from the fetched ingredients
-          const ingredient = ingredients.find(
+          const ingredient = allIngredients.find(
             (ingredient) => ingredient.id === contaminant.ingredient_id
           )
 
@@ -76,8 +68,6 @@ export const getLocationDetails = async (id: string) => {
         })
       )
 
-      console.log('cleanedContaminants: ', cleanedContaminants)
-
       cleanedContaminants.sort((a, b) => b.exceedingRecommendedLimit - a.exceedingRecommendedLimit)
 
       return {
@@ -91,8 +81,6 @@ export const getLocationDetails = async (id: string) => {
     ...location,
     utilities: cleanUtilities,
   }
-
-  // console.log('locationWithDetails: ', locationWithDetails)
 
   return locationWithDetails
 }

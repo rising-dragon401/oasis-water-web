@@ -15,6 +15,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import useSWR from 'swr'
+import { getIngredients } from '@/app/actions/ingredients'
 
 type Props = {
   id: string
@@ -24,8 +26,14 @@ export default function LocationForm({ id }: Props) {
   const [location, setLocation] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
 
+  const { data: allIngredients } = useSWR('ingredients', getIngredients)
+
   const fetchLocation = async (id: string) => {
-    const location = await getLocationDetails(id)
+    if (!allIngredients) {
+      return
+    }
+
+    const location = await getLocationDetails(id, allIngredients)
     setLocation(location)
     setIsLoading(false)
     return location
@@ -33,7 +41,8 @@ export default function LocationForm({ id }: Props) {
 
   useEffect(() => {
     fetchLocation(id)
-  }, [id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, allIngredients])
 
   if (isLoading) {
     return <ItemSkeleton />

@@ -61,7 +61,7 @@ export default function FilterForm({ id }: Props) {
             alt={filter.name}
             width={400}
             height={400}
-            className="md:w-1/2 w-full h-full rounded-lg object-cover"
+            className="md:w-2/5 w-full h-full rounded-lg object-cover"
           />
 
           <div className="flex flex-col gap-6 ">
@@ -114,14 +114,7 @@ export default function FilterForm({ id }: Props) {
           </div>
         )}
 
-        {filter?.sources && filter?.sources?.length > 0 && (
-          <div className="flex flex-col gap-6 my-10">
-            <Typography size="2xl" fontWeight="normal">
-              Sources
-            </Typography>
-            {filter && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
-          </div>
-        )}
+        {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
       </div>
       <RecommendedFiltersRow />
     </div>
