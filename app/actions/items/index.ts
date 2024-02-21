@@ -61,24 +61,28 @@ export const getItemDetails = async (id: string, allIngredients: Ingredient[]) =
     let company = companyResult?.data ? companyResult.data : null
 
     // Map through ingredients to compare amount with legal_limit and health_guideline
-    const detailedIngredients = ingredients.map((ingredient: IngredientDescriptor) => {
-      const detail = allIngredients.find((d) => d.id === ingredient.ingredient_id) as any
+    const detailedIngredients = ingredients
+      .map((ingredient: IngredientDescriptor) => {
+        if (!ingredient || !ingredient?.ingredient_id || !ingredient?.amount) return null
 
-      let limit = detail?.legal_limit || detail?.health_guideline || 0
+        const detail = allIngredients.find((d) => d.id === ingredient?.ingredient_id) as any
 
-      let exceedingRecommendedLimit = 0
-      if (limit && ingredient.amount) {
-        exceedingRecommendedLimit = Math.round(limit / ingredient.amount)
-      }
+        let limit = detail?.legal_limit || detail?.health_guideline || 0
 
-      return {
-        ...detail,
-        amount: ingredient.amount,
-        legal_limit: detail?.legal_limit,
-        health_guideline: detail?.health_guideline,
-        exceedingRecommendedLimit: exceedingRecommendedLimit,
-      }
-    })
+        let exceedingRecommendedLimit = 0
+        if (limit && ingredient.amount) {
+          exceedingRecommendedLimit = Math.round(limit / ingredient.amount)
+        }
+
+        return {
+          ...detail,
+          amount: ingredient.amount,
+          legal_limit: detail?.legal_limit,
+          health_guideline: detail?.health_guideline,
+          exceedingRecommendedLimit: exceedingRecommendedLimit,
+        }
+      })
+      .filter((ingredient) => ingredient !== null)
 
     const itemWithDetails = {
       ...item,
