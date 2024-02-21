@@ -23,7 +23,7 @@ export const getIngredients = async () => {
   try {
     const supabase = await createSupabaseServerClient()
 
-    const { data: ingredients, error } = await supabase.from('ingredients').select()
+    const { data: ingredients, error } = await supabase.from('ingredients').select().order('id')
 
     if (!ingredients || error) {
       throw new Error('No ingredients found')

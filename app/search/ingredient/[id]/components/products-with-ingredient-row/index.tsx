@@ -22,11 +22,12 @@ export default function ProductsWithIngredientsRow({ ingredientId, ingredientNam
 
   useEffect(() => {
     fetchProducts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <div className="mb-10">
-      <div className="pt-4 pb-8 flex flex-row justify-between">
+      <div className="pt-14 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
           Items with {ingredientName}
         </Typography>

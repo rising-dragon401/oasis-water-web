@@ -62,7 +62,7 @@ export default function IngredientForm({ id }: Props) {
         <BenefitCard title="Benefits" description={ingredient.benefits} />
       </div>
 
-      <Sources data={ingredient.sources} />
+      {ingredient.sources && <Sources data={ingredient.sources} />}
 
       <ProductsWithIngredientsRow ingredientId={ingredient.id} ingredientName={ingredient.name} />
     </div>
