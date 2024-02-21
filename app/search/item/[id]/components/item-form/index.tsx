@@ -50,8 +50,8 @@ export default function ItemForm({ id }: Props) {
   const contaminants = item?.contaminants || []
 
   const sortedContaminants = contaminants.sort(
-    (a: { exceedingRecommendedLimit: number }, b: { exceedingRecommendedLimit: number }) => {
-      return b.exceedingRecommendedLimit - a.exceedingRecommendedLimit
+    (a: { exceedingLimit: number }, b: { exceedingLimit: number }) => {
+      return b.exceedingLimit - a.exceedingLimit
     }
   )
 

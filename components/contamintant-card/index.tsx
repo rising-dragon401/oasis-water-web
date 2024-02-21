@@ -17,24 +17,26 @@ type Props = {
 export default function ContaminantCard({ data }: Props) {
   return (
     <Card>
-      <CardHeader className="">
+      <CardHeader>
         <CardTitle className="flex flex-col w-full justify-between relative">
-          <div className="w-full flex flex-row justify-between items-center">
+          <div className="w-full flex flex-row justify-between items-top">
             <div className="max-w-72">{data?.name}</div>
-            {data.exceedingRecommendedLimit && (
-              <div className=" rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
-                <Typography size="xl" fontWeight="normal" className="!text-background">
-                  {data.exceedingRecommendedLimit}x
-                </Typography>
-                <Typography
-                  size="xs"
-                  fontWeight="normal"
-                  className="!text-secondary-foreground flex-wrap"
-                >
-                  Guidelines
-                </Typography>
-              </div>
-            )}
+            {data.exceedingLimit !== undefined &&
+              data.exceedingLimit !== null &&
+              data.exceedingLimit > 0 && (
+                <div className="rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
+                  <Typography size="xl" fontWeight="normal" className="!text-background">
+                    {data.exceedingLimit}x
+                  </Typography>
+                  <Typography
+                    size="xs"
+                    fontWeight="normal"
+                    className="!text-secondary-foreground flex-wrap"
+                  >
+                    Guidelines
+                  </Typography>
+                </div>
+              )}
           </div>
         </CardTitle>
         <CardDescription className="h-10 overflow-hidden">{data?.description}</CardDescription>

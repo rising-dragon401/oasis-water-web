@@ -53,22 +53,21 @@ export const getLocationDetails = async (id: string, allIngredients: Ingredient[
 
           let limit = ingredient?.legal_limit || ingredient?.health_guideline || 0
 
-          let exceedingRecommendedLimit = 0
+          let exceedingLimit = 0
           if (limit && contaminant.amount) {
-            exceedingRecommendedLimit = Math.round(limit / contaminant.amount)
+            exceedingLimit = Math.round(limit / contaminant.amount)
           }
 
           return {
             ...ingredient,
             ingredient_id: contaminant.ingredient_id,
             amount: contaminant.amount,
-            exceedingRecommendedLimit:
-              exceedingRecommendedLimit > 0 ? exceedingRecommendedLimit : null,
+            exceedingLimit: exceedingLimit > 0 ? exceedingLimit : null,
           }
         })
       )
 
-      cleanedContaminants.sort((a, b) => b.exceedingRecommendedLimit - a.exceedingRecommendedLimit)
+      cleanedContaminants.sort((a, b) => b.exceedingLimit - a.exceedingLimit)
 
       return {
         ...utility,

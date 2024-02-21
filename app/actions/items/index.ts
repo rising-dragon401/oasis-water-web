@@ -69,9 +69,9 @@ export const getItemDetails = async (id: string, allIngredients: Ingredient[]) =
 
         let limit = detail?.legal_limit || detail?.health_guideline || 0
 
-        let exceedingRecommendedLimit = 0
+        let exceedingLimit = 0
         if (limit && ingredient.amount) {
-          exceedingRecommendedLimit = Math.round(limit / ingredient.amount)
+          exceedingLimit = Math.round(limit / ingredient.amount)
         }
 
         return {
@@ -79,7 +79,7 @@ export const getItemDetails = async (id: string, allIngredients: Ingredient[]) =
           amount: ingredient.amount,
           legal_limit: detail?.legal_limit,
           health_guideline: detail?.health_guideline,
-          exceedingRecommendedLimit: exceedingRecommendedLimit,
+          exceedingLimit: exceedingLimit,
         }
       })
       .filter((ingredient) => ingredient !== null)
