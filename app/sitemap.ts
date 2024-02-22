@@ -64,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `https://www.oasiswaters.co${path}`,
     })),
     ...ingredientPaths.map((path: string) => ({
-      url: `https://www.oasiswaters.coi${path}`,
+      url: `https://www.oasiswaters.co${path}`,
     })),
     {
       url: `https://www.oasiswaters.co`,
