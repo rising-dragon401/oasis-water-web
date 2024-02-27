@@ -117,7 +117,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
               className={`text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
-                inputFocused && results.length > 0
+                inputFocused && results.length > 0 && query.length > 2
                   ? 'rounded-b-none rounded-t-md border-b-0'
                   : 'rounded-md'
               }
@@ -129,13 +129,16 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               </div>
             )}
           </div>
-          {results.length > 0 && inputFocused && (
+          {query.length > 2 && inputFocused && (
             <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border bottom-rounded-md absolute top-10 w-full z-10 overflow-y-scroll max-h-64">
-              <div className="flex-grow ">
-                {results.map((result) => (
-                  <ResultsRow key={result.id} itemResult={result} />
-                ))}
-              </div>
+              {results.length > 0 && (
+                <div className="flex-grow ">
+                  {results.map((result) => (
+                    <ResultsRow key={result.id} itemResult={result} />
+                  ))}
+                </div>
+              )}
+
               <div className="flex items-center flex-wrap justify-between bg-muted  px-4 py-2">
                 <div className="flex flex-col gap-2 items-center justify-center">
                   <Typography size="base" fontWeight="normal">
