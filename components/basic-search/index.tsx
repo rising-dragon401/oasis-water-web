@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import ResultsRow from './results-row'
-import { Search, Loader2, X } from 'lucide-react'
+import { Search, Loader2 } from 'lucide-react'
 import algoliasearch from 'algoliasearch'
 import { motion } from 'framer-motion'
+import Typography from '@/components/typography'
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_APP_ID!,
@@ -129,10 +130,28 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
             )}
           </div>
           {results.length > 0 && inputFocused && (
-            <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-b-md absolute top-10 w-full z-10 max-h-56 overflow-y-scroll">
-              {results.map((result) => (
-                <ResultsRow key={result.id} itemResult={result} />
-              ))}
+            <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border bottom-rounded-md absolute top-10 w-full z-10 overflow-y-scroll max-h-64">
+              <div className="flex-grow ">
+                {results.map((result) => (
+                  <ResultsRow key={result.id} itemResult={result} />
+                ))}
+              </div>
+              <div className="flex items-center flex-wrap justify-between bg-muted  px-4 py-2">
+                <div className="flex flex-col gap-2 items-center justify-center">
+                  <Typography size="base" fontWeight="normal">
+                    Not seeing what you are looking for?
+                  </Typography>
+                </div>
+                <Button
+                  variant="outline"
+                  className="text-secondary-foreground"
+                  onClick={() => {
+                    window.open('https://3efs5kbf7k4.typeform.com/to/Un9kW2c8', '_blank')
+                  }}
+                >
+                  Let us know
+                </Button>
+              </div>
             </div>
           )}
         </motion.div>

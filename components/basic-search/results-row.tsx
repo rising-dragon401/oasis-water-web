@@ -67,7 +67,7 @@ export default function ResultsRow({ itemResult }: Props) {
           placeholder={itemResult.image ? 'blur' : 'empty'}
           className="rounded-md h-10 w-10 object-cover"
         />
-        <Typography size="base" fontWeight="normal">
+        <Typography size="base" fontWeight="normal" className="max-w-64 overflow-hidden max-h-12">
           {itemResult.name}
         </Typography>
       </div>
