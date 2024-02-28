@@ -71,7 +71,7 @@ export const getItemDetails = async (id: string, allIngredients: Ingredient[]) =
 
         let exceedingLimit = 0
         if (limit && ingredient.amount) {
-          exceedingLimit = Math.round(limit / ingredient.amount)
+          exceedingLimit = Math.round(ingredient.amount / limit)
         }
 
         return {

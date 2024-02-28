@@ -21,6 +21,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   const [results, setResults] = React.useState<any[]>([])
   const [isLoading, setIsLoading] = React.useState(false)
   const [inputFocused, setInputFocused] = React.useState(false)
+  const [queryCompleted, setQueryCompleted] = React.useState(false)
 
   const debouncedQuery = useDebounce(query, 500)
 
@@ -43,6 +44,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
   }, [])
 
   useEffect(() => {
+    setQueryCompleted(false)
     if (debouncedQuery) {
       handleSearch(debouncedQuery)
     } else {
@@ -91,6 +93,8 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
       },
     ]
 
+    setQueryCompleted(true)
+
     client.multipleQueries(queries).then(({ results }) => {
       const hits = results.map((result: any) => result.hits)
       setResults(hits.flat())
@@ -129,7 +133,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               </div>
             )}
           </div>
-          {query.length > 2 && inputFocused && (
+          {query.length > 2 && inputFocused && queryCompleted && (
             <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border bottom-rounded-md absolute top-10 w-full z-10 overflow-y-scroll max-h-64">
               {results.length > 0 && (
                 <div className="flex-grow ">
@@ -139,22 +143,24 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
                 </div>
               )}
 
-              <div className="flex items-center flex-wrap justify-between bg-muted  px-4 py-2">
-                <div className="flex flex-col gap-2 items-center justify-center">
-                  <Typography size="base" fontWeight="normal">
-                    Not seeing what you are looking for?
-                  </Typography>
+              {!isLoading && (
+                <div className="flex items-center flex-wrap justify-between bg-muted  px-4 py-2">
+                  <div className="flex flex-col gap-2 items-center justify-center">
+                    <Typography size="base" fontWeight="normal">
+                      Not seeing what you are looking for?
+                    </Typography>
+                  </div>
+                  <Button
+                    variant="outline"
+                    className="text-secondary-foreground"
+                    onClick={() => {
+                      window.open('https://3efs5kbf7k4.typeform.com/to/Un9kW2c8', '_blank')
+                    }}
+                  >
+                    Let us know
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  className="text-secondary-foreground"
-                  onClick={() => {
-                    window.open('https://3efs5kbf7k4.typeform.com/to/Un9kW2c8', '_blank')
-                  }}
-                >
-                  Let us know
-                </Button>
-              </div>
+              )}
             </div>
           )}
         </motion.div>

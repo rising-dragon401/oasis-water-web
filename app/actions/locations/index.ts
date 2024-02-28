@@ -55,7 +55,7 @@ export const getLocationDetails = async (id: string, allIngredients: Ingredient[
 
           let exceedingLimit = 0
           if (limit && contaminant.amount) {
-            exceedingLimit = Math.round(limit / contaminant.amount)
+            exceedingLimit = Math.round(contaminant.amount / limit)
           }
 
           return {
