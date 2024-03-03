@@ -9,9 +9,9 @@ export default async function TopRatedSection() {
 
   return (
     <div>
-      <div className="pt-4 pb-8 flex flex-row justify-between">
+      <div className="py-4 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Top rated
+          Top rated bottled water
         </Typography>
 
         <Link href="/search/bottled-water" className="underline italic text-primary">

@@ -14,7 +14,7 @@ export default function TapWaterList({ locations }: Props) {
 
   return (
     <div>
-      <div className="pt-4 pb-8 flex flex-row justify-between">
+      <div className="py-4 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
           All tap water ratings
         </Typography>

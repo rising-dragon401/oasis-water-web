@@ -17,7 +17,7 @@ export default function Score({ score, isFull }: Props) {
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (score / 100) * circumference
 
-  const fontSize = !isMobile || isFull ? 20 : 14
+  const fontSize = !isMobile || isFull ? 20 : 12
 
   const grade = () => {
     if (score >= 90) {

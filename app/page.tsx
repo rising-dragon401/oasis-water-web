@@ -22,7 +22,7 @@ export default async function Home() {
             </Typography>
           </div>
 
-          <BasicSearch showSearch={true} />
+          <BasicSearch showSearch={true} paddingY="6" />
         </div>
 
         <div className="flex flex-col mt-14 mb-10">

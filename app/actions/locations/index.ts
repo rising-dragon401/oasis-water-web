@@ -109,6 +109,15 @@ export const getFeaturedLocations = async () => {
     return []
   }
 
+  featuredLocations.forEach((location) => {
+    if (location && location.utilities && location.utilities.length > 0) {
+      // @ts-ignore
+      location.score = location.utilities[0]?.score
+    } else {
+      location.score = null
+    }
+  })
+
   const randomOrder = featuredLocations.sort(() => Math.random() - 0.5)
 
   return randomOrder || []

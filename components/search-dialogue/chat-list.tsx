@@ -1,5 +1,5 @@
 import { ChatMessage } from './chat-message'
-import Loader from '@/components/loader'
+import Loader from '@/components/shared/loader'
 
 export interface ChatList {
   messages: any[]

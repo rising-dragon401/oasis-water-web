@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import SignOutButton from './log-out-button'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -17,7 +18,13 @@ import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 
 export function AccountMenu() {
-  const { userData } = useUserProvider()
+  const { userData, refreshUserData } = useUserProvider()
+
+  useEffect(() => {
+    refreshUserData()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!userData) {
     return (
@@ -59,7 +66,7 @@ export function AccountMenu() {
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/account/my-oasis" className="flex flex-row items-center">
               <Heart className="mr-2 h-4 w-4" />
-              My oasis
+              Favorites
             </Link>
           </DropdownMenuItem>
 

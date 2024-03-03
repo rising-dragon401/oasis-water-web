@@ -33,10 +33,6 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     mutate('uid')
   }
 
-  useEffect(() => {
-    refreshUserData()
-  }, [])
-
   return (
     <UserContext.Provider
       value={{ uid, userData: currentUserData, userFavorites, refreshUserData }}

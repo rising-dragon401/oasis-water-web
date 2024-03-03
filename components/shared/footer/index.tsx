@@ -1,7 +1,6 @@
 import Logo from '@/components/shared/logo'
 import Link from 'next/link'
 import { FaXTwitter, FaTiktok, FaYoutube, FaInstagram, FaDiscord } from 'react-icons/fa6'
-import EmailSubscribe from '@/components/shared/email-subscribe'
 
 export default function Footer() {
   return (
@@ -15,7 +14,7 @@ export default function Footer() {
               </Link>
             </div>
             <div className="text-sm text-secondary">
-              © oasis <span className="text-secondary">-</span> All rights reserved.
+              © Oasis <span className="text-secondary">-</span> All rights reserved.
             </div>
           </div>
 
@@ -151,10 +150,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Email signup */}
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <EmailSubscribe />
-          </div>
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2" />
         </div>
       </div>
     </footer>

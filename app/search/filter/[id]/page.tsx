@@ -4,6 +4,8 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { getFilter } from '@/app/actions/filters'
 import { OG_IMAGE } from '@/lib/constants/images'
 import { Item } from '@/types/custom'
+import { AuthOverlay } from '@/components/shared/auth-overlay'
+import { getSession } from '@/utils/supabase/server'
 
 type Props = {
   params: { id: string }
@@ -31,12 +33,17 @@ export async function generateMetadata(
   }
 }
 
-export default function FilterPage({ params, searchParams }: Props) {
+export default async function FilterPage({ params, searchParams }: Props) {
   const id = params.id
+
+  const session = await getSession()
+  const user = session?.user
 
   return (
     <SubpageLayout>
       <FilterForm id={id} />
+
+      {!user && <AuthOverlay referral={`/search/filter/${id}`} />}
     </SubpageLayout>
   )
 }

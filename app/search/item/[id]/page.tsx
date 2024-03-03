@@ -4,6 +4,8 @@ import type { Metadata, ResolvingMetadata } from 'next'
 import { getItem } from '@/app/actions/items'
 import { OG_IMAGE } from '@/lib/constants/images'
 import { Item } from '@/types/custom'
+import { getSession } from '@/utils/supabase/server'
+import { AuthOverlay } from '@/components/shared/auth-overlay'
 
 type Props = {
   params: { id: string }
@@ -31,12 +33,17 @@ export async function generateMetadata(
   }
 }
 
-export default function ItemPage({ params, searchParams }: Props) {
+export default async function ItemPage({ params, searchParams }: Props) {
   const id = params.id
+
+  const session = await getSession()
+  const user = session?.user
 
   return (
     <SubpageLayout>
       <ItemForm id={id} />
+
+      {!user && <AuthOverlay referral={`/search/item/${id}`} />}
     </SubpageLayout>
   )
 }

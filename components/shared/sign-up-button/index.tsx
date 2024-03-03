@@ -1,17 +1,21 @@
 'use client'
 
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
+import { useEffect } from 'react'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 
-export default function JoinWaitListButton() {
+export default function SignUpButton({ referral }: { referral?: string }) {
+  const [previousPath, setPreviousPath] = useLocalStorage('oasis-previous-path', '/')
+
+  useEffect(() => {
+    if (referral) setPreviousPath(referral)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [referral])
+
   return (
-    <Button
-      type="submit"
-      className="max-w-48 !min-w-32"
-      onClick={() => {
-        window.open('https://3efs5kbf7k4.typeform.com/to/AIFR8ZFm', '_blank')
-      }}
-    >
-      Join waitlist
-    </Button>
+    <Link href="/auth/signin">
+      <Button variant="default">Create account</Button>
+    </Link>
   )
 }

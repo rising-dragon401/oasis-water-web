@@ -7,9 +7,11 @@ import { getCurrentUserData } from '@/app/actions/user'
 import { redirect } from 'next/navigation'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useEffect } from 'react'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 
 export default function SignIn() {
   const { refreshUserData } = useUserProvider()
+  const [previousPath, setPreviousPath] = useLocalStorage('oasis-previous-path', '/')
 
   useEffect(() => {
     const fetch = async () => {
@@ -17,12 +19,14 @@ export default function SignIn() {
 
       const userData = await getCurrentUserData()
       if (userData) {
-        redirect('/')
+        redirect(previousPath)
       } else {
         console.log('No user found')
       }
     }
     fetch()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   let showToast = false

@@ -15,7 +15,13 @@ const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_SEARCH_KEY!
 )
 
-export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
+export default function BasicSearch({
+  showSearch,
+  paddingY = '4',
+}: {
+  showSearch: boolean
+  paddingY?: string
+}) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
   const [query, setQuery] = React.useState<string>('')
   const [results, setResults] = React.useState<any[]>([])
@@ -120,7 +126,7 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={`text-base flex gap-2 items-center px-4 py- z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
+              className={`text-base flex gap-2 items-center px-4 py-${paddingY}  z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
                 inputFocused && results.length > 0 && query.length > 2
                   ? 'rounded-b-none rounded-t-md border-b-0'
                   : 'rounded-full'

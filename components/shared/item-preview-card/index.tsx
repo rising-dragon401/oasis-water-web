@@ -73,9 +73,9 @@ export default function ItemPreviewCard({ item }: Props) {
       <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
         <div className="flex flex-col gap-1">
           <Typography
-            size="sm"
+            size="base"
             fontWeight="bold"
-            className="!no-underline text-primary max-h-14 overflow-hidden max-w-48 text-ellipsis	"
+            className="!no-underline text-primary max-h-12 overflow-hidden max-w-64 text-ellipsis	"
           >
             {item.name}
           </Typography>

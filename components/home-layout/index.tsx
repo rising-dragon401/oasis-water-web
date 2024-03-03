@@ -6,9 +6,15 @@ import Link from 'next/link'
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
-import JoinWaitListButton from '@/components/shared/join-waitlist-button'
+import SignUpButton from '../shared/sign-up-button'
+import { getSession } from '@/utils/supabase/server'
+import { AccountMenu } from '../menu/account-menu'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
+  const session = await getSession()
+
+  const user = session?.user
+
   return (
     <div className="min-h-[100vh] flex justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-3xl sm:max-w-xl max-w-sm w-full">
@@ -18,7 +24,16 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
           <div className="flex justify-end items-center gap-2">
             <BasicSearch showSearch={false} />
 
-            <JoinWaitListButton />
+            {user ? (
+              <AccountMenu />
+            ) : (
+              <div className="flex flex-row gap-4 items-center ml-4">
+                <Link href="/auth/signin" className="text-sm">
+                  Login
+                </Link>
+                <SignUpButton />
+              </div>
+            )}
           </div>
         </div>
 

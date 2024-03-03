@@ -4,7 +4,7 @@ import Typography from '@/components/typography'
 import { getItemDetails } from '@/app/actions/items'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
-import Score from '@/components/score'
+import Score from '@/components/shared/score'
 import MetaDataCard from '../metadata-card'
 import IngredientsCard from '../ingredients-card'
 import ItemSkeleton from '../item-skeleton'
@@ -16,6 +16,7 @@ import Sources from '@/components/shared/sources'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { getIngredients } from '@/app/actions/ingredients'
+import FavoriteButton from '@/components/shared/favorite-button'
 
 type Props = {
   id: string
@@ -132,11 +133,15 @@ export default function ItemForm({ id }: Props) {
                 </Typography>
               )}
             </div>
-            {item.is_indexed !== false && (
-              <div className="flex flex-col gap-2 md:w-2/5 items-center">
-                <Score score={item.score} isFull={true} />
-              </div>
-            )}
+
+            <div className="flex md:flex-row md:justify-start md:gap-10 md:items-start flex-col-reverse justify-end items-end">
+              {item.is_indexed !== false && (
+                <div className="flex flex-col gap-2 md:w-2/5 items-center">
+                  <Score score={item.score} isFull={true} />
+                </div>
+              )}
+              <FavoriteButton item={item} size={32} />
+            </div>
           </div>
         </div>
 

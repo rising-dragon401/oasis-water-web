@@ -2,7 +2,7 @@
 import { cn } from '@/lib/utils'
 import { MemoizedReactMarkdown } from '@/components/markdown'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import Loader from '@/components/loader'
+import Loader from '@/components/shared/loader'
 
 const ChatAvatar =
   'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/logo/icon.png'
