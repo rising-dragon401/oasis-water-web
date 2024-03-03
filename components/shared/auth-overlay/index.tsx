@@ -26,7 +26,7 @@ export function AuthOverlay({ referral }: { referral?: string }) {
           <DialogDescription>Please sign in to access this data.</DialogDescription>
         </DialogHeader>
 
-        <DialogFooter>
+        <DialogFooter className="flex flex-col-reverse gap-2">
           <Button
             variant="outline"
             onClick={() => {
@@ -38,7 +38,7 @@ export function AuthOverlay({ referral }: { referral?: string }) {
           <Link href="/auth/signin">
             <Button
               variant="default"
-              className="px-4"
+              className="px-4 w-full"
               onClick={() => {
                 if (referral) {
                   setPreviousPath(referral)
