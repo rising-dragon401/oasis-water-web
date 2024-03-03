@@ -170,18 +170,21 @@ export default function ItemForm({ id }: Props) {
               />
             </div>
 
-            <div className="flex flex-col gap-6 my-10">
-              <Typography size="2xl" fontWeight="normal">
-                Other Ingredients
-              </Typography>
+            <>
               {item?.ingredients.length > 0 ? (
-                <IngredientsCard ingredients={item.ingredients} />
+                <div className="flex flex-col gap-6 my-10">
+                  <Typography size="2xl" fontWeight="normal">
+                    Other Ingredients
+                  </Typography>
+
+                  <IngredientsCard ingredients={item.ingredients} />
+                </div>
               ) : (
                 <Typography size="base" fontWeight="normal" className="text-secondary">
                   None
                 </Typography>
               )}
-            </div>
+            </>
 
             {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
           </>

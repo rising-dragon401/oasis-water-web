@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster'
 import { CSPostHogProvider } from './providers'
 import SupabaseProvider from '../providers/SupabaseProvider'
 import UserProvider from '@/providers/UserProvider'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 import '@/styles/globals.css'
 
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <UserProvider>
               <main id="skip" className="h-[calc(100dvh)]">
                 {children}
+                <SpeedInsights />
               </main>
             </UserProvider>
             <Analytics />
