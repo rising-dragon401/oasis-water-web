@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
 import cn from 'classnames'
 import { buttonVariants } from '@/components/ui/button'
+import { Droplet, Filter, Milk } from 'lucide-react'
 
 export default function MobileNavbar() {
   const { uid, userData } = useUserProvider()
@@ -43,17 +44,24 @@ export default function MobileNavbar() {
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-full" align="end">
+        <DropdownMenuContent className="w-48 mr-2 p-2" align="end">
           <DropdownMenuGroup>
             <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/search/bottled-water">Bottled water</Link>
+              <Link href="/search/bottled-water" className="flex flex-row gap-2 items-center">
+                <Milk className="text-secondary w-4 h-4" />
+                Bottled water
+              </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/tap-water">Tap water</Link>
+              <Link href="/tap-water" className="flex flex-row gap-2 items-center">
+                <Droplet className="text-secondary w-4 h-4" />
+                Tap water
+              </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="my-2 justify-start">
+            <DropdownMenuItem className="flex flex-row gap-2 items-center my-2">
+              <Filter className="text-secondary w-4 h-4" />
               <Link href="/filters">Filters</Link>
             </DropdownMenuItem>
 
@@ -66,7 +74,7 @@ export default function MobileNavbar() {
                 <SignOutButton />
               </DropdownMenuGroup>
             ) : (
-              <DropdownMenuItem className={cn(buttonVariants(), 'w-32')}>
+              <DropdownMenuItem className={cn(buttonVariants(), 'w-full')}>
                 <Link href="/auth/signin">Login</Link>
               </DropdownMenuItem>
             )}

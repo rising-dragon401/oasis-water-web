@@ -1,7 +1,7 @@
 import { lato } from './fonts'
 import cn from 'classnames'
 import { Analytics } from '@vercel/analytics/react'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 import { CSPostHogProvider } from './providers'
 import SupabaseProvider from '../providers/SupabaseProvider'
 import UserProvider from '@/providers/UserProvider'

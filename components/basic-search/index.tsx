@@ -9,6 +9,7 @@ import { Search, Loader2 } from 'lucide-react'
 import algoliasearch from 'algoliasearch'
 import { motion } from 'framer-motion'
 import Typography from '@/components/typography'
+import { FeedbackModal } from '@/components/shared/feedback-modal'
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_APP_ID!,
@@ -17,10 +18,10 @@ const client = algoliasearch(
 
 export default function BasicSearch({
   showSearch,
-  paddingY = '4',
+  size,
 }: {
   showSearch: boolean
-  paddingY?: string
+  size: 'small' | 'medium' | 'large'
 }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
   const [query, setQuery] = React.useState<string>('')
@@ -28,6 +29,7 @@ export default function BasicSearch({
   const [isLoading, setIsLoading] = React.useState(false)
   const [inputFocused, setInputFocused] = React.useState(false)
   const [queryCompleted, setQueryCompleted] = React.useState(false)
+  const [openFeedbackModal, setOpenFeedbackModal] = React.useState(false)
 
   const debouncedQuery = useDebounce(query, 500)
 
@@ -109,8 +111,29 @@ export default function BasicSearch({
     })
   }
 
+  let paddingY, top
+  switch (size) {
+    case 'small':
+      paddingY = '4'
+      top = '12'
+      break
+    case 'medium':
+      paddingY = '8'
+      top = '12'
+      break
+    case 'large':
+      paddingY = '12'
+      top = '12'
+      break
+    default:
+      paddingY = '12' // Default to large size values
+      top = '14'
+  }
+
   return (
     <>
+      <FeedbackModal open={openFeedbackModal} setOpen={setOpenFeedbackModal} />
+
       {isShowSearch && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -126,12 +149,7 @@ export default function BasicSearch({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={`text-base flex gap-2 items-center px-4 py-${paddingY}  z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
-                inputFocused && results.length > 0 && query.length > 2
-                  ? 'rounded-b-none rounded-t-md border-b-0'
-                  : 'rounded-full'
-              }
-                `}
+              className={` text-base flex gap-2 items-center px-4 py-${paddingY} z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md rounded-full`}
             />
             {isLoading && (
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
@@ -140,7 +158,9 @@ export default function BasicSearch({
             )}
           </div>
           {query.length > 2 && inputFocused && queryCompleted && (
-            <div className="flex flex-col gap-2 bg-muted border-secondary-foreground border bottom-rounded-md absolute top-10 w-full z-10 overflow-y-scroll max-h-64">
+            <div
+              className={`flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 top-${top}`}
+            >
               {results.length > 0 && (
                 <div className="flex-grow ">
                   {results.map((result) => (
@@ -160,7 +180,7 @@ export default function BasicSearch({
                     variant="outline"
                     className="text-secondary-foreground"
                     onClick={() => {
-                      window.open('https://3efs5kbf7k4.typeform.com/to/Un9kW2c8', '_blank')
+                      setOpenFeedbackModal(true)
                     }}
                   >
                     Let us know

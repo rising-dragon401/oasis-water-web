@@ -22,12 +22,12 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
           <HomeNavbar />
 
           <div className="flex justify-end items-center gap-2">
-            <BasicSearch showSearch={false} />
+            <BasicSearch showSearch={false} size="small" />
 
             {user ? (
               <AccountMenu />
             ) : (
-              <div className="flex flex-row gap-4 items-center ml-4">
+              <div className="flex flex-row gap-4 items-center ml-4 w-full">
                 <Link href="/auth/signin" className="text-sm">
                   Login
                 </Link>
@@ -51,7 +51,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
 
           <div className="flex flex-row items-center gap-2">
             <div className="flex justify-end">
-              <BasicSearch showSearch={false} />
+              <BasicSearch showSearch={false} size="small" />
             </div>
             <MobileNavbar />
           </div>
