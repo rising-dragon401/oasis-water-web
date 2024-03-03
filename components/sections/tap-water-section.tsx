@@ -2,10 +2,10 @@ import Link from 'next/link'
 import Typography from '@/components/typography'
 import React from 'react'
 import ItemPreviewCard from '@/components/item-preview-card'
-import { getLocations } from '@/app/actions/locations'
+import { getFeaturedLocations } from '@/app/actions/locations'
 
 export default async function TapWaterSection() {
-  const randomLocations = await getLocations()
+  const featured = await getFeaturedLocations()
 
   return (
     <div>
@@ -20,10 +20,8 @@ export default async function TapWaterSection() {
       </div>
 
       <div className="flex overflow-x-auto gap-8 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
-        {randomLocations &&
-          randomLocations
-            ?.slice(0, 3)
-            .map((location) => <ItemPreviewCard key={location.name} item={location} />)}
+        {featured &&
+          featured.map((location) => <ItemPreviewCard key={location.name} item={location} />)}
       </div>
     </div>
   )

@@ -120,10 +120,10 @@ export default function BasicSearch({ showSearch }: { showSearch: boolean }) {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={`text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
+              className={`text-base flex gap-2 items-center px-4 py- z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md ${
                 inputFocused && results.length > 0 && query.length > 2
                   ? 'rounded-b-none rounded-t-md border-b-0'
-                  : 'rounded-md'
+                  : 'rounded-full'
               }
                 `}
             />

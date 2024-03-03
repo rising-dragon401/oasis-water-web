@@ -96,26 +96,20 @@ export const getLocation = async (id: string) => {
   return location
 }
 
-export const getRandomLocationBunch = async () => {
+export const getFeaturedLocations = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { count } = await supabase.from('tap_water_locations').select('*', { count: 'exact' })
-
-  if (!count) {
-    console.error('Error fetching tap_water_locations count')
-    return []
-  }
-
-  const randomIds = Array.from({ length: 5 }, () => Math.floor(Math.random() * count))
-  const { data: locations, error } = await supabase
+  const { data: featuredLocations, error } = await supabase
     .from('tap_water_locations')
     .select()
-    .in('id', randomIds)
+    .eq('is_featured', true)
 
   if (error) {
-    console.error('Error fetching random locations:', error)
+    console.error('Error fetching featured locations:', error)
     return []
   }
 
-  return locations || []
+  const randomOrder = featuredLocations.sort(() => Math.random() - 0.5)
+
+  return randomOrder || []
 }

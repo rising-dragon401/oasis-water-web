@@ -44,7 +44,7 @@ export function ContaminantFiltersDropdown({ contaminantId }: Props) {
           {filters.length > 0 ? (
             filters.map((filter: WaterFilter) => (
               <DropdownMenuItem key={filter.id}>
-                <Link href={`/filter/${filter.id}`}>{filter.name}</Link>
+                <Link href={`/search/filter/${filter.id}`}>{filter.name}</Link>
               </DropdownMenuItem>
             ))
           ) : (

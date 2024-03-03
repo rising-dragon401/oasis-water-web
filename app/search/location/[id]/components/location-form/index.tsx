@@ -25,6 +25,7 @@ type Props = {
 export default function LocationForm({ id }: Props) {
   const [location, setLocation] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
+  const [openUtility, setOpenUtility] = useState<string>('0')
 
   const { data: allIngredients } = useSWR('ingredients', getIngredients)
 
@@ -76,7 +77,7 @@ export default function LocationForm({ id }: Props) {
             <Typography size="2xl" fontWeight="normal">
               Utilities
             </Typography>
-            <Accordion type="single" collapsible>
+            <Accordion type="single" collapsible value={openUtility} onValueChange={setOpenUtility}>
               {location.utilities.map((utility: any, index: number) => (
                 <AccordionItem key={index} value={index.toString()}>
                   <AccordionTrigger className="w-full flex flex-row justify-start">
