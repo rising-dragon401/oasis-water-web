@@ -8,7 +8,7 @@ import Score from '@/components/score'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedRow from '@/components/sections/recommended-row'
 import ContaminantCard from '@/components/contamintant-card'
-import Sources from '@/components/sources'
+import Sources from '@/components/shared/sources'
 import {
   Accordion,
   AccordionContent,

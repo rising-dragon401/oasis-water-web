@@ -1,7 +1,7 @@
 import Typography from '@/components/typography'
 import React, { useMemo } from 'react'
 import { TapWaterLocation } from '@/types/custom'
-import ItemPreviewCard from '@/components/item-preview-card'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
 
 type Props = {
   locations: TapWaterLocation[] | null

@@ -4,7 +4,7 @@ import Typography from '@/components/typography'
 import React from 'react'
 import { getTopItems } from '@/app/actions/items'
 import { useEffect, useState } from 'react'
-import ItemPreviewCard from '@/components/item-preview-card'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
 
 export default function RecommendedRow() {
   const [ranked, setRanked] = useState<any>([])

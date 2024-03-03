@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import Logo from '@/components/logo'
+import Logo from '@/components/shared/logo'
 import AuthMenu from '@/app/auth/signin/auth-menu'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

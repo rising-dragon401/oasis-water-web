@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu'
 import Link from 'next/link'
-import Logo from '@/components/logo'
+import Logo from '@/components/shared/logo'
 import Typography from '../typography'
 import { cn } from '@/lib/utils'
 import { MapPin, Droplet, Filter, Milk, Building } from 'lucide-react'

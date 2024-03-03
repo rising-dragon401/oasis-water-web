@@ -1,6 +1,6 @@
 import React from 'react'
 import Typography from '@/components/typography'
-import JoinWaitListButton from '@/components/shared/JoinWaitlistButton'
+import JoinWaitListButton from '@/components/shared/join-waitlist-button'
 
 export default async function EmailSubscribe() {
   return (

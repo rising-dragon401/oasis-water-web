@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import ItemSkeleton from '../company-skeleton'
 import { getCompanyByName, getCompanyItems } from '@/app/actions/companies'
 import { Company } from '@/types/custom'
-import ItemPreviewCard from '@/components/item-preview-card'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Image from 'next/image'
 
 type Props = {

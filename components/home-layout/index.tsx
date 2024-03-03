@@ -1,12 +1,12 @@
-import Footer from '@/components/footer'
+import Footer from '@/components/shared/footer'
 import HomeNavbar from '@/components/menu/home-navbar'
 import { PropsWithChildren } from 'react'
 import MobileNavbar from '@/components/menu/mobile-navbar'
 import Link from 'next/link'
-import Logo from '@/components/logo'
+import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
-import JoinWaitListButton from '@/components/shared/JoinWaitlistButton'
+import JoinWaitListButton from '@/components/shared/join-waitlist-button'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
   return (

@@ -3,7 +3,7 @@
 import SubpageLayout from '@/components/home-layout'
 import Image from 'next/image'
 import Typography from '@/components/typography'
-import GoBackButton from '@/components/go-back-button'
+import GoBackButton from '@/components/shared/go-back-button/go-back-button'
 
 export default function NotFound() {
   return (

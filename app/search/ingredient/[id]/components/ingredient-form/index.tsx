@@ -8,7 +8,7 @@ import IngredientSkeleton from '../ingredient-skeleton'
 import ProductsWithIngredientsRow from '../products-with-ingredient-row'
 import { getIngredient } from '@/app/actions/ingredients'
 import { Ingredient } from '@/types/custom'
-import Sources from '@/components/sources'
+import Sources from '@/components/shared/sources'
 
 type Props = {
   id: string

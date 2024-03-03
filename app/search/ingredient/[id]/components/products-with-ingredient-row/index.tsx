@@ -3,7 +3,7 @@
 import { getItemsWithIngredient } from '@/app/actions/items'
 import { useEffect, useState } from 'react'
 import Typography from '@/components/typography'
-import ItemPreviewCard from '@/components/item-preview-card'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
 
 type Props = {
   ingredientId: number

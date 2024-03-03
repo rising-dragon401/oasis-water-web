@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Typography from '@/components/typography'
 import React from 'react'
-import ItemPreviewCard from '@/components/item-preview-card'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
 import { getFilters } from '@/app/actions/filters'
 
 export default async function FilterSection() {

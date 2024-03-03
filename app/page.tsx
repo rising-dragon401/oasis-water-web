@@ -4,8 +4,8 @@ import BasicSearch from '@/components/basic-search'
 import TopRatedSection from '@/components/sections/top-rated-section'
 import LowestRatedSection from '@/components/sections/lowest-rated-section'
 import TapWaterSection from '@/components/sections/tap-water-section'
-import FilterSection from '@/components/filter-section'
-import BlogPreviewSection from '@/components/blog-preview-section'
+import FilterSection from '@/components/sections/filter-section'
+import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import CTASection from '@/components/sections/cta-section'
 
 export default async function Home() {

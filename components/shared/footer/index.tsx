@@ -1,7 +1,7 @@
-import Logo from '@/components/logo'
+import Logo from '@/components/shared/logo'
 import Link from 'next/link'
 import { FaXTwitter, FaTiktok, FaYoutube, FaInstagram, FaDiscord } from 'react-icons/fa6'
-import EmailSubscribe from '@/components/email-subscribe'
+import EmailSubscribe from '@/components/shared/email-subscribe'
 
 export default function Footer() {
   return (

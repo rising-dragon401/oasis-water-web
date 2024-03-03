@@ -2,7 +2,7 @@
 
 import Typography from '@/components/typography'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
-import ItemPreviewCard from '@/components/item-preview-card'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
 import { useUserProvider } from '@/providers/UserProvider'
 
 export default function FavoritesList() {
