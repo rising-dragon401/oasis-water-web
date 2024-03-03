@@ -111,23 +111,30 @@ export default function BasicSearch({
     })
   }
 
-  let paddingY, top
-  switch (size) {
-    case 'small':
-      paddingY = '4'
-      top = '12'
-      break
-    case 'medium':
-      paddingY = '8'
-      top = '12'
-      break
-    case 'large':
-      paddingY = '12'
-      top = '12'
-      break
-    default:
-      paddingY = '12' // Default to large size values
-      top = '14'
+  const getSearchPaddingY = () => {
+    switch (size) {
+      case 'small':
+        return 'py-4'
+      case 'medium':
+        return 'py-4'
+      case 'large':
+        return 'py-6'
+      default:
+        return 'py-10'
+    }
+  }
+
+  const getSearchTop = () => {
+    switch (size) {
+      case 'small':
+        return 'top-12'
+      case 'medium':
+        return 'top-12'
+      case 'large':
+        return 'top-14'
+      default:
+        return 'top-12'
+    }
   }
 
   return (
@@ -135,21 +142,14 @@ export default function BasicSearch({
       <FeedbackModal open={openFeedbackModal} setOpen={setOpenFeedbackModal} />
 
       {isShowSearch && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col gap-2 relative w-full max-w-xl"
-          ref={searchContainerRef}
-        >
+        <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
           <div className="relative">
             <Input
               placeholder="Search water..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={` text-base flex gap-2 items-center px-4 py-${paddingY} z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md rounded-full`}
+              className={` text-base flex gap-2 items-center px-4 ${getSearchPaddingY()} z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md rounded-full`}
             />
             {isLoading && (
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
@@ -159,7 +159,7 @@ export default function BasicSearch({
           </div>
           {query.length > 2 && inputFocused && queryCompleted && (
             <div
-              className={`flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 top-${top}`}
+              className={`flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 ${getSearchTop()}`}
             >
               {results.length > 0 && (
                 <div className="flex-grow ">
@@ -189,7 +189,7 @@ export default function BasicSearch({
               )}
             </div>
           )}
-        </motion.div>
+        </div>
       )}
 
       {!isShowSearch && (

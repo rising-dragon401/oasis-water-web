@@ -78,7 +78,7 @@ export function FeedbackModal({ open, setOpen }: FeedbackModalProps) {
             Cancel
           </Button>
           <Button variant="default" className="px-4" onClick={handleSubmission} loading={loading}>
-            Send
+            Submit
           </Button>
         </DialogFooter>
       </DialogContent>
