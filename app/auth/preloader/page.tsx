@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useEffect } from 'react'
 import Loader from '@/components/shared/loader'
-import { getCurrentUserData } from '@/app/actions/user'
+import { getCurrentUserData, addToEmailList } from '@/app/actions/user'
 import Typography from '@/components/typography'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
 
@@ -13,13 +13,20 @@ export default function Preloader() {
   const router = useRouter()
 
   const [previousPath] = useLocalStorage('oasis-previous-path', '/')
+  const [checked] = useLocalStorage('oasis-subscribe-to-newsletter', false)
 
   useEffect(() => {
     const fetch = async () => {
       refreshUserData()
 
       const userData = await getCurrentUserData()
+
       if (userData) {
+        // update user email fields
+        if (userData?.email) {
+          await addToEmailList(userData.id, userData?.email, 'newsletter', checked)
+        }
+
         router.push(previousPath || '/')
       } else {
         router.push('/auth/signin')

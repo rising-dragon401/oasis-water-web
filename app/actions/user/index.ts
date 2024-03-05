@@ -33,7 +33,12 @@ export async function getCurrentUserData() {
     return null
   }
 
-  return data
+  const dataWithFields = {
+    ...data,
+    email: data.email || user.email,
+  }
+
+  return dataWithFields
 }
 
 export async function getCurrentUserEmail() {
@@ -153,4 +158,44 @@ export async function removeFavorite(uid: string, type: string, itemId: number) 
   }
 
   return data
+}
+
+export async function addToEmailList(
+  uid: string,
+  email: string,
+  list: 'newsletter',
+  subscribed: boolean
+) {
+  const supabase = await createSupabaseServerClient()
+
+  try {
+    // First, check if the record already exists
+    const { data: existing, error: existingError } = await supabase
+      .from('email_lists')
+      .select()
+      .eq('email', email)
+      .eq('list', list)
+      .single()
+
+    // If the record exists, return or update as needed
+    if (existing) {
+      console.log('Record already exists. Skipping insert.')
+      return false // Or handle as needed, e.g., update the record instead
+    }
+
+    // If the record does not exist, proceed to insert
+    const { data, error } = await supabase
+      .from('email_lists')
+      .insert({ uid, email, list, subscribed })
+      .single()
+
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    return true
+  } catch (err) {
+    console.error('Error updating user email settings: ', err)
+    return false
+  }
 }

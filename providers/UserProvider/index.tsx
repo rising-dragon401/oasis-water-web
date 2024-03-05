@@ -33,6 +33,12 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     mutate('uid')
   }
 
+  const clearUserData = () => {
+    mutate('userData', null)
+    mutate('userFavorites', null)
+    mutate('uid', null)
+  }
+
   return (
     <UserContext.Provider
       value={{ uid, userData: currentUserData, userFavorites, refreshUserData }}

@@ -106,6 +106,7 @@ export type Database = {
           measure: string | null
           name: string
           risks: string | null
+          severity_score: number | null
           sources: Json[] | null
           updated_at: string | null
         }
@@ -120,6 +121,7 @@ export type Database = {
           measure?: string | null
           name: string
           risks?: string | null
+          severity_score?: number | null
           sources?: Json[] | null
           updated_at?: string | null
         }
@@ -134,6 +136,7 @@ export type Database = {
           measure?: string | null
           name?: string
           risks?: string | null
+          severity_score?: number | null
           sources?: Json[] | null
           updated_at?: string | null
         }
@@ -309,6 +312,7 @@ export type Database = {
           created_at: string
           id: number
           image: string | null
+          is_featured: boolean | null
           name: string
           score: number | null
           total_contaminants: number | null
@@ -323,6 +327,7 @@ export type Database = {
           created_at?: string
           id?: number
           image?: string | null
+          is_featured?: boolean | null
           name: string
           score?: number | null
           total_contaminants?: number | null
@@ -337,6 +342,7 @@ export type Database = {
           created_at?: string
           id?: number
           image?: string | null
+          is_featured?: boolean | null
           name?: string
           score?: number | null
           total_contaminants?: number | null
@@ -352,6 +358,7 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           email: string | null
+          email_subscriptions: Json | null
           full_name: string | null
           id: string
           permissions: Database["public"]["Enums"]["permission"] | null
@@ -360,6 +367,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string | null
+          email_subscriptions?: Json | null
           full_name?: string | null
           id: string
           permissions?: Database["public"]["Enums"]["permission"] | null
@@ -368,6 +376,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string | null
+          email_subscriptions?: Json | null
           full_name?: string | null
           id?: string
           permissions?: Database["public"]["Enums"]["permission"] | null
@@ -559,9 +568,10 @@ export type Database = {
       bottled_water_source:
         | "municipal_supply"
         | "mountain_spring"
-        | "aquifier"
+        | "aquifer"
         | "iceberg"
         | "well"
+      email_subscriptions: "general"
       item_type: "bottled_water" | "tap_water" | "filter"
       packaging: "plastic" | "glass" | "cardboard" | "aluminum"
       permission: "admin" | "manager" | "user"

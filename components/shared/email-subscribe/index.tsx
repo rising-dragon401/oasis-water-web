@@ -1,23 +1,59 @@
-import React from 'react'
-import Typography from '@/components/typography'
-import JoinWaitListButton from '@/components/shared/join-waitlist-button'
+'use client'
 
-export default async function EmailSubscribe() {
+import React, { useState } from 'react'
+import Typography from '@/components/typography'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { addToEmailList } from '@/app/actions/user'
+import { useUserProvider } from '@/providers/UserProvider'
+import { toast } from 'sonner'
+
+export default function EmailSubscribe() {
+  const { userData } = useUserProvider()
+
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubscribe = async (email: string) => {
+    setLoading(true)
+    const res = await addToEmailList(userData.id || null, email, 'newsletter', true)
+
+    if (res) {
+      toast('Subscribed to newsletter!')
+      setEmail('')
+    } else {
+      toast('Unable to subscribe')
+    }
+    setLoading(false)
+  }
+
   return (
-    <div className="flex flex-col max-w-lg justify-start space-x-2">
+    <div className="flex flex-col max-w-lg justify-start">
       <div>
         <Typography size="lg" className="text-secondary" fontWeight="normal">
-          Get clean water delivered to your door
+          Subscribe to newsletter
         </Typography>
         <div className="max-w-xs">
           <Typography size="xs" className="text-secondary" fontWeight="normal">
-            We are creating the world&apos;s cleanest water delivery service and health store. Be
-            the first to get access.
+            Get the latest science backed health research delivered to your inbox.
           </Typography>
         </div>
       </div>
-      <div className="w-full !ml-0 mt-2">
-        <JoinWaitListButton />
+      <div className="flex w-full max-w-sm items-center mt-2 gap-2">
+        <Input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Button
+          type="button"
+          onClick={() => handleSubscribe(email)}
+          loading={loading}
+          disabled={loading}
+        >
+          Subscribe
+        </Button>
       </div>
     </div>
   )
