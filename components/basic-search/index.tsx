@@ -75,7 +75,7 @@ export default function BasicSearch({
         indexName: 'tap_water_locations',
         query: query,
         params: {
-          hitsPerPage: 3,
+          hitsPerPage: 5,
         },
       },
       {
