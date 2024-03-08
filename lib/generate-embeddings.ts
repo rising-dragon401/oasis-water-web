@@ -15,7 +15,6 @@ import { OpenAI } from 'openai'
 import { basename, dirname, join } from 'path'
 import { u } from 'unist-builder'
 import { filter } from 'unist-util-filter'
-import { inspect } from 'util'
 import yargs from 'yargs'
 
 dotenv.config()
