@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
 import cn from 'classnames'
 import { buttonVariants } from '@/components/ui/button'
-import { Droplet, Filter, Milk } from 'lucide-react'
+import { Droplet, Filter, Milk, Heart } from 'lucide-react'
 
 export default function MobileNavbar() {
   const { uid, userData } = useUserProvider()
@@ -54,7 +54,7 @@ export default function MobileNavbar() {
             </DropdownMenuItem>
 
             <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/tap-water" className="flex flex-row gap-2 items-center">
+              <Link href="/search/tap-water" className="flex flex-row gap-2 items-center">
                 <Droplet className="text-secondary w-4 h-4" />
                 Tap water
               </Link>
@@ -62,13 +62,26 @@ export default function MobileNavbar() {
 
             <DropdownMenuItem className="flex flex-row gap-2 items-center my-2">
               <Filter className="text-secondary w-4 h-4" />
-              <Link href="/filters">Filters</Link>
+              <Link href="/search/filters">Filters</Link>
             </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem className="my-2 justify-start">
+              <Link href="/mission">About</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="my-2 justify-start">
+              <Link href="/blog/how_we_score_water">How Scoring Works</Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
 
             {uid && userData ? (
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="my-2 justify-start">
+                  <Heart className="mr-2 h-4 w-4" />
+
                   <Link href="/account/my-oasis">Favorites</Link>
                 </DropdownMenuItem>
                 <SignOutButton />

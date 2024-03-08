@@ -64,9 +64,9 @@ const aboutComponents: { title: string; href: string; description: string }[] = 
     description: 'Discover and read more about the water industry and Oasis.',
   },
   {
-    title: 'FAQs',
-    href: '/faqs',
-    description: 'Frequently asked questions about Oasis.',
+    title: 'How Scoring Works',
+    href: '/blog/how_we_score_water',
+    description: 'The science and formula behind our water scoring system.',
   },
 ]
 
