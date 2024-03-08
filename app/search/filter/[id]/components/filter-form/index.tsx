@@ -54,7 +54,7 @@ export default function FilterForm({ id }: Props) {
   }
 
   return (
-    <div className="flex-col flex w-full px-4">
+    <div className="flex-col flex w-full md:px-0 px-2">
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
           <Image

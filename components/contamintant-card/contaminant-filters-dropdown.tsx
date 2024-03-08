@@ -18,9 +18,10 @@ import React, { useEffect, useState } from 'react'
 
 type Props = {
   contaminantId: number
+  align?: 'start' | 'end'
 }
 
-export function ContaminantFiltersDropdown({ contaminantId }: Props) {
+export function ContaminantFiltersDropdown({ contaminantId, align }: Props) {
   const [filters, setFilters] = useState<WaterFilter[]>([])
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export function ContaminantFiltersDropdown({ contaminantId }: Props) {
       <DropdownMenuTrigger asChild>
         <Button variant="outline">Shop filters</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-72" align="start">
+      <DropdownMenuContent className="w-72" align={align}>
         <DropdownMenuLabel>Filters</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

@@ -48,7 +48,7 @@ export default function ContaminantTable({ filteredContaminants }: Props) {
       <tbody className="bg-white divide-y divide-gray-200">
         {sortedContaminants?.map((contaminant, index) => (
           <tr key={index}>
-            <td className="px-2 py-4 whitespace-nowrap md:text-sm text-xs font-medium text-gray-900 max-w-36 text-wrap">
+            <td className="px-2 py-4  md:text-sm text-xs font-medium text-gray-900 max-w-36 text-wrap">
               {contaminant.name}
             </td>
             <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-500 max-w-14">
@@ -60,7 +60,7 @@ export default function ContaminantTable({ filteredContaminants }: Props) {
             </td>
 
             <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-500 max-w-24">
-              <ContaminantFiltersDropdown contaminantId={contaminant?.id} />
+              <ContaminantFiltersDropdown contaminantId={contaminant?.id} align="end" />
             </td>
           </tr>
         ))}

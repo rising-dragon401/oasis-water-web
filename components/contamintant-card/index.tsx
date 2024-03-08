@@ -53,7 +53,7 @@ export default function ContaminantCard({ data }: Props) {
           )}
         </CardContent>
         <CardFooter className="flex flex-row  w-full justify-between p-0">
-          <ContaminantFiltersDropdown contaminantId={data?.id || ''} />
+          <ContaminantFiltersDropdown contaminantId={data?.id || ''} align="start" />
 
           {data?.sources ? <ArticlesDropdown sources={data?.sources || []} /> : <div></div>}
         </CardFooter>
