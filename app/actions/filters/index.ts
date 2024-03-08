@@ -129,11 +129,7 @@ export const getAllContaminants = async () => {
     return []
   }
 
-  const contaminantsWithMetadata = contaminants.map((contaminant) => {
-    return contaminant
-  })
-
-  return contaminantsWithMetadata
+  return contaminants
 }
 
 export const getFiltersByContaminant = async (contaminantId: number) => {

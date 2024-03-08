@@ -1,6 +1,7 @@
 import { Database } from './supabase'
 
 export type Ingredient = Database['public']['Tables']['ingredients']['Row']
+export type Contaminant = Database['public']['Tables']['ingredients']['Row']
 export type Item = Database['public']['Tables']['items']['Row'] & {
   company_name?: string | null
 }

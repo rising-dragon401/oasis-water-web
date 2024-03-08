@@ -35,7 +35,7 @@ export function ContaminantFiltersDropdown({ contaminantId }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Filtered by</Button>
+        <Button variant="outline">Shop filters</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72" align="start">
         <DropdownMenuLabel>Filters</DropdownMenuLabel>
@@ -43,9 +43,12 @@ export function ContaminantFiltersDropdown({ contaminantId }: Props) {
         <DropdownMenuGroup>
           {filters.length > 0 ? (
             filters.map((filter: WaterFilter) => (
-              <DropdownMenuItem key={filter.id}>
-                <Link href={`/search/filter/${filter.id}`}>{filter.name}</Link>
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem key={filter.id}>
+                  <Link href={`/search/filter/${filter.id}`}>{filter.name}</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
             ))
           ) : (
             <DropdownMenuItem>

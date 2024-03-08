@@ -14,6 +14,7 @@ import useSWR from 'swr'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import ContaminantTable from '../contaminant-table'
 
 type Props = {
   id: string
@@ -53,7 +54,7 @@ export default function FilterForm({ id }: Props) {
   }
 
   return (
-    <div className="flex-col flex w-full">
+    <div className="flex-col flex w-full px-4">
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
           <Image
@@ -88,31 +89,9 @@ export default function FilterForm({ id }: Props) {
           )}
         </div>
 
-        {notFilteredContaminants && (
-          <div className="flex flex-col gap-6 mt-10">
-            <Typography size="2xl" fontWeight="normal">
-              Contaminants Not Filtered ☠️
-            </Typography>
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-              {notFilteredContaminants.map((contaminant: any) => (
-                <ContaminantCard key={contaminant.id} data={contaminant} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {filter.contaminants_filtered && (
-          <div className="flex flex-col gap-6 mt-10">
-            <Typography size="2xl" fontWeight="normal">
-              Contaminants Filtered ✅
-            </Typography>
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-              {filter.contaminants_filtered.map((contaminant: any) => (
-                <ContaminantCard key={contaminant.id} data={contaminant} />
-              ))}
-            </div>
-          </div>
-        )}
+        <div className="flex flex-col gap-6 mt-10">
+          <ContaminantTable filteredContaminants={filter.contaminants_filtered} />
+        </div>
 
         {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
       </div>
