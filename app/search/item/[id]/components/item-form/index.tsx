@@ -16,7 +16,6 @@ import Sources from '@/components/shared/sources'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { getIngredients } from '@/app/actions/ingredients'
-import FavoriteButton from '@/components/shared/favorite-button'
 
 type Props = {
   id: string
@@ -136,11 +135,10 @@ export default function ItemForm({ id }: Props) {
 
             <div className="flex md:flex-row md:justify-start md:gap-10 md:items-start flex-col-reverse justify-end items-end">
               {item.is_indexed !== false && (
-                <div className="flex flex-col gap-2 md:w-2/5 items-center">
+                <div className="flex flex-col gap-2 items-center">
                   <Score score={item.score} isFull={true} />
                 </div>
               )}
-              <FavoriteButton item={item} size={32} />
             </div>
           </div>
         </div>

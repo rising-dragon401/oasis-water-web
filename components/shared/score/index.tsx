@@ -1,7 +1,12 @@
 'use client'
 
 import React from 'react'
+import Link from 'next/link'
 import useDevice from '@/lib/hooks/use-device'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import Typography from '@/components/typography'
+import cn from 'classnames'
+import { buttonVariants } from '@/components/ui/button'
 
 type Props = {
   score: number
@@ -32,50 +37,64 @@ export default function Score({ score, isFull }: Props) {
   }
 
   return (
-    <svg className="progress-ring" width={svgSize} height={svgSize}>
-      <circle
-        className="stroke-secondary-muted"
-        stroke="#c5caf5"
-        strokeWidth={strokeWidth}
-        fill="transparent"
-        r={radius}
-        cx={svgSize / 2} // Center circle
-        cy={svgSize / 2} // Center circle
-      />
-      <circle
-        className="stroke-primary"
-        stroke="#6b46c1"
-        strokeWidth={strokeWidth}
-        strokeDasharray={`${circumference} ${circumference}`}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-        fill="transparent"
-        r={radius}
-        cx={svgSize / 2} // Center circle
-        cy={svgSize / 2} // Center circle
-      />
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        stroke="text-secondary"
-        strokeWidth="2px"
-        dy="-0.1em"
-        fontSize={fontSize}
-      >
-        {score} / 100
-      </text>
-      <text
-        x="50%"
-        y="50%"
-        textAnchor="middle"
-        stroke="text-secondary"
-        strokeWidth="2px"
-        fontSize={fontSize}
-        dy="1.0em"
-      >
-        {grade()}
-      </text>
-    </svg>
+    <Popover>
+      <PopoverTrigger className="flex justify-center flex-col items-center">
+        <svg className="progress-ring" width={svgSize} height={svgSize}>
+          <circle
+            className="stroke-secondary-muted"
+            stroke="#c5caf5"
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            r={radius}
+            cx={svgSize / 2} // Center circle
+            cy={svgSize / 2} // Center circle
+          />
+          <circle
+            className="stroke-primary"
+            stroke="#6b46c1"
+            strokeWidth={strokeWidth}
+            strokeDasharray={`${circumference} ${circumference}`}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            fill="transparent"
+            r={radius}
+            cx={svgSize / 2} // Center circle
+            cy={svgSize / 2} // Center circle
+          />
+          <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            stroke="text-secondary"
+            strokeWidth="2px"
+            dy="-0.1em"
+            fontSize={fontSize}
+          >
+            {score} / 100
+          </text>
+          <text
+            x="50%"
+            y="50%"
+            textAnchor="middle"
+            stroke="text-secondary"
+            strokeWidth="2px"
+            fontSize={fontSize}
+            dy="1.0em"
+          >
+            {grade()}
+          </text>
+        </svg>
+        <Typography size="sm" fontWeight="normal" className="text-center">
+          About this score
+        </Typography>
+      </PopoverTrigger>
+
+      <PopoverContent>
+        This score was generated using the Oasis algorithim.
+        <Link href="/blog/how_we_score_water" className="text-secondary-foreground ml-2 italic">
+          Learn more
+        </Link>
+      </PopoverContent>
+    </Popover>
   )
 }

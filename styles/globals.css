@@ -12,6 +12,10 @@
   display: none;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 @layer base {
   :root {
     --background: 39 57% 96%;

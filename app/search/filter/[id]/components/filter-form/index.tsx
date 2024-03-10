@@ -74,7 +74,9 @@ export default function FilterForm({ id }: Props) {
                 {filter.brand?.name} - {filter.company?.name}
               </Typography>
             </Link>
-            <Score score={filter.score} isFull={true} />
+            <div className="flex items-center justify-start gap-4">
+              <Score score={filter.score} isFull={true} />
+            </div>
           </div>
 
           {filter.affiliate_url && filter.score > 80 && (
