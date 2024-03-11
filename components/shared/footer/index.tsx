@@ -2,6 +2,8 @@ import Logo from '@/components/shared/logo'
 import Link from 'next/link'
 import { FaXTwitter, FaTiktok, FaYoutube, FaInstagram, FaDiscord } from 'react-icons/fa6'
 import EmailSubscribe from '../email-subscribe'
+import JoinWaitListButton from '../join-waitlist-button'
+import Typography from '@/components/typography'
 
 export default function Footer() {
   return (
@@ -151,8 +153,21 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <EmailSubscribe />
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2 w-72">
+            <>
+              <Typography
+                size="base"
+                fontWeight="bold"
+                className="text-sm text-secondary font-bold mb-2"
+              >
+                Join the waitlist
+              </Typography>
+              <Typography size="base" fontWeight="normal" className="text-sm text-secondary mb-2">
+                We are working on a something special that will change the way you drink water and
+                access health products.
+              </Typography>
+              <JoinWaitListButton />
+            </>
           </div>
         </div>
       </div>

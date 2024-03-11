@@ -2,6 +2,7 @@
 
 import Typography from '@/components/typography'
 import SignUpButton from '@/components/shared/sign-up-button'
+import JoinWaitListButton from '../shared/join-waitlist-button'
 
 export default async function CTASection() {
   return (
@@ -26,7 +27,7 @@ export default async function CTASection() {
             Together, we’re not just making choices; we’re making a difference.
           </Typography>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <SignUpButton />
+            <JoinWaitListButton />
           </div>
           <svg
             viewBox="0 0 1024 1024"

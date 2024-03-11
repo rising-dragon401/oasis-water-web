@@ -18,6 +18,7 @@ import { useUserProvider } from '@/providers/UserProvider'
 import cn from 'classnames'
 import { buttonVariants } from '@/components/ui/button'
 import { Droplet, Filter, Milk, Heart } from 'lucide-react'
+import JoinWaitListButton from '@/components/shared/join-waitlist-button'
 
 export default function MobileNavbar() {
   const { uid, userData } = useUserProvider()
@@ -76,7 +77,9 @@ export default function MobileNavbar() {
 
             <DropdownMenuSeparator />
 
-            {uid && userData ? (
+            <JoinWaitListButton />
+
+            {/* {uid && userData ? (
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="my-2 justify-start">
@@ -90,7 +93,7 @@ export default function MobileNavbar() {
               <DropdownMenuItem className={cn(buttonVariants(), 'w-full')}>
                 <Link href="/auth/signin">Login</Link>
               </DropdownMenuItem>
-            )}
+            )} */}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
