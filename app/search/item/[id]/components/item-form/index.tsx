@@ -152,7 +152,7 @@ export default function ItemForm({ id }: Props) {
           </div>
         ) : (
           <>
-            {sortedContaminants && (
+            {sortedContaminants && sortedContaminants.length > 0 && (
               <div className="flex flex-col gap-6 mt-6">
                 <Typography size="2xl" fontWeight="normal">
                   Contaminants ☠️
@@ -169,12 +169,16 @@ export default function ItemForm({ id }: Props) {
               <MetaDataCard title="Source" description={item.metadata?.source} />
               <MetaDataCard
                 title="Treatment Process"
-                description={item.metadata?.treatment_process}
+                description={
+                  Array.isArray(item.filtration_methods)
+                    ? item.filtration_methods.join(', ')
+                    : item.metadata?.treatment_process
+                }
               />
             </div>
 
             <>
-              {item?.ingredients.length > 0 ? (
+              {item?.ingredients.length > 0 && (
                 <div className="flex flex-col gap-6 my-10">
                   <Typography size="2xl" fontWeight="normal">
                     Other Ingredients
@@ -182,10 +186,6 @@ export default function ItemForm({ id }: Props) {
 
                   <IngredientsCard ingredients={item.ingredients} />
                 </div>
-              ) : (
-                <Typography size="base" fontWeight="normal" className="text-secondary">
-                  None
-                </Typography>
               )}
             </>
 
