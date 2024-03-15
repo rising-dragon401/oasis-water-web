@@ -38,7 +38,7 @@ export default function Footer() {
               <ul className="my-8 flex-row gap-4 flex list-none">
                 <li>
                   <a
-                    href="https://twitter.com/oasiswatersco"
+                    href="https://twitter.com/live__oasis"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -47,7 +47,7 @@ export default function Footer() {
                 </li>
                 <li className="ml-2">
                   <a
-                    href="https://www.instagram.com/oasiswatersco"
+                    href="https://www.instagram.com/live__oasis"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -56,7 +56,7 @@ export default function Footer() {
                 </li>
                 <li className="ml-2">
                   <a
-                    href="https://www.tiktok.com/@oasiswatersco"
+                    href="https://www.tiktok.com/@live__oasis"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -65,18 +65,18 @@ export default function Footer() {
                 </li>
                 <li className="ml-2">
                   <a
-                    href="https://www.youtube.com/@oasiswatersco"
+                    href="https://www.youtube.com/@live__oasis"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <FaYoutube className="text-primary" />
                   </a>
                 </li>
-                <li className="ml-2">
+                {/* <li className="ml-2">
                   <a href="https://discord.gg/AhapvnXxAy" target="_blank" rel="noopener noreferrer">
                     <FaDiscord className="text-primary" />
                   </a>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>
