@@ -64,15 +64,29 @@ export default function ItemForm({ id }: Props) {
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="relative">
-            <Image
-              src={item.image}
-              alt={item.name}
-              width={700}
-              height={700}
-              blurDataURL={item.image}
-              placeholder="blur"
-              className="rounded-lg"
-            />
+            {item.affiliate_url ? (
+              <Link href={item.affiliate_url} target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={700}
+                  height={700}
+                  blurDataURL={item.image}
+                  placeholder="blur"
+                  className="rounded-lg"
+                />
+              </Link>
+            ) : (
+              <Image
+                src={item.image}
+                alt={item.name}
+                width={700}
+                height={700}
+                blurDataURL={item.image}
+                placeholder="blur"
+                className="rounded-lg"
+              />
+            )}
             {item.score > 70 && (
               <Typography
                 size="base"
