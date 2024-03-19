@@ -57,15 +57,32 @@ export default function FilterForm({ id }: Props) {
     <div className="flex-col flex w-full md:px-0 px-2">
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
-          <Image
-            src={filter.image}
-            alt={filter.name}
-            width={400}
-            height={400}
-            className="md:w-2/5 w-full h-full rounded-lg object-cover"
-          />
-
-          <div className="flex flex-col gap-6 ">
+          <div className="relative md:w-1/2">
+            {filter.affiliate_url ? (
+              <Link href={filter.affiliate_url} target="_blank" rel="noopener noreferrer">
+                <Image
+                  src={filter.image}
+                  alt={filter.name}
+                  width={700}
+                  height={700}
+                  blurDataURL={filter.image}
+                  placeholder="blur"
+                  className="rounded-lg"
+                />
+              </Link>
+            ) : (
+              <Image
+                src={filter.image}
+                alt={filter.name}
+                width={700}
+                height={700}
+                blurDataURL={filter.image}
+                placeholder="blur"
+                className="rounded-lg"
+              />
+            )}
+          </div>
+          <div className="flex flex-col gap-6 md:w-1/2">
             <Typography size="3xl" fontWeight="normal">
               {filter.name}
             </Typography>
@@ -77,18 +94,17 @@ export default function FilterForm({ id }: Props) {
             <div className="flex items-center justify-start gap-4">
               <Score score={filter.score} isFull={true} />
             </div>
+            {filter.affiliate_url && (
+              <Button
+                variant="default"
+                onClick={() => {
+                  window.open(filter.affiliate_url, '_blank')
+                }}
+              >
+                Buy Now <ArrowUpRight size={16} className="ml-2" />
+              </Button>
+            )}
           </div>
-
-          {filter.affiliate_url && filter.score > 80 && (
-            <Button
-              variant="default"
-              onClick={() => {
-                window.open(filter.affiliate_url, '_blank')
-              }}
-            >
-              Buy Now <ArrowUpRight size={16} className="ml-2" />
-            </Button>
-          )}
         </div>
 
         <div className="flex flex-col gap-6 mt-10">
@@ -97,6 +113,7 @@ export default function FilterForm({ id }: Props) {
 
         {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
       </div>
+
       <RecommendedFiltersRow />
     </div>
   )

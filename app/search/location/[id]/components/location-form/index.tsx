@@ -6,7 +6,7 @@ import React, { useEffect, useState, Suspense } from 'react'
 import Image from 'next/image'
 import Score from '@/components/shared/score'
 import ItemSkeleton from '../item-skeleton'
-import RecommendedRow from '@/components/sections/recommended-row'
+import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/shared/sources'
 import {
@@ -116,7 +116,8 @@ export default function LocationForm({ id }: Props) {
           </div>
         )}
       </div>
-      <RecommendedRow />
+
+      <RecommendedFilterRow contaminants={location?.utilities[0]?.contaminants} />
     </div>
   )
 }

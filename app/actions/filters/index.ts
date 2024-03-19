@@ -146,3 +146,30 @@ export const getFiltersByContaminant = async (contaminantId: number) => {
 
   return filters
 }
+
+export const getRecommendedFilter = async (contaminants: any[]) => {
+  const filters = await getFilters()
+
+  let highestScoringFilter: { [key: string]: any } | null = null
+  let highestScore = 0
+
+  await filters.map((filter) => {
+    const filteredContaminantsCount = contaminants.reduce((acc, contaminant) => {
+      if (!filter.contaminants_filtered) {
+        return null
+      }
+
+      if (filter.contaminants_filtered.includes(contaminant.id)) {
+        return acc + 1
+      }
+      return acc
+    }, 0)
+
+    if (!highestScoringFilter || filteredContaminantsCount > highestScore) {
+      highestScoringFilter = filter
+      highestScore = filteredContaminantsCount
+    }
+  })
+
+  return highestScoringFilter
+}
