@@ -2,7 +2,6 @@ import SubpageLayout from '@/components/home-layout'
 import ItemForm from './components/item-form'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { getItem } from '@/app/actions/items'
-import { OG_IMAGE } from '@/lib/constants/images'
 import { Item } from '@/types/custom'
 
 type Props = {
@@ -21,13 +20,9 @@ export async function generateMetadata(
   const item = (await getItem(id)) as Item | null
 
   const name = item && item.name + ' Health Rating'
-  const image = item && item.image
 
   return {
     title: name || 'Oasis',
-    openGraph: {
-      images: [image || OG_IMAGE],
-    },
   }
 }
 

@@ -31,7 +31,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".contentlayer/generated",
-    "app/not-found.js"
+    "app/not-found.js",
+    "app/api/og/item/route.ts"
   ],
   "exclude": ["node_modules"]
 }

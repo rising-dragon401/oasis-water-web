@@ -21,13 +21,9 @@ export async function generateMetadata(
   const item = (await getFilter(id)) as Item | null
 
   const name = item && item.name + ' Filter Rating'
-  const image = item && item.image
 
   return {
     title: name || 'Oasis',
-    openGraph: {
-      images: [image || OG_IMAGE],
-    },
   }
 }
 

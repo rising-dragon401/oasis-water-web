@@ -21,13 +21,9 @@ export async function generateMetadata(
   const item = (await getLocation(id)) as Item | null
 
   const name = item && item.name + ' Tap Water Quality'
-  const image = item && item.image
 
   return {
     title: name || 'Oasis',
-    openGraph: {
-      images: [image || OG_IMAGE],
-    },
   }
 }
 
