@@ -1,28 +1,40 @@
 'use client'
 
 import * as React from 'react'
-import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
-import { useCompletion } from 'ai/react'
-import { X, RotateCcw, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
-import { SEARCH_PREVIEW_QUESTIONS } from './constants'
+import { X, RotateCcw, Lock, SendHorizontal } from 'lucide-react'
 import { useAtom } from 'jotai'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
 import ChatList from './chat-list'
 import useDevice from '@/lib/hooks/use-device'
-import { useToast } from '@/components/ui/use-toast'
+import { Button } from '@/components/ui/button'
+import { Sparkles } from 'lucide-react'
+import { useUserProvider } from '@/providers/UserProvider'
+import { updateUserData } from '@/app/actions/user'
+import Typography from '../typography'
+import useSubscription from '@/lib/hooks/use-subscription'
+import { toast } from 'sonner'
+import { postData } from '@/utils/helpers'
+import { getStripe } from '@/utils/stripe-client'
 
-export function SearchDialog() {
+export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
   const inputRef = React.useRef<HTMLInputElement>(null)
-  const { toast } = useToast()
+  const { uid, userData } = useUserProvider()
+  const { subscription, products } = useSubscription()
+  const router = useRouter()
+
+  const proProduct = products?.find(
+    (product: any) => product.name === process.env.PRO_STRIPE_PRICE_NAME
+  )
+  const proPrice = proProduct?.prices[0]
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
@@ -35,10 +47,10 @@ export function SearchDialog() {
   const { isMobile } = useDevice()
 
   React.useEffect(() => {
-    if (open && !assistantId) {
-      // createNewAssistant()
+    if (userData?.assistant_id) {
+      setAssistantId(userData.assistant_id)
     }
-  }, [open])
+  }, [userData])
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -66,12 +78,17 @@ export function SearchDialog() {
       const data = await response.json()
 
       if (response.ok) {
+        // add assistant to user
+        updateUserData('assistant_id', data.id)
+
         setAssistantId(data.id)
+        return data.id
       } else {
         throw new Error(data.message)
       }
     } catch (error) {
       console.error('Error:', error)
+      return null
     }
   }
 
@@ -84,6 +101,13 @@ export function SearchDialog() {
   }, [open])
 
   const handleSearchButtonClick = () => {
+    // check if user is signed in
+    if (!uid) {
+      // return to auth
+      router.push('/auth/signin')
+      return
+    }
+
     setOpen(true)
   }
 
@@ -92,12 +116,54 @@ export function SearchDialog() {
     setQuery('')
   }
 
+  const redirectToPayment = async () => {
+    if (!proPrice) {
+      console.error('No pro price found')
+      return
+    }
+
+    try {
+      const { sessionId } = await postData({
+        url: '/api/create-checkout-session',
+        data: { price: proPrice },
+      })
+
+      console.log('sessionId: ', sessionId)
+
+      const stripe = await getStripe()
+      stripe?.redirectToCheckout({ sessionId })
+    } catch (e) {
+      console.error('Error: ', e)
+      toast('Error creating portal link')
+    }
+  }
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+
+    // check for subscription
+    if (!subscription) {
+      toast('Subscription required to use AI search')
+
+      redirectToPayment()
+      return
+    }
 
     try {
       setIsLoading(true)
       setQuery('')
+
+      let assistant = assistantId
+
+      // first check for user assistantId
+      if (!userData.assistantId) {
+        assistant = await createNewAssistant()
+      }
+
+      if (!assistant) {
+        console.log('no assistant id found')
+        return
+      }
 
       const newMessage = {
         role: 'user',
@@ -123,7 +189,7 @@ export function SearchDialog() {
         method: 'POST',
         body: JSON.stringify({
           query,
-          assistant_id: assistantId,
+          assistant_id: assistant,
           thread_id: threadId,
         }),
         signal,
@@ -134,9 +200,7 @@ export function SearchDialog() {
       if (response?.status === 400) {
         const object = await response.json()
         const err = object.error
-        toast({
-          title: err,
-        })
+        toast(err)
         handleResetFailedSend()
         return
       }
@@ -149,13 +213,13 @@ export function SearchDialog() {
 
       fullNewMessage += chunkContent
 
-      console.log('fullNewMessage: ', fullNewMessage)
-
       // finish reading the response
       while (!chunk?.done) {
         chunk = await reader?.read()
         const chunkContent = textDecoder.decode(chunk?.value)
         fullNewMessage += chunkContent
+
+        console.log('fullNewMessage: ', fullNewMessage)
 
         setMessages((prevMessages) => {
           const newMessages = [...prevMessages]
@@ -163,8 +227,6 @@ export function SearchDialog() {
           return newMessages
         })
       }
-
-      // const data = await response.json()
 
       setIsLoading(false)
     } catch (e) {
@@ -190,16 +252,19 @@ export function SearchDialog() {
 
   return (
     <>
-      <button
+      <Button
         onClick={handleSearchButtonClick}
-        className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors  rounded-md
-        border border-secondary-foreground 
-        min-w-[300px] shadow-md "
+        variant="outline"
+        className="gap-2 rounded-full h-8"
       >
-        <Search width={15} />
-        <span className="border border-l h-5"></span>
-        <span className="inline-block ml-4">Search water</span>
-        <kbd
+        {size === 'large' && (
+          <Typography size="base" fontWeight="normal">
+            AI search
+          </Typography>
+        )}
+
+        <Sparkles className="w-4 h-4 text-secondary" />
+        {/* <kbd
           className="absolute right-3 top-2.5
           pointer-events-none inline-flex h-5 select-none items-center gap-1
           rounded border border-slate-100 bg-slate-100 px-1.5
@@ -208,64 +273,87 @@ export function SearchDialog() {
           opacity-100 "
         >
           <span className="text-xs">⌘</span>K
-        </kbd>{' '}
-      </button>
+        </kbd>{' '} */}
+      </Button>
 
       <Dialog open={open} modal={true}>
-        <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl m-6 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
-          <DialogHeader className="sticky flex flex-row items-center w-full justify-between">
-            <DialogTitle className="text-left w-30">What bottled water do you drink?</DialogTitle>
+        <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl max-w-none mt-1 mx-2 mb-2 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
+          {messages.length > 1 || isLoading ? (
+            <>
+              <DialogHeader className="sticky flex flex-row items-center w-full justify-between">
+                <DialogTitle className="text-left w-30">Oasis assistant</DialogTitle>
 
-            <div className="flex flex-row gap-2">
-              <Button variant="outline" className="h-8" onClick={handleReset}>
-                <RotateCcw className="h-4 w-4 mr-1" />
+                <div className="flex flex-row gap-2">
+                  <Button variant="outline" className="h-8" onClick={handleReset}>
+                    <RotateCcw className="h-4 w-4 mr-1" />
 
-                {!isMobile && <span className="hidden md:inline">Reset</span>}
+                    {!isMobile && <span className="hidden md:inline">Reset</span>}
+                  </Button>
+
+                  <Button variant="outline" className="h-8" onClick={() => setOpen(false)}>
+                    <X className="h-4 w-4 dark:text-gray-100" />
+                  </Button>
+                </div>
+              </DialogHeader>
+
+              <form onSubmit={handleSubmit} className="flex flex-col relative items-center">
+                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll max-h-[62vh]">
+                  <ChatList messages={messages} isLoading={isLoading} />
+                </div>
+
+                <DialogFooter className="flex flex-col gap-2 w-full h-16 items-center relative">
+                  {isLoading && (
+                    <Button
+                      variant="outline"
+                      className="self-center mb-2 rounded-full h-6 w-24 shadow-sm absolute"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </Button>
+                  )}
+
+                  <div className="flex items-center relative w-full max-w-2xl pt-2">
+                    <Input
+                      ref={inputRef}
+                      placeholder="Search water questions"
+                      name="search"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      className="md:col-span-3 bg-muted w-full rounded-full h-12"
+                    />
+
+                    <Button
+                      type="submit"
+                      variant="ghost"
+                      className="absolute right-3 h-14 w-full rounded-full"
+                      style={{ top: '50%', transform: 'translateY(-50%)' }}
+                    >
+                      <SendHorizontal className="w-6 h-6 text-primary" />
+                      {!subscription && <Lock className="w-4 h-4 text-background ml-2" />}
+                    </Button>
+                  </div>
+                </DialogFooter>
+              </form>
+            </>
+          ) : (
+            <form className="relative" onSubmit={handleSubmit}>
+              <Input
+                ref={inputRef}
+                placeholder="Search water questions"
+                name="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="md:col-span-3 bg-muted w-full rounded-full h-14"
+              />
+
+              <Button
+                type="submit"
+                className="w-32 absolute right-6 top-1/2 transform -translate-y-1/2 rounded-full"
+              >
+                Ask Oasis {!subscription && <Lock className="w-4 h-4 text-background ml-2" />}
               </Button>
-
-              <Button variant="outline" className="h-8" onClick={() => setOpen(false)}>
-                <X className="h-4 w-4 dark:text-gray-100" />
-              </Button>
-            </div>
-          </DialogHeader>
-
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4 py-4 text-slate-700 overflow-y-scroll max-h-[62vh]">
-              <ChatList messages={messages} isLoading={isLoading} />
-            </div>
-
-            <DialogFooter className="flex md:flex-row flex-col gap-2 w-full pt-2">
-              <div className="w-full">
-                <Input
-                  ref={inputRef}
-                  // placeholder={
-                  //   SEARCH_PREVIEW_QUESTIONS[
-                  //     Math.floor(Math.random() * SEARCH_PREVIEW_QUESTIONS.length)
-                  //   ]
-                  // }
-                  placeholder="Smartwater"
-                  name="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="md:col-span-3 bg-muted"
-                />
-                <CornerDownLeft
-                  className={`absolute top-3 right-5 h-4 w-4 text-gray-300 transition-opacity ${
-                    query ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
-              </div>
-
-              {isLoading && (
-                <Button variant="outline" onClick={handleCancel}>
-                  Cancel
-                </Button>
-              )}
-              <Button type="submit" className="md:w-40 w-full">
-                Ask Oasis
-              </Button>
-            </DialogFooter>
-          </form>
+            </form>
+          )}
         </DialogContent>
       </Dialog>
     </>

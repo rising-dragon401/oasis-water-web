@@ -15,10 +15,9 @@ import React from 'react'
 import SignOutButton from './log-out-button'
 import { useEffect, useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
-import cn from 'classnames'
-import { buttonVariants } from '@/components/ui/button'
 import { Droplet, Filter, Milk, Heart } from 'lucide-react'
 import JoinWaitListButton from '@/components/shared/join-waitlist-button'
+import SignUpButton from '../shared/sign-up-button'
 
 export default function MobileNavbar() {
   const { uid, userData } = useUserProvider()
@@ -77,9 +76,7 @@ export default function MobileNavbar() {
 
             <DropdownMenuSeparator />
 
-            <JoinWaitListButton />
-
-            {/* {uid && userData ? (
+            {uid && userData ? (
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="my-2 justify-start">
@@ -90,10 +87,16 @@ export default function MobileNavbar() {
                 <SignOutButton />
               </DropdownMenuGroup>
             ) : (
-              <DropdownMenuItem className={cn(buttonVariants(), 'w-full')}>
-                <Link href="/auth/signin">Login</Link>
-              </DropdownMenuItem>
-            )} */}
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <Link href="/auth/signin" className="text-sm py-2">
+                    Login
+                  </Link>
+                </DropdownMenuItem>
+
+                <SignUpButton />
+              </DropdownMenuGroup>
+            )}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

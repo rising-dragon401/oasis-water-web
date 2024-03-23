@@ -7,9 +7,9 @@ import { useDebounce } from '@/lib/hooks/use-debounce'
 import ResultsRow from './results-row'
 import { Search, Loader2 } from 'lucide-react'
 import algoliasearch from 'algoliasearch'
-import { motion } from 'framer-motion'
 import Typography from '@/components/typography'
 import { FeedbackModal } from '@/components/shared/feedback-modal'
+import { AISearchDialog } from '../search-dialogue'
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_APP_ID!,
@@ -101,14 +101,13 @@ export default function BasicSearch({
       },
     ]
 
-    setQueryCompleted(true)
-
-    client.multipleQueries(queries).then(({ results }) => {
+    await client.multipleQueries(queries).then(({ results }) => {
       const hits = results.map((result: any) => result.hits)
       setResults(hits.flat())
-
-      setIsLoading(false)
     })
+
+    setIsLoading(false)
+    setQueryCompleted(true)
   }
 
   const getSearchPaddingY = () => {
@@ -151,11 +150,14 @@ export default function BasicSearch({
               onFocus={() => setInputFocused(true)}
               className={` text-base flex gap-2 items-center px-4 ${getSearchPaddingY()} z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md rounded-full`}
             />
-            {isLoading && (
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50">
+
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
+              {isLoading && (
                 <Loader2 size={20} className="animate-spin text-secondary-foreground" />
-              </div>
-            )}
+              )}
+
+              <AISearchDialog size={size} />
+            </div>
           </div>
           {query.length > 2 && inputFocused && queryCompleted && (
             <div
