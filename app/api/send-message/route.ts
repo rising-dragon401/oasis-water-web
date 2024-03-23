@@ -1,12 +1,10 @@
-import type { NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { codeBlock, oneLine } from 'common-tags'
 import GPT3Tokenizer from 'gpt3-tokenizer'
-import { OpenAIStream, StreamingTextResponse, LangChainStream } from 'ai'
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { ApplicationError, UserError } from '@/lib/errors'
-import { getModel } from '@/app/api/utils/model'
 import OpenAI from 'openai'
-import { LLMChain } from 'langchain/chains'
+import { determineLink } from '@/utils/helpers'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -29,31 +27,22 @@ export async function POST(req: Request) {
 
     const systemMessage = `
       You are a clean drinking water assistant, scientist, and expert.
-    
-      Users send you a question about water, a zip code, location or brand of bottled water.
 
-      If they send zip code or location respond with quality of tap water in that location, including the contaminants detected and their effects.
+      Users ask you about specific water items or general questions about research and health. Provide them with research backed, concise answers to lead them to a healthy lifestyle.
+          
+      Reply in markdown to format including data but sounding like a human conversation.
 
-      Else if they send a brand of bottled water and not a location: respond with Oasis score, water source, owner/manufacturer, ph level,
-      fluoride level, treatment process and chemicals used, and the harms/benefits of ingredients and include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND.
-      
-      For all Return the Oasis Page url and hyperlink it at the bottom of your reply.
-      
-      If missing any data, just ignore it.
+      Prioritze data from Oasis.  
 
-      If there's no location or zip code the user is asking a qustion about clean drinking water in general.
-      Respond with the best of your ability and any supportive data.
+      Include markdown for two buttons at the bottom if possible. Includes blank_ attribute. Only include if applicable.
+      1. Learn more button linking to PagePath in new tab
+      2. Buy button linking to AffilateLink in new tab
 
-      Prioritze the data from context sections to inform your answer. Do not suggest looking for information elsewhere.
-
-      Reply in markdown to format each section and data point to make it human readable, utilizing lists where applicable but not a
-      code snippet.)
-            
-      Provide concise short answers. Only refer to the data.
-      `
+      Button Syntax: [Click Me](http://example.com "oasis-button")
+    `
 
     const fullQuery = oneLine`
-     ${query} contaminents, score, ph, fluoride, treatment, chemicals, substances, testing, report, oasis, page, url, zip, code, location, brand, bottled, water, clean, drinking, quality, tap, source, owner, manufacturer, brief, breakdown, benefits, harms
+     ${query}    
     `
 
     if (!query) {
@@ -76,39 +65,55 @@ export async function POST(req: Request) {
       })
     }
 
+    console.log('query: ', query)
+
     // Create embedding from query
     const embeddingResponse = await openai.embeddings.create({
-      model: 'text-embedding-ada-002',
-      input: sanitizedQuery.replaceAll('\n', ' '),
-      // encoding_format: 'float',
+      model: 'text-embedding-3-small',
+      input: query,
     })
 
     const [{ embedding }] = embeddingResponse.data
 
-    const { error: matchError, data: pageSections } = await supabaseClient.rpc(
-      'match_page_sections',
-      {
-        embedding,
-        match_threshold: 0.8,
-        match_count: 10,
-        min_content_length: 50,
-      }
-    )
+    const { error: matchError, data: documents } = await supabaseClient.rpc('match_documents', {
+      query_embedding: embedding,
+      match_threshold: 0.4,
+      match_count: 5,
+    })
 
-    // console.log(`Match error: }`, matchError)
-    console.log(`Page sections: ${JSON.stringify(pageSections)}`)
+    console.log(`Match error:`, matchError)
+    console.log(`Documents: ${console.log(`Page sections: ${JSON.stringify(documents)}`)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
     }
+
+    const itemId = documents[0].original_id
+    const table = documents[0].original_table
+
+    console.log('itemId: ', itemId)
+    console.log('table: ', table)
+
+    const { data: item, error: itemError } = await supabaseClient
+      .from(table)
+      .select('*')
+      .eq('id', itemId)
+      .single()
+
+    if (itemError) {
+      throw new ApplicationError('Failed to fetch item', itemError)
+    }
+
+    const pagePath = await determineLink(item)
+    const affiliateLink = item.affiliate_url
 
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
     let tokenCount = 0
     let contextText = ''
     const maxTokenCount = 20000
 
-    for (let i = 0; i < pageSections.length; i++) {
-      const pageSection = pageSections[i]
+    for (let i = 0; i < documents.length; i++) {
+      const pageSection = documents[i]
       const content = pageSection.content
       const encoded = tokenizer.encode(content)
       tokenCount += encoded.text.length
@@ -129,8 +134,11 @@ export async function POST(req: Request) {
     // console.log(`Context text: `, contextText)
 
     const prompt = codeBlock`
-      Context sections:
+      Oasis data:
       ${contextText}
+
+      PagePath:  ${pagePath}
+      AffilateLink:  ${affiliateLink}
 
        Question: """
       ${sanitizedQuery}

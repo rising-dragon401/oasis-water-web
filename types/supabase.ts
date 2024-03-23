@@ -38,7 +38,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       companies: {
@@ -59,6 +59,53 @@ export type Database = {
           id?: number
           image?: string | null
           name?: string
+        }
+        Relationships: []
+      }
+      customers: {
+        Row: {
+          id: string
+          stripe_customer_id: string | null
+        }
+        Insert: {
+          id: string
+          stripe_customer_id?: string | null
+        }
+        Update: {
+          id?: string
+          stripe_customer_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customers_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          content: string | null
+          embedding: string | null
+          id: number
+          original_id: number | null
+          original_table: string | null
+        }
+        Insert: {
+          content?: string | null
+          embedding?: string | null
+          id?: number
+          original_id?: number | null
+          original_table?: string | null
+        }
+        Update: {
+          content?: string | null
+          embedding?: string | null
+          id?: number
+          original_id?: number | null
+          original_table?: string | null
         }
         Relationships: []
       }
@@ -118,7 +165,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       ingredients: {
@@ -176,6 +223,9 @@ export type Database = {
           company: number
           created_at: string
           description: string | null
+          filtration_methods:
+            | Database["public"]["Enums"]["water_filtration_methods"][]
+            | null
           fts: unknown | null
           id: number
           image: string
@@ -199,6 +249,9 @@ export type Database = {
           company: number
           created_at?: string
           description?: string | null
+          filtration_methods?:
+            | Database["public"]["Enums"]["water_filtration_methods"][]
+            | null
           fts?: unknown | null
           id?: number
           image: string
@@ -222,6 +275,9 @@ export type Database = {
           company?: number
           created_at?: string
           description?: string | null
+          filtration_methods?:
+            | Database["public"]["Enums"]["water_filtration_methods"][]
+            | null
           fts?: unknown | null
           id?: number
           image?: string
@@ -253,7 +309,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       nods_page: {
@@ -291,7 +347,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "nods_page"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       nods_page_section: {
@@ -329,13 +385,157 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "nods_page"
             referencedColumns: ["id"]
-          }
+          },
+        ]
+      }
+      prices: {
+        Row: {
+          active: boolean | null
+          currency: string | null
+          description: string | null
+          id: string
+          interval: Database["public"]["Enums"]["pricing_plan_interval"] | null
+          interval_count: number | null
+          metadata: Json | null
+          product_id: string | null
+          trial_period_days: number | null
+          type: Database["public"]["Enums"]["pricing_type"] | null
+          unit_amount: number | null
+        }
+        Insert: {
+          active?: boolean | null
+          currency?: string | null
+          description?: string | null
+          id: string
+          interval?: Database["public"]["Enums"]["pricing_plan_interval"] | null
+          interval_count?: number | null
+          metadata?: Json | null
+          product_id?: string | null
+          trial_period_days?: number | null
+          type?: Database["public"]["Enums"]["pricing_type"] | null
+          unit_amount?: number | null
+        }
+        Update: {
+          active?: boolean | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          interval?: Database["public"]["Enums"]["pricing_plan_interval"] | null
+          interval_count?: number | null
+          metadata?: Json | null
+          product_id?: string | null
+          trial_period_days?: number | null
+          type?: Database["public"]["Enums"]["pricing_type"] | null
+          unit_amount?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prices_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          active: boolean | null
+          description: string | null
+          id: string
+          image: string | null
+          metadata: Json | null
+          name: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          description?: string | null
+          id: string
+          image?: string | null
+          metadata?: Json | null
+          name?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          description?: string | null
+          id?: string
+          image?: string | null
+          metadata?: Json | null
+          name?: string | null
+        }
+        Relationships: []
+      }
+      subscriptions: {
+        Row: {
+          cancel_at: string | null
+          cancel_at_period_end: boolean | null
+          canceled_at: string | null
+          created: string
+          current_period_end: string
+          current_period_start: string
+          ended_at: string | null
+          id: string
+          metadata: Json | null
+          price_id: string | null
+          quantity: number | null
+          status: Database["public"]["Enums"]["subscription_status"] | null
+          trial_end: string | null
+          trial_start: string | null
+          user_id: string
+        }
+        Insert: {
+          cancel_at?: string | null
+          cancel_at_period_end?: boolean | null
+          canceled_at?: string | null
+          created?: string
+          current_period_end?: string
+          current_period_start?: string
+          ended_at?: string | null
+          id: string
+          metadata?: Json | null
+          price_id?: string | null
+          quantity?: number | null
+          status?: Database["public"]["Enums"]["subscription_status"] | null
+          trial_end?: string | null
+          trial_start?: string | null
+          user_id: string
+        }
+        Update: {
+          cancel_at?: string | null
+          cancel_at_period_end?: boolean | null
+          canceled_at?: string | null
+          created?: string
+          current_period_end?: string
+          current_period_start?: string
+          ended_at?: string | null
+          id?: string
+          metadata?: Json | null
+          price_id?: string | null
+          quantity?: number | null
+          status?: Database["public"]["Enums"]["subscription_status"] | null
+          trial_end?: string | null
+          trial_start?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_price_id_fkey"
+            columns: ["price_id"]
+            isOneToOne: false
+            referencedRelation: "prices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
       }
       tap_water_locations: {
         Row: {
-          contaminants: Json[] | null
-          contaminants_exceeding_guidelines: number | null
           created_at: string
           id: number
           image: string | null
@@ -343,15 +543,10 @@ export type Database = {
           name: string
           score: number | null
           state: string | null
-          total_contaminants: number | null
           type: Database["public"]["Enums"]["item_type"]
           utilities: Json[] | null
-          utility: string | null
-          zip_codes: number[] | null
         }
         Insert: {
-          contaminants?: Json[] | null
-          contaminants_exceeding_guidelines?: number | null
           created_at?: string
           id?: number
           image?: string | null
@@ -359,15 +554,10 @@ export type Database = {
           name: string
           score?: number | null
           state?: string | null
-          total_contaminants?: number | null
           type: Database["public"]["Enums"]["item_type"]
           utilities?: Json[] | null
-          utility?: string | null
-          zip_codes?: number[] | null
         }
         Update: {
-          contaminants?: Json[] | null
-          contaminants_exceeding_guidelines?: number | null
           created_at?: string
           id?: number
           image?: string | null
@@ -375,37 +565,40 @@ export type Database = {
           name?: string
           score?: number | null
           state?: string | null
-          total_contaminants?: number | null
           type?: Database["public"]["Enums"]["item_type"]
           utilities?: Json[] | null
-          utility?: string | null
-          zip_codes?: number[] | null
         }
         Relationships: []
       }
       users: {
         Row: {
           avatar_url: string | null
+          billing_address: Json | null
           created_at: string
           email: string | null
           full_name: string | null
           id: string
+          payment_method: Json | null
           permissions: Database["public"]["Enums"]["permission"] | null
         }
         Insert: {
           avatar_url?: string | null
+          billing_address?: Json | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id: string
+          payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
         }
         Update: {
           avatar_url?: string | null
+          billing_address?: Json | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id?: string
+          payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
         }
         Relationships: [
@@ -415,7 +608,7 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
       water_filters: {
@@ -478,7 +671,7 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "companies"
             referencedColumns: ["id"]
-          }
+          },
         ]
       }
     }
@@ -496,6 +689,9 @@ export type Database = {
           company: number
           created_at: string
           description: string | null
+          filtration_methods:
+            | Database["public"]["Enums"]["water_filtration_methods"][]
+            | null
           fts: unknown | null
           id: number
           image: string
@@ -536,6 +732,20 @@ export type Database = {
           "": unknown
         }
         Returns: unknown
+      }
+      match_documents: {
+        Args: {
+          query_embedding: string
+          match_threshold: number
+          match_count: number
+        }
+        Returns: {
+          id: number
+          content: string
+          original_table: string
+          original_id: number
+          similarity: number
+        }[]
       }
       match_page_sections: {
         Args: {
@@ -602,6 +812,29 @@ export type Database = {
       item_type: "bottled_water" | "tap_water" | "filter"
       packaging: "plastic" | "glass" | "cardboard" | "aluminum"
       permission: "admin" | "manager" | "user"
+      pricing_plan_interval: "day" | "week" | "month" | "year"
+      pricing_type: "one_time" | "recurring"
+      subscription_status:
+        | "trialing"
+        | "active"
+        | "canceled"
+        | "incomplete"
+        | "incomplete_expired"
+        | "past_due"
+        | "unpaid"
+        | "paused"
+      water_filtration_methods:
+        | "Distillation"
+        | "Reverse osmosis"
+        | "Ion exchange"
+        | "Ultraviolet (UV) Treatment"
+        | "Carbon Filtration"
+        | "Micron Filtration"
+        | "Ozone Treatment"
+        | "Electrodeionization"
+        | "Mineral Addition"
+        | "Aeration"
+        | "Ionization"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -609,14 +842,16 @@ export type Database = {
   }
 }
 
+type PublicSchema = Database[Extract<keyof Database, "public">]
+
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
         Database[PublicTableNameOrOptions["schema"]]["Views"])
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
@@ -624,67 +859,67 @@ export type Tables<
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
-      Database["public"]["Views"])
-  ? (Database["public"]["Tables"] &
-      Database["public"]["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof Database["public"]["Tables"]
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
-    : never = never
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
-  ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof Database["public"]["Enums"]
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
     ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
-    : never = never
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
-  ? Database["public"]["Enums"][PublicEnumNameOrOptions]
-  : never
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never

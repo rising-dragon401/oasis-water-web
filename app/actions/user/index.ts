@@ -53,6 +53,33 @@ export async function getCurrentUserEmail() {
   return user.email
 }
 
+export async function updateUserData(column: string, value: any) {
+  const supabase = await createSupabaseServerClient()
+  const session = await getSession()
+
+  const user = session?.user
+
+  try {
+    if (!user) {
+      throw new Error('No user found')
+    }
+
+    const { data, error } = await supabase
+      .from('users')
+      .update({ [column]: value })
+      .eq('id', user.id)
+      .single()
+
+    if (error) {
+      throw new Error(error.message)
+    }
+
+    return data
+  } catch (e) {
+    return false
+  }
+}
+
 export async function updateUserFullName(uid: string, fullName: string) {
   const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase
@@ -198,4 +225,55 @@ export async function addToEmailList(
     console.error('Error updating user email settings: ', err)
     return false
   }
+}
+
+export async function getSubscription() {
+  const supabase = await createSupabaseServerClient()
+
+  const session = await getSession()
+
+  const user = session?.user
+
+  if (!user) {
+    return null
+  }
+
+  try {
+    const { data: subscription } = await supabase
+      .from('subscriptions')
+      .select('*, prices(*, products(*))')
+      .in('status', ['trialing', 'active'])
+      .eq('user_id', user.id)
+      .single()
+
+    return subscription
+  } catch (error) {
+    console.error('Error:', error)
+    return null
+  }
+}
+
+export const getActiveProductsWithPrices = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const session = await getSession()
+
+  const user = session?.user
+
+  if (!user) {
+    return null
+  }
+
+  const { data, error } = await supabase
+    .from('products')
+    .select('*, prices(*)')
+    .eq('active', true)
+    .eq('prices.active', true)
+    .order('metadata->index')
+    .order('unit_amount', { foreignTable: 'prices' })
+
+  if (error) {
+    console.log(error.message)
+  }
+  return data ?? []
 }

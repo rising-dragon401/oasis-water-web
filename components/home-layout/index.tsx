@@ -25,9 +25,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
           <div className="flex justify-end items-center gap-2">
             <BasicSearch showSearch={false} size="small" />
 
-            <JoinWaitListButton />
-
-            {/* {user ? (
+            {user ? (
               <AccountMenu />
             ) : (
               <div className="flex flex-row gap-4 items-center ml-4 w-full">
@@ -36,7 +34,7 @@ export default async function SubpageLayout({ children }: PropsWithChildren) {
                 </Link>
                 <SignUpButton />
               </div>
-            )} */}
+            )}
           </div>
         </div>
 

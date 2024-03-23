@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Typography from '@/components/typography'
 import Link from 'next/link'
 import { Droplet, Filter, Milk, Building, Atom } from 'lucide-react'
+import { determineLink } from '@/utils/helpers'
 
 type ExtendedType = {
   type?: string
@@ -17,26 +18,6 @@ type Props = {
 }
 
 export default function ResultsRow({ itemResult }: Props) {
-  const determineLink = () => {
-    if (itemResult.type === 'tap_water') {
-      return `/search/location/${itemResult.id}?name=${itemResult?.name
-        ?.toLowerCase()
-        .replace(/ /g, '-')}`
-    } else if (itemResult.type === 'filter') {
-      return `/search/filter/${itemResult.id}?name=${itemResult?.name
-        ?.toLowerCase()
-        .replace(/ /g, '-')}`
-    } else if (itemResult.type === 'ingredient') {
-      return `/search/ingredient/${itemResult.id}?name=${itemResult?.name
-        ?.toLowerCase()
-        .replace(/ /g, '-')}`
-    } else {
-      return `/search/item/${itemResult.id}?name=${itemResult?.name
-        ?.toLowerCase()
-        .replace(/ /g, '-')}`
-    }
-  }
-
   const getIcon = () => {
     if (itemResult.type === 'tap_water') {
       return <Droplet className="text-secondary-foreground" />
@@ -54,7 +35,7 @@ export default function ResultsRow({ itemResult }: Props) {
   return (
     <Link
       className="flex flex-row gap-2 px-2 py-1 justify-between items-center hover:opacity-70 "
-      href={determineLink()}
+      href={determineLink(itemResult)}
     >
       <div className="flex flex-row gap-2 items-center">
         <Image

@@ -8,7 +8,7 @@ export interface ChatList {
 
 export default function ChatList({ messages, isLoading }: ChatList) {
   return (
-    <div className="relative mx-auto min-w-[60vw] max-w-2xl px-4">
+    <div className="relative mx-auto min-w-[60vw] max-w-2xl md:px-4">
       {messages.map((message, index) => (
         <div key={index} className="my-4 md:my-8">
           <ChatMessage
