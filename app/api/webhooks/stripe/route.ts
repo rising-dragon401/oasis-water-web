@@ -6,6 +6,14 @@ import {
   manageSubscriptionStatusChange,
 } from '@/utils/supabase-admin'
 
+export const runtime = 'nodejs'
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+}
+
 const relevantEvents = new Set([
   'product.created',
   'product.updated',
