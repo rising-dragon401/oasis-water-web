@@ -8,12 +8,6 @@ import {
 
 export const runtime = 'nodejs'
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
-
 const relevantEvents = new Set([
   'product.created',
   'product.updated',
