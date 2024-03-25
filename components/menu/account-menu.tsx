@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import SignOutButton from './log-out-button'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -12,47 +12,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Heart, Wallet } from 'lucide-react'
+import { Heart } from 'lucide-react'
 import Link from 'next/link'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import useSubscription from '@/lib/hooks/use-subscription'
-import { postData } from '@/utils/helpers'
-import { useRouter } from 'next/navigation'
+import ManageSubscriptionButton from '../shared/manage-subscription-btn'
 
 export function AccountMenu() {
-  const router = useRouter()
   const { userData, refreshUserData } = useUserProvider()
-  const { subscription } = useSubscription()
-
-  const [isLoadingCustomerPortal, setIsLoadingCustomerPortal] = useState(false)
 
   useEffect(() => {
     refreshUserData()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const handleManageSubscription = async () => {
-    setIsLoadingCustomerPortal(true)
-    try {
-      const { url } = await postData({
-        url: '/api/create-portal-link',
-      })
-
-      console.log('url', url)
-
-      if (url) {
-        router.push(url)
-      } else {
-        throw new Error('Error')
-      }
-    } catch (error) {
-      console.log('error', error)
-    }
-
-    setIsLoadingCustomerPortal(false)
-  }
 
   return (
     <DropdownMenu>
@@ -88,19 +61,7 @@ export function AccountMenu() {
           </Link>
         </DropdownMenuItem>
 
-        {subscription && subscription.status === 'active' && (
-          <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Button
-              variant="ghost"
-              onClick={handleManageSubscription}
-              className="flex flex-row items-center"
-              loading={isLoadingCustomerPortal}
-            >
-              <Wallet className="mr-2 h-4 w-4" />
-              Subscription
-            </Button>
-          </DropdownMenuItem>
-        )}
+        <ManageSubscriptionButton />
 
         <SignOutButton />
       </DropdownMenuContent>

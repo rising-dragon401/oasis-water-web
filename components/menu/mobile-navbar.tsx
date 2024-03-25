@@ -16,8 +16,8 @@ import SignOutButton from './log-out-button'
 import { useEffect, useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Droplet, Filter, Milk, Heart } from 'lucide-react'
-import JoinWaitListButton from '@/components/shared/join-waitlist-button'
 import SignUpButton from '../shared/sign-up-button'
+import ManageSubscriptionButton from '@/components/shared/manage-subscription-btn'
 
 export default function MobileNavbar() {
   const { uid, userData } = useUserProvider()
@@ -75,6 +75,8 @@ export default function MobileNavbar() {
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
+
+            <ManageSubscriptionButton />
 
             {uid && userData ? (
               <DropdownMenuGroup>

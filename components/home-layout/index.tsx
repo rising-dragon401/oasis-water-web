@@ -9,7 +9,6 @@ import BasicSearch from '@/components/basic-search'
 import SignUpButton from '../shared/sign-up-button'
 import { getSession } from '@/utils/supabase/server'
 import { AccountMenu } from '../menu/account-menu'
-import JoinWaitListButton from '../shared/join-waitlist-button'
 
 export default async function SubpageLayout({ children }: PropsWithChildren) {
   const session = await getSession()

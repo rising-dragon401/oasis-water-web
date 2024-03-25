@@ -149,7 +149,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
     // check for subscription
     if (!subscription || subscription.status !== 'active') {
-      toast('Subscription required to use AI search')
+      toast('Subscription required to use AI search. Redirecting you to payment page.')
       redirectToPayment()
       setIsLoading(false)
       return
