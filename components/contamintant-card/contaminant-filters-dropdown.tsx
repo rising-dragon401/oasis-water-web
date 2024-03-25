@@ -44,12 +44,12 @@ export function ContaminantFiltersDropdown({ contaminantId, align }: Props) {
         <DropdownMenuGroup>
           {filters.length > 0 ? (
             filters.map((filter: WaterFilter) => (
-              <>
+              <div key={filter.id}>
                 <DropdownMenuItem key={filter.id}>
                   <Link href={`/search/filter/${filter.id}`}>{filter.name}</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-              </>
+              </div>
             ))
           ) : (
             <DropdownMenuItem>
