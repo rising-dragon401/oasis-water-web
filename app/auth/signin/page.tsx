@@ -19,7 +19,7 @@ export default function SignIn() {
 
       const userData = await getCurrentUserData()
 
-      if (userData) {
+      if (userData && previousPath) {
         redirect(previousPath)
       } else {
         console.log('No user found')

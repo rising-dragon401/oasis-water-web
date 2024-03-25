@@ -27,12 +27,12 @@ import { getStripe } from '@/utils/stripe-client'
 
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
   const inputRef = React.useRef<HTMLInputElement>(null)
-  const { uid, userData } = useUserProvider()
+  const { user, userData } = useUserProvider()
   const { subscription, products } = useSubscription()
   const router = useRouter()
 
   const proProduct = products?.find(
-    (product: any) => product.name === process.env.PRO_STRIPE_PRICE_NAME
+    (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
   )
   const proPrice = proProduct?.prices[0]
 
@@ -43,6 +43,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const [messages, setMessages] = useAtom(messagesAtom)
   const [threadId, setThreadId] = useAtom(threadIdAtom)
   const [abortController, setAbortController] = React.useState<AbortController>()
+  const [loadingCheckoutSession, setLoadingCheckoutSession] = React.useState(false)
 
   const { isMobile } = useDevice()
 
@@ -102,7 +103,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   const handleSearchButtonClick = () => {
     // check if user is signed in
-    if (!uid) {
+    if (!user) {
       // return to auth
       router.push('/auth/signin')
       return
@@ -118,9 +119,12 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   const redirectToPayment = async () => {
     if (!proPrice) {
+      toast('Unable to create checkout link')
       console.error('No pro price found')
       return
     }
+
+    setLoadingCheckoutSession(true)
 
     try {
       const { sessionId } = await postData({
@@ -134,23 +138,31 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
       stripe?.redirectToCheckout({ sessionId })
     } catch (e) {
       console.error('Error: ', e)
-      toast('Error creating portal link')
+      toast('Unable to create checkout link')
     }
+
+    setLoadingCheckoutSession(false)
   }
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
 
     // check for subscription
-    if (!subscription) {
+    if (!subscription || subscription.status !== 'active') {
       toast('Subscription required to use AI search')
-
       redirectToPayment()
+      setIsLoading(false)
       return
     }
 
     try {
       setIsLoading(true)
+
+      const newMessage = {
+        role: 'user',
+        content: query,
+      }
+
       setQuery('')
 
       let assistant = assistantId
@@ -163,11 +175,6 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
       if (!assistant) {
         console.log('no assistant id found')
         return
-      }
-
-      const newMessage = {
-        role: 'user',
-        content: query,
       }
 
       setMessages((messages) => [...messages, newMessage])
@@ -219,8 +226,6 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         const chunkContent = textDecoder.decode(chunk?.value)
         fullNewMessage += chunkContent
 
-        console.log('fullNewMessage: ', fullNewMessage)
-
         setMessages((prevMessages) => {
           const newMessages = [...prevMessages]
           newMessages[newMessages.length - 1].content = fullNewMessage
@@ -250,6 +255,39 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     setIsLoading(false)
   }
 
+  const SearchInput = () => {
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex items-center relative justify-between">
+          <Input
+            ref={inputRef}
+            placeholder="Search water questions"
+            name="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="bg-muted w-full rounded-full h-12"
+          />
+
+          <Button
+            type="submit"
+            variant="ghost"
+            className="absolute right-0 h-14 rounded-full"
+            style={{ top: '50%', transform: 'translateY(-50%)' }}
+          >
+            <SendHorizontal className="w-6 h-6 text-primary" />
+            {(!subscription || subscription.status !== 'active') && (
+              <Lock className="w-4 h-4 text-background ml-2" />
+            )}
+          </Button>
+        </div>
+        <Typography size="xs" fontWeight="normal">
+          *Please note this feature is in early beta and is experimental. It may hallucinate and
+          provide inaccurate answers.
+        </Typography>
+      </div>
+    )
+  }
+
   return (
     <>
       <Button
@@ -277,10 +315,10 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
       </Button>
 
       <Dialog open={open} modal={true}>
-        <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl max-w-none mt-1 mx-2 mb-2 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
+        <DialogContent className="md:max-h-[80vh] lg:!max-w-3xl md:!max-w-2xl max-w-none mt-1 mb-2 w-[90vw] max-h-[90vh] rounded-xl overflow-y-auto text-black">
           {messages.length > 1 || isLoading ? (
             <>
-              <DialogHeader className="sticky flex flex-row items-center w-full justify-between">
+              <DialogHeader className="sticky flex flex-row items-center w-full justify-between px-4">
                 <DialogTitle className="text-left w-30">Oasis assistant</DialogTitle>
 
                 <div className="flex flex-row gap-2">
@@ -297,7 +335,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
               </DialogHeader>
 
               <form onSubmit={handleSubmit} className="flex flex-col relative items-center">
-                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll max-h-[62vh]">
+                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll max-h-[44vh] min-h-[44vh]">
                   <ChatList messages={messages} isLoading={isLoading} />
                 </div>
 
@@ -312,46 +350,13 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
                     </Button>
                   )}
 
-                  <div className="flex items-center relative w-full max-w-2xl pt-2">
-                    <Input
-                      ref={inputRef}
-                      placeholder="Search water questions"
-                      name="search"
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      className="md:col-span-3 bg-muted w-full rounded-full h-12"
-                    />
-
-                    <Button
-                      type="submit"
-                      variant="ghost"
-                      className="absolute right-3 h-14 w-full rounded-full"
-                      style={{ top: '50%', transform: 'translateY(-50%)' }}
-                    >
-                      <SendHorizontal className="w-6 h-6 text-primary" />
-                      {!subscription && <Lock className="w-4 h-4 text-background ml-2" />}
-                    </Button>
-                  </div>
+                  {SearchInput()}
                 </DialogFooter>
               </form>
             </>
           ) : (
-            <form className="relative" onSubmit={handleSubmit}>
-              <Input
-                ref={inputRef}
-                placeholder="Search water questions"
-                name="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="md:col-span-3 bg-muted w-full rounded-full h-14"
-              />
-
-              <Button
-                type="submit"
-                className="w-32 absolute right-6 top-1/2 transform -translate-y-1/2 rounded-full"
-              >
-                Ask Oasis {!subscription && <Lock className="w-4 h-4 text-background ml-2" />}
-              </Button>
+            <form className="flex" onSubmit={handleSubmit}>
+              {SearchInput()}
             </form>
           )}
         </DialogContent>

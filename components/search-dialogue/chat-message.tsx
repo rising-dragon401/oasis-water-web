@@ -2,12 +2,10 @@ import remarkGfm from 'remark-gfm'
 import { cn } from '@/lib/utils'
 import { MemoizedReactMarkdown } from '@/components/markdown'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
-import Loader from '@/components/shared/loader'
 import { OasisButton } from '../custom-markdown'
 
-const ChatAvatar =
+const OasisAvatar =
   'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/logo/icon.png'
-
 const FallBackAvatar =
   'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/avatars/blue-gradient-1.png?t=2024-03-22T12%3A06%3A06.617Z'
 
@@ -40,6 +38,7 @@ export function ChatMessage({
       >
         {message.role === 'assistant' ? (
           <Avatar className="md:h-8 md:w-8 h-6 w-6">
+            <AvatarImage src={OasisAvatar} alt="chat avatar" />
             <AvatarFallback>O</AvatarFallback>
           </Avatar>
         ) : (

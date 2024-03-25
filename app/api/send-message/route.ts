@@ -25,21 +25,31 @@ export async function POST(req: Request) {
 
     const { query, assistant_id, thread_id } = await req.json()
 
+    const oasisPaths = {
+      'All bottled water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/bottled-water`,
+      'All filters': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/filters`,
+      'All tap water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/tap-water`,
+    }
+
     const systemMessage = `
       You are a clean drinking water assistant, scientist, and expert.
 
       Users ask you about specific water items or general questions about research and health. Provide them with research backed, concise answers to lead them to a healthy lifestyle.
           
-      Reply in markdown to format including data but sounding like a human conversation.
+      Reply in markdown to format including data but sounding like a human conversation. Keep your answers brief.
 
-      Prioritze data from Oasis.  
+      Prioritze data from Oasis. And display the relevant data in your answer in addition to the helpful links for the user to learn more.
 
-      Include markdown for two buttons at the bottom if possible. Includes blank_ attribute. Only include if applicable.
-      1. Learn more button linking to PagePath in new tab
-      2. Buy button linking to AffilateLink in new tab
+      Include markdown relative learn more and buy buttons. "Learn more" buttons should link to PagePath. "Buy" buttons should link to AffilateLink
+
+      These general paths might help too: ${JSON.stringify(oasisPaths, null, 2)}
+
+      Only link to Oasis pages. Buttons should contain descriptive labels based on the content  titleand only use them where necessary.
 
       Button Syntax: [Click Me](http://example.com "oasis-button")
     `
+
+    // console.log('systemMessage: ', systemMessage)
 
     const fullQuery = oneLine`
      ${query}    
@@ -65,7 +75,7 @@ export async function POST(req: Request) {
       })
     }
 
-    console.log('query: ', query)
+    // console.log('query: ', query)
 
     // Create embedding from query
     const embeddingResponse = await openai.embeddings.create({
@@ -81,64 +91,59 @@ export async function POST(req: Request) {
       match_count: 5,
     })
 
-    console.log(`Match error:`, matchError)
-    console.log(`Documents: ${console.log(`Page sections: ${JSON.stringify(documents)}`)}`)
+    // console.log(`Match error:`, matchError)
+    // console.log(`Documents: ${JSON.stringify(documents)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
     }
 
-    const itemId = documents[0].original_id
-    const table = documents[0].original_table
-
-    console.log('itemId: ', itemId)
-    console.log('table: ', table)
-
-    const { data: item, error: itemError } = await supabaseClient
-      .from(table)
-      .select('*')
-      .eq('id', itemId)
-      .single()
-
-    if (itemError) {
-      throw new ApplicationError('Failed to fetch item', itemError)
-    }
-
-    const pagePath = await determineLink(item)
-    const affiliateLink = item.affiliate_url
-
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
-    let tokenCount = 0
-    let contextText = ''
     const maxTokenCount = 20000
 
-    for (let i = 0; i < documents.length; i++) {
-      const pageSection = documents[i]
-      const content = pageSection.content
-      const encoded = tokenizer.encode(content)
-      tokenCount += encoded.text.length
+    const resultItems = await Promise.all(
+      documents.map(async (document: any) => {
+        console.log('Document: ', document)
 
-      if (tokenCount + encoded.text.length > maxTokenCount) {
-        // If adding the entire content would exceed the limit, add a portion of it
-        const remainingSpace = maxTokenCount - tokenCount
-        const partialContent = content.slice(0, remainingSpace)
-        contextText += `${partialContent.trim()}\n---\n`
-        break
-      } else {
-        // If adding the entire content would not exceed the limit, add it all
-        tokenCount += encoded.text.length
-        contextText += `${content.trim()}\n---\n`
-      }
-    }
+        const contentData = JSON.parse(document.content)
 
-    // console.log(`Context text: `, contextText)
+        const itemObject = {
+          id: document.original_id,
+          type: contentData.type,
+          name: contentData.name,
+        }
+
+        const pagePath = await determineLink(itemObject)
+
+        let content = document.content
+        const encoded = tokenizer.encode(content)
+        let contentField = ''
+
+        if (encoded.text.length > maxTokenCount) {
+          // If content exceeds the limit, truncate it
+          content = content.slice(0, maxTokenCount)
+          contentField = `${content.trim()}\n---\n`
+        } else {
+          // If content does not exceed the limit, use it as is
+          contentField = `${content.trim()}\n---\n`
+        }
+
+        return {
+          itemID: document?.original_id,
+          table: document?.original_table,
+          name: contentData?.name,
+          affiliateLink: contentData?.affiliateLink,
+          pagePath,
+          content: contentField,
+        }
+      })
+    )
 
     const prompt = codeBlock`
       Oasis data:
-      ${contextText}
-
-      PagePath:  ${pagePath}
-      AffilateLink:  ${affiliateLink}
+      ${resultItems.map((item) => {
+        return `ItemID: ${item.itemID}, Data: ${item.content}, Table: ${item.table}, Name: ${item.name}, PagePath: ${item.pagePath}, AffiliateLink: ${item.affiliateLink}`
+      })}
 
        Question: """
       ${sanitizedQuery}

@@ -2,10 +2,12 @@
 
 import useSWR, { mutate } from 'swr'
 import { getUserId, getCurrentUserData, getUserFavorites } from '@/app/actions/user'
-import React, { ReactNode, createContext, useContext, useEffect } from 'react'
+import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import { createClient } from '@/utils/supabase/client'
 
 interface UserContextType {
   uid: string | null | undefined
+  user: any
   userData: any
   userFavorites: any[] | null | undefined
   refreshUserData: () => void
@@ -22,12 +24,29 @@ export const useUserProvider = () => {
 }
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<any | null>(null)
   const { data: uid } = useSWR('uid', getUserId)
   const { data: currentUserData } = useSWR('userData', getCurrentUserData)
   const { data: userFavorites } = useSWR('userFavorites', getUserFavorites)
 
+  useEffect(() => {
+    const fetch = async () => {
+      const supabase = createClient()
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      setUser(user)
+    }
+
+    fetch()
+  }, [])
+
+  useEffect(() => {
+    refreshUserData()
+  }, [user])
+
   const refreshUserData = () => {
-    console.log('refreshing user data')
     mutate('userData')
     mutate('userFavorites')
     mutate('uid')
@@ -41,7 +60,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ uid, userData: currentUserData, userFavorites, refreshUserData }}
+      value={{ user, uid, userData: currentUserData, userFavorites, refreshUserData }}
     >
       {children}
     </UserContext.Provider>

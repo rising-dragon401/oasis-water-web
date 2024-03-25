@@ -7,8 +7,15 @@ import TapWaterSection from '@/components/sections/tap-water-section'
 import FilterSection from '@/components/sections/filter-section'
 import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import CTASection from '@/components/sections/cta-section'
+import { createClient } from '@/utils/supabase/client'
 
 export default async function Home() {
+  const supabase = createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
   return (
     <SubpageLayout>
       <div className="flex h-full flex-col pt-28 max-w-full">
