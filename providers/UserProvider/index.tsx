@@ -11,6 +11,7 @@ interface UserContextType {
   userData: any
   userFavorites: any[] | null | undefined
   refreshUserData: () => void
+  logout: () => void
 }
 
 const UserContext = createContext<UserContextType | null>(null)
@@ -24,6 +25,8 @@ export const useUserProvider = () => {
 }
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const supabase = createClient()
+
   const [user, setUser] = useState<any | null>(null)
   const { data: uid } = useSWR('uid', getUserId)
   const { data: currentUserData } = useSWR('userData', getCurrentUserData)
@@ -31,8 +34,6 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const supabase = createClient()
-
       const {
         data: { user },
       } = await supabase.auth.getUser()
@@ -45,6 +46,12 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     refreshUserData()
   }, [user])
+
+  const logout = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    clearUserData()
+  }
 
   const refreshUserData = () => {
     mutate('userData')
@@ -60,7 +67,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, uid, userData: currentUserData, userFavorites, refreshUserData }}
+      value={{ user, uid, userData: currentUserData, userFavorites, refreshUserData, logout }}
     >
       {children}
     </UserContext.Provider>
