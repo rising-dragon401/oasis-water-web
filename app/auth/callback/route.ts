@@ -18,5 +18,5 @@ export async function GET(request: NextRequest) {
 
   console.log('requestUrl.origin: ', requestUrl.origin)
 
-  return NextResponse.redirect(requestUrl.origin + '/auth/preloader')
+  return NextResponse.redirect(requestUrl.origin)
 }

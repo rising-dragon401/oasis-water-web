@@ -22,19 +22,14 @@ import { updateUserData } from '@/app/actions/user'
 import Typography from '../typography'
 import useSubscription from '@/lib/hooks/use-subscription'
 import { toast } from 'sonner'
-import { postData } from '@/utils/helpers'
-import { getStripe } from '@/utils/stripe-client'
+
+import { SubscribeModal } from '../shared/subscribe-modal'
 
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const { user, userData } = useUserProvider()
-  const { subscription, products } = useSubscription()
+  const { subscription } = useSubscription()
   const router = useRouter()
-
-  const proProduct = products?.find(
-    (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
-  )
-  const proPrice = proProduct?.prices[0]
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
@@ -43,7 +38,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const [messages, setMessages] = useAtom(messagesAtom)
   const [threadId, setThreadId] = useAtom(threadIdAtom)
   const [abortController, setAbortController] = React.useState<AbortController>()
-  const [loadingCheckoutSession, setLoadingCheckoutSession] = React.useState(false)
+  const [openSubscription, setOpenSubscription] = React.useState(false)
 
   const { isMobile } = useDevice()
 
@@ -117,43 +112,8 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     setQuery('')
   }
 
-  const redirectToPayment = async () => {
-    if (!proPrice) {
-      toast('Unable to create checkout link')
-      console.error('No pro price found')
-      return
-    }
-
-    setLoadingCheckoutSession(true)
-
-    try {
-      const { sessionId } = await postData({
-        url: '/api/create-checkout-session',
-        data: { price: proPrice },
-      })
-
-      console.log('sessionId: ', sessionId)
-
-      const stripe = await getStripe()
-      stripe?.redirectToCheckout({ sessionId })
-    } catch (e) {
-      console.error('Error: ', e)
-      toast('Unable to create checkout link')
-    }
-
-    setLoadingCheckoutSession(false)
-  }
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault()
-
-    // check for subscription
-    if (!subscription || subscription.status !== 'active') {
-      toast('Subscription required to use AI search. Redirecting you to payment page.')
-      redirectToPayment()
-      setIsLoading(false)
-      return
-    }
 
     try {
       setIsLoading(true)
@@ -255,6 +215,10 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     setIsLoading(false)
   }
 
+  const handleOpenSubscription = () => {
+    setOpenSubscription(true)
+  }
+
   const SearchInput = () => {
     return (
       <div className="flex flex-col w-full">
@@ -268,17 +232,27 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
             className="bg-muted w-full rounded-full h-12"
           />
 
-          <Button
-            type="submit"
-            variant="ghost"
-            className="absolute right-0 h-14 rounded-full"
-            style={{ top: '50%', transform: 'translateY(-50%)' }}
-          >
-            <SendHorizontal className="w-6 h-6 text-primary" />
-            {(!subscription || subscription.status !== 'active') && (
-              <Lock className="w-4 h-4 text-background ml-2" />
-            )}
-          </Button>
+          {!subscription || subscription.status !== 'active' ? (
+            <Button
+              type="submit"
+              variant="default"
+              className="absolute right-2 h-10 rounded-full"
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+              onClick={handleOpenSubscription}
+            >
+              Ask <Lock className="w-4 h-4 text-background ml-2" />
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              variant="ghost"
+              className="absolute right-0 h-14 rounded-full"
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+              onClick={handleSubmit}
+            >
+              <SendHorizontal className="w-6 h-6 text-primary" />
+            </Button>
+          )}
         </div>
         <Typography size="xs" fontWeight="normal">
           *Please note this feature is in early beta and is experimental. It may hallucinate and
@@ -290,6 +264,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   return (
     <>
+      <SubscribeModal open={openSubscription} setOpen={setOpenSubscription} />
       <Button
         onClick={handleSearchButtonClick}
         variant="outline"
@@ -314,7 +289,12 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         </kbd>{' '} */}
       </Button>
 
-      <Dialog open={open} modal={true}>
+      <Dialog
+        open={open}
+        onOpenChange={() => {
+          setOpen(!open)
+        }}
+      >
         <DialogContent className="md:max-h-[80vh] lg:!max-w-3xl md:!max-w-2xl max-w-none mt-1 mb-2 w-[90vw] max-h-[90vh] rounded-xl overflow-y-auto text-black">
           {messages.length > 1 || isLoading ? (
             <>
@@ -334,7 +314,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
                 </div>
               </DialogHeader>
 
-              <form onSubmit={handleSubmit} className="flex flex-col relative items-center">
+              <div className="flex flex-col relative items-center">
                 <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll max-h-[44vh] min-h-[44vh]">
                   <ChatList messages={messages} isLoading={isLoading} />
                 </div>
@@ -352,12 +332,10 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
                   {SearchInput()}
                 </DialogFooter>
-              </form>
+              </div>
             </>
           ) : (
-            <form className="flex" onSubmit={handleSubmit}>
-              {SearchInput()}
-            </form>
+            <div className="flex">{SearchInput()}</div>
           )}
         </DialogContent>
       </Dialog>
