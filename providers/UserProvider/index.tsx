@@ -27,20 +27,25 @@ export const useUserProvider = () => {
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const supabase = createClient()
 
-  const [user, setUser] = useState<any | null>(null)
+  const [user, setUser] = useState<any>(null)
+
   const { data: uid } = useSWR('uid', getUserId)
   const { data: currentUserData } = useSWR('userData', getCurrentUserData)
   const { data: userFavorites } = useSWR('userFavorites', getUserFavorites)
 
-  useEffect(() => {
-    const fetch = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      setUser(user)
-    }
+  const fetchUser = async () => {
+    console.log('fetching user')
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-    fetch()
+    setUser(user)
+  }
+
+  // fetch auth user on mount
+  useEffect(() => {
+    fetchUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -49,7 +54,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const logout = async () => {
     await supabase.auth.signOut()
-    setUser(null)
+    fetchUser()
     clearUserData()
   }
 
