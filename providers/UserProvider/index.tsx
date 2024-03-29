@@ -39,6 +39,8 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       data: { user },
     } = await supabase.auth.getUser()
 
+    console.log('user', user)
+
     setUser(user)
   }
 
