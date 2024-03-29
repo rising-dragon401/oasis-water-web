@@ -27,11 +27,10 @@ export const useUserProvider = () => {
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const supabase = createClient()
 
+  const [userId, setUserId] = useState<string | null | undefined>(null)
   const [user, setUser] = useState<any>(null)
-
-  const { data: uid } = useSWR('uid', getUserId)
-  const { data: currentUserData } = useSWR('userData', getCurrentUserData)
-  const { data: userFavorites } = useSWR('userFavorites', getUserFavorites)
+  const [userData, setUserData] = useState<any>(null)
+  const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
 
   const fetchUser = async () => {
     console.log('fetching user')
@@ -42,6 +41,11 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     console.log('user', user)
 
     setUser(user)
+    if (user) {
+      setUserId(user.id)
+    } else {
+      setUserId(null)
+    }
   }
 
   // fetch auth user on mount
@@ -52,7 +56,18 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     refreshUserData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
+
+  const updateUserData = async () => {
+    const data = await getCurrentUserData()
+    setUserData(data)
+  }
+
+  const updateUserFavorites = async () => {
+    const favs = await getUserFavorites()
+    setUserFavorites(favs)
+  }
 
   const logout = async () => {
     await supabase.auth.signOut()
@@ -61,20 +76,19 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   const refreshUserData = () => {
-    mutate('userData')
-    mutate('userFavorites')
-    mutate('uid')
+    updateUserData()
+    updateUserFavorites()
   }
 
   const clearUserData = () => {
-    mutate('userData', null)
-    mutate('userFavorites', null)
-    mutate('uid', null)
+    setUserData(null)
+    setUserId(null)
+    setUserFavorites(null)
   }
 
   return (
     <UserContext.Provider
-      value={{ user, uid, userData: currentUserData, userFavorites, refreshUserData, logout }}
+      value={{ user, uid: userId, userData, userFavorites, refreshUserData, logout }}
     >
       {children}
     </UserContext.Provider>
