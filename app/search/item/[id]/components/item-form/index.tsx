@@ -127,9 +127,9 @@ export default function ItemForm({ id }: Props) {
                   </Typography>
 
                   <div className="flex flex-col md:w-40 w-full mt-2 gap-2">
-                    {item.affiliate_url && item.score > 80 && (
+                    {item.affiliate_url && (
                       <Button
-                        variant="default"
+                        variant={item.recommended ? 'default' : 'outline'}
                         onClick={() => {
                           window.open(item.affiliate_url, '_blank')
                         }}
@@ -184,8 +184,8 @@ export default function ItemForm({ id }: Props) {
               <MetaDataCard
                 title="Treatment Process"
                 description={
-                  Array.isArray(item.filtration_methods)
-                    ? item.filtration_methods.join(', ')
+                  Array.isArray(item.filtration_methods) && item.filtration_methods.length > 0
+                    ? item.filtration_methods.join(', ') + '. ' + item.metadata?.treatment_process
                     : item.metadata?.treatment_process
                 }
               />

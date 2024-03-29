@@ -96,7 +96,7 @@ export default function FilterForm({ id }: Props) {
             </div>
             {filter.affiliate_url && (
               <Button
-                variant="default"
+                variant={filter.recommended ? 'default' : 'outline'}
                 onClick={() => {
                   window.open(filter.affiliate_url, '_blank')
                 }}
