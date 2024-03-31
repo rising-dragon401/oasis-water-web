@@ -6,7 +6,6 @@ import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
 import Image from 'next/image'
 import Score from '@/components/shared/score'
 import ItemSkeleton from '../item-skeleton'
-import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/shared/sources'
 import { getFilterDetails, getAllContaminants } from '@/app/actions/filters'
 import { getIngredients } from '@/app/actions/ingredients'
@@ -15,6 +14,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ContaminantTable from '../contaminant-table'
+import PaywallContent from '@/components/shared/paywall-content'
 
 type Props = {
   id: string
@@ -96,7 +96,7 @@ export default function FilterForm({ id }: Props) {
             </div>
             {filter.affiliate_url && (
               <Button
-                variant={filter.recommended ? 'default' : 'outline'}
+                variant={filter.score > 70 ? 'default' : 'outline'}
                 onClick={() => {
                   window.open(filter.affiliate_url, '_blank')
                 }}
@@ -107,11 +107,13 @@ export default function FilterForm({ id }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6 mt-10">
-          <ContaminantTable filteredContaminants={filter.contaminants_filtered} />
-        </div>
+        <PaywallContent className="mt-8">
+          <div className="flex flex-col gap-6 mt-10">
+            <ContaminantTable filteredContaminants={filter.contaminants_filtered} />
+          </div>
 
-        {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
+          {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
+        </PaywallContent>
       </div>
 
       <RecommendedFiltersRow />

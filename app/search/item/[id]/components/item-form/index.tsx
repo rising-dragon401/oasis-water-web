@@ -16,6 +16,7 @@ import Sources from '@/components/shared/sources'
 import Link from 'next/link'
 import useSWR from 'swr'
 import { getIngredients } from '@/app/actions/ingredients'
+import PaywallContent from '@/components/shared/paywall-content'
 
 type Props = {
   id: string
@@ -54,6 +55,8 @@ export default function ItemForm({ id }: Props) {
       return b.exceedingLimit - a.exceedingLimit
     }
   )
+
+  const hasNanoplastics = item.packaging === 'plastic' || item.packaging === 'alumnimum'
 
   if (isLoading || !item) {
     return <ItemSkeleton />
@@ -110,11 +113,16 @@ export default function ItemForm({ id }: Props) {
               </Link>
 
               {item.is_indexed !== false ? (
-                <>
-                  <Typography size="base" fontWeight="normal" className="text-secondary">
+                <div className="flex flex-col">
+                  <Typography size="base" fontWeight="normal" className="text-secondary my-0">
                     Fluoride: {item.metadata?.fluoride} ppm
                   </Typography>
-                  <Typography size="base" fontWeight="normal" className="text-secondary">
+                  {hasNanoplastics && (
+                    <Typography size="base" fontWeight="normal" className="text-secondary my-0">
+                      ⚠️ Contains Nanoplastics
+                    </Typography>
+                  )}
+                  <Typography size="base" fontWeight="normal" className="text-secondary my-0">
                     pH: {item.metadata?.ph_level}
                   </Typography>
                   {item.metadata?.tds && (
@@ -129,7 +137,7 @@ export default function ItemForm({ id }: Props) {
                   <div className="flex flex-col md:w-40 w-full mt-2 gap-2">
                     {item.affiliate_url && (
                       <Button
-                        variant={item.recommended ? 'default' : 'outline'}
+                        variant={item.score > 70 ? 'default' : 'outline'}
                         onClick={() => {
                           window.open(item.affiliate_url, '_blank')
                         }}
@@ -139,7 +147,7 @@ export default function ItemForm({ id }: Props) {
                       </Button>
                     )}
                   </div>
-                </>
+                </div>
               ) : (
                 <Typography size="base" fontWeight="normal" className="text-secondary">
                   ⚠️ NO WATER REPORTS LOCATED
@@ -165,7 +173,7 @@ export default function ItemForm({ id }: Props) {
             </Typography>
           </div>
         ) : (
-          <>
+          <PaywallContent className="mt-8">
             {sortedContaminants && sortedContaminants.length > 0 && (
               <div className="flex flex-col gap-6 mt-6">
                 <Typography size="2xl" fontWeight="normal">
@@ -204,7 +212,7 @@ export default function ItemForm({ id }: Props) {
             </>
 
             {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
-          </>
+          </PaywallContent>
         )}
       </div>
 
