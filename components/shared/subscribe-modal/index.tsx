@@ -10,25 +10,42 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { useRouter } from 'next/navigation'
-import { Textarea } from '@/components/ui/textarea'
 import { useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
 import { submitFeedback } from '@/app/actions/feedback'
 import { toast } from 'sonner'
-import Typography from '@/components/typography'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
 import useSubscription from '@/lib/hooks/use-subscription'
+import Image from 'next/image'
+import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
+import { FlaskConical, Dna, MessageCircle, Plus } from 'lucide-react'
+import Typography from '@/components/typography'
 
 type SubscribeModalProps = {
   open: boolean
   setOpen: (open: boolean) => void
 }
 
+const FEATURES = [
+  {
+    label: 'Access all data / research',
+    icon: <FlaskConical className="w-4 h-4" />,
+  },
+  {
+    label: 'AI search',
+    icon: <MessageCircle className="w-4 h-4" />,
+  },
+  {
+    label: 'Personalized recommendations',
+    icon: <Dna className="w-4 h-4" />,
+  },
+]
+
 export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
-  const { uid } = useUserProvider()
-  const { subscription, products } = useSubscription()
+  const { uid, user } = useUserProvider()
+  const { products } = useSubscription()
 
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
@@ -56,6 +73,12 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   }
 
   const redirectToPayment = async () => {
+    if (!user) {
+      toast('Please login first. Redirecting you to login page.')
+      router.push('/auth/signin')
+      return
+    }
+
     if (!proPrice) {
       toast('Unable to create checkout link')
       console.error('No pro price found')
@@ -89,23 +112,33 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     >
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Find your perfect water</DialogTitle>
-          <DialogDescription>
-            Search across our entire water database using AI to find your perfect water.
+          <DialogTitle className="text-2xl text-center">Upgrade your health</DialogTitle>
+          <Image
+            src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
+            alt="Upgrade your health"
+            width={425}
+            height={200}
+            className="rounded-t-lg "
+          />
+          <Typography size="lg" fontWeight="bold" className="text-center">
+            $5 /mo
+          </Typography>
+          <DialogDescription className="text-center">
+            Access the most up-to-date water health science and water reports. Search with AI to
+            personalize your recommendations based on your unique preferences.
           </DialogDescription>
         </DialogHeader>
 
-        <Typography size="sm" fontWeight="medium">
-          • Search with AI
-          <br />
-          • Access full data and reports
-          <br />
-          • Premium support
-        </Typography>
+        <div className="flex flex-col gap-2 p-4 rounde-md bg-muted">
+          {FEATURES.map((feature) => (
+            <SubscriptionItem key={feature.label} label={feature.label} icon={feature.icon} />
+          ))}
+        </div>
 
-        <DialogFooter className="flex flex-col-reverse gap-2">
+        <DialogFooter className="flex flex-col-reverse gap-2 w-full">
           <Button
             variant="outline"
+            className="w-full"
             onClick={() => {
               setOpen(false)
             }}
@@ -114,11 +147,12 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           </Button>
           <Button
             variant="default"
-            className="px-4"
+            className="px-4 w-full"
             onClick={redirectToPayment}
             loading={loadingCheckoutSession}
           >
-            Upgrade
+            Upgrade $5 /mo
+            <Plus size={16} className="ml-2" />
           </Button>
         </DialogFooter>
       </DialogContent>
