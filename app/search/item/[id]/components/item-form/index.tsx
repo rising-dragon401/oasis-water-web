@@ -200,7 +200,7 @@ export default function ItemForm({ id }: Props) {
             </div>
 
             <>
-              {item?.ingredients.length > 0 && (
+              {item?.ingredients?.length > 0 && (
                 <div className="flex flex-col gap-6 my-10">
                   <Typography size="2xl" fontWeight="normal">
                     Other Ingredients

@@ -1,3 +1,5 @@
+'use client'
+
 import Footer from '@/components/shared/footer'
 import HomeNavbar from '@/components/menu/home-navbar'
 import { PropsWithChildren } from 'react'
@@ -7,13 +9,11 @@ import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
 import BasicSearch from '@/components/basic-search'
 import SignUpButton from '../shared/sign-up-button'
-import { getSession } from '@/utils/supabase/server'
 import { AccountMenu } from '../menu/account-menu'
+import { useUserProvider } from '@/providers/UserProvider'
 
-export default async function SubpageLayout({ children }: PropsWithChildren) {
-  const session = await getSession()
-
-  const user = session?.user
+export default function SubpageLayout({ children }: PropsWithChildren) {
+  const { user } = useUserProvider()
 
   return (
     <div className="min-h-[100vh] flex justify-center">

@@ -1,7 +1,6 @@
 'use client'
 
-import useSWR, { mutate } from 'swr'
-import { getUserId, getCurrentUserData, getUserFavorites } from '@/app/actions/user'
+import { getCurrentUserData, getUserFavorites } from '@/app/actions/user'
 import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
@@ -33,14 +32,12 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
 
   const fetchUser = async () => {
-    console.log('fetching user')
     const {
       data: { user },
     } = await supabase.auth.getUser()
 
-    console.log('user', user)
-
     setUser(user)
+
     if (user) {
       setUserId(user.id)
     } else {
@@ -71,8 +68,8 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const logout = async () => {
     await supabase.auth.signOut()
-    fetchUser()
-    clearUserData()
+    await fetchUser()
+    await clearUserData()
   }
 
   const refreshUserData = () => {
@@ -84,6 +81,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setUserData(null)
     setUserId(null)
     setUserFavorites(null)
+    setUser(null)
   }
 
   return (
