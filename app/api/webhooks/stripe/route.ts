@@ -26,7 +26,10 @@ export async function POST(req: Request) {
   let event: Stripe.Event
 
   try {
-    if (!sig || !webhookSecret) return
+    if (!sig || !webhookSecret) {
+      // Return a response indicating missing signature or webhook secret
+      return new Response('Missing signature or webhook secret', { status: 400 })
+    }
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
   } catch (err) {
     console.log(`❌ Error message: ${(err as Error).message}`)

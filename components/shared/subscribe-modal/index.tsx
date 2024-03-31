@@ -19,7 +19,7 @@ import { getStripe } from '@/utils/stripe-client'
 import useSubscription from '@/lib/hooks/use-subscription'
 import Image from 'next/image'
 import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
-import { FlaskConical, Dna, MessageCircle, Plus } from 'lucide-react'
+import { FlaskConical, Dna, MessageCircle } from 'lucide-react'
 import Typography from '@/components/typography'
 
 type SubscribeModalProps = {
@@ -152,7 +152,6 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             loading={loadingCheckoutSession}
           >
             Upgrade $5 /mo
-            <Plus size={16} className="ml-2" />
           </Button>
         </DialogFooter>
       </DialogContent>
