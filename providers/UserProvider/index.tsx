@@ -1,6 +1,6 @@
 'use client'
 
-import { getCurrentUserData, getUserFavorites } from '@/app/actions/user'
+import { getCurrentUserData, getUserFavorites, getEmailSubscriptions } from '@/app/actions/user'
 import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 
@@ -9,6 +9,7 @@ interface UserContextType {
   user: any
   userData: any
   userFavorites: any[] | null | undefined
+  emailSubscriptions: any[] | null | undefined
   refreshUserData: () => void
   logout: () => void
 }
@@ -30,6 +31,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any>(null)
   const [userData, setUserData] = useState<any>(null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
+  const [emailSubscriptions, setEmailSubscriptions] = useState<any[] | null | undefined>(null)
 
   const fetchUser = async () => {
     const {
@@ -66,15 +68,21 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setUserFavorites(favs)
   }
 
-  const logout = async () => {
-    await supabase.auth.signOut()
-    await fetchUser()
-    await clearUserData()
+  const updateEmailSubscriptions = async (uid: string | null) => {
+    const res = await getEmailSubscriptions(uid)
+    setEmailSubscriptions(res)
   }
 
   const refreshUserData = () => {
     updateUserData()
     updateUserFavorites()
+    updateEmailSubscriptions(user?.id)
+  }
+
+  const logout = async () => {
+    await supabase.auth.signOut()
+    await fetchUser()
+    await clearUserData()
   }
 
   const clearUserData = () => {
@@ -86,7 +94,15 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ user, uid: userId, userData, userFavorites, refreshUserData, logout }}
+      value={{
+        user,
+        uid: userId,
+        userData,
+        userFavorites,
+        emailSubscriptions,
+        refreshUserData,
+        logout,
+      }}
     >
       {children}
     </UserContext.Provider>

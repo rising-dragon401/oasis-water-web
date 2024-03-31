@@ -21,64 +21,56 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* <div className="grid sm:grid-cols-12 gap-8 py-8 md:py-12"> */}
-          {/* 1st block */}
-          <div>
-            <div className="h-full flex flex-col md:flex-col lg:flex-col justify-between">
-              <div className="mb-4 sm:mb-0 hidden md:block">
-                <div className="mb-4">
-                  <Link href="/" aria-label="Logo">
-                    <Logo />
-                  </Link>
-                </div>
-                <div className="text-sm text-secondary">
-                  © oasis <span className="text-secondary">-</span> All rights reserved.
-                </div>
+          <div className="h-full flex flex-col md:flex-col lg:flex-col justify-between">
+            <div className="mb-4 sm:mb-0 hidden md:block">
+              <div className="mb-4">
+                <Link href="/" aria-label="Logo">
+                  <Logo />
+                </Link>
               </div>
-              <ul className="my-8 flex-row gap-4 flex list-none">
-                <li>
-                  <a
-                    href="https://twitter.com/live__oasis"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaXTwitter className="text-primary" />
-                  </a>
-                </li>
-                <li className="ml-2">
-                  <a
-                    href="https://www.instagram.com/live__oasis"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaInstagram className="text-primary" />
-                  </a>
-                </li>
-                <li className="ml-2">
-                  <a
-                    href="https://www.tiktok.com/@live__oasis"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaTiktok className="text-primary" />
-                  </a>
-                </li>
-                <li className="ml-2">
-                  <a
-                    href="https://www.youtube.com/@live__oasis"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <FaYoutube className="text-primary" />
-                  </a>
-                </li>
-                {/* <li className="ml-2">
+              <div className="text-sm text-secondary">
+                © oasis <span className="text-secondary">-</span> All rights reserved.
+              </div>
+            </div>
+            <ul className="my-8 flex-row gap-4 flex list-none">
+              <li>
+                <a href="https://twitter.com/live__oasis" target="_blank" rel="noopener noreferrer">
+                  <FaXTwitter className="text-primary" />
+                </a>
+              </li>
+              <li className="ml-2">
+                <a
+                  href="https://www.instagram.com/live__oasis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaInstagram className="text-primary" />
+                </a>
+              </li>
+              <li className="ml-2">
+                <a
+                  href="https://www.tiktok.com/@live__oasis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaTiktok className="text-primary" />
+                </a>
+              </li>
+              <li className="ml-2">
+                <a
+                  href="https://www.youtube.com/@live__oasis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <FaYoutube className="text-primary" />
+                </a>
+              </li>
+              {/* <li className="ml-2">
                   <a href="https://discord.gg/AhapvnXxAy" target="_blank" rel="noopener noreferrer">
                     <FaDiscord className="text-primary" />
                   </a>
                 </li> */}
-              </ul>
-            </div>
+            </ul>
           </div>
 
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
@@ -111,11 +103,6 @@ export default function Footer() {
               <li>
                 <Link href="/about" className="text-secondary  transition duration-150 ease-in-out">
                   About
-                </Link>
-              </li>
-              <li>
-                <Link href="/faqs" className="text-secondary  transition duration-150 ease-in-out">
-                  FAQs
                 </Link>
               </li>
             </ul>
@@ -153,21 +140,27 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2 w-72">
-            <>
-              <Typography
-                size="base"
-                fontWeight="bold"
-                className="text-sm text-secondary font-bold mb-2"
-              >
-                Join the waitlist
-              </Typography>
-              <Typography size="base" fontWeight="normal" className="text-sm text-secondary mb-2">
-                We are working on a something special that will change the way you drink water and
-                access health products.
-              </Typography>
-              <JoinWaitListButton />
-            </>
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+            <h6 className="text-sm text-secondary font-bold mb-2">Support</h6>
+            <ul className="text-sm space-y-2 list-none">
+              <li>
+                <a
+                  href="mailto:cormac@live-oasis.com"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  Contact
+                </a>
+              </li>
+              <li>
+                <Link href="/blog" className="text-secondary  transition duration-150 ease-in-out">
+                  FAQs
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+            <EmailSubscribe />
           </div>
         </div>
       </div>

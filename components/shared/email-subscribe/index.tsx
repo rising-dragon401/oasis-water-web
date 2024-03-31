@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -9,7 +9,7 @@ import { useUserProvider } from '@/providers/UserProvider'
 import { toast } from 'sonner'
 
 export default function EmailSubscribe() {
-  const { userData } = useUserProvider()
+  const { userData, emailSubscriptions } = useUserProvider()
 
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
@@ -27,11 +27,17 @@ export default function EmailSubscribe() {
     setLoading(false)
   }
 
+  const showNesletter = emailSubscriptions?.find((sub) => sub.list !== 'newsletter')
+
+  if (!showNesletter) {
+    return null
+  }
+
   return (
     <div className="flex flex-col max-w-lg justify-start">
       <div>
         <Typography size="lg" className="text-secondary" fontWeight="normal">
-          Subscribe to newsletter
+          Subscribe to updates
         </Typography>
         <div className="max-w-xs">
           <Typography size="xs" className="text-secondary" fontWeight="normal">

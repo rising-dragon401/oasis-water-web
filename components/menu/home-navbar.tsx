@@ -113,14 +113,14 @@ export default function HomeNavbar() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <div
             onClick={() => window.open('https://3efs5kbf7k4.typeform.com/to/AIFR8ZFm', '_blank')}
             className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
           >
             Water delivery
           </div>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   )

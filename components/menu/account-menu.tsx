@@ -37,10 +37,12 @@ export function AccountMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 hover:cursor-pointer" align="end" forceMount>
-        {userData?.full_name && (
+        {(userData?.full_name || userData?.email) && (
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-xs leading-none text-muted-foreground">{userData.full_name}</p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {userData.full_name || userData.email}
+              </p>
             </div>
           </DropdownMenuLabel>
         )}

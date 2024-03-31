@@ -277,3 +277,18 @@ export const getActiveProductsWithPrices = async () => {
   }
   return data ?? []
 }
+
+export async function getEmailSubscriptions(uid: string | null) {
+  if (!uid) {
+    return null
+  }
+
+  const supabase = await createSupabaseServerClient()
+  const { data, error } = await supabase.from('email_lists').select('*').eq('uid', uid)
+
+  if (error) {
+    console.error('Error fetching email subscriptions:', error)
+  }
+
+  return data
+}

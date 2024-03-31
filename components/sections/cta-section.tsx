@@ -27,7 +27,7 @@ export default async function CTASection() {
             Together, we’re not just making choices; we’re making a difference.
           </Typography>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <JoinWaitListButton />
+            <SignUpButton />
           </div>
           <svg
             viewBox="0 0 1024 1024"

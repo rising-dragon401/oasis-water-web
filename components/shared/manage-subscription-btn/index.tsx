@@ -41,7 +41,7 @@ export default function ManageSubscriptionButton() {
         <Button
           variant="ghost"
           onClick={handleManageSubscription}
-          className="flex flex-row items-center"
+          className="flex flex-row items-center w-full justify-start"
           loading={isLoadingCustomerPortal}
         >
           <Wallet className="mr-2 h-4 w-4" />
