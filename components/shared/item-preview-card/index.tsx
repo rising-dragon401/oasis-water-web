@@ -12,39 +12,23 @@ type Props = {
 
 export default function ItemPreviewCard({ item }: Props) {
   const renderScore = () => {
-    // @ts-ignore
-    if (item.score > 70) {
-      return (
+    const score = item?.score || 0
+
+    const color = score > 70 ? 'text-green-500' : score > 40 ? 'text-yellow-500' : 'text-red-500'
+    return (
+      <div>
+        <Typography size="2xl" fontWeight="normal" className={`!no-underline ${color} text-right`}>
+          {score}
+        </Typography>
         <Typography
           size="xs"
           fontWeight="normal"
           className="!no-underline text-secondary text-right"
         >
-          👍 {item.score} /100
+          /100
         </Typography>
-      )
-      // @ts-ignore
-    } else if (item.score > 60) {
-      return (
-        <Typography
-          size="xs"
-          fontWeight="normal"
-          className="!no-underline text-secondary text-right"
-        >
-          👎 {item.score} /100
-        </Typography>
-      )
-    } else {
-      return (
-        <Typography
-          size="xs"
-          fontWeight="normal"
-          className="!no-underline text-secondarytext-right"
-        >
-          ⚠️ {item.score} /100
-        </Typography>
-      )
-    }
+      </div>
+    )
   }
 
   const determineLink = () => {
@@ -71,16 +55,20 @@ export default function ItemPreviewCard({ item }: Props) {
         />
       </div>
       <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col ">
           <Typography
-            size="base"
+            size="lg"
             fontWeight="bold"
-            className="!no-underline text-primary max-h-12 overflow-hidden max-w-64 text-ellipsis	"
+            className="!no-underline text-primary overflow-hidden max-w-64 text-ellipsis	"
           >
             {item.name}
           </Typography>
           {item.company_name && (
-            <Typography size="sm" fontWeight="normal" className="!no-underline text-primary">
+            <Typography
+              size="sm"
+              fontWeight="normal"
+              className="!no-underline text-primary-muted mt-0"
+            >
               {item.company_name}
             </Typography>
           )}

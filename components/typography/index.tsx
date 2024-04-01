@@ -48,7 +48,7 @@ const Typography: React.FC<TypographyProps> = ({ size, fontWeight, children, cla
   const textSize = size ? sizes[size] : ''
   const textWeight = weights[fontWeight] || weights.normal
   return (
-    <p className={`${textSize} ${textWeight} text-primary text-ellipsis	 ${className}`}>
+    <p className={`${textSize} ${textWeight} text-primary text-ellipsis	 ${className} text-red`}>
       {children}
     </p>
   )
