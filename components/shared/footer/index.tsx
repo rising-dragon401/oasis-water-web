@@ -4,8 +4,13 @@ import { FaXTwitter, FaTiktok, FaYoutube, FaInstagram, FaDiscord } from 'react-i
 import EmailSubscribe from '../email-subscribe'
 import JoinWaitListButton from '../join-waitlist-button'
 import Typography from '@/components/typography'
+import { FeedbackModal } from '../feedback-modal'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 
 export default function Footer() {
+  const [openFeedback, setOpenFeedback] = useState(false)
+
   return (
     <footer className="overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -143,6 +148,16 @@ export default function Footer() {
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
             <h6 className="text-sm text-secondary font-bold mb-2">Support</h6>
             <ul className="text-sm space-y-2 list-none">
+              <FeedbackModal open={openFeedback} setOpen={setOpenFeedback} />
+
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  setOpenFeedback(true)
+                }}
+              >
+                Feedback
+              </div>
               <li>
                 <a
                   href="mailto:cormac@live-oasis.com"
