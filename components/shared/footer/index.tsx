@@ -70,11 +70,11 @@ export default function Footer() {
                   <FaYoutube className="text-primary" />
                 </a>
               </li>
-              {/* <li className="ml-2">
-                  <a href="https://discord.gg/AhapvnXxAy" target="_blank" rel="noopener noreferrer">
-                    <FaDiscord className="text-primary" />
-                  </a>
-                </li> */}
+              <li className="ml-2">
+                <a href="https://discord.gg/AhapvnXxAy" target="_blank" rel="noopener noreferrer">
+                  <FaDiscord className="text-primary" />
+                </a>
+              </li>
             </ul>
           </div>
 
