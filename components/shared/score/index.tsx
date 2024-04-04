@@ -29,6 +29,8 @@ export default function Score({ score, isFull }: Props) {
       return 'Good'
     } else if (score >= 50) {
       return 'Poor'
+    } else if (score >= 30) {
+      return 'Bad'
     } else {
       return 'Very Bad'
     }

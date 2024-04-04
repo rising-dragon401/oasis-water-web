@@ -3,7 +3,6 @@
 import Typography from '@/components/typography'
 import { getItemDetails } from '@/app/actions/items'
 import React, { useEffect, useState } from 'react'
-import Image from 'next/image'
 import Score from '@/components/shared/score'
 import MetaDataCard from '../metadata-card'
 import IngredientsCard from '../ingredients-card'
@@ -17,7 +16,6 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { getIngredients } from '@/app/actions/ingredients'
 import PaywallContent from '@/components/shared/paywall-content'
-import useSubscription from '@/lib/hooks/use-subscription'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
 
@@ -28,7 +26,6 @@ type Props = {
 export default function ItemForm({ id }: Props) {
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
-  const { subscription } = useSubscription()
 
   const { data: allIngredients } = useSWR('ingredients', getIngredients)
 
@@ -53,6 +50,11 @@ export default function ItemForm({ id }: Props) {
   }, [id, allIngredients])
 
   const contaminants = item?.contaminants || []
+
+  const fluorideContaminant = item.contaminants?.find(
+    (contaminant: { name: string }) => contaminant.name.toLowerCase() === 'fluoride'
+  )
+  const fluorideValue = fluorideContaminant ? `${fluorideContaminant.value} ppm` : 'Not Detected'
 
   const sortedContaminants = contaminants.sort(
     (a: { exceedingLimit: number }, b: { exceedingLimit: number }) => {
@@ -95,7 +97,7 @@ export default function ItemForm({ id }: Props) {
                 {item.is_indexed !== false ? (
                   <div className="flex flex-col">
                     <BlurredLineItem
-                      label={`${contaminants.length} Contaminants found`}
+                      label="Contaminants found"
                       value={contaminants.length}
                       labelClassName="text-red-500"
                     />
@@ -105,7 +107,7 @@ export default function ItemForm({ id }: Props) {
                       value={hasNanoplastics ? 'Yes' : 'No'}
                     />
 
-                    <BlurredLineItem label="Fluoride" value={`${item.metadata?.fluoride} ppm`} />
+                    <BlurredLineItem label="Fluoride" value={fluorideValue} />
 
                     <BlurredLineItem label="pH" value={item.metadata?.ph_level} />
 
