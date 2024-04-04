@@ -29,7 +29,7 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: 'Access all data / research',
+    label: 'Access all data, ratings and research',
     icon: <FlaskConical className="w-4 h-4" />,
   },
   {

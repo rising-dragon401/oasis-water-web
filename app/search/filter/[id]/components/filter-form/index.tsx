@@ -15,6 +15,8 @@ import { ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ContaminantTable from '../contaminant-table'
 import PaywallContent from '@/components/shared/paywall-content'
+import ItemImage from '@/components/shared/item-image'
+import BlurredLineItem from '@/components/shared/blurred-line-item'
 
 type Props = {
   id: string
@@ -57,57 +59,60 @@ export default function FilterForm({ id }: Props) {
     <div className="flex-col flex w-full md:px-0 px-2">
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
-          <div className="relative md:w-1/2">
+          <div className="flex justify-center md:w-1/2 w-full">
             {filter.affiliate_url ? (
               <Link href={filter.affiliate_url} target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={filter.image}
-                  alt={filter.name}
-                  width={700}
-                  height={700}
-                  blurDataURL={filter.image}
-                  placeholder="blur"
-                  className="rounded-lg"
-                />
+                <ItemImage src={filter.image} alt={filter.name} />
               </Link>
             ) : (
-              <Image
-                src={filter.image}
-                alt={filter.name}
-                width={700}
-                height={700}
-                blurDataURL={filter.image}
-                placeholder="blur"
-                className="rounded-lg"
-              />
+              <ItemImage src={filter.image} alt={filter.name} />
             )}
           </div>
-          <div className="flex flex-col gap-6 md:w-1/2">
-            <Typography size="3xl" fontWeight="normal">
-              {filter.name}
-            </Typography>
-            <Link href={`/search/company/${filter.company?.name}`}>
-              <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
-                {filter.brand?.name} - {filter.company?.name}
-              </Typography>
-            </Link>
-            <div className="flex items-center justify-start gap-4">
-              <Score score={filter.score} isFull={true} />
+
+          <div className="flex flex-col justify-start">
+            <div className="flex flex-row justify-between  gap-2">
+              <div className="flex flex-col gap-2">
+                <Typography size="3xl" fontWeight="normal">
+                  {filter.name}
+                </Typography>
+                <Link href={`/search/company/${filter.company?.name}`}>
+                  <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
+                    {filter.brand?.name} - {filter.company?.name}
+                  </Typography>
+                </Link>
+
+                {filter.affiliate_url && (
+                  <Button
+                    variant={filter.score > 70 ? 'default' : 'outline'}
+                    onClick={() => {
+                      window.open(filter.affiliate_url, '_blank')
+                    }}
+                    className="w-40"
+                  >
+                    Buy Now <ArrowUpRight size={16} className="ml-2 w-" />
+                  </Button>
+                )}
+              </div>
+
+              <PaywallContent label="Rating">
+                <Score score={filter.score} isFull={true} />
+              </PaywallContent>
             </div>
-            {filter.affiliate_url && (
-              <Button
-                variant={filter.score > 70 ? 'default' : 'outline'}
-                onClick={() => {
-                  window.open(filter.affiliate_url, '_blank')
-                }}
-              >
-                Buy Now <ArrowUpRight size={16} className="ml-2" />
-              </Button>
-            )}
+            <div className="flex flex-col gap-6 mt-10">
+              <BlurredLineItem
+                label="Contaminants not filtered"
+                value={notFilteredContaminants?.length.toString() || '0'}
+                labelClassName="text-red-500"
+              />
+              <BlurredLineItem
+                label="Contaminants filtered"
+                value={filter.contaminants_filtered?.length.toString() || '0'}
+              />
+            </div>
           </div>
         </div>
 
-        <PaywallContent className="mt-8">
+        <PaywallContent className="mt-8" label="Unlock all data and reports">
           <div className="flex flex-col gap-6 mt-10">
             <ContaminantTable filteredContaminants={filter.contaminants_filtered} />
           </div>

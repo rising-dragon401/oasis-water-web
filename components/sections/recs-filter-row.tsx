@@ -26,7 +26,7 @@ export default function RecommendedFiltersRow() {
     <div className="mb-10">
       <div className="pt-4 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Top filters
+          Other filters
         </Typography>
       </div>
 

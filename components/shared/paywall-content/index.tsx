@@ -5,13 +5,21 @@ import { SubscribeModal } from '../subscribe-modal'
 import { useState } from 'react'
 import { Lock } from 'lucide-react'
 import useSubscription from '@/lib/hooks/use-subscription'
+import Typography from '@/components/typography'
 
 type PaywallContentProps = {
   children: React.ReactNode
   className?: string
+  hideButton?: boolean
+  label: string
 }
 
-const PaywallContent: React.FC<PaywallContentProps> = ({ children, className }) => {
+const PaywallContent: React.FC<PaywallContentProps> = ({
+  children,
+  className,
+  hideButton = false,
+  label,
+}) => {
   const [open, setOpen] = useState(false)
 
   const { subscription } = useSubscription()
@@ -20,17 +28,27 @@ const PaywallContent: React.FC<PaywallContentProps> = ({ children, className }) 
     return <>{children}</>
   }
 
+  // Function to stop click event propagation
+  const handleOverlayClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+  }
+
   return (
     <>
       <SubscribeModal open={open} setOpen={setOpen} />
 
-      <div className={cn('relative max-h-96 overflow-hidden rounded-lg px-4', className)}>
-        <div className="absolute inset-0 bg-black bg-opacity-20 flex justify-center items-center z-10">
-          <Button variant="default" onClick={() => setOpen(true)}>
-            Unlock All Data <Lock size={16} className="ml-2" />
-          </Button>
-        </div>
-        <div className="filter blur-md">{children}</div>
+      <div className={cn('relative rounded-lg', className)} onClick={handleOverlayClick}>
+        {/* Overlay container */}
+        {!hideButton && (
+          <div className="absolute   max-h-72  inset-0 flex justify-center items-center">
+            <Button variant="default" onClick={() => setOpen(true)} className="z-10">
+              {label}
+              <Lock size={16} className="ml-2" />
+            </Button>
+          </div>
+        )}
+        {/* Blurred children content */}
+        <div className="filter blur-lg">{children}</div>
       </div>
     </>
   )

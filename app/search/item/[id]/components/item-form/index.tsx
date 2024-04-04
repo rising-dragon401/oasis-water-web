@@ -17,6 +17,9 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import { getIngredients } from '@/app/actions/ingredients'
 import PaywallContent from '@/components/shared/paywall-content'
+import useSubscription from '@/lib/hooks/use-subscription'
+import BlurredLineItem from '@/components/shared/blurred-line-item'
+import ItemImage from '@/components/shared/item-image'
 
 type Props = {
   id: string
@@ -25,6 +28,7 @@ type Props = {
 export default function ItemForm({ id }: Props) {
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
+  const { subscription } = useSubscription()
 
   const { data: allIngredients } = useSWR('ingredients', getIngredients)
 
@@ -64,40 +68,15 @@ export default function ItemForm({ id }: Props) {
 
   return (
     <div className="flex-col flex w-full">
-      <div className="md:py-10 py-6">
+      <div className="md:py-10 pt-2 pb-6 md:px-0 px-4">
         <div className="flex md:flex-row flex-col gap-6">
-          <div className="relative">
+          <div className="flex justify-center w-full md:w-1/2">
             {item.affiliate_url ? (
               <Link href={item.affiliate_url} target="_blank" rel="noopener noreferrer">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={700}
-                  height={700}
-                  blurDataURL={item.image}
-                  placeholder="blur"
-                  className="rounded-lg"
-                />
+                <ItemImage src={item.image} alt={item.name} />
               </Link>
             ) : (
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={700}
-                height={700}
-                blurDataURL={item.image}
-                placeholder="blur"
-                className="rounded-lg"
-              />
-            )}
-            {item.score > 70 && (
-              <Typography
-                size="base"
-                fontWeight="normal"
-                className="absolute top-0 right-0 text-secondary-foreground text-center italic bg-card border-2 px-2 border-secondary-foreground rounded-full m-2"
-              >
-                Recommended
-              </Typography>
+              <ItemImage src={item.image} alt={item.name} />
             )}
           </div>
 
@@ -112,54 +91,53 @@ export default function ItemForm({ id }: Props) {
                 </Typography>
               </Link>
 
-              {item.is_indexed !== false ? (
-                <div className="flex flex-col">
-                  <Typography size="base" fontWeight="normal" className="text-secondary my-0">
-                    Fluoride: {item.metadata?.fluoride} ppm
-                  </Typography>
-                  {hasNanoplastics && (
-                    <Typography size="base" fontWeight="normal" className="text-secondary my-0">
-                      ⚠️ Contains Nanoplastics
-                    </Typography>
-                  )}
-                  <Typography size="base" fontWeight="normal" className="text-secondary my-0">
-                    pH: {item.metadata?.ph_level}
-                  </Typography>
-                  {item.metadata?.tds && (
-                    <Typography size="base" fontWeight="normal" className="text-secondary">
-                      TDS: {item.metadata?.tds} ppm
-                    </Typography>
-                  )}
-                  <Typography size="base" fontWeight="normal" className="text-secondary">
-                    Packaging: {item.packaging}
-                  </Typography>
+              <>
+                {item.is_indexed !== false ? (
+                  <div className="flex flex-col">
+                    <BlurredLineItem
+                      label={`${contaminants.length} Contaminants found`}
+                      value={contaminants.length}
+                      labelClassName="text-red-500"
+                    />
 
-                  <div className="flex flex-col md:w-40 w-full mt-2 gap-2">
-                    {item.affiliate_url && (
-                      <Button
-                        variant={item.score > 70 ? 'default' : 'outline'}
-                        onClick={() => {
-                          window.open(item.affiliate_url, '_blank')
-                        }}
-                      >
-                        Buy Now
-                        <ArrowUpRight size={16} className="ml-2" />
-                      </Button>
-                    )}
+                    <BlurredLineItem
+                      label="Contains nanoplastics?"
+                      value={hasNanoplastics ? 'Yes' : 'No'}
+                    />
+
+                    <BlurredLineItem label="Fluoride" value={`${item.metadata?.fluoride} ppm`} />
+
+                    <BlurredLineItem label="pH" value={item.metadata?.ph_level} />
+
+                    <BlurredLineItem label="TDS" value={item.metadata?.tds || 'Unknown'} />
+
+                    <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
+                      {item.affiliate_url && (
+                        <Button
+                          variant={item.score > 70 ? 'outline' : 'outline'}
+                          onClick={() => {
+                            window.open(item.affiliate_url, '_blank')
+                          }}
+                        >
+                          Buy Now
+                          <ArrowUpRight size={16} className="ml-2" />
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <Typography size="base" fontWeight="normal" className="text-secondary">
-                  ⚠️ NO WATER REPORTS LOCATED
-                </Typography>
-              )}
+                ) : (
+                  <Typography size="base" fontWeight="normal" className="text-secondary">
+                    ⚠️ NO WATER REPORTS LOCATED
+                  </Typography>
+                )}
+              </>
             </div>
 
             <div className="flex md:flex-row md:justify-start md:gap-10 md:items-start flex-col-reverse justify-end items-end">
               {item.is_indexed !== false && (
-                <div className="flex flex-col gap-2 items-center">
+                <PaywallContent label="Unlock Rating">
                   <Score score={item.score} isFull={true} />
-                </div>
+                </PaywallContent>
               )}
             </div>
           </div>
@@ -173,7 +151,7 @@ export default function ItemForm({ id }: Props) {
             </Typography>
           </div>
         ) : (
-          <PaywallContent className="mt-8">
+          <PaywallContent className="mt-6" label="Unlock All Data & Reports">
             {sortedContaminants && sortedContaminants.length > 0 && (
               <div className="flex flex-col gap-6 mt-6">
                 <Typography size="2xl" fontWeight="normal">

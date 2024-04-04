@@ -11,9 +11,9 @@ export default function RecommendedRow() {
 
   const fetchRecommendedItems = async () => {
     const recommended = await getTopItems()
-    const ranked_ = recommended.sort((a, b) => (b.score || 0) - (a.score || 0))
+    // const ranked_ = recommended.sort((a, b) => (b.score || 0) - (a.score || 0))
 
-    setRanked(ranked_)
+    setRanked(recommended)
   }
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function RecommendedRow() {
     <div className="mb-10">
       <div className="pt-4 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Top bottled waters
+          Other bottled waters
         </Typography>
       </div>
 

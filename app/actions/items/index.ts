@@ -118,6 +118,19 @@ export const getTopItems = async () => {
   }
 }
 
+export const getRandomItems = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  try {
+    const { data: items, error } = await supabase.from('items').select().range(0, 10)
+
+    return items || []
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
 export const getWorstItems = async () => {
   const supabase = await createSupabaseServerClient()
 

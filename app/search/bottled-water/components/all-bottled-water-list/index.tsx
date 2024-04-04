@@ -1,7 +1,7 @@
 'use client'
 
 import Typography from '@/components/typography'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Item } from '@/types/custom'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import {
@@ -11,13 +11,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ChevronDown } from 'lucide-react'
+import useSubscription from '@/lib/hooks/use-subscription'
 
 type Props = {
   items: Item[] | null
 }
 
 export default function BottledWaterList({ items }: Props) {
-  const [sortMethod, setSortMethod] = useState('score')
+  const { subscription } = useSubscription()
+  const [sortMethod, setSortMethod] = useState('name')
+
+  useEffect(() => {
+    if (subscription) {
+      setSortMethod('score')
+    }
+  }, [subscription])
 
   const sorted = useMemo(() => {
     if (!items) return null
@@ -47,14 +55,16 @@ export default function BottledWaterList({ items }: Props) {
             <ChevronDown className="w-4 h-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem
-              onClick={() => {
-                setSortMethod('score')
-              }}
-              className="hover:cursor-pointer"
-            >
-              Score
-            </DropdownMenuItem>
+            {subscription && (
+              <DropdownMenuItem
+                onClick={() => {
+                  setSortMethod('score')
+                }}
+                className="hover:cursor-pointer"
+              >
+                Score
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               onClick={() => {
                 setSortMethod('name')

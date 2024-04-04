@@ -5,29 +5,40 @@ import Typography from '@/components/typography'
 import React from 'react'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import Image from 'next/image'
+import useSubscription from '@/lib/hooks/use-subscription'
+import PaywallContent from '@/components/shared/paywall-content'
 
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
 }
 
 export default function ItemPreviewCard({ item }: Props) {
+  const { subscription } = useSubscription()
+
   const renderScore = () => {
     const score = item?.score || 0
 
     const color = score > 70 ? 'text-green-500' : score > 40 ? 'text-yellow-500' : 'text-red-500'
+
     return (
-      <div>
-        <Typography size="2xl" fontWeight="normal" className={`!no-underline ${color} text-right`}>
-          {score}
-        </Typography>
-        <Typography
-          size="xs"
-          fontWeight="normal"
-          className="!no-underline text-secondary text-right"
-        >
-          /100
-        </Typography>
-      </div>
+      <PaywallContent label="Unlock score" hideButton={true}>
+        <div>
+          <Typography
+            size="2xl"
+            fontWeight="normal"
+            className={`!no-underline ${color} text-right`}
+          >
+            {score}
+          </Typography>
+          <Typography
+            size="xs"
+            fontWeight="normal"
+            className="!no-underline text-secondary text-right"
+          >
+            /100
+          </Typography>
+        </div>
+      </PaywallContent>
     )
   }
 
