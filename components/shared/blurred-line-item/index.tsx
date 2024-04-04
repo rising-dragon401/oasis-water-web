@@ -1,6 +1,9 @@
+'use client'
+
 import Typography from '@/components/typography'
 import { SubscribeModal } from '../subscribe-modal'
 import { useState } from 'react'
+import useSubscription from '@/lib/hooks/use-subscription'
 
 type BlurredLineItemProps = {
   label: string
@@ -9,6 +12,7 @@ type BlurredLineItemProps = {
 }
 
 export default function BlurredLineItem({ label, value, labelClassName }: BlurredLineItemProps) {
+  const { subscription } = useSubscription()
   const [open, setOpen] = useState(false)
 
   const handleOpenPaywall = () => {
@@ -22,8 +26,12 @@ export default function BlurredLineItem({ label, value, labelClassName }: Blurre
       <Typography size="base" fontWeight="normal" className="text-secondary my-0">
         <span className={labelClassName}>{label}:</span>{' '}
         <span
-          onClick={handleOpenPaywall}
-          style={{ filter: 'blur(4px)', cursor: 'pointer', minWidth: '3rem' }}
+          onClick={!subscription ? handleOpenPaywall : undefined}
+          style={{
+            filter: !subscription ? 'blur(4px)' : 'none',
+            cursor: !subscription ? 'pointer' : 'default',
+            minWidth: '3rem',
+          }}
           className="min-w-14"
         >
           {value}
