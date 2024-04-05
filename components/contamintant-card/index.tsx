@@ -15,8 +15,6 @@ type Props = {
 }
 
 export default function ContaminantCard({ data }: Props) {
-  console.log('ContaminantCard data:', data)
-
   return (
     <Card>
       <CardHeader>
