@@ -40,9 +40,13 @@ export function AccountMenu() {
         {(userData?.full_name || userData?.email) && (
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-xs leading-none text-muted-foreground">
-                {userData.full_name || userData.email}
-              </p>
+              {userData.full_name && (
+                <p className="text-xs leading-none text-muted-foreground">{userData.full_name}</p>
+              )}
+
+              {userData.email && (
+                <p className="text-xs leading-none text-muted-foreground">{userData.email}</p>
+              )}
             </div>
           </DropdownMenuLabel>
         )}
