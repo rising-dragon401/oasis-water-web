@@ -12,7 +12,6 @@ import {
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
-import { submitFeedback } from '@/app/actions/feedback'
 import { toast } from 'sonner'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
@@ -42,35 +41,24 @@ const FEATURES = [
   },
 ]
 
+const kSubscriptionPrice = 10
+
 export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
-  const { uid, user } = useUserProvider()
+  const { user } = useUserProvider()
   const { products } = useSubscription()
-
-  const [value, setValue] = useState('')
-  const [loading, setLoading] = useState(false)
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
 
   const proProduct = products?.find(
     (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
   )
-  const proPrice = proProduct?.prices[0]
 
-  const handleSubmission = async () => {
-    setLoading(true)
+  const proPrice =
+    proProduct?.prices.find(
+      (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID
+    ) ?? null
 
-    const res = await submitFeedback(value, uid)
-
-    if (res.error) {
-      toast('Unable to submit feedback at this time. Please try again later.')
-    } else {
-      toast('Thank you for the feedback!')
-      setOpen(false)
-      router.back()
-    }
-
-    setLoading(false)
-  }
+  console.log('proPrice: ', proPrice)
 
   const redirectToPayment = async () => {
     if (!user) {
@@ -121,7 +109,7 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             className="rounded-t-lg "
           />
           <Typography size="lg" fontWeight="bold" className="text-center">
-            $5 /mo
+            ${kSubscriptionPrice} /mo
           </Typography>
           <DialogDescription className="text-center">
             Access the most up-to-date water health science and water reports. Search with AI to
@@ -151,7 +139,7 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             onClick={redirectToPayment}
             loading={loadingCheckoutSession}
           >
-            Upgrade $5 /mo
+            Upgrade ${kSubscriptionPrice} /mo
           </Button>
         </DialogFooter>
       </DialogContent>
