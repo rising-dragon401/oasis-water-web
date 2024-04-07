@@ -54,7 +54,8 @@ export default function ItemForm({ id }: Props) {
   const fluorideContaminant = item.contaminants?.find(
     (contaminant: { name: string }) => contaminant.name.toLowerCase() === 'fluoride'
   )
-  const fluorideValue = fluorideContaminant ? `${fluorideContaminant.value} ppm` : 'Not Detected'
+  console.log('fluorideContaminant', fluorideContaminant)
+  const fluorideValue = fluorideContaminant ? `${fluorideContaminant.amount} ppm` : 'Not Detected'
 
   const sortedContaminants = contaminants.sort(
     (a: { exceedingLimit: number }, b: { exceedingLimit: number }) => {
@@ -102,10 +103,7 @@ export default function ItemForm({ id }: Props) {
                       labelClassName="text-red-500"
                     />
 
-                    <BlurredLineItem
-                      label="Contains nanoplastics?"
-                      value={hasNanoplastics ? 'Yes' : 'No'}
-                    />
+                    <BlurredLineItem label="Microplastics" value={hasNanoplastics ? 'Yes' : 'No'} />
 
                     <BlurredLineItem label="Fluoride" value={fluorideValue} />
 
