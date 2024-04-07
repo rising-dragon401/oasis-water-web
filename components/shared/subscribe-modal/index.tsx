@@ -58,8 +58,6 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
       (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID
     ) ?? null
 
-  console.log('proPrice: ', proPrice)
-
   const redirectToPayment = async () => {
     if (!user) {
       toast('Please login first. Redirecting you to login page.')
