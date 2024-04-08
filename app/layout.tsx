@@ -66,9 +66,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 {children}
                 <SpeedInsights />
               </main>
+
+              <Analytics />
+              <Toaster />
             </UserProvider>
-            <Analytics />
-            <Toaster />
           </SupabaseProvider>
         </body>
       </CSPostHogProvider>

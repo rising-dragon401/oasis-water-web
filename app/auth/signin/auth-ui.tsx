@@ -3,7 +3,7 @@
 import { useSupabase } from '@/providers/SupabaseProvider'
 import { useToast } from '@/components/ui/use-toast'
 import { getURL } from '@/utils/helpers'
-import { Auth, ForgottenPassword } from '@supabase/auth-ui-react'
+import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useEffect } from 'react'
 
@@ -28,6 +28,7 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
 
   return (
     <div className="flex flex-col space-y-4">
+      {/* Dumb component - must handle sign in events in onAuthStateChanged https://github.com/supabase-community/auth-ui/issues/188 */}
       <Auth
         supabaseClient={supabase}
         providers={['google']}

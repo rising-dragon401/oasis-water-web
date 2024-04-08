@@ -3,9 +3,11 @@
 import { getCurrentUserData, getUserFavorites, getEmailSubscriptions } from '@/app/actions/user'
 import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
+import { useSupabase } from '../SupabaseProvider'
 
 interface UserContextType {
   uid: string | null | undefined
+  provider: string | null | undefined
   user: any
   userData: any
   userFavorites: any[] | null | undefined
@@ -26,8 +28,10 @@ export const useUserProvider = () => {
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const supabase = createClient()
+  const { session } = useSupabase()
 
   const [userId, setUserId] = useState<string | null | undefined>(null)
+  const [provider, setProvider] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
   const [userData, setUserData] = useState<any>(null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
@@ -39,6 +43,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     } = await supabase.auth.getUser()
 
     setUser(user)
+    setProvider(user?.app_metadata?.provider)
 
     if (user) {
       setUserId(user.id)
@@ -51,7 +56,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     fetchUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [session])
 
   useEffect(() => {
     refreshUserData()
@@ -96,6 +101,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     <UserContext.Provider
       value={{
         user,
+        provider,
         uid: userId,
         userData,
         userFavorites,

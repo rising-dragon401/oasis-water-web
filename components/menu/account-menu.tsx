@@ -39,15 +39,17 @@ export function AccountMenu() {
       <DropdownMenuContent className="w-56 hover:cursor-pointer" align="end" forceMount>
         {(userData?.full_name || userData?.email) && (
           <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col space-y-1">
-              {userData.full_name && (
-                <p className="text-xs leading-none text-muted-foreground">{userData.full_name}</p>
-              )}
+            <Link href="/account">
+              <div className="flex flex-col space-y-1">
+                {userData.full_name && (
+                  <p className="text-xs leading-none text-muted-foreground">{userData.full_name}</p>
+                )}
 
-              {userData.email && (
-                <p className="text-xs leading-none text-muted-foreground">{userData.email}</p>
-              )}
-            </div>
+                {userData.email && (
+                  <p className="text-xs leading-none text-muted-foreground">{userData.email}</p>
+                )}
+              </div>
+            </Link>
           </DropdownMenuLabel>
         )}
 

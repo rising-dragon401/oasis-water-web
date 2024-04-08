@@ -4,14 +4,18 @@ import { useRouter, usePathname } from 'next/navigation'
 import { createContext, useContext, useEffect } from 'react'
 import { getCurrentUserData } from '@/app/actions/user'
 import { createClient } from '@/utils/supabase/client'
+import { useState } from 'react'
 
 type SupabaseContext = {
   supabase: any
+  session: any
 }
 
 const Context = createContext<SupabaseContext | undefined>(undefined)
 
 export default function SupabaseProvider({ children }: { children: React.ReactNode }) {
+  const [session, setSession] = useState<any>(null)
+
   const supabase = createClient()
   const router = useRouter()
   const pathname = usePathname()
@@ -22,7 +26,13 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setSession(session)
+
       const userData = await getCurrentUserData()
+
+      if (event === 'SIGNED_IN' && session?.access_token) {
+        router.push('/')
+      }
 
       if (authPages.includes(pathname) && !userData) {
         router.push('/auth/signin')
@@ -36,7 +46,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
   }, [router, supabase])
 
   return (
-    <Context.Provider value={{ supabase }}>
+    <Context.Provider value={{ supabase, session }}>
       <>{children}</>
     </Context.Provider>
   )

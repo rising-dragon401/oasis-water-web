@@ -4,14 +4,16 @@ import AuthUI from './auth-ui'
 import Link from 'next/link'
 import { AUTH_IMAGES } from '@/lib/constants/images'
 import { getCurrentUserData } from '@/app/actions/user'
-import { redirect } from 'next/navigation'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useEffect } from 'react'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
+import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
   const { refreshUserData } = useUserProvider()
-  const [previousPath, setPreviousPath] = useLocalStorage('oasis-previous-path', '/')
+  const router = useRouter()
+
+  const [previousPath] = useLocalStorage('oasis-previous-path', '/')
 
   useEffect(() => {
     const fetch = async () => {
@@ -20,7 +22,7 @@ export default function SignIn() {
       const userData = await getCurrentUserData()
 
       if (userData && previousPath) {
-        redirect(previousPath)
+        router.push(previousPath)
       } else {
         console.log('No user found')
       }
