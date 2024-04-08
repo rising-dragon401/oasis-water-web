@@ -1,5 +1,3 @@
-import { cookies } from 'next/headers'
-import { createClient } from '@supabase/supabase-js'
 import { ApplicationError } from '@/lib/errors'
 
 import { stripe } from '@/utils/stripe'

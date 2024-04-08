@@ -5,7 +5,6 @@ import { SubscribeModal } from '../subscribe-modal'
 import { useState } from 'react'
 import { Lock } from 'lucide-react'
 import useSubscription from '@/lib/hooks/use-subscription'
-import Typography from '@/components/typography'
 
 type PaywallContentProps = {
   children: React.ReactNode

@@ -92,7 +92,7 @@ export async function POST(req: Request) {
     })
 
     // console.log(`Match error:`, matchError)
-    // console.log(`Documents: ${JSON.stringify(documents)}`)
+    console.log(`Documents: ${JSON.stringify(documents)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)

@@ -18,9 +18,13 @@ import { useUserProvider } from '@/providers/UserProvider'
 import { Droplet, Filter, Milk, Heart } from 'lucide-react'
 import SignUpButton from '../shared/sign-up-button'
 import ManageSubscriptionButton from '@/components/shared/manage-subscription-btn'
+import SubscribeButton from '@/components/shared/subscribe-button'
+import useSubscription from '@/lib/hooks/use-subscription'
 
 export default function MobileNavbar() {
   const { uid, userData } = useUserProvider()
+  const { subscription } = useSubscription()
+
   const [isOpen, setIsOpen] = React.useState(false)
   const [isMounted, setIsMounted] = useState(false)
 
@@ -81,6 +85,7 @@ export default function MobileNavbar() {
             {uid && userData ? (
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />
+                {!subscription && <SubscribeButton />}
                 <DropdownMenuItem className="my-2 justify-start">
                   <Heart className="mr-2 h-4 w-4" />
 
