@@ -15,6 +15,7 @@ type Props = {
 }
 
 export default function ContaminantCard({ data }: Props) {
+  console.log('ContaminantCard data', data)
   return (
     <Card>
       <CardHeader>
@@ -47,8 +48,18 @@ export default function ContaminantCard({ data }: Props) {
             </Typography>
           </div>
           {data.amount && (
-            <Typography size="base" fontWeight="normal" className="text-secondary mt-2">
+            <Typography size="base" fontWeight="bold" className="text-secondary mt-2">
               Amount: {data?.amount} {data?.unit} {data?.measure}
+            </Typography>
+          )}
+          {data.health_guideline && (
+            <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
+              Health Guideline: {data?.health_guideline} {data?.measure}
+            </Typography>
+          )}
+          {data.legal_limit && (
+            <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
+              Legal Limit: {data?.legal_limit} {data?.measure}
             </Typography>
           )}
         </CardContent>

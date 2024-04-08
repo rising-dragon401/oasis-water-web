@@ -69,6 +69,8 @@ export default function ItemForm({ id }: Props) {
     return <ItemSkeleton />
   }
 
+  console.log('item', item)
+
   return (
     <div className="flex-col flex w-full">
       <div className="md:py-10 pt-2 pb-6 md:px-0 px-4">
@@ -109,7 +111,9 @@ export default function ItemForm({ id }: Props) {
 
                     <BlurredLineItem label="pH" value={item.metadata?.ph_level} />
 
-                    <BlurredLineItem label="TDS" value={item.metadata?.tds || 'Unknown'} />
+                    <BlurredLineItem label="TDS" value={item.metadata?.tds ?? 'Unknown'} />
+
+                    <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'Unknown'} />
 
                     <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
                       {item.affiliate_url && (
