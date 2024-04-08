@@ -3,7 +3,7 @@
 import { useSupabase } from '@/providers/SupabaseProvider'
 import { useToast } from '@/components/ui/use-toast'
 import { getURL } from '@/utils/helpers'
-import { Auth } from '@supabase/auth-ui-react'
+import { Auth, ForgottenPassword } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useEffect } from 'react'
 
@@ -32,7 +32,7 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
         supabaseClient={supabase}
         providers={['google']}
         redirectTo={`${getURL()}/auth/callback`}
-        magicLink={false}
+        magicLink={true}
         appearance={{
           theme: ThemeSupa,
           variables: {

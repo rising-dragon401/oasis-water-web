@@ -292,3 +292,18 @@ export async function getEmailSubscriptions(uid: string | null) {
 
   return data
 }
+
+export const resetPassword = async (email: string, password: string) => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase.auth.updateUser({
+    password: password,
+  })
+
+  if (error) {
+    console.error('Error:', error)
+    return false
+  }
+
+  return data
+}
