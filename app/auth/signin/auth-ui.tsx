@@ -1,15 +1,11 @@
 'use client'
 
-import { useState } from 'react'
 import { useSupabase } from '@/providers/SupabaseProvider'
 import { useToast } from '@/components/ui/use-toast'
 import { getURL } from '@/utils/helpers'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useEffect } from 'react'
-import { Checkbox } from '@/components/ui/checkbox'
-import useLocalStorage from '@/lib/hooks/use-local-storage'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 type Props = {
   showToast: boolean
@@ -19,8 +15,6 @@ type Props = {
 export default function AuthUI({ showToast, toastMessage }: Props) {
   const { toast } = useToast()
   const { supabase } = useSupabase()
-
-  const [checked, setChecked] = useLocalStorage('oasis-subscribe-to-newsletter', false)
 
   useEffect(() => {
     if (showToast) {
@@ -52,29 +46,6 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
         }}
         theme="light"
       />
-
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div className="flex items-center justify-center space-x-2">
-              <Checkbox
-                id="newsletter"
-                checked={checked}
-                onCheckedChange={() => setChecked(!checked)}
-              />
-              <label
-                htmlFor="newsletter"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Subscribe to our newsletter
-              </label>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Receive emails about the latest science/research.</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
     </div>
   )
 }
