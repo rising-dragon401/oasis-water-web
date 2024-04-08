@@ -5,6 +5,7 @@ import Link from 'next/link'
 import useDevice from '@/lib/hooks/use-device'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import Typography from '@/components/typography'
+// import PaywallContent from '@/components/shared/paywall-content'
 
 type Props = {
   score: number
@@ -72,6 +73,7 @@ export default function Score({ score, isFull }: Props) {
           >
             {score} / 100
           </text>
+
           <text
             x="50%"
             y="50%"

@@ -94,7 +94,7 @@ export default function FilterForm({ id }: Props) {
                 )}
               </div>
 
-              <PaywallContent label="Rating">
+              <PaywallContent label="Unlock Rating">
                 <Score score={filter.score} isFull={true} />
               </PaywallContent>
             </div>

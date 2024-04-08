@@ -43,7 +43,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
       subscription.unsubscribe()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, supabase])
+  }, [supabase])
 
   return (
     <Context.Provider value={{ supabase, session }}>

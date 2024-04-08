@@ -61,7 +61,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     refreshUserData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [user, session])
 
   const updateUserData = async () => {
     const data = await getCurrentUserData()

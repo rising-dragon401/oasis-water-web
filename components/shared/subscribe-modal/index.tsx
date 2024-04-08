@@ -60,7 +60,7 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
   const redirectToPayment = async () => {
     if (!user) {
-      toast('Please login first. Redirecting you to login page.')
+      toast('Please login first')
       router.push('/auth/signin')
       return
     }

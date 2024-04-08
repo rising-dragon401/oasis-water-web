@@ -13,3 +13,9 @@ npx supabase gen types typescript --project-id "inruqrymqosbfeygykdx" --schema p
 ## Helpful links
 
 Full text search: https://supabase.com/docs/guides/database/full-text-search?language=js
+
+## Ngrok
+
+```
+ngrok http  https://kodiak-positive-snipe.ngrok-free.app 3000
+```

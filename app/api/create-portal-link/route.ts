@@ -35,6 +35,7 @@ export async function POST(req: Request) {
         customer,
         return_url: `${getURL()}/`,
       })
+
       return new Response(JSON.stringify({ url }), {
         status: 200,
       })
