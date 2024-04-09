@@ -18,7 +18,7 @@ import { getStripe } from '@/utils/stripe-client'
 import useSubscription from '@/lib/hooks/use-subscription'
 import Image from 'next/image'
 import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
-import { FlaskConical, Dna, MessageCircle, SearchCheck, Microscope } from 'lucide-react'
+import { FlaskConical, Dna, MessageCircle, SearchCheck, Microscope, Plus } from 'lucide-react'
 import Typography from '@/components/typography'
 
 type SubscribeModalProps = {
@@ -44,12 +44,12 @@ const FEATURES = [
     icon: <Dna className="w-4 h-4" />,
   },
   {
-    label: 'Supports Oasis to further our resaerch',
+    label: 'Supports Oasis to further our research',
     icon: <Microscope className="w-4 h-4" />,
   },
 ]
 
-const kSubscriptionPrice = 10
+const kSubscriptionPrice = 5
 
 export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
@@ -145,7 +145,9 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             onClick={redirectToPayment}
             loading={loadingCheckoutSession}
           >
-            Upgrade ${kSubscriptionPrice} /mo
+            <Plus className="w-4 h-4 mr-2" />
+            Unlock Oasis Pro
+            {/* Upgrade ${kSubscriptionPrice} /mo */}
           </Button>
         </DialogFooter>
       </DialogContent>
