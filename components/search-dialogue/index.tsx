@@ -20,15 +20,13 @@ import { Sparkles } from 'lucide-react'
 import { useUserProvider } from '@/providers/UserProvider'
 import { updateUserData } from '@/app/actions/user'
 import Typography from '../typography'
-import useSubscription from '@/lib/hooks/use-subscription'
 import { toast } from 'sonner'
 
 import { SubscribeModal } from '../shared/subscribe-modal'
 
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
   const inputRef = React.useRef<HTMLInputElement>(null)
-  const { user, userData } = useUserProvider()
-  const { subscription } = useSubscription()
+  const { user, userData, subscription } = useUserProvider()
   const router = useRouter()
 
   const [open, setOpen] = React.useState(false)

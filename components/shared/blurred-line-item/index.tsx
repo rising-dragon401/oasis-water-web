@@ -3,7 +3,7 @@
 import Typography from '@/components/typography'
 import { SubscribeModal } from '../subscribe-modal'
 import { useState } from 'react'
-import useSubscription from '@/lib/hooks/use-subscription'
+import { useUserProvider } from '@/providers/UserProvider'
 
 type BlurredLineItemProps = {
   label: string
@@ -12,7 +12,7 @@ type BlurredLineItemProps = {
 }
 
 export default function BlurredLineItem({ label, value, labelClassName }: BlurredLineItemProps) {
-  const { subscription } = useSubscription()
+  const { subscription } = useUserProvider()
   const [open, setOpen] = useState(false)
 
   const handleOpenPaywall = () => {

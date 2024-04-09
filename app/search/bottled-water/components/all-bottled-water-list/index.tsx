@@ -11,14 +11,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ChevronDown } from 'lucide-react'
-import useSubscription from '@/lib/hooks/use-subscription'
+import { useUserProvider } from '@/providers/UserProvider'
 
 type Props = {
   items: Item[] | null
 }
 
 export default function BottledWaterList({ items }: Props) {
-  const { subscription } = useSubscription()
+  const { subscription } = useUserProvider()
   const [sortMethod, setSortMethod] = useState('name')
 
   useEffect(() => {

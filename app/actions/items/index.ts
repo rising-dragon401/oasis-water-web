@@ -67,8 +67,6 @@ export const getItemDetails = async (id: string, allIngredients: Ingredient[]) =
 
         const detail = allIngredients.find((d) => d.id === ingredient?.ingredient_id) as any
 
-        console.log('detail', detail)
-
         let limit = detail?.legal_limit || 0
         if (detail?.health_guideline) {
           limit = detail.health_guideline

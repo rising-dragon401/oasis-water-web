@@ -4,7 +4,7 @@ import cn from 'classnames'
 import { SubscribeModal } from '../subscribe-modal'
 import { useState } from 'react'
 import { Lock } from 'lucide-react'
-import useSubscription from '@/lib/hooks/use-subscription'
+import { useUserProvider } from '@/providers/UserProvider'
 
 type PaywallContentProps = {
   children: React.ReactNode
@@ -21,7 +21,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
 }) => {
   const [open, setOpen] = useState(false)
 
-  const { subscription } = useSubscription()
+  const { subscription } = useUserProvider()
 
   if (subscription) {
     return <>{children}</>

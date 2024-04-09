@@ -5,15 +5,15 @@ import Typography from '@/components/typography'
 import React from 'react'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import Image from 'next/image'
-import useSubscription from '@/lib/hooks/use-subscription'
 import PaywallContent from '@/components/shared/paywall-content'
+import { useUserProvider } from '@/providers/UserProvider'
 
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
 }
 
 export default function ItemPreviewCard({ item }: Props) {
-  const { subscription } = useSubscription()
+  const { subscription } = useUserProvider()
 
   const renderScore = () => {
     const score = item?.score || 0

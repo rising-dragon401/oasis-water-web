@@ -3,7 +3,6 @@
 import { Button } from '@/components/ui/button'
 import { Wallet } from 'lucide-react'
 import { useUserProvider } from '@/providers/UserProvider'
-import useSubscription from '@/lib/hooks/use-subscription'
 import { postData } from '@/utils/helpers'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -11,7 +10,7 @@ import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 
 export default function ManageSubscriptionButton() {
   const router = useRouter()
-  const { subscription } = useSubscription()
+  const { subscription } = useUserProvider()
 
   const [isLoadingCustomerPortal, setIsLoadingCustomerPortal] = useState(false)
   const handleManageSubscription = async () => {

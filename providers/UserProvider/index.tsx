@@ -4,6 +4,9 @@ import { getCurrentUserData, getUserFavorites, getEmailSubscriptions } from '@/a
 import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { useSupabase } from '../SupabaseProvider'
+import { getSubscription } from '@/app/actions/user'
+import useSWR from 'swr'
+import { SubscriptionWithProduct, ProductWithPrices } from '@/types/custom'
 
 interface UserContextType {
   uid: string | null | undefined
@@ -12,6 +15,7 @@ interface UserContextType {
   userData: any
   userFavorites: any[] | null | undefined
   emailSubscriptions: any[] | null | undefined
+  subscription: SubscriptionWithProduct | null | undefined
   refreshUserData: () => void
   logout: () => void
 }
@@ -32,6 +36,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const [userId, setUserId] = useState<string | null | undefined>(null)
   const [provider, setProvider] = useState<any>(null)
+  const [subscription, setSubscription] = useState<SubscriptionWithProduct | null | undefined>(null)
   const [user, setUser] = useState<any>(null)
   const [userData, setUserData] = useState<any>(null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
@@ -78,8 +83,15 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setEmailSubscriptions(res)
   }
 
+  const updateSubscription = async () => {
+    const data = await getSubscription()
+    setSubscription(data)
+    return data
+  }
+
   const refreshUserData = () => {
     updateUserData()
+    updateSubscription()
     updateUserFavorites()
     updateEmailSubscriptions(user?.id)
   }
@@ -103,6 +115,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         user,
         provider,
         uid: userId,
+        subscription,
         userData,
         userFavorites,
         emailSubscriptions,

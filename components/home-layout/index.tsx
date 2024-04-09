@@ -12,11 +12,9 @@ import SignUpButton from '../shared/sign-up-button'
 import { AccountMenu } from '../menu/account-menu'
 import { useUserProvider } from '@/providers/UserProvider'
 import SubscribeButton from '@/components/shared/subscribe-button'
-import useSubscription from '@/lib/hooks/use-subscription'
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
-  const { user } = useUserProvider()
-  const { subscription } = useSubscription()
+  const { user, subscription } = useUserProvider()
 
   return (
     <div className="min-h-[100vh] flex justify-center">

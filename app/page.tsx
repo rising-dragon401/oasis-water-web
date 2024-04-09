@@ -7,6 +7,7 @@ import TapWaterSection from '@/components/sections/tap-water-section'
 import FilterSection from '@/components/sections/filter-section'
 import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import CTASection from '@/components/sections/cta-section'
+import { useUserProvider } from '@/providers/UserProvider'
 
 export default async function Home() {
   return (
