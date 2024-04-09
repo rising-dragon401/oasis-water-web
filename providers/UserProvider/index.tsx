@@ -98,6 +98,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const logout = async () => {
     await supabase.auth.signOut()
+    setSubscription(null)
     await fetchUser()
     await clearUserData()
   }
