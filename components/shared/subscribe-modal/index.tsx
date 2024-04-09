@@ -18,7 +18,7 @@ import { getStripe } from '@/utils/stripe-client'
 import useSubscription from '@/lib/hooks/use-subscription'
 import Image from 'next/image'
 import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
-import { FlaskConical, Dna, MessageCircle } from 'lucide-react'
+import { FlaskConical, Dna, MessageCircle, SearchCheck, Microscope } from 'lucide-react'
 import Typography from '@/components/typography'
 
 type SubscribeModalProps = {
@@ -28,8 +28,12 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: 'Access all data, ratings and research',
+    label: 'Access all ratings and data',
     icon: <FlaskConical className="w-4 h-4" />,
+  },
+  {
+    label: 'Most up to date research',
+    icon: <SearchCheck className="w-4 h-4" />,
   },
   {
     label: 'AI search',
@@ -38,6 +42,10 @@ const FEATURES = [
   {
     label: 'Personalized recommendations',
     icon: <Dna className="w-4 h-4" />,
+  },
+  {
+    label: 'Supports Oasis to further our resaerch',
+    icon: <Microscope className="w-4 h-4" />,
   },
 ]
 
@@ -104,18 +112,18 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             alt="Upgrade your health"
             width={425}
             height={200}
-            className="rounded-t-lg "
+            className="rounded-lg h-40 object-cover object-center"
           />
           <Typography size="lg" fontWeight="bold" className="text-center">
             ${kSubscriptionPrice} /mo
           </Typography>
           <DialogDescription className="text-center">
-            Access the most up-to-date water health science and water reports. Search with AI to
-            personalize your recommendations based on your unique preferences.
+            Access the most up-to-date water health science and water reports and search using AI
+            across our database to personalize your water health journey.
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-col gap-2 p-4 rounde-md bg-muted">
+        <div className="flex flex-col gap-2 px-6 py-4 rounded-md bg-muted">
           {FEATURES.map((feature) => (
             <SubscriptionItem key={feature.label} label={feature.label} icon={feature.icon} />
           ))}

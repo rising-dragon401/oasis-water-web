@@ -72,8 +72,6 @@ export const getItemDetails = async (id: string, allIngredients: Ingredient[]) =
           limit = detail.health_guideline
         }
 
-        console.log('limit', limit)
-
         let exceedingLimit = 0
         if (limit && ingredient.amount) {
           exceedingLimit = Math.round(ingredient.amount / limit)

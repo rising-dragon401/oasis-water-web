@@ -30,13 +30,17 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
   // Function to stop click event propagation
   const handleOverlayClick = (e: React.MouseEvent) => {
     e.stopPropagation()
+    setOpen(true)
   }
 
   return (
     <>
       <SubscribeModal open={open} setOpen={setOpen} />
 
-      <div className={cn('relative rounded-lg', className)} onClick={handleOverlayClick}>
+      <div
+        className={cn('relative rounded-lg hover:cursor-pointer', className)}
+        onClick={handleOverlayClick}
+      >
         {/* Overlay container */}
         {!hideButton && (
           <div className="absolute max-h-72  inset-0 flex justify-center items-center">
@@ -47,7 +51,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
           </div>
         )}
         {/* Blurred children content */}
-        <div className="filter blur-lg">{children}</div>
+        <div className="filter blur-sm">{children}</div>
       </div>
     </>
   )

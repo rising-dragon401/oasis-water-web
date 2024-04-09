@@ -94,9 +94,7 @@ export default function FilterForm({ id }: Props) {
                 )}
               </div>
 
-              <PaywallContent label="Unlock Rating">
-                <Score score={filter.score} isFull={true} />
-              </PaywallContent>
+              <Score score={filter.score} isFull={true} />
             </div>
             <div className="flex flex-col gap-6 mt-10">
               <BlurredLineItem

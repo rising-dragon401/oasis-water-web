@@ -13,16 +13,14 @@ type Props = {
 }
 
 export default function ItemPreviewCard({ item }: Props) {
-  const { subscription } = useUserProvider()
-
   const renderScore = () => {
     const score = item?.score || 0
 
     const color = score > 70 ? 'text-green-500' : score > 40 ? 'text-yellow-500' : 'text-red-500'
 
     return (
-      <PaywallContent label="Unlock score" hideButton={true}>
-        <div>
+      <div>
+        <PaywallContent label="Unlock score" hideButton={true}>
           <Typography
             size="2xl"
             fontWeight="normal"
@@ -30,15 +28,15 @@ export default function ItemPreviewCard({ item }: Props) {
           >
             {score}
           </Typography>
-          <Typography
-            size="xs"
-            fontWeight="normal"
-            className="!no-underline text-secondary text-right"
-          >
-            /100
-          </Typography>
-        </div>
-      </PaywallContent>
+        </PaywallContent>
+        <Typography
+          size="xs"
+          fontWeight="normal"
+          className="!no-underline text-secondary text-right"
+        >
+          /100
+        </Typography>
+      </div>
     )
   }
 
