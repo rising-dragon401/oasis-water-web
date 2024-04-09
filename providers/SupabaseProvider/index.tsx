@@ -30,7 +30,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
 
       const userData = await getCurrentUserData()
 
-      if (event === 'SIGNED_IN' && session?.access_token) {
+      if (event === 'SIGNED_IN' && session?.access_token && pathname.startsWith('/auth')) {
         router.push('/')
       }
 
@@ -43,7 +43,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
       subscription.unsubscribe()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [supabase])
+  }, [supabase, pathname])
 
   return (
     <Context.Provider value={{ supabase, session }}>
