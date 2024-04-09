@@ -12,6 +12,11 @@ const nextConfig = {
         hostname: 'inruqrymqosbfeygykdx.supabase.co',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'connect.live-oasis.com',
+        port: '',
+      },
     ],
   },
 }
