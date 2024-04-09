@@ -55,6 +55,10 @@ export default function FilterForm({ id }: Props) {
     return <ItemSkeleton />
   }
 
+  if (filter.is_draft) {
+    return <div>This filter has not been rated yet. Please check back later.</div>
+  }
+
   return (
     <div className="flex-col flex w-full md:px-0 px-2">
       <div className="md:py-10 py-6">
