@@ -10,8 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Lock } from 'lucide-react'
 import { useUserProvider } from '@/providers/UserProvider'
+import { SubscribeModal } from '@/components/shared/subscribe-modal'
+import SubscribeButton from '@/components/shared/subscribe-button'
 
 type Props = {
   items: Item[] | null
@@ -20,6 +22,7 @@ type Props = {
 export default function BottledWaterList({ items }: Props) {
   const { subscription } = useUserProvider()
   const [sortMethod, setSortMethod] = useState('name')
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (subscription) {
@@ -42,39 +45,46 @@ export default function BottledWaterList({ items }: Props) {
     })
   }, [items, sortMethod])
 
+  const handleClickSortByScore = () => {
+    if (subscription) {
+      setSortMethod('score')
+    } else {
+      setOpen(true)
+    }
+  }
+
   return (
     <div>
+      <SubscribeModal open={open} setOpen={setOpen} />
+
       <div className="pt-4 pb-8 flex flex-row justify-between md:mt-6">
         <Typography size="3xl" fontWeight="normal">
-          All bottled water ratings
+          Bottled water ratings
         </Typography>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex flex-row items-center gap-2">
-            Sort
-            <ChevronDown className="w-4 h-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {subscription && (
+        <div className="flex flex-row gap-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex flex-row items-center gap-2">
+              Sort
+              <ChevronDown className="w-4 h-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={handleClickSortByScore} className="hover:cursor-pointer">
+                {!subscription && <Lock className="w-4 h-4 mr-2" />}
+                Score
+              </DropdownMenuItem>
+
               <DropdownMenuItem
                 onClick={() => {
-                  setSortMethod('score')
+                  setSortMethod('name')
                 }}
                 className="hover:cursor-pointer"
               >
-                Score
+                Name
               </DropdownMenuItem>
-            )}
-            <DropdownMenuItem
-              onClick={() => {
-                setSortMethod('name')
-              }}
-              className="hover:cursor-pointer"
-            >
-              Name
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6 ">

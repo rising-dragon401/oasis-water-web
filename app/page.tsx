@@ -25,9 +25,9 @@ export default async function Home() {
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="flex flex-col mt-14 mb-10">
+        {/* <div className="flex flex-col mt-14 mb-10">
           <TopRatedSection />
-        </div>
+        </div> */}
 
         <div className="flex flex-col mt-10 mb-10">
           <LowestRatedSection />

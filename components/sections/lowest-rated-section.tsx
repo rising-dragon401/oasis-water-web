@@ -11,7 +11,7 @@ export default async function LowestRatedSection() {
     <div>
       <div className="py-4 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Lowest rated
+          Lowest rated bottled water
         </Typography>
 
         <Link href="/search/bottled-water" className="underline italic text-primary">

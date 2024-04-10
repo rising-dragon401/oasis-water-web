@@ -2,5 +2,6 @@
 
 import blog__how_we_score_waterMdx from './blog__how_we_score_water.mdx.json' assert { type: 'json' }
 import blog__is_flouride_bad_for_youMdx from './blog__is_flouride_bad_for_you.mdx.json' assert { type: 'json' }
+import blog__water_testing_parterMdx from './blog__water_testing_parter.mdx.json' assert { type: 'json' }
 
-export const allPosts = [blog__how_we_score_waterMdx, blog__is_flouride_bad_for_youMdx]
+export const allPosts = [blog__how_we_score_waterMdx, blog__is_flouride_bad_for_youMdx, blog__water_testing_parterMdx]

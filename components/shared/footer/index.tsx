@@ -167,7 +167,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link href="/blog" className="text-secondary  transition duration-150 ease-in-out">
+                <Link href="/faqs" className="text-secondary  transition duration-150 ease-in-out">
                   FAQs
                 </Link>
               </li>

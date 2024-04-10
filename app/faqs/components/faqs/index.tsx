@@ -24,7 +24,7 @@ const FAQ_LIST = [
     value: 'affiliate-links',
     trigger: 'Do you use affilite links?',
     content:
-      'We do add affiliate links to the highest recommended products, usually those with a score above 80. We do this to provide to help direct people to the best products and to help fund Oasis.',
+      'We do add affiliate links to help fund this project and to help direct people to where to buy each product.',
   },
 ]
 
