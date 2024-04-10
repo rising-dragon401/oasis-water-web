@@ -5,6 +5,7 @@ import React from 'react'
 import { getRecommendedFilter } from '@/app/actions/filters'
 import { useEffect, useState } from 'react'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
+import PaywallContent from '@/components/shared/paywall-content'
 
 type RecommendedFilterRowProps = {
   contaminants: any[]
@@ -32,14 +33,16 @@ export default function RecommendedFilterRow({ contaminants }: RecommendedFilter
         </Typography>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar">
-        {recommended &&
-          recommended.map((item: any) => (
-            <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard item={item} />
-            </div>
-          ))}
-      </div>
+      <PaywallContent label="Unlock recommended filter">
+        <div className="flex overflow-x-auto gap-6 hide-scrollbar">
+          {recommended &&
+            recommended.map((item: any) => (
+              <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
+                <ItemPreviewCard item={item} />
+              </div>
+            ))}
+        </div>
+      </PaywallContent>
     </div>
   )
 }

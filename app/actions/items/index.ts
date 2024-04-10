@@ -36,63 +36,69 @@ export const getItem = async (id: string) => {
   return item
 }
 
-export const getItemDetails = async (id: string, allIngredients: Ingredient[]) => {
+export const getItemDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
-
   try {
-    const { data: item, error } = await supabase.from('items').select().eq('id', id).single()
+    const { data: item, error } = await supabase
+      .from('items')
+      .select(`*, brand:brands(*), company:companies(*)`)
+      .eq('id', id)
+      .single()
 
     if (!item) {
       return null
     }
 
-    const brandPromise = item.brand
-      ? supabase.from('brands').select().eq('id', item.brand).single()
-      : Promise.resolve(null)
-    const companyPromise = item.company
-      ? supabase.from('companies').select().eq('id', item.company).single()
-      : Promise.resolve(null)
-    const ingredients = item.ingredients as IngredientDescriptor[]
+    const ingredientIds = item.ingredients
+      ? (item.ingredients as IngredientDescriptor[])
+          .filter(Boolean)
+          .map((ingredient: IngredientDescriptor) => ingredient.ingredient_id)
+      : []
 
-    // Fetching ingredients with their legal limits and health guidelines
-    const [brandResult, companyResult] = await Promise.all([brandPromise, companyPromise])
+    const { data: ingredients, error: ingredientsError } = await supabase
+      .from('ingredients')
+      .select('*')
+      .in('id', ingredientIds)
 
-    let brand = brandResult?.data ? brandResult.data : null
-    let company = companyResult?.data ? companyResult.data : null
+    const ingredientsMap = ingredients?.reduce((map, ingredient) => {
+      map[ingredient.id] = ingredient
+      return map
+    }, {} as Record<string, Ingredient>)
 
-    // Map through ingredients to compare amount with legal_limit and health_guideline
-    const detailedIngredients = ingredients
-      ?.map((ingredient: IngredientDescriptor) => {
-        if (!ingredient || !ingredient?.ingredient_id) return null
+    const detailedIngredients = item.ingredients
+      ? item.ingredients
+          .filter(Boolean)
+          .map((ingredient: any) => {
+            if (!ingredient.ingredient_id) return null
 
-        const detail = allIngredients.find((d) => d.id === ingredient?.ingredient_id) as any
+            if (!ingredientsMap) return null
 
-        let limit = detail?.legal_limit || 0
-        if (detail?.health_guideline) {
-          limit = detail.health_guideline
-        }
-
-        let exceedingLimit = 0
-        if (limit && ingredient.amount) {
-          exceedingLimit = Math.round(ingredient.amount / limit)
-        }
-
-        return {
-          ...detail,
-          amount: ingredient.amount,
-          legal_limit: detail?.legal_limit,
-          health_guideline: detail?.health_guideline,
-          exceedingLimit: exceedingLimit,
-        }
-      })
-      ?.filter((ingredient) => ingredient !== null)
+            const detail = ingredientsMap[ingredient.ingredient_id]
+            let limit = detail?.legal_limit || 0
+            if (detail?.health_guideline) {
+              limit = detail.health_guideline
+            }
+            let exceedingLimit = 0
+            if (limit && ingredient.amount) {
+              exceedingLimit = Math.round(ingredient.amount / limit)
+            }
+            return {
+              ...detail,
+              amount: ingredient.amount,
+              legal_limit: detail?.legal_limit,
+              health_guideline: detail?.health_guideline,
+              exceedingLimit: exceedingLimit,
+            }
+          })
+          ?.filter((ingredient) => ingredient !== null)
+      : []
 
     const itemWithDetails = {
       ...item,
-      brand,
+      brand: item.brand,
       ingredients: detailedIngredients,
-      company,
-      contaminants: detailedIngredients?.filter((ingredient) => ingredient.is_contaminant),
+      company: item.company,
+      contaminants: detailedIngredients?.filter((ingredient) => ingredient?.is_contaminant),
     }
 
     return itemWithDetails

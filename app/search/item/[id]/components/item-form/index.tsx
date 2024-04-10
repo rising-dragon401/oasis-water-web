@@ -27,14 +27,9 @@ export default function ItemForm({ id }: Props) {
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
 
-  const { data: allIngredients } = useSWR('ingredients', getIngredients)
-
   const fetchItem = async (id: string) => {
-    if (!allIngredients) {
-      return
-    }
-
-    const item = await getItemDetails(id, allIngredients)
+    console.log('get item details')
+    const item = await getItemDetails(id)
 
     if (item) {
       setItem(item)
@@ -47,14 +42,13 @@ export default function ItemForm({ id }: Props) {
   useEffect(() => {
     fetchItem(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, allIngredients])
+  }, [id])
 
   const contaminants = item?.contaminants || []
 
   const fluorideContaminant = item.contaminants?.find(
     (contaminant: { name: string }) => contaminant.name.toLowerCase() === 'fluoride'
   )
-  console.log('fluorideContaminant', fluorideContaminant)
   const fluorideValue = fluorideContaminant ? `${fluorideContaminant.amount} ppm` : 'Not Detected'
 
   const sortedContaminants = contaminants.sort(
@@ -68,8 +62,6 @@ export default function ItemForm({ id }: Props) {
   if (isLoading || !item) {
     return <ItemSkeleton />
   }
-
-  console.log('item', item)
 
   return (
     <div className="flex-col flex w-full">

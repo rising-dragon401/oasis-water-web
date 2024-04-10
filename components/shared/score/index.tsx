@@ -73,7 +73,7 @@ export default function Score({ score, isFull }: Props) {
       >
         <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
           <PaywallContent label="" hideButton={true}>
-            <span>{score}</span>
+            {score}
           </PaywallContent>
           / 100
         </Typography>
