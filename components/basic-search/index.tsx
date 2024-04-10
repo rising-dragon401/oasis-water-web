@@ -19,9 +19,15 @@ const client = algoliasearch(
 export default function BasicSearch({
   showSearch,
   size,
+  indices,
+  placeholder,
+  numResults,
 }: {
   showSearch: boolean
   size: 'small' | 'medium' | 'large'
+  indices?: string[]
+  placeholder?: string
+  numResults?: number
 }) {
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
   const [query, setQuery] = React.useState<string>('')
@@ -63,43 +69,54 @@ export default function BasicSearch({
   const handleSearch = async (query: string) => {
     setIsLoading(true)
 
-    const queries = [
-      {
-        indexName: 'items',
+    let queries: any[] = []
+    if (indices) {
+      queries = indices.map((index) => ({
+        indexName: index,
         query: query,
         params: {
-          hitsPerPage: 5,
+          hitsPerPage: numResults || 5,
         },
-      },
-      {
-        indexName: 'tap_water_locations',
-        query: query,
-        params: {
-          hitsPerPage: 5,
+      }))
+    } else {
+      queries = [
+        {
+          indexName: 'items',
+          query: query,
+          params: {
+            hitsPerPage: numResults || 5,
+          },
         },
-      },
-      {
-        indexName: 'water_filters',
-        query: query,
-        params: {
-          hitsPerPage: 3,
+        {
+          indexName: 'tap_water_locations',
+          query: query,
+          params: {
+            hitsPerPage: numResults || 5,
+          },
         },
-      },
-      {
-        indexName: 'ingredients',
-        query: query,
-        params: {
-          hitsPerPage: 3,
+        {
+          indexName: 'water_filters',
+          query: query,
+          params: {
+            hitsPerPage: numResults || 3,
+          },
         },
-      },
-      {
-        indexName: 'companies',
-        query: query,
-        params: {
-          hitsPerPage: 3,
+        {
+          indexName: 'ingredients',
+          query: query,
+          params: {
+            hitsPerPage: numResults || 3,
+          },
         },
-      },
-    ]
+        {
+          indexName: 'companies',
+          query: query,
+          params: {
+            hitsPerPage: numResults || 3,
+          },
+        },
+      ]
+    }
 
     await client.multipleQueries(queries).then(({ results }) => {
       const hits = results.map((result: any) => result.hits)
@@ -144,7 +161,7 @@ export default function BasicSearch({
         <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
           <div className="relative">
             <Input
-              placeholder="Search water..."
+              placeholder={placeholder || 'Search water...'}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
@@ -159,7 +176,7 @@ export default function BasicSearch({
               <AISearchDialog size={size} />
             </div>
           </div>
-          {query.length > 2 && inputFocused && queryCompleted && (
+          {query.length > 1 && inputFocused && queryCompleted && (
             <div
               className={`flex flex-col gap-2 bg-muted border-secondary-foreground border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 ${getSearchTop()}`}
             >

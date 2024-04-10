@@ -15,9 +15,14 @@ export default function IngredientsCard({ ingredients }: Props) {
     <>
       {nonContaminantIngredients?.map((ingredient, index) => (
         <div key={index}>
-          <Typography size="lg" fontWeight="normal" className="mb-4 text-secondary">
-            {ingredient.name}
-          </Typography>
+          <div className="flex flex-row justify-between items-center w-full">
+            <Typography size="lg" fontWeight="normal" className="mb-4 text-secondary">
+              {ingredient.name}
+            </Typography>
+            <Typography size="base" fontWeight="normal" className="mb-4 text-secondary">
+              {ingredient.amount} {ingredient.measure}
+            </Typography>
+          </div>
 
           <div className="ml-4">
             <Typography size="base" fontWeight="normal" className="text-secondary">

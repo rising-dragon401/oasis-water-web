@@ -40,41 +40,43 @@ export const getLocationDetails = async (id: string, allIngredients: Ingredient[
     return null
   }
 
-  const cleanUtilities = await Promise.all(
-    location.utilities?.map(async (utility: any) => {
+  // Assuming utility processing doesn't inherently require async operations
+  const cleanUtilities =
+    location.utilities?.map((utility: any) => {
       if (!utility) return null
 
-      const cleanedContaminants = await Promise.all(
-        utility.contaminants.map(async (contaminant: IngredientDescriptor) => {
-          // Find the matching ingredient from the fetched ingredients
-          const ingredient = allIngredients.find(
-            (ingredient) => ingredient.id === contaminant.ingredient_id
-          )
+      const cleanedContaminants = utility.contaminants.map((contaminant: IngredientDescriptor) => {
+        const ingredient = allIngredients.find(
+          (ingredient) => ingredient.id === contaminant.ingredient_id
+        )
 
-          let limit = ingredient?.legal_limit || ingredient?.health_guideline || 0
+        let limit = ingredient?.legal_limit || ingredient?.health_guideline || 0
+        let exceedingLimit = 0
+        if (limit && contaminant.amount) {
+          exceedingLimit = Math.round(contaminant.amount / limit)
+        }
 
-          let exceedingLimit = 0
-          if (limit && contaminant.amount) {
-            exceedingLimit = Math.round(contaminant.amount / limit)
-          }
+        return {
+          ...ingredient,
+          ingredient_id: contaminant.ingredient_id,
+          amount: contaminant.amount,
+          exceedingLimit: exceedingLimit > 0 ? exceedingLimit : null,
+        }
+      })
 
-          return {
-            ...ingredient,
-            ingredient_id: contaminant.ingredient_id,
-            amount: contaminant.amount,
-            exceedingLimit: exceedingLimit > 0 ? exceedingLimit : null,
-          }
-        })
+      cleanedContaminants.sort(
+        (a: { exceedingLimit: number | null }, b: { exceedingLimit: number | null }) => {
+          // Assuming exceedingLimit can be null, handle nulls in your comparison logic
+          if (a.exceedingLimit === null) return 1
+          if (b.exceedingLimit === null) return -1
+          return b.exceedingLimit - a.exceedingLimit
+        }
       )
-
-      cleanedContaminants.sort((a, b) => b.exceedingLimit - a.exceedingLimit)
-
       return {
         ...utility,
         contaminants: cleanedContaminants,
       }
     }) || []
-  )
 
   const locationWithDetails = {
     ...location,

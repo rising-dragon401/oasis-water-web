@@ -15,13 +15,12 @@ type Props = {
 }
 
 export default function ContaminantCard({ data }: Props) {
-  console.log('ContaminantCard data', data)
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex flex-col w-full justify-between relative">
           <div className="w-full flex flex-row justify-between items-top">
-            <div className="max-w-72">{data?.name}</div>
+            <div className="max-w-48 break-words flex-wrap">{data?.name}</div>
             {data.exceedingLimit !== undefined &&
               data.exceedingLimit !== null &&
               data.exceedingLimit > 0 && (
