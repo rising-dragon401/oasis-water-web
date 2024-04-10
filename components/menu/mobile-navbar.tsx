@@ -76,6 +76,10 @@ export default function MobileNavbar() {
               <Link href="/blog/how_we_score_water">How Scoring Works</Link>
             </DropdownMenuItem>
 
+            <DropdownMenuItem className="my-2 justify-start">
+              <Link href="/blog/water_testing_parter">Test your water</Link>
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
 
             <ManageSubscriptionButton />
