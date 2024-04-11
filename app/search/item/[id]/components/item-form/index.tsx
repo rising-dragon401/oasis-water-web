@@ -57,7 +57,14 @@ export default function ItemForm({ id }: Props) {
     }
   )
 
-  const hasNanoplastics = item.packaging === 'plastic' || item.packaging === 'alumnimum'
+  const nanoPlasticsValue =
+    item.packaging === 'plastic'
+      ? 'Yes'
+      : item.packaging === 'aluminum' ||
+        item.packaging === 'aluminum (can)' ||
+        item.packaging === 'cardboard'
+      ? 'Some'
+      : 'No'
 
   if (isLoading || !item) {
     return <ItemSkeleton />
@@ -97,7 +104,7 @@ export default function ItemForm({ id }: Props) {
                       labelClassName="text-red-500"
                     />
 
-                    <BlurredLineItem label="Microplastics" value={hasNanoplastics ? 'Yes' : 'No'} />
+                    <BlurredLineItem label="Microplastics" value={nanoPlasticsValue} />
 
                     <BlurredLineItem label="Fluoride" value={fluorideValue} />
 
