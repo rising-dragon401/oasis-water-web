@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect } from 'react'
 import { getCurrentUserData } from '@/app/actions/user'
 import { createClient } from '@/utils/supabase/client'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type SupabaseContext = {
   supabase: any
@@ -31,6 +32,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
       const userData = await getCurrentUserData()
 
       if (event === 'SIGNED_IN' && session?.access_token && pathname.startsWith('/auth')) {
+        toast('Logged in')
         router.push('/')
       }
 

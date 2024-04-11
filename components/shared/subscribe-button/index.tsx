@@ -10,7 +10,7 @@ export default function SubscribeButton({ label }: { label?: string }) {
     <>
       <SubscribeModal open={open} setOpen={setOpen} />
 
-      <Button variant="default" className="w-full" onClick={() => setOpen(true)}>
+      <Button variant="default" className="w-full rounded-full" onClick={() => setOpen(true)}>
         <Plus size={16} className="mr-2" />
         {label || 'Upgrade'}
       </Button>

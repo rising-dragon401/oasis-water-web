@@ -16,7 +16,7 @@ export default function ItemPreviewCard({ item }: Props) {
   const renderScore = () => {
     const score = item?.score || 0
 
-    const color = score > 70 ? 'text-green-500' : score > 40 ? 'text-yellow-500' : 'text-red-500'
+    const color = score >= 70 ? 'text-green-500' : score >= 40 ? 'text-yellow-500' : 'text-red-500'
 
     return (
       <div>
