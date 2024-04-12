@@ -3,7 +3,6 @@
 import Typography from '@/components/typography'
 import { getLocationDetails } from '@/app/actions/locations'
 import React, { useEffect, useState, Suspense } from 'react'
-import Image from 'next/image'
 import Score from '@/components/shared/score'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
@@ -18,6 +17,7 @@ import {
 import useSWR from 'swr'
 import { getIngredients } from '@/app/actions/ingredients'
 import PaywallContent from '@/components/shared/paywall-content'
+import ItemImage from '@/components/shared/item-image'
 
 type Props = {
   id: string
@@ -52,17 +52,13 @@ export default function LocationForm({ id }: Props) {
 
   return (
     <div className="flex-col flex w-full">
-      <div className="md:py-10 py-6">
+      <div className="md:py-10 py-6 px-2">
         <div className="flex md:flex-row flex-col gap-6">
-          <Image
-            src={location.image}
-            alt={location.name}
-            width={400}
-            height={400}
-            className="md:w-1/2 w-full h-full rounded-lg object-cover"
-          />
+          <div className="flex justify-center w-full md:w-1/2">
+            <ItemImage src={location.image} alt={location.name} />
+          </div>
 
-          <div className="flex md:flex-col flex-row gap-6 w-full">
+          <div className="flex md:flex-col flex-row w-full">
             <Typography size="3xl" fontWeight="normal" className="w-2/3">
               {location.name} Tap Water
             </Typography>

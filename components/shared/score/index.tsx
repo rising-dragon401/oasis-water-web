@@ -15,13 +15,16 @@ type Props = {
 export default function Score({ score, isFull }: Props) {
   const { isMobile } = useDevice()
 
-  const radius = !isMobile || isFull ? 80 : 40
+  const radius = !isMobile || isFull ? 80 : 60
   const strokeWidth = 6
   const svgSize = 2 * (radius + strokeWidth) // Adjust SVG size to accommodate stroke
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (score / 100) * circumference
 
   const fontSize = !isMobile || isFull ? 20 : 12
+
+  const color =
+    score >= 70 ? 'stroke-green-500' : score >= 40 ? 'stroke-yellow-500' : 'stroke-red-500'
 
   const grade = () => {
     if (score >= 90) {
@@ -46,8 +49,7 @@ export default function Score({ score, isFull }: Props) {
     >
       <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
         <circle
-          className="stroke-secondary-muted"
-          stroke="#c5caf5"
+          className={`${color} opacity-30`}
           strokeWidth={strokeWidth}
           fill="transparent"
           r={radius}
@@ -55,8 +57,7 @@ export default function Score({ score, isFull }: Props) {
           cy={svgSize / 2} // Center circle
         />
         <circle
-          className="stroke-primary"
-          stroke="#6b46c1"
+          className={color}
           strokeWidth={strokeWidth}
           strokeDasharray={`${circumference} ${circumference}`}
           strokeDashoffset={offset}
