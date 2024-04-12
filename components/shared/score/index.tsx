@@ -32,7 +32,7 @@ export default function Score({ score, isFull }: Props) {
       return 'Poor'
     } else if (score >= 35) {
       return 'Bad'
-    } else if (score >= 25) {
+    } else {
       return 'Very Bad'
     }
   }

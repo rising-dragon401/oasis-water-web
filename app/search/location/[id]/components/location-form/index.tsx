@@ -62,20 +62,22 @@ export default function LocationForm({ id }: Props) {
             className="md:w-1/2 w-full h-full rounded-lg object-cover"
           />
 
-          <div className="flex flex-col gap-6 ">
-            <Typography size="3xl" fontWeight="normal">
+          <div className="flex md:flex-col flex-row gap-6 w-full">
+            <Typography size="3xl" fontWeight="normal" className="w-2/3">
               {location.name} Tap Water
             </Typography>
 
-            <Score
-              score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
-              isFull={true}
-            />
+            <div className="w-1/3">
+              <Score
+                score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
+                isFull={false}
+              />
+            </div>
           </div>
         </div>
 
         {location?.utilities && (
-          <div className="flex flex-col gap-6 mt-10">
+          <div className="flex flex-col mt-4">
             <Typography size="2xl" fontWeight="normal">
               Water Utilities
             </Typography>
@@ -92,6 +94,7 @@ export default function LocationForm({ id }: Props) {
                       <Typography size="base" fontWeight="normal" className="flex flex-row gap-4">
                         Score:
                         <PaywallContent label="" hideButton={true}>
+                          {` `}
                           {utility.score}
                         </PaywallContent>
                       </Typography>
