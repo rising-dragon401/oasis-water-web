@@ -2,7 +2,7 @@
 
 import Typography from '@/components/typography'
 import { getLocationDetails } from '@/app/actions/locations'
-import React, { useEffect, useState, Suspense } from 'react'
+import React, { useEffect, useState } from 'react'
 import Score from '@/components/shared/score'
 import ItemSkeleton from '../item-skeleton'
 import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
@@ -18,6 +18,7 @@ import useSWR from 'swr'
 import { getIngredients } from '@/app/actions/ingredients'
 import PaywallContent from '@/components/shared/paywall-content'
 import ItemImage from '@/components/shared/item-image'
+import { incrementItemsViewed } from '@/app/actions/user'
 
 type Props = {
   id: string
@@ -38,6 +39,8 @@ export default function LocationForm({ id }: Props) {
     const location = await getLocationDetails(id, allIngredients)
     setLocation(location)
     setIsLoading(false)
+    incrementItemsViewed()
+
     return location
   }
 

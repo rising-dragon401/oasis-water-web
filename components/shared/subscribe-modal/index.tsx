@@ -28,7 +28,7 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: 'Access all ratings and data',
+    label: 'Unlock all ratings and data',
     icon: <FlaskConical className="w-4 h-4" />,
   },
   {
@@ -114,7 +114,7 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             height={200}
             className="rounded-lg h-40 object-cover object-center"
           />
-          <Typography size="lg" fontWeight="bold" className="text-center">
+          <Typography size="xl" fontWeight="bold" className="text-center">
             ${kSubscriptionPrice} /mo
           </Typography>
           <DialogDescription className="text-center">
@@ -145,8 +145,8 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             onClick={redirectToPayment}
             loading={loadingCheckoutSession}
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Unlock Oasis Pro
+            <Plus className="w-4 h-4 mr-2 " />
+            Upgrade
             {/* Upgrade ${kSubscriptionPrice} /mo */}
           </Button>
         </DialogFooter>

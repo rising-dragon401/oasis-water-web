@@ -13,11 +13,10 @@ import { ArrowUpRight } from 'lucide-react'
 import ContaminantCard from '@/components/contamintant-card'
 import Sources from '@/components/shared/sources'
 import Link from 'next/link'
-import useSWR from 'swr'
-import { getIngredients } from '@/app/actions/ingredients'
 import PaywallContent from '@/components/shared/paywall-content'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
+import { incrementItemsViewed } from '@/app/actions/user'
 
 type Props = {
   id: string
@@ -36,6 +35,7 @@ export default function ItemForm({ id }: Props) {
     }
 
     setIsLoading(false)
+    incrementItemsViewed()
     return item
   }
 

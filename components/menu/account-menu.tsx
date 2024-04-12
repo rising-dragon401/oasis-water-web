@@ -17,9 +17,11 @@ import Link from 'next/link'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 import ManageSubscriptionButton from '../shared/manage-subscription-btn'
+import Typography from '@/components/typography'
+import SubscribeButton from '@/components/shared/subscribe-button'
 
 export function AccountMenu() {
-  const { userData, refreshUserData } = useUserProvider()
+  const { userData, refreshUserData, user, subscription } = useUserProvider()
 
   useEffect(() => {
     refreshUserData()
@@ -50,8 +52,13 @@ export function AccountMenu() {
                 )}
               </div>
             </Link>
+            <Typography size="sm" fontWeight="normal" className="mt-2">
+              Free reports left: {2 - (userData?.metadata?.items_viewed || 0)}
+            </Typography>
           </DropdownMenuLabel>
         )}
+
+        {user && !subscription && <SubscribeButton />}
 
         <DropdownMenuSeparator />
         {/* 

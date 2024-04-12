@@ -22,7 +22,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
   label,
 }) => {
   const router = useRouter()
-  const { user, subscription } = useUserProvider()
+  const { user, subscription, userData } = useUserProvider()
 
   const [open, setOpen] = useState(false)
 
@@ -40,7 +40,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
     }
   }
 
-  if (subscription) {
+  if (userData?.metadata?.items_viewed < 3 || subscription) {
     return <>{children}</>
   }
 
