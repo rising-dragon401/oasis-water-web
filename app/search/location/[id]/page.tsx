@@ -2,7 +2,6 @@ import SubpageLayout from '@/components/home-layout'
 import LocationForm from './components/location-form'
 import type { Metadata, ResolvingMetadata } from 'next'
 import { getLocation } from '@/app/actions/locations'
-import { OG_IMAGE } from '@/lib/constants/images'
 import { Item } from '@/types/custom'
 
 type Props = {

@@ -330,19 +330,15 @@ export const incrementItemsViewed = async () => {
     return null
   }
 
-  console.log('userData:', userData)
   // Increment items_viewed count
   // @ts-ignore
   const currentItemsViewed = userData.metadata?.items_viewed || 0
   const updatedItemsViewed = currentItemsViewed + 1
 
-  console.log('Incrementing items viewed:', updatedItemsViewed)
-  console.log('user.id:', user.id)
-
   // Update user metadata with new items_viewed count
   const { data, error } = await supabase
     .from('users')
-    .update({ metadata: { items_viewed: 2 } })
+    .update({ metadata: { items_viewed: updatedItemsViewed } })
     .eq('id', user.id)
     .select()
 
