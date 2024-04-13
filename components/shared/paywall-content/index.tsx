@@ -48,7 +48,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
       pathname.includes('/search/location') ||
       pathname.includes('/search/filter'))
 
-  if (isWithinFreeTier || subscription) {
+  if (subscription) {
     return <>{children}</>
   }
 

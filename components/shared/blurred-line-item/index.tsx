@@ -33,7 +33,8 @@ export default function BlurredLineItem({ label, value, labelClassName }: Blurre
     }
   }
 
-  const showPaywall = !subscription && user?.metadata?.items_viewed < 3
+  const showPaywall = !subscription
+  // && user?.metadata?.items_viewed < 3
 
   return (
     <div>
