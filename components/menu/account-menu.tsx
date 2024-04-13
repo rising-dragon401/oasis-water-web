@@ -52,9 +52,9 @@ export function AccountMenu() {
                 )}
               </div>
             </Link>
-            <Typography size="sm" fontWeight="normal" className="mt-2">
+            {/* <Typography size="sm" fontWeight="normal" className="mt-2">
               Free reports left: {2 - (userData?.metadata?.items_viewed || 0)}
-            </Typography>
+            </Typography> */}
           </DropdownMenuLabel>
         )}
 

@@ -51,7 +51,7 @@ export default function MobileNavbar() {
             <DropdownMenuItem className="my-2 justify-start">
               <Link href="/search/bottled-water" className="flex flex-row gap-2 items-center">
                 <Milk className="text-secondary w-4 h-4" />
-                Bottled water
+                Bottled waters
               </Link>
             </DropdownMenuItem>
 

@@ -57,7 +57,7 @@ export default function BottledWaterList({ items }: Props) {
     <div>
       <SubscribeModal open={open} setOpen={setOpen} />
 
-      <div className="pt-4 pb-8 flex flex-row justify-between md:mt-6">
+      <div className="py-4 flex flex-row justify-between md:mt-6">
         <Typography size="3xl" fontWeight="normal">
           Bottled water ratings
         </Typography>
@@ -86,6 +86,8 @@ export default function BottledWaterList({ items }: Props) {
           </DropdownMenu>
         </div>
       </div>
+
+      <SubscribeButton label="Unlock ranked list of top waters" className="w-70" />
 
       <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6 ">
         {sorted &&

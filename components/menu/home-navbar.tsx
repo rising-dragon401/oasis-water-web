@@ -28,7 +28,7 @@ const components: {
   logo: React.ReactNode
 }[] = [
   {
-    title: 'Bottled water',
+    title: 'Bottled waters',
     href: '/search/bottled-water',
     description: 'Discover the health rating of your bottled water.',
     logo: <Milk className="text-secondary w-4 h-4" />,

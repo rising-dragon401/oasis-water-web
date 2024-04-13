@@ -15,7 +15,7 @@ export default function SignUpButton({ referral }: { referral?: string }) {
 
   return (
     <Link href="/auth/signin">
-      <Button variant="default">Unlock your health</Button>
+      <Button variant="default">Sign up</Button>
     </Link>
   )
 }

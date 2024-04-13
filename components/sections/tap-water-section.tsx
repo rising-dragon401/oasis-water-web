@@ -11,7 +11,7 @@ export default async function TapWaterSection() {
     <div>
       <div className="py-4 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Tap water ratings
+          Tap water
         </Typography>
 
         <Link href="/search/tap-water" className="underline italic text-primary">

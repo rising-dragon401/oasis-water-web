@@ -86,7 +86,7 @@ export default function Footer() {
                   href="/search/bottled-water"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
-                  Bottled water
+                  Top bottled water
                 </Link>
               </li>
               <li>
@@ -102,7 +102,7 @@ export default function Footer() {
                   href="/filters"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
-                  Water filters
+                  Top filters
                 </Link>
               </li>
               <li>
