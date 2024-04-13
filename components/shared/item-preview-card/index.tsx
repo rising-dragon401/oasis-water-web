@@ -68,7 +68,7 @@ export default function ItemPreviewCard({ item }: Props) {
           <Typography
             size="lg"
             fontWeight="bold"
-            className="!no-underline text-primary overflow-hidden max-w-64 text-ellipsis	"
+            className="!no-underline text-primary overflow-hidden max-w-64 max-h-14 whitespace-nowrap overflow-ellipsis"
           >
             {item.name}
           </Typography>

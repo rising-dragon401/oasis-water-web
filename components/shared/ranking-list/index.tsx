@@ -2,7 +2,7 @@
 
 import Typography from '@/components/typography'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Item } from '@/types/custom'
+import { Item, WaterFilter } from '@/types/custom'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import {
   DropdownMenu,
@@ -16,10 +16,11 @@ import { SubscribeModal } from '@/components/shared/subscribe-modal'
 import SubscribeButton from '@/components/shared/subscribe-button'
 
 type Props = {
-  items: Item[] | null
+  title: string
+  items: Item[] | WaterFilter[] | null
 }
 
-export default function BottledWaterList({ items }: Props) {
+export default function RankingList({ title, items }: Props) {
   const { subscription } = useUserProvider()
   const [sortMethod, setSortMethod] = useState('name')
   const [open, setOpen] = useState(false)
@@ -59,7 +60,7 @@ export default function BottledWaterList({ items }: Props) {
 
       <div className="py-4 flex flex-row justify-between md:mt-6">
         <Typography size="3xl" fontWeight="normal">
-          Bottled water ratings
+          {title}
         </Typography>
 
         <div className="flex flex-row gap-4">
@@ -87,7 +88,9 @@ export default function BottledWaterList({ items }: Props) {
         </div>
       </div>
 
-      <SubscribeButton label="Unlock ranked list of top waters" className="w-70" />
+      <div className="w-full justify-center flex flex-row gap-4">
+        <SubscribeButton label="Unlock ranked list sorted by score" className="w-70" />
+      </div>
 
       <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6 ">
         {sorted &&
@@ -98,7 +101,7 @@ export default function BottledWaterList({ items }: Props) {
 
       <div className="pt-4 pb-8 flex flex-row justify-between mt-24">
         <Typography size="3xl" fontWeight="normal">
-          ⚠️ NO WATER REPORTS LOCATED
+          ⚠️ NO REPORTS LOCATED
         </Typography>
       </div>
 

@@ -1,5 +1,5 @@
 import { getFilters } from '@/app/actions/filters'
-import FilterList from './components/filter-list'
+import RankingList from '@/components/shared/ranking-list'
 import SubpageLayout from '@/components/home-layout'
 
 export default async function FiltersPage() {
@@ -7,7 +7,7 @@ export default async function FiltersPage() {
 
   return (
     <SubpageLayout>
-      <FilterList filters={filters} />
+      <RankingList title="Water filters" items={filters} />
     </SubpageLayout>
   )
 }
