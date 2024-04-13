@@ -68,7 +68,7 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
   const redirectToPayment = async () => {
     if (!user) {
-      toast('Please login and subscribefirst')
+      toast('Please login and subscribe to access this content')
       router.push('/auth/signin')
       return
     }
