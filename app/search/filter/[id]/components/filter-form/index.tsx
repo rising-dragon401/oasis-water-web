@@ -17,6 +17,7 @@ import ContaminantTable from '../contaminant-table'
 import PaywallContent from '@/components/shared/paywall-content'
 import ItemImage from '@/components/shared/item-image'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
+import { incrementItemsViewed } from '@/app/actions/user'
 
 type Props = {
   id: string
@@ -38,6 +39,8 @@ export default function FilterForm({ id }: Props) {
     setFilter(filter)
 
     setIsLoading(false)
+    incrementItemsViewed()
+
     return filter
   }
 

@@ -23,11 +23,12 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           <HomeNavbar />
 
           <div className="flex justify-end items-center gap-2">
-            {user && !subscription && <SubscribeButton />}
             <BasicSearch showSearch={false} size="small" />
 
             {user ? (
-              <AccountMenu />
+              <div className="flex flex-row gap-2">
+                <AccountMenu />
+              </div>
             ) : (
               <div className="flex flex-row gap-4 items-center ml-4 w-full">
                 <Link href="/auth/signin" className="text-sm">

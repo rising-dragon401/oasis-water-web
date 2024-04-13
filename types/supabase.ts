@@ -578,6 +578,7 @@ export type Database = {
           email: string | null
           full_name: string | null
           id: string
+          metadata: Json | null
           payment_method: Json | null
           permissions: Database["public"]["Enums"]["permission"] | null
         }
@@ -588,6 +589,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id: string
+          metadata?: Json | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
         }
@@ -598,6 +600,7 @@ export type Database = {
           email?: string | null
           full_name?: string | null
           id?: string
+          metadata?: Json | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
         }
@@ -621,6 +624,7 @@ export type Database = {
           description: string | null
           id: number
           image: string | null
+          is_draft: boolean | null
           name: string
           recommended: boolean | null
           score: number | null
@@ -636,6 +640,7 @@ export type Database = {
           description?: string | null
           id?: number
           image?: string | null
+          is_draft?: boolean | null
           name: string
           recommended?: boolean | null
           score?: number | null
@@ -651,6 +656,7 @@ export type Database = {
           description?: string | null
           id?: number
           image?: string | null
+          is_draft?: boolean | null
           name?: string
           recommended?: boolean | null
           score?: number | null
@@ -807,10 +813,18 @@ export type Database = {
         | "mountain_spring"
         | "aquifer"
         | "iceberg"
+        | "spring"
         | "well"
+        | "rain"
+        | "unknown"
       email_subscriptions: "newsletter"
       item_type: "bottled_water" | "tap_water" | "filter"
-      packaging: "plastic" | "glass" | "cardboard" | "aluminum"
+      packaging:
+        | "plastic"
+        | "glass"
+        | "cardboard"
+        | "aluminum"
+        | "aluminum (can)"
       permission: "admin" | "manager" | "user"
       pricing_plan_interval: "day" | "week" | "month" | "year"
       pricing_type: "one_time" | "recurring"
@@ -835,6 +849,7 @@ export type Database = {
         | "Mineral Addition"
         | "Aeration"
         | "Ionization"
+        | "Natural"
     }
     CompositeTypes: {
       [_ in never]: never

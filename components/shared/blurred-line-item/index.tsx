@@ -33,6 +33,8 @@ export default function BlurredLineItem({ label, value, labelClassName }: Blurre
     }
   }
 
+  const showPaywall = !subscription && user?.metadata?.items_viewed < 3
+
   return (
     <div>
       <SubscribeModal open={open} setOpen={setOpen} />
@@ -40,10 +42,10 @@ export default function BlurredLineItem({ label, value, labelClassName }: Blurre
       <Typography size="base" fontWeight="normal" className="text-secondary my-0">
         <span className={labelClassName}>{label}:</span>{' '}
         <span
-          onClick={!subscription ? handleOpenPaywall : undefined}
+          onClick={showPaywall ? handleOpenPaywall : undefined}
           style={{
-            filter: !subscription ? 'blur(4px)' : 'none',
-            cursor: !subscription ? 'pointer' : 'default',
+            filter: showPaywall ? 'blur(4px)' : 'none',
+            cursor: showPaywall ? 'pointer' : 'default',
             minWidth: '3rem',
           }}
           className="min-w-14"

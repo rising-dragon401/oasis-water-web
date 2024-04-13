@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Lock } from 'lucide-react'
 import { useUserProvider } from '@/providers/UserProvider'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 type PaywallContentProps = {
   children: React.ReactNode
@@ -22,7 +22,8 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
   label,
 }) => {
   const router = useRouter()
-  const { user, subscription } = useUserProvider()
+  const pathname = usePathname()
+  const { user, subscription, userData } = useUserProvider()
 
   const [open, setOpen] = useState(false)
 
@@ -40,7 +41,14 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
     }
   }
 
-  if (subscription) {
+  // Dont't want to show scores on non-listing pages
+  const isWithinFreeTier =
+    userData?.metadata?.items_viewed < 3 &&
+    (pathname.includes('/search/item') ||
+      pathname.includes('/search/location') ||
+      pathname.includes('/search/filter'))
+
+  if (isWithinFreeTier || subscription) {
     return <>{children}</>
   }
 
