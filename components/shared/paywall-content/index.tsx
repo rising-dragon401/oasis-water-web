@@ -31,7 +31,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
     e.stopPropagation()
 
     if (!user) {
-      toast('Please login first.')
+      toast('Please login and subscribefirst')
       router.push('/auth/signin')
       return
     }

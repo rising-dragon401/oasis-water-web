@@ -23,7 +23,7 @@ export default function BlurredLineItem({ label, value, labelClassName }: Blurre
     e.stopPropagation()
 
     if (!user) {
-      toast('Please login first.')
+      toast('Please login and subscribefirst')
       router.push('/auth/signin')
       return
     }
