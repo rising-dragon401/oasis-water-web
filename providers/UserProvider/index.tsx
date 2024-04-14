@@ -42,65 +42,56 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
   const [emailSubscriptions, setEmailSubscriptions] = useState<any[] | null | undefined>(null)
 
-  const fetchUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    setUser(user)
-    setProvider(user?.app_metadata?.provider)
-
-    if (user) {
-      setUserId(user.id)
-    } else {
-      setUserId(null)
-    }
+  const initUser = async (session: any) => {
+    setUser(session.user)
+    setUserId(session.user?.id)
+    setProvider(session.user?.app_metadata?.provider)
   }
 
-  // fetch auth user on mount
   useEffect(() => {
-    fetchUser()
+    if (session) {
+      initUser(session)
+      refreshUserData()
+    } else {
+      clearUserData()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session])
 
-  useEffect(() => {
-    refreshUserData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, session])
-
-  const updateUserData = async () => {
+  const fetchUserData = async () => {
     const data = await getCurrentUserData()
     setUserData(data)
   }
 
-  const updateUserFavorites = async () => {
+  const fetchUserFavorites = async () => {
     const favs = await getUserFavorites()
     setUserFavorites(favs)
   }
 
-  const updateEmailSubscriptions = async (uid: string | null) => {
-    const res = await getEmailSubscriptions(uid)
+  const fetchEmailSubscriptions = async (uid: string | null) => {
+    const res = await getEmailSubscriptions()
     setEmailSubscriptions(res)
   }
 
-  const updateSubscription = async () => {
+  const fetchSubscription = async () => {
     const data = await getSubscription()
     setSubscription(data)
     return data
   }
 
-  const refreshUserData = () => {
-    updateUserData()
-    updateSubscription()
-    updateUserFavorites()
-    updateEmailSubscriptions(user?.id)
+  const refreshUserData = async () => {
+    await Promise.all([
+      fetchSubscription(),
+      fetchUserData(),
+      fetchUserFavorites(),
+      fetchEmailSubscriptions(user?.id),
+    ])
   }
 
   const logout = async () => {
     await supabase.auth.signOut()
     setSubscription(null)
-    await fetchUser()
-    await clearUserData()
+    clearUserData()
   }
 
   const clearUserData = () => {

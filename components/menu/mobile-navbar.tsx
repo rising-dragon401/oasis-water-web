@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
-import { Menu, X } from 'lucide-react'
 import React from 'react'
 import SignOutButton from './log-out-button'
 import { useEffect, useState } from 'react'
@@ -19,6 +18,8 @@ import { Droplet, Filter, Milk, Heart } from 'lucide-react'
 import SignUpButton from '../shared/sign-up-button'
 import ManageSubscriptionButton from '@/components/shared/manage-subscription-btn'
 import SubscribeButton from '@/components/shared/subscribe-button'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { PROFILE_AVATAR } from '@/lib/constants/images'
 
 export default function MobileNavbar() {
   const { uid, userData, subscription } = useUserProvider()
@@ -43,7 +44,9 @@ export default function MobileNavbar() {
       >
         <DropdownMenuTrigger asChild>
           <Button variant="ghost">
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <Avatar className="h-8 w-8 p-0">
+              <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
+            </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 mr-2 p-2" align="end">

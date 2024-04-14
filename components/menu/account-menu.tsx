@@ -17,7 +17,6 @@ import Link from 'next/link'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 import ManageSubscriptionButton from '../shared/manage-subscription-btn'
-import Typography from '@/components/typography'
 import SubscribeButton from '@/components/shared/subscribe-button'
 
 export function AccountMenu() {
@@ -25,7 +24,6 @@ export function AccountMenu() {
 
   useEffect(() => {
     refreshUserData()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -34,7 +32,7 @@ export function AccountMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full ">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={PROFILE_AVATAR} alt="maia pfp" />
+            <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -56,6 +54,12 @@ export function AccountMenu() {
               Free reports left: {2 - (userData?.metadata?.items_viewed || 0)}
             </Typography> */}
           </DropdownMenuLabel>
+        )}
+
+        {subscription && (
+          <p className="text-xs leading-none text-muted-foreground px-2">
+            Subscription: {subscription.plan}
+          </p>
         )}
 
         {user && !subscription && <SubscribeButton />}

@@ -11,10 +11,9 @@ import BasicSearch from '@/components/basic-search'
 import SignUpButton from '../shared/sign-up-button'
 import { AccountMenu } from '../menu/account-menu'
 import { useUserProvider } from '@/providers/UserProvider'
-import SubscribeButton from '@/components/shared/subscribe-button'
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
-  const { user, subscription } = useUserProvider()
+  const { user } = useUserProvider()
 
   return (
     <div className="min-h-[100vh] flex justify-center">
@@ -22,13 +21,11 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
 
-          <div className="flex justify-end items-center gap-2">
+          <div className="flex justify-end items-center">
             <BasicSearch showSearch={false} size="small" />
 
             {user ? (
-              <div className="flex flex-row gap-2">
-                <AccountMenu />
-              </div>
+              <AccountMenu />
             ) : (
               <div className="flex flex-row gap-4 items-center ml-4 w-full">
                 <Link href="/auth/signin" className="text-sm">

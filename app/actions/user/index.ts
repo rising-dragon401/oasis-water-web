@@ -33,6 +33,19 @@ export async function getCurrentUserData() {
     return null
   }
 
+  // generate avatar url
+  if (!data.avatar_url) {
+    const randomInt = Math.floor(Math.random() * 15) + 1
+    data.avatar_url = `https://connect.live-oasis.com/storage/v1/object/public/website/avatars/gradients/gradient-${randomInt}.png`
+
+    // update user with new avatar url
+    try {
+      await supabase.from('users').update({ avatar_url: data.avatar_url }).eq('id', user.id)
+    } catch (error) {
+      console.error('Error updating user avatar url:', error)
+    }
+  }
+
   const dataWithFields = {
     ...data,
     email: data.email || user.email,
@@ -246,7 +259,26 @@ export async function getSubscription() {
       .eq('user_id', user.id)
       .single()
 
-    return subscription
+    if (!subscription) {
+      return null
+    }
+
+    const activePlan = subscription?.prices?.products?.name
+
+    let planPlan = 'Free'
+    if (!activePlan) {
+      planPlan = 'Free'
+    } else if (
+      activePlan?.toLowerCase() === 'pro (test)' ||
+      activePlan?.toLowerCase() === 'pro (beta)'
+    ) {
+      planPlan = 'Pro'
+    }
+
+    return {
+      ...subscription,
+      plan: planPlan,
+    }
   } catch (error) {
     console.error('Error:', error)
     return null
@@ -278,12 +310,22 @@ export const getActiveProductsWithPrices = async () => {
   return data ?? []
 }
 
-export async function getEmailSubscriptions(uid: string | null) {
+export async function getEmailSubscriptions() {
+  const supabase = await createSupabaseServerClient()
+  const session = await getSession()
+
+  const user = session?.user
+
+  if (!user) {
+    return null
+  }
+
+  const uid = user.id
+
   if (!uid) {
     return null
   }
 
-  const supabase = await createSupabaseServerClient()
   const { data, error } = await supabase.from('email_lists').select('*').eq('uid', uid)
 
   if (error) {
