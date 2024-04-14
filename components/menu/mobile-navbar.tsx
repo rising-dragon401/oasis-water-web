@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
+import { Menu, X } from 'lucide-react'
 import React from 'react'
 import SignOutButton from './log-out-button'
 import { useEffect, useState } from 'react'
@@ -44,9 +45,13 @@ export default function MobileNavbar() {
       >
         <DropdownMenuTrigger asChild>
           <Button variant="ghost">
-            <Avatar className="h-8 w-8 p-0">
-              <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
-            </Avatar>
+            {userData ? (
+              <Avatar className="h-8 w-8 p-0">
+                <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
+              </Avatar>
+            ) : (
+              <>{isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}</>
+            )}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 mr-2 p-2" align="end">
