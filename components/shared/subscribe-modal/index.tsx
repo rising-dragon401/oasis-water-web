@@ -121,18 +121,19 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           <DialogTitle className="text-2xl text-center">Upgrade your health</DialogTitle>
           <Image
             src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
-            alt="Upgrade your health"
+            alt="Unlock best water"
             width={425}
             height={200}
             className="rounded-lg h-40 object-cover object-center"
           />
           <Typography size="xl" fontWeight="bold" className="text-center">
-            ${kSubscriptionPrice} /mo
+            Oasis Pro ${kSubscriptionPrice} /mo
           </Typography>
-          <DialogDescription className="text-center">
-            Access the most up-to-date water health science and water reports and search using AI
-            across our database to personalize your water health journey.
-          </DialogDescription>
+          <div className="flex w-full justify-center">
+            <DialogDescription className="text-center max-w-72">
+              Is your health and longevity worth ${kSubscriptionPrice} a month? We hope so.
+            </DialogDescription>
+          </div>
         </DialogHeader>
 
         <div className="flex flex-col gap-2 px-6 py-4 rounded-md bg-muted">
