@@ -1,16 +1,16 @@
 'use client'
 
-import Footer from '@/components/shared/footer'
+import BasicSearch from '@/components/basic-search'
 import HomeNavbar from '@/components/menu/home-navbar'
-import { PropsWithChildren } from 'react'
 import MobileNavbar from '@/components/menu/mobile-navbar'
-import Link from 'next/link'
+import Footer from '@/components/shared/footer'
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
-import BasicSearch from '@/components/basic-search'
-import SignUpButton from '../shared/sign-up-button'
-import { AccountMenu } from '../menu/account-menu'
 import { useUserProvider } from '@/providers/UserProvider'
+import Link from 'next/link'
+import { PropsWithChildren } from 'react'
+import { AccountMenu } from '../menu/account-menu'
+import SignUpButton from '../shared/sign-up-button'
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
   const { user } = useUserProvider()
@@ -21,7 +21,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
 
-          <div className="flex justify-end items-center">
+          <div className="flex justify-end items-center gap-2">
             <BasicSearch showSearch={false} size="small" />
 
             {user ? (
