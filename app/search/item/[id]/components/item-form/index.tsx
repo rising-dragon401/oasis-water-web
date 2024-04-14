@@ -1,22 +1,22 @@
 'use client'
 
-import Typography from '@/components/typography'
 import { getItemDetails } from '@/app/actions/items'
-import React, { useEffect, useState } from 'react'
-import Score from '@/components/shared/score'
-import MetaDataCard from '../metadata-card'
-import IngredientsCard from '../ingredients-card'
-import ItemSkeleton from '../item-skeleton'
-import RecommendedRow from '@/components/sections/recommended-row'
-import { Button } from '@/components/ui/button'
-import { ArrowUpRight } from 'lucide-react'
+import { incrementItemsViewed } from '@/app/actions/user'
 import ContaminantCard from '@/components/contamintant-card'
-import Sources from '@/components/shared/sources'
-import Link from 'next/link'
-import PaywallContent from '@/components/shared/paywall-content'
+import RecommendedRow from '@/components/sections/recommended-row'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
-import { incrementItemsViewed } from '@/app/actions/user'
+import PaywallContent from '@/components/shared/paywall-content'
+import Score from '@/components/shared/score'
+import Sources from '@/components/shared/sources'
+import Typography from '@/components/typography'
+import { Button } from '@/components/ui/button'
+import { ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import IngredientsCard from '../ingredients-card'
+import ItemSkeleton from '../item-skeleton'
+import MetaDataCard from '../metadata-card'
 
 type Props = {
   id: string
@@ -129,9 +129,18 @@ export default function ItemForm({ id }: Props) {
                     </div>
                   </div>
                 ) : (
-                  <Typography size="base" fontWeight="normal" className="text-secondary">
-                    ⚠️ NO WATER REPORTS LOCATED
-                  </Typography>
+                  <>
+                    <Typography size="base" fontWeight="normal" className="text-secondary">
+                      ⚠️ NO REPORTS LOCATED – PROCEED WITH CAUTION.
+                    </Typography>
+                    <div className="flex flex-col gap-6 mt-6">
+                      <Typography size="base" fontWeight="normal" className="text-secondary">
+                        This item has not been tested or rated yet. This usally means the company
+                        has not publicized or refuses to share their lab reports so we cannot
+                        recommend or provide a score for this item.
+                      </Typography>
+                    </div>
+                  </>
                 )}
               </>
             </div>
@@ -142,14 +151,7 @@ export default function ItemForm({ id }: Props) {
           </div>
         </div>
 
-        {item.is_indexed === false ? (
-          <div className="flex flex-col gap-6 mt-6">
-            <Typography size="base" fontWeight="normal" className="text-secondary">
-              This item has not been tested and rated yet. This usally means the company has not
-              publicized their water quality report.
-            </Typography>
-          </div>
-        ) : (
+        {item.is_indexed !== false && (
           <PaywallContent className="mt-6" label="Unlock All Data & Reports">
             {sortedContaminants && sortedContaminants.length > 0 && (
               <div className="flex flex-col gap-6 mt-6">

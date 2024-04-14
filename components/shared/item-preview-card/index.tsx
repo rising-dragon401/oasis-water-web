@@ -1,18 +1,17 @@
 'use client'
 
-import Link from 'next/link'
+import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
-import React from 'react'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import Image from 'next/image'
-import PaywallContent from '@/components/shared/paywall-content'
-import { useUserProvider } from '@/providers/UserProvider'
+import Link from 'next/link'
 
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
+  showWarning?: boolean
 }
 
-export default function ItemPreviewCard({ item }: Props) {
+export default function ItemPreviewCard({ item, showWarning }: Props) {
   const renderScore = () => {
     const score = item?.score || 0
 
@@ -62,7 +61,16 @@ export default function ItemPreviewCard({ item }: Props) {
           blurDataURL={item.image || ''}
           alt={item.name}
         />
+
         {item.score && <div className="absolute top-2 right-3">{renderScore()}</div>}
+
+        {!item.score && showWarning && (
+          <div className="absolute top-2 right-3">
+            <Typography size="xl" fontWeight="normal" className="text-red-500">
+              ⚠️
+            </Typography>
+          </div>
+        )}
       </div>
       <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
         <div className="flex flex-col">

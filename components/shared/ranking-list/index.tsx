@@ -1,19 +1,19 @@
 'use client'
 
-import Typography from '@/components/typography'
-import React, { useEffect, useMemo, useState } from 'react'
-import { Item, WaterFilter } from '@/types/custom'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
+import SubscribeButton from '@/components/shared/subscribe-button'
+import { SubscribeModal } from '@/components/shared/subscribe-modal'
+import Typography from '@/components/typography'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown, Lock } from 'lucide-react'
 import { useUserProvider } from '@/providers/UserProvider'
-import { SubscribeModal } from '@/components/shared/subscribe-modal'
-import SubscribeButton from '@/components/shared/subscribe-button'
+import { Item, WaterFilter } from '@/types/custom'
+import { ChevronDown, Lock } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
 
 type Props = {
   title: string
@@ -54,6 +54,8 @@ export default function RankingList({ title, items }: Props) {
       setOpen(true)
     }
   }
+
+  const itemsWithNoReports = sorted?.filter((item) => item.score === null)
 
   return (
     <div className="pb-14">
@@ -103,6 +105,23 @@ export default function RankingList({ title, items }: Props) {
             .filter((item) => item?.is_draft !== true)
             .map((item) => <ItemPreviewCard key={item.id} item={item} />)}
       </div>
+
+      {itemsWithNoReports && itemsWithNoReports.length > 0 && (
+        <>
+          <div className="pt-4 pb-8 flex flex-row justify-between mt-24">
+            <Typography size="3xl" fontWeight="normal">
+              ⚠️ NO REPORTS LOCATED
+            </Typography>
+          </div>
+
+          <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6 pb-24">
+            {sorted &&
+              sorted
+                .filter((item) => item.score === null)
+                .map((item) => <ItemPreviewCard key={item.id} item={item} showWarning={true} />)}
+          </div>
+        </>
+      )}
     </div>
   )
 }

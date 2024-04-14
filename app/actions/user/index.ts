@@ -396,7 +396,5 @@ export const incrementItemsViewed = async () => {
     return null
   }
 
-  console.log('data:', data)
-
   return data
 }
