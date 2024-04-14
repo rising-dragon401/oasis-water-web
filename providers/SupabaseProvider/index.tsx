@@ -2,7 +2,6 @@
 
 import { useRouter, usePathname } from 'next/navigation'
 import { createContext, useContext, useEffect } from 'react'
-import { getCurrentUserData } from '@/app/actions/user'
 import { createClient } from '@/utils/supabase/client'
 import { useState } from 'react'
 import { toast } from 'sonner'
