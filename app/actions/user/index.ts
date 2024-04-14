@@ -1,8 +1,7 @@
 'use server'
 
-import { getSession } from '@/utils/supabase/server'
 import { ItemType } from '@/types/custom'
-import { createSupabaseServerClient } from '@/utils/supabase/server'
+import { createSupabaseServerClient, getSession } from '@/utils/supabase/server'
 
 export async function getUserId() {
   const session = await getSession()
@@ -19,12 +18,12 @@ export async function getUserId() {
 export async function getCurrentUserData(uid?: string | null) {
   const supabase = await createSupabaseServerClient()
 
+  const session = await getSession()
+  const user = session?.user
+
   let userId = null
 
   if (!uid) {
-    const session = await getSession()
-
-    const user = session?.user
     userId = user?.id
 
     if (!user) {
@@ -60,7 +59,7 @@ export async function getCurrentUserData(uid?: string | null) {
 
   const dataWithFields = {
     ...data,
-    email: data.email,
+    email: data.email || user?.email,
   }
 
   return dataWithFields

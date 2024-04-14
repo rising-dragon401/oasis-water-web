@@ -1,26 +1,25 @@
 'use client'
 
-import Link from 'next/link'
+import ManageSubscriptionButton from '@/components/shared/manage-subscription-btn'
+import SubscribeButton from '@/components/shared/subscribe-button'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuTrigger,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Menu, X } from 'lucide-react'
-import React from 'react'
-import SignOutButton from './log-out-button'
-import { useEffect, useState } from 'react'
-import { useUserProvider } from '@/providers/UserProvider'
-import { Droplet, Filter, Milk, Heart } from 'lucide-react'
-import SignUpButton from '../shared/sign-up-button'
-import ManageSubscriptionButton from '@/components/shared/manage-subscription-btn'
-import SubscribeButton from '@/components/shared/subscribe-button'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
+import { kDiscordInvite } from '@/lib/constants/socials'
+import { useUserProvider } from '@/providers/UserProvider'
+import { Droplet, Filter, Heart, Menu, Milk, X } from 'lucide-react'
+import Link from 'next/link'
+import React, { useEffect, useState } from 'react'
+import SignUpButton from '../shared/sign-up-button'
+import SignOutButton from './log-out-button'
 
 export default function MobileNavbar() {
   const { uid, userData, subscription } = useUserProvider()
@@ -86,6 +85,12 @@ export default function MobileNavbar() {
 
             <DropdownMenuItem className="my-2 justify-start">
               <Link href="/blog/water_testing_parter">Test your water</Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="my-2 justify-start">
+              <a href={kDiscordInvite} target="_blank" rel="noopener noreferrer">
+                Community
+              </a>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />

@@ -1,20 +1,21 @@
 'use client'
 
-import * as React from 'react'
+import Logo from '@/components/shared/logo'
 import {
   NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
   NavigationMenuContent,
+  NavigationMenuItem,
   NavigationMenuLink,
+  NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
-import Link from 'next/link'
-import Logo from '@/components/shared/logo'
-import Typography from '../typography'
+import { kDiscordInvite } from '@/lib/constants/socials'
 import { cn } from '@/lib/utils'
-import { MapPin, Droplet, Filter, Milk, Building } from 'lucide-react'
+import { Droplet, Filter, Milk } from 'lucide-react'
+import Link from 'next/link'
+import * as React from 'react'
+import Typography from '../typography'
 
 interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
   logo?: React.ReactNode
@@ -121,6 +122,14 @@ export default function HomeNavbar() {
             className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
           >
             Water testing
+          </div>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <div
+            onClick={() => window.open(kDiscordInvite, '_blank')}
+            className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
+          >
+            Communty
           </div>
         </NavigationMenuItem>
       </NavigationMenuList>

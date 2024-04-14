@@ -1,5 +1,7 @@
 'use client'
 
+import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
+import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -9,17 +11,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import useSubscription from '@/lib/hooks/use-subscription'
 import { useUserProvider } from '@/providers/UserProvider'
-import { toast } from 'sonner'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
-import useSubscription from '@/lib/hooks/use-subscription'
+import {
+  Dna,
+  FlaskConical,
+  MessageCircle,
+  Microscope,
+  Plus,
+  SearchCheck,
+  Users,
+} from 'lucide-react'
 import Image from 'next/image'
-import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
-import { FlaskConical, Dna, MessageCircle, SearchCheck, Microscope, Plus } from 'lucide-react'
-import Typography from '@/components/typography'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 type SubscribeModalProps = {
   open: boolean
@@ -46,6 +54,10 @@ const FEATURES = [
   {
     label: 'Supports Oasis to further our research',
     icon: <Microscope className="w-4 h-4" />,
+  },
+  {
+    label: 'Private community',
+    icon: <Users className="w-4 h-4" />,
   },
 ]
 

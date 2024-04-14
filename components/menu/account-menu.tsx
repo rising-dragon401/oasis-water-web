@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
-import SignOutButton from './log-out-button'
+import SubscribeButton from '@/components/shared/subscribe-button'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,12 +11,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Heart } from 'lucide-react'
-import Link from 'next/link'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
+import { Heart } from 'lucide-react'
+import Link from 'next/link'
 import ManageSubscriptionButton from '../shared/manage-subscription-btn'
-import SubscribeButton from '@/components/shared/subscribe-button'
+import SignOutButton from './log-out-button'
 
 export function AccountMenu() {
   const { userData, user, subscription } = useUserProvider()
@@ -57,7 +56,7 @@ export function AccountMenu() {
           </p>
         )}
 
-        {user && !subscription && <SubscribeButton />}
+        <div className="p-2">{user && !subscription && <SubscribeButton />}</div>
 
         <DropdownMenuSeparator />
         {/* 
