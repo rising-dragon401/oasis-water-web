@@ -62,7 +62,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
       >
         {/* Overlay container */}
         {!hideButton && (
-          <div className="absolute max-h-72  inset-0 flex justify-center items-center">
+          <div className="absolute max-h-72 inset-0 flex justify-center items-center">
             <Button variant="default" onClick={handleBlurClick} className="z-10">
               {label}
               <Lock size={16} className="ml-2" />

@@ -20,12 +20,7 @@ import ManageSubscriptionButton from '../shared/manage-subscription-btn'
 import SubscribeButton from '@/components/shared/subscribe-button'
 
 export function AccountMenu() {
-  const { userData, refreshUserData, user, subscription } = useUserProvider()
-
-  useEffect(() => {
-    refreshUserData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { userData, user, subscription } = useUserProvider()
 
   return (
     <DropdownMenu>

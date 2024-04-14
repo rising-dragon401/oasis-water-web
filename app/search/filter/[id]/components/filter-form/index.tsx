@@ -44,9 +44,37 @@ export default function FilterForm({ id }: Props) {
     return filter
   }
 
+  const commonContaminants = allContaminants?.filter(
+    (contaminant) => contaminant.is_common === true
+  )
+
+  const uncommonContaminants = allContaminants?.filter(
+    (contaminant) => contaminant.is_common !== true
+  )
+
   const notFilteredContaminants = allContaminants?.filter(
     (contaminant) =>
       !filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+  )
+
+  const commonContaminantsFiltered = allContaminants?.filter(
+    (contaminant) =>
+      contaminant.is_common === true &&
+      filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+  )
+
+  const uncommonContaminantsFiltered = allContaminants?.filter(
+    (contaminant) =>
+      contaminant.is_common !== true &&
+      filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+  )
+
+  const percentCommonFiltered = Math.round(
+    ((commonContaminantsFiltered?.length ?? 0) / (commonContaminants?.length ?? 1)) * 100
+  )
+
+  const percentUncommonFiltered = Math.round(
+    ((uncommonContaminantsFiltered?.length ?? 0) / (uncommonContaminants?.length ?? 1)) * 100
   )
 
   useEffect(() => {
@@ -88,6 +116,23 @@ export default function FilterForm({ id }: Props) {
                   </Typography>
                 </Link>
 
+                <BlurredLineItem
+                  label="Common contaminants filtered"
+                  value={
+                    `${commonContaminantsFiltered?.length.toString()} (${percentCommonFiltered}%)` ||
+                    '0'
+                  }
+                  labelClassName="text-red-500"
+                />
+                <BlurredLineItem
+                  label="Uncommon contaminants filtered"
+                  value={
+                    `${uncommonContaminantsFiltered?.length.toString()} (${percentUncommonFiltered}%)` ||
+                    '0'
+                  }
+                  labelClassName="text-red-500"
+                />
+
                 {filter.affiliate_url && (
                   <Button
                     variant={filter.score > 70 ? 'default' : 'outline'}
@@ -102,17 +147,6 @@ export default function FilterForm({ id }: Props) {
               </div>
 
               <Score score={filter.score} isFull={true} />
-            </div>
-            <div className="flex flex-col gap-6 mt-10">
-              <BlurredLineItem
-                label="Contaminants not filtered"
-                value={notFilteredContaminants?.length.toString() || '0'}
-                labelClassName="text-red-500"
-              />
-              <BlurredLineItem
-                label="Contaminants filtered"
-                value={filter.contaminants_filtered?.length.toString() || '0'}
-              />
             </div>
           </div>
         </div>

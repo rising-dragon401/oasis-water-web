@@ -175,6 +175,7 @@ export type Database = {
           health_guideline: number | null
           id: number
           image: string | null
+          is_common: boolean | null
           is_contaminant: boolean | null
           legal_limit: number | null
           measure: string | null
@@ -190,6 +191,7 @@ export type Database = {
           health_guideline?: number | null
           id?: number
           image?: string | null
+          is_common?: boolean | null
           is_contaminant?: boolean | null
           legal_limit?: number | null
           measure?: string | null
@@ -205,6 +207,7 @@ export type Database = {
           health_guideline?: number | null
           id?: number
           image?: string | null
+          is_common?: boolean | null
           is_contaminant?: boolean | null
           legal_limit?: number | null
           measure?: string | null

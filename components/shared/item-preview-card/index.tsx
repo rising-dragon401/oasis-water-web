@@ -51,8 +51,8 @@ export default function ItemPreviewCard({ item }: Props) {
   }
 
   return (
-    <Link href={determineLink()} className="flex flex-col hover:opacity-80 mt-4">
-      <div className="md:w-80 md:h-80 w-40 h-40 relative">
+    <Link href={determineLink()} className="flex flex-col hover:opacity-80 mt-4 relative">
+      <div className="md:w-80 md:h-80 w-40 h-40">
         <Image
           src={item.image || ''}
           className="w-full h-full rounded-md object-cover hover:cursor-pointer"
@@ -62,13 +62,14 @@ export default function ItemPreviewCard({ item }: Props) {
           blurDataURL={item.image || ''}
           alt={item.name}
         />
+        {item.score && <div className="absolute top-2 right-3">{renderScore()}</div>}
       </div>
       <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <Typography
-            size="lg"
+            size="base"
             fontWeight="bold"
-            className="!no-underline text-primary overflow-hidden max-w-64 max-h-14 whitespace-nowrap overflow-ellipsis"
+            className="!no-underline text-primary md:overflow-hidden md:max-w-64 flex-wrap md:max-h-14 max-h-24 md:whitespace-nowrap overflow-ellipsis"
           >
             {item.name}
           </Typography>
@@ -82,8 +83,6 @@ export default function ItemPreviewCard({ item }: Props) {
             </Typography>
           )}
         </div>
-
-        {item.score && <div className="w-24 text-right">{renderScore()}</div>}
       </div>
     </Link>
   )

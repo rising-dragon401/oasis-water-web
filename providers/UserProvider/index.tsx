@@ -1,12 +1,19 @@
 'use client'
 
 import { getCurrentUserData, getUserFavorites, getEmailSubscriptions } from '@/app/actions/user'
-import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { useSupabase } from '../SupabaseProvider'
 import { getSubscription } from '@/app/actions/user'
-import useSWR from 'swr'
-import { SubscriptionWithProduct, ProductWithPrices } from '@/types/custom'
+import { SubscriptionWithProduct } from '@/types/custom'
 
 interface UserContextType {
   uid: string | null | undefined
@@ -32,34 +39,33 @@ export const useUserProvider = () => {
 
 const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const supabase = createClient()
-  const { session } = useSupabase()
+  const { session, user } = useSupabase()
 
+  const [activeSession, setActiveSession] = useState<any>(null)
   const [userId, setUserId] = useState<string | null | undefined>(null)
   const [provider, setProvider] = useState<any>(null)
   const [subscription, setSubscription] = useState<SubscriptionWithProduct | null | undefined>(null)
-  const [user, setUser] = useState<any>(null)
   const [userData, setUserData] = useState<any>(null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
   const [emailSubscriptions, setEmailSubscriptions] = useState<any[] | null | undefined>(null)
 
+  useEffect(() => {
+    setActiveSession(session)
+
+    if (session && session !== activeSession) {
+      initUser(session)
+      refreshUserData(session.user.id)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, activeSession])
+
   const initUser = async (session: any) => {
-    setUser(session.user)
     setUserId(session.user?.id)
     setProvider(session.user?.app_metadata?.provider)
   }
 
-  useEffect(() => {
-    if (session) {
-      initUser(session)
-      refreshUserData()
-    } else {
-      clearUserData()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session])
-
-  const fetchUserData = async () => {
-    const data = await getCurrentUserData()
+  const fetchUserData = async (uid?: string | null) => {
+    const data = await getCurrentUserData(uid)
     setUserData(data)
   }
 
@@ -73,51 +79,67 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setEmailSubscriptions(res)
   }
 
-  const fetchSubscription = async () => {
-    const data = await getSubscription()
+  const fetchSubscription = async (uid: string | null) => {
+    const data = await getSubscription(uid)
     setSubscription(data)
     return data
   }
 
-  const refreshUserData = async () => {
-    await Promise.all([
-      fetchSubscription(),
-      fetchUserData(),
-      fetchUserFavorites(),
-      fetchEmailSubscriptions(user?.id),
-    ])
-  }
+  const refreshUserData = useCallback(
+    async (uid?: string | null) => {
+      console.log('refreshUserData')
 
-  const logout = async () => {
+      let userId = uid ?? null
+
+      await Promise.all([
+        fetchSubscription(userId),
+        fetchUserData(userId),
+        fetchUserFavorites(),
+        fetchEmailSubscriptions(user?.id),
+      ])
+    },
+    [user?.id]
+  )
+
+  const logout = useCallback(async () => {
     await supabase.auth.signOut()
     setSubscription(null)
     clearUserData()
-  }
+  }, [supabase.auth])
 
   const clearUserData = () => {
+    console.log('clearUserData')
     setUserData(null)
     setUserId(null)
     setUserFavorites(null)
-    setUser(null)
   }
 
-  return (
-    <UserContext.Provider
-      value={{
-        user,
-        provider,
-        uid: userId,
-        subscription,
-        userData,
-        userFavorites,
-        emailSubscriptions,
-        refreshUserData,
-        logout,
-      }}
-    >
-      {children}
-    </UserContext.Provider>
+  const context = useMemo(
+    () => ({
+      user,
+      provider,
+      uid: userId,
+      subscription,
+      userData,
+      userFavorites,
+      emailSubscriptions,
+      refreshUserData,
+      logout,
+    }),
+    [
+      user,
+      provider,
+      userId,
+      subscription,
+      userData,
+      userFavorites,
+      emailSubscriptions,
+      refreshUserData,
+      logout,
+    ]
   )
+
+  return <UserContext.Provider value={context}>{children}</UserContext.Provider>
 }
 
 export default UserProvider

@@ -165,7 +165,7 @@ export default function BasicSearch({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={` text-base flex gap-2 items-center px-4 ${getSearchPaddingY()} z-50 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md rounded-full`}
+              className={` text-base flex gap-2 items-center px-4 ${getSearchPaddingY()} z-40 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md rounded-full`}
             />
 
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">

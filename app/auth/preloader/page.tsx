@@ -9,7 +9,6 @@ import Typography from '@/components/typography'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
 
 export default function Preloader() {
-  const { refreshUserData } = useUserProvider()
   const router = useRouter()
 
   const [previousPath] = useLocalStorage('oasis-previous-path', '/')
@@ -17,8 +16,6 @@ export default function Preloader() {
 
   useEffect(() => {
     const fetch = async () => {
-      refreshUserData()
-
       const userData = await getCurrentUserData()
 
       if (userData) {

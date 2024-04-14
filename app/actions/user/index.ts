@@ -16,17 +16,29 @@ export async function getUserId() {
   return user.id
 }
 
-export async function getCurrentUserData() {
+export async function getCurrentUserData(uid?: string | null) {
   const supabase = await createSupabaseServerClient()
-  const session = await getSession()
 
-  const user = session?.user
+  let userId = null
 
-  if (!user) {
+  if (!uid) {
+    const session = await getSession()
+
+    const user = session?.user
+    userId = user?.id
+
+    if (!user) {
+      return null
+    }
+  } else {
+    userId = uid
+  }
+
+  if (!userId) {
     return null
   }
 
-  const { data, error } = await supabase.from('users').select('*').eq('id', user.id).single()
+  const { data, error } = await supabase.from('users').select('*').eq('id', userId).single()
 
   if (error) {
     console.error('Error fetching user: ', error)
@@ -40,7 +52,7 @@ export async function getCurrentUserData() {
 
     // update user with new avatar url
     try {
-      await supabase.from('users').update({ avatar_url: data.avatar_url }).eq('id', user.id)
+      await supabase.from('users').update({ avatar_url: data.avatar_url }).eq('id', userId)
     } catch (error) {
       console.error('Error updating user avatar url:', error)
     }
@@ -48,7 +60,7 @@ export async function getCurrentUserData() {
 
   const dataWithFields = {
     ...data,
-    email: data.email || user.email,
+    email: data.email,
   }
 
   return dataWithFields
@@ -240,23 +252,19 @@ export async function addToEmailList(
   }
 }
 
-export async function getSubscription() {
-  const supabase = await createSupabaseServerClient()
-
-  const session = await getSession()
-
-  const user = session?.user
-
-  if (!user) {
+export async function getSubscription(uid: string | null) {
+  if (!uid) {
     return null
   }
+
+  const supabase = await createSupabaseServerClient()
 
   try {
     const { data: subscription } = await supabase
       .from('subscriptions')
       .select('*, prices(*, products(*))')
       .in('status', ['trialing', 'active'])
-      .eq('user_id', user.id)
+      .eq('user_id', uid)
       .single()
 
     if (!subscription) {

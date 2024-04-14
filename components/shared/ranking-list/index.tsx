@@ -24,6 +24,7 @@ export default function RankingList({ title, items }: Props) {
   const { subscription } = useUserProvider()
   const [sortMethod, setSortMethod] = useState('name')
   const [open, setOpen] = useState(false)
+  // const [showUnlockButton, setShowUnlockButton] = useState(false)
 
   useEffect(() => {
     if (subscription) {
@@ -55,7 +56,7 @@ export default function RankingList({ title, items }: Props) {
   }
 
   return (
-    <div>
+    <div className="pb-14">
       <SubscribeModal open={open} setOpen={setOpen} />
 
       <div className="py-4 flex flex-row justify-between md:mt-6">
@@ -98,19 +99,8 @@ export default function RankingList({ title, items }: Props) {
         {sorted &&
           sorted
             .filter((item) => item.score !== null)
-            .map((item) => <ItemPreviewCard key={item.id} item={item} />)}
-      </div>
-
-      <div className="pt-4 pb-8 flex flex-row justify-between mt-24">
-        <Typography size="3xl" fontWeight="normal">
-          ⚠️ NO REPORTS LOCATED
-        </Typography>
-      </div>
-
-      <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6 pb-24">
-        {sorted &&
-          sorted
-            .filter((item) => item.score === null)
+            // @ts-ignore
+            .filter((item) => item?.is_draft !== true)
             .map((item) => <ItemPreviewCard key={item.id} item={item} />)}
       </div>
     </div>
