@@ -145,7 +145,7 @@ export default function FilterForm({ id }: Props) {
                 )}
               </div>
 
-              <Score score={filter.score} />
+              <Score score={filter.score} size="lg" />
             </div>
           </div>
         </div>

@@ -146,7 +146,7 @@ export default function ItemForm({ id }: Props) {
             </div>
 
             <div className="flex md:flex-row md:justify-start md:gap-10 md:items-start flex-col-reverse justify-end items-end">
-              {item.is_indexed !== false && <Score score={item.score} />}
+              {item.is_indexed !== false && <Score score={item.score} size="lg" />}
             </div>
           </div>
         </div>

@@ -52,7 +52,9 @@ export default function ItemPreviewCard({ item, showWarning }: Props) {
 
   return (
     <Link href={determineLink()} className="flex flex-col hover:opacity-80 mt-4 relative">
-      <div className="md:w-80 md:h-80 w-40 h-40">
+      <div className="relative md:w-80 md:h-80 w-40 h-40">
+        {' '}
+        {/* Make this div relative */}
         <Image
           src={item.image || ''}
           className="w-full h-full rounded-md object-cover hover:cursor-pointer"
@@ -62,13 +64,13 @@ export default function ItemPreviewCard({ item, showWarning }: Props) {
           blurDataURL={item.image || ''}
           alt={item.name}
         />
-
-        <div className="absolute top-2 right-2">
+        {/* Position the FavoriteButton relative to the image */}
+        <div className="absolute top-0 right-0">
           <FavoriteButton item={item} />
         </div>
-
-        {item.score && <div className="absolute bottom-12 right-3">{renderScore()}</div>}
-
+        {/* Position renderScore relative to the image */}
+        {item.score && <div className="absolute bottom-2 right-2">{renderScore()}</div>}
+        {/* Position the warning symbol relative to the image */}
         {!item.score && showWarning && (
           <div className="absolute bottom-2 right-3">
             <Typography size="xl" fontWeight="normal" className="text-red-500">

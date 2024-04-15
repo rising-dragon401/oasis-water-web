@@ -7,6 +7,7 @@ import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { CheckCircle, PlusCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useMemo } from 'react'
+import { toast } from 'sonner'
 
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
@@ -32,6 +33,7 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
 
     // first check if user is logged in
     if (!uid) {
+      toast('Please sign in to add items to your oasis')
       router.push('/auth/signin')
       return
     }
