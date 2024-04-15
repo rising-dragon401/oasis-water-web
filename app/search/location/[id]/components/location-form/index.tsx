@@ -1,24 +1,24 @@
 'use client'
 
-import Typography from '@/components/typography'
+import { getIngredients } from '@/app/actions/ingredients'
 import { getLocationDetails } from '@/app/actions/locations'
-import React, { useEffect, useState } from 'react'
-import Score from '@/components/shared/score'
-import ItemSkeleton from '../item-skeleton'
-import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
+import { incrementItemsViewed } from '@/app/actions/user'
 import ContaminantCard from '@/components/contamintant-card'
+import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
+import ItemImage from '@/components/shared/item-image'
+import PaywallContent from '@/components/shared/paywall-content'
+import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
+import Typography from '@/components/typography'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { getIngredients } from '@/app/actions/ingredients'
-import PaywallContent from '@/components/shared/paywall-content'
-import ItemImage from '@/components/shared/item-image'
-import { incrementItemsViewed } from '@/app/actions/user'
+import ItemSkeleton from '../item-skeleton'
 
 type Props = {
   id: string
@@ -67,10 +67,7 @@ export default function LocationForm({ id }: Props) {
             </Typography>
 
             <div className="w-1/3">
-              <Score
-                score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
-                isFull={false}
-              />
+              <Score score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0} />
             </div>
           </div>
         </div>

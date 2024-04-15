@@ -3,8 +3,9 @@
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import PasswordResetForm from './components/password-reset-form'
 import { useUserProvider } from '@/providers/UserProvider'
+import NameForm from './components/name-form'
+import PasswordResetForm from './components/password-reset-form'
 
 export default function AccountSettings() {
   const { provider, userData } = useUserProvider()
@@ -19,6 +20,7 @@ export default function AccountSettings() {
           You are logged in as <span className="font-bold">{userData?.email}</span> using {provider}
         </Typography>
         <PasswordResetForm />
+        <NameForm />
         {/* <Tabs defaultValue="account" className="w-[400px]">
           <TabsList>
             <TabsTrigger value="account">Account</TabsTrigger>

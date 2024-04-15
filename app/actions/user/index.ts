@@ -119,7 +119,7 @@ export async function updateUserFullName(uid: string, fullName: string) {
   return data[0]
 }
 
-export async function getUserFavorites() {
+export async function getUserFavorites(uid?: string | null) {
   const supabase = await createSupabaseServerClient()
   const session = await getSession()
 
@@ -129,7 +129,14 @@ export async function getUserFavorites() {
     return null
   }
 
-  const { data, error } = await supabase.from('favorites').select('*').eq('uid', user.id)
+  let userId = null
+  if (!uid) {
+    userId = user.id
+  } else {
+    userId = uid
+  }
+
+  const { data, error } = await supabase.from('favorites').select('*').eq('uid', userId)
 
   if (error) {
     throw new Error(error.message)

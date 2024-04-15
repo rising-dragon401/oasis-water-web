@@ -129,7 +129,7 @@ export default function HomeNavbar() {
             onClick={() => window.open(kDiscordInvite, '_blank')}
             className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
           >
-            Communty
+            Community
           </div>
         </NavigationMenuItem>
       </NavigationMenuList>

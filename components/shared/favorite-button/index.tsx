@@ -1,14 +1,12 @@
 'use client'
 
-import { removeFavorite, addFavorite } from '@/app/actions/user'
-import { mutate } from 'swr'
-import React, { useMemo } from 'react'
-import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
-import { useUserProvider } from '@/providers/UserProvider'
-import { IoHeart } from 'react-icons/io5'
-import { IoMdHeartEmpty } from 'react-icons/io'
+import { addFavorite, removeFavorite } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
+import { useUserProvider } from '@/providers/UserProvider'
+import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
+import { CheckCircle, PlusCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import React, { useMemo } from 'react'
 
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
@@ -16,7 +14,8 @@ type Props = {
 }
 
 export default function FavoriteButton({ item, size = 18 }: Props) {
-  const { userFavorites, uid } = useUserProvider()
+  const { userFavorites, uid, fetchUserFavorites } = useUserProvider()
+
   const router = useRouter()
 
   const isItemInFavorites = useMemo(
@@ -53,15 +52,15 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
       addFavorite(uid, item.type, item.id)
     }
 
-    mutate(`userFavorites`)
+    fetchUserFavorites()
   }
 
   return (
     <Button variant="ghost" onClick={(e) => handleFavoriteClick(e)}>
       {isItemInFavorites ? (
-        <IoHeart size={size} className="text-primary" />
+        <CheckCircle size={size} className="text-primary" />
       ) : (
-        <IoMdHeartEmpty size={size} className="text-primary" />
+        <PlusCircle size={size} className="text-primary" />
       )}
     </Button>
   )

@@ -1,14 +1,14 @@
 'use client'
 
+import { getIngredient } from '@/app/actions/ingredients'
+import Sources from '@/components/shared/sources'
 import Typography from '@/components/typography'
-import React, { useEffect, useState } from 'react'
+import { Ingredient } from '@/types/custom'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import BenefitCard from '../benefit-card'
 import IngredientSkeleton from '../ingredient-skeleton'
 import ProductsWithIngredientsRow from '../products-with-ingredient-row'
-import { getIngredient } from '@/app/actions/ingredients'
-import { Ingredient } from '@/types/custom'
-import Sources from '@/components/shared/sources'
 
 type Props = {
   id: string
@@ -57,6 +57,17 @@ export default function IngredientForm({ id }: Props) {
         {ingredient.description}
       </Typography>
 
+      <div className="flex flex-col items-center w-full">
+        <Typography size="base" fontWeight="normal" className="mt-6">
+        ➜ Health guideline: {ingredient.health_guideline} {ingredient.measure}
+      </Typography>
+      <Typography size="base" fontWeight="normal" className="mt-6">
+        ➜ Legal limit: {ingredient.legal_limit} {ingredient.measure}
+        </Typography>
+        </div>
+   
+
+        
       <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-6">
         <BenefitCard title="Risks" description={ingredient.risks} />
         <BenefitCard title="Benefits" description={ingredient.benefits} />

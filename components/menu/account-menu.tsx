@@ -56,7 +56,12 @@ export function AccountMenu() {
           </p>
         )}
 
-        <div className="p-2">{user && !subscription && <SubscribeButton />}</div>
+        {user && !subscription && (
+          <div className="p-2">
+            {' '}
+            <SubscribeButton />
+          </div>
+        )}
 
         <DropdownMenuSeparator />
         {/* 
@@ -68,9 +73,9 @@ export function AccountMenu() {
           </DropdownMenuItem> */}
 
         <DropdownMenuItem className="hover:cursor-pointer" asChild>
-          <Link href="/account/my-oasis" className="flex flex-row items-center">
+          <Link href={`/account/oasis/${user.id}`} className="flex flex-row items-center">
             <Heart className="mr-2 h-4 w-4" />
-            Favorites
+            My Oasis
           </Link>
         </DropdownMenuItem>
 

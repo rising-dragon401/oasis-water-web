@@ -1,23 +1,22 @@
 'use client'
 
-import Typography from '@/components/typography'
-import React, { useEffect, useState } from 'react'
-import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
-import Image from 'next/image'
-import Score from '@/components/shared/score'
-import ItemSkeleton from '../item-skeleton'
-import Sources from '@/components/shared/sources'
-import { getFilterDetails, getAllContaminants } from '@/app/actions/filters'
+import { getAllContaminants, getFilterDetails } from '@/app/actions/filters'
 import { getIngredients } from '@/app/actions/ingredients'
-import useSWR from 'swr'
-import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import ContaminantTable from '../contaminant-table'
-import PaywallContent from '@/components/shared/paywall-content'
-import ItemImage from '@/components/shared/item-image'
-import BlurredLineItem from '@/components/shared/blurred-line-item'
 import { incrementItemsViewed } from '@/app/actions/user'
+import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
+import BlurredLineItem from '@/components/shared/blurred-line-item'
+import ItemImage from '@/components/shared/item-image'
+import PaywallContent from '@/components/shared/paywall-content'
+import Score from '@/components/shared/score'
+import Sources from '@/components/shared/sources'
+import Typography from '@/components/typography'
+import { Button } from '@/components/ui/button'
+import { ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import useSWR from 'swr'
+import ContaminantTable from '../contaminant-table'
+import ItemSkeleton from '../item-skeleton'
 
 type Props = {
   id: string
@@ -146,7 +145,7 @@ export default function FilterForm({ id }: Props) {
                 )}
               </div>
 
-              <Score score={filter.score} isFull={true} />
+              <Score score={filter.score} />
             </div>
           </div>
         </div>

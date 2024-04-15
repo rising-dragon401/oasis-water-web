@@ -1,6 +1,7 @@
 'use client'
 
-import * as React from 'react'
+import { updateUserData } from '@/app/actions/user'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
@@ -8,19 +9,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { useRouter } from 'next/navigation'
 import { Input } from '@/components/ui/input'
-import { X, RotateCcw, Lock, SendHorizontal } from 'lucide-react'
-import { useAtom } from 'jotai'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
-import ChatList from './chat-list'
 import useDevice from '@/lib/hooks/use-device'
-import { Button } from '@/components/ui/button'
-import { Sparkles } from 'lucide-react'
 import { useUserProvider } from '@/providers/UserProvider'
-import { updateUserData } from '@/app/actions/user'
-import Typography from '../typography'
+import { useAtom } from 'jotai'
+import { Lock, RotateCcw, SendHorizontal, Sparkles, X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import * as React from 'react'
 import { toast } from 'sonner'
+import Typography from '../typography'
+import ChatList from './chat-list'
 
 import { SubscribeModal } from '../shared/subscribe-modal'
 
@@ -270,7 +269,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
       >
         {size === 'large' && (
           <Typography size="base" fontWeight="normal">
-            AI search
+            Ask Oasis
           </Typography>
         )}
 

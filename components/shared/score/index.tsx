@@ -1,28 +1,23 @@
 'use client'
 
-import React from 'react'
-import Link from 'next/link'
-import useDevice from '@/lib/hooks/use-device'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import Typography from '@/components/typography'
 import PaywallContent from '@/components/shared/paywall-content'
+import Typography from '@/components/typography'
 
 type Props = {
   score: number
-  isFull?: boolean
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
-export default function Score({ score, isFull }: Props) {
-  const { isMobile } = useDevice()
-
-  const radius = !isMobile || isFull ? 80 : 60
+export default function Score({ score, size }: Props) {
+  const radius =
+    size === 'xl' ? 80 : size === 'lg' ? 70 : size === 'md' ? 60 : size === 'sm' ? 50 : 40
   const strokeWidth = 6
   const svgSize = 2 * (radius + strokeWidth) // Adjust SVG size to accommodate stroke
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (score / 100) * circumference
 
-  const fontSize = !isMobile || isFull ? 20 : 12
-
+  const fontSize =
+    size === 'xl' ? 24 : size === 'lg' ? 20 : size === 'md' ? 16 : size === 'sm' ? 14 : 12
   const color =
     score >= 70 ? 'stroke-green-500' : score >= 40 ? 'stroke-yellow-500' : 'stroke-red-500'
 

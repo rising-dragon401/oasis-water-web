@@ -5,6 +5,7 @@ import Typography from '@/components/typography'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import Image from 'next/image'
 import Link from 'next/link'
+import FavoriteButton from '../favorite-button'
 
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
@@ -62,10 +63,14 @@ export default function ItemPreviewCard({ item, showWarning }: Props) {
           alt={item.name}
         />
 
-        {item.score && <div className="absolute top-2 right-3">{renderScore()}</div>}
+        <div className="absolute top-2 right-2">
+          <FavoriteButton item={item} />
+        </div>
+
+        {item.score && <div className="absolute bottom-12 right-3">{renderScore()}</div>}
 
         {!item.score && showWarning && (
-          <div className="absolute top-2 right-3">
+          <div className="absolute bottom-2 right-3">
             <Typography size="xl" fontWeight="normal" className="text-red-500">
               ⚠️
             </Typography>

@@ -1,19 +1,23 @@
 'use client'
 
-import { getCurrentUserData, getUserFavorites, getEmailSubscriptions } from '@/app/actions/user'
+import {
+  getCurrentUserData,
+  getEmailSubscriptions,
+  getSubscription,
+  getUserFavorites,
+} from '@/app/actions/user'
+import { SubscriptionWithProduct } from '@/types/custom'
+import { createClient } from '@/utils/supabase/client'
 import React, {
   ReactNode,
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useState,
-  useCallback,
   useMemo,
+  useState,
 } from 'react'
-import { createClient } from '@/utils/supabase/client'
 import { useSupabase } from '../SupabaseProvider'
-import { getSubscription } from '@/app/actions/user'
-import { SubscriptionWithProduct } from '@/types/custom'
 
 interface UserContextType {
   uid: string | null | undefined
@@ -24,6 +28,7 @@ interface UserContextType {
   emailSubscriptions: any[] | null | undefined
   subscription: SubscriptionWithProduct | null | undefined
   refreshUserData: () => void
+  fetchUserFavorites: () => void
   logout: () => void
 }
 
@@ -124,6 +129,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       userFavorites,
       emailSubscriptions,
       refreshUserData,
+      fetchUserFavorites,
       logout,
     }),
     [
@@ -135,6 +141,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       userFavorites,
       emailSubscriptions,
       refreshUserData,
+      fetchUserFavorites,
       logout,
     ]
   )
