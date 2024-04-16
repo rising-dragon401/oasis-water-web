@@ -2,7 +2,6 @@
 
 import Typography from '@/components/typography'
 import { useUserProvider } from '@/providers/UserProvider'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { SubscribeModal } from '../subscribe-modal'
 
@@ -13,8 +12,7 @@ type BlurredLineItemProps = {
 }
 
 export default function BlurredLineItem({ label, value, labelClassName }: BlurredLineItemProps) {
-  const { user, subscription } = useUserProvider()
-  const router = useRouter()
+  const { subscription } = useUserProvider()
 
   const [open, setOpen] = useState(false)
 

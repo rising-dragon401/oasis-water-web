@@ -54,7 +54,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
       >
         {/* Overlay container */}
         {!hideButton && (
-          <div className="absolute max-h-72 inset-0 flex justify-center items-center">
+          <div className="absolute inset-0 flex justify-center items-center">
             <Button variant="default" onClick={handleBlurClick} className="z-10">
               {label}
               <Lock size={16} className="ml-2" />
@@ -62,7 +62,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
           </div>
         )}
         {/* Blurred children content */}
-        <div className="filter blur-md max-h-72 overflow-hidden">{children}</div>
+        <div className="filter blur-md overflow-hidden">{children}</div>
       </div>
     </>
   )

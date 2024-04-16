@@ -50,7 +50,8 @@ export default function LocationForm({ id }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, allIngredients])
 
-  const contaminants = location?.utilities[0]?.contaminants || []
+  const contaminants =
+    location?.utilities?.length > 0 ? location?.utilities[0]?.contaminants || [] : []
   const contaminantsAboveLimit = contaminants.filter(
     (contaminant: any) => contaminant.exceedingLimit > 0
   )

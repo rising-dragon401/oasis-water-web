@@ -95,7 +95,7 @@ export default function ItemForm({ id }: Props) {
               </Typography>
               <Link href={`/search/company/${item.company?.name}`}>
                 <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
-                  {item.brand?.name} - {item.company?.name}
+                  {item.company?.name}
                 </Typography>
               </Link>
 
