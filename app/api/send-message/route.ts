@@ -1,10 +1,10 @@
+import { ApplicationError, UserError } from '@/lib/errors'
+import { determineLink } from '@/utils/helpers'
 import { createClient } from '@supabase/supabase-js'
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { codeBlock, oneLine } from 'common-tags'
 import GPT3Tokenizer from 'gpt3-tokenizer'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
-import { ApplicationError, UserError } from '@/lib/errors'
 import OpenAI from 'openai'
-import { determineLink } from '@/utils/helpers'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     }
 
     const systemMessage = `
-      You are a clean drinking water assistant, scientist, and expert.
+      You are a clean drinking water and healhty product longevity companion, scientist, and expert.
 
       Users ask you about specific water items or general questions about research and health. Provide them with research backed, concise answers to lead them to a healthy lifestyle.
           
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
 
       Prioritze data from Oasis. And display the relevant data in your answer in addition to the helpful links for the user to learn more.
 
-      Include markdown relative learn more and buy buttons. "Learn more" buttons should link to PagePath. "Buy" buttons should link to AffilateLink
+      Include markdown relative learn more button. "Learn more" buttons should link to PagePath
 
       These general paths might help too: ${JSON.stringify(oasisPaths, null, 2)}
 
@@ -92,7 +92,7 @@ export async function POST(req: Request) {
     })
 
     // console.log(`Match error:`, matchError)
-    console.log(`Documents: ${JSON.stringify(documents)}`)
+    // console.log(`Documents: ${JSON.stringify(documents)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
@@ -101,58 +101,102 @@ export async function POST(req: Request) {
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
     const maxTokenCount = 20000
 
-    const resultItems = await Promise.all(
-      documents.map(async (document: any) => {
-        console.log('Document: ', document)
+    const formulateItemData = async (document: any) => {
+      let contentData
+      if (typeof document.content !== 'string') {
+        contentData = JSON.parse(document.content)
+      } else {
+        contentData = document.content
+      }
 
-        const contentData = JSON.parse(document.content)
+      const itemObject = {
+        id: document.original_id,
+        type: contentData?.type || '',
+        name: contentData?.name || '',
+      }
 
-        const itemObject = {
-          id: document.original_id,
-          type: contentData.type,
-          name: contentData.name,
-        }
+      const pagePath = await determineLink(itemObject)
 
-        const pagePath = await determineLink(itemObject)
+      let content = document.content
+      const encoded = tokenizer.encode(content)
+      let contentField = ''
 
-        let content = document.content
-        const encoded = tokenizer.encode(content)
-        let contentField = ''
+      if (encoded.text.length > maxTokenCount) {
+        // If content exceeds the limit, truncate it
+        content = content.slice(0, maxTokenCount)
+        contentField = `${content.trim()}\n---\n`
+      } else {
+        // If content does not exceed the limit, use it as is
+        contentField = `${content.trim()}\n---\n`
+      }
 
-        if (encoded.text.length > maxTokenCount) {
-          // If content exceeds the limit, truncate it
-          content = content.slice(0, maxTokenCount)
-          contentField = `${content.trim()}\n---\n`
-        } else {
-          // If content does not exceed the limit, use it as is
-          contentField = `${content.trim()}\n---\n`
-        }
+      return {
+        itemID: document?.original_id,
+        table: document?.original_table,
+        name: contentData?.name,
+        affiliateLink: contentData?.affiliateLink,
+        pagePath,
+        content: contentField,
+      }
+    }
 
-        return {
-          itemID: document?.original_id,
-          table: document?.original_table,
-          name: contentData?.name,
-          affiliateLink: contentData?.affiliateLink,
-          pagePath,
-          content: contentField,
-        }
-      })
-    )
+    const getResearchMetadata = async (researchDocument: any) => {
+      const { data, error } = await supabaseClient
+        .from('research')
+        .select('file_url, title')
+        .eq('id', researchDocument.original_id)
+        .single()
+
+      if (error) {
+        console.error('Error fetching research document URL:', error)
+        throw new Error('Failed to fetch research document URL')
+      }
+
+      return {
+        link: data.file_url,
+        title: data.title,
+      }
+    }
+
+    const formulateResearchData = async (document: any) => {
+      const { link, title } = await getResearchMetadata(document)
+
+      return {
+        itemID: document?.original_id,
+        table: document?.original_table,
+        title: title,
+        pagePath: link,
+        content: document.content,
+      }
+    }
+
+    const getData = async () => {
+      return await Promise.all(
+        documents.map(async (document: any) => {
+          if (
+            document.original_table === 'water_filters' ||
+            document.original_table === 'items' ||
+            document.original_table === 'tap_water_locations'
+          ) {
+            return await formulateItemData(document)
+          } else if (document.original_table === 'research') {
+            return await formulateResearchData(document)
+          }
+        })
+      )
+    }
+
+    const data = await getData()
+
+    console.log('data: ', data)
 
     const prompt = codeBlock`
-      Oasis data:
-      ${resultItems.map((item) => {
-        return `ItemID: ${item.itemID}, Data: ${item.content}, Table: ${item.table}, Name: ${item.name}, PagePath: ${item.pagePath}, AffiliateLink: ${item.affiliateLink}`
-      })}
+      Oasis data: ${JSON.stringify(data)}
 
-       Question: """
-      ${sanitizedQuery}
-      """
+      Question: ${sanitizedQuery}
     `
 
-    /////// Legacy - Langchain    ///////
     // Make query
-
     const response = await openai.chat.completions.create({
       model: 'gpt-4-1106-preview',
       stream: true,

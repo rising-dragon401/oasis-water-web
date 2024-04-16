@@ -296,7 +296,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           {messages.length > 1 || isLoading ? (
             <>
               <DialogHeader className="sticky flex flex-row items-center w-full justify-between px-4">
-                <DialogTitle className="text-left w-30">Oasis assistant</DialogTitle>
+                <DialogTitle className="text-left w-30">Chat with Oasis</DialogTitle>
 
                 <div className="flex flex-row gap-2">
                   <Button variant="outline" className="h-8" onClick={handleReset}>
