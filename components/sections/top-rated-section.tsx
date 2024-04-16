@@ -1,8 +1,7 @@
-import Link from 'next/link'
-import Typography from '@/components/typography'
-import React from 'react'
-import ItemPreviewCard from '@/components/shared/item-preview-card'
 import { getTopItems } from '@/app/actions/items'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
+import Typography from '@/components/typography'
+import Link from 'next/link'
 
 export default async function TopRatedSection() {
   const topItems = await getTopItems()
@@ -24,7 +23,7 @@ export default async function TopRatedSection() {
         style={{ animation: 'fadeIn 1s' }}
       >
         {topItems &&
-          topItems?.slice(0, 5).map((item) => <ItemPreviewCard key={item.id} item={item} />)}
+          topItems?.slice(0, 5).map((item: any) => <ItemPreviewCard key={item.id} item={item} />)}
       </div>
     </div>
   )

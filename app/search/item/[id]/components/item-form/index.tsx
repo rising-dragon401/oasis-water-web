@@ -46,6 +46,10 @@ export default function ItemForm({ id }: Props) {
 
   const contaminants = item?.contaminants || []
 
+  const contaminantsAboveLimit = contaminants.filter(
+    (contaminant: any) => contaminant.exceedingLimit > 0
+  )
+
   const fluorideContaminant = item.contaminants?.find(
     (contaminant: { name: string }) => contaminant.name.toLowerCase() === 'fluoride'
   )
@@ -101,6 +105,12 @@ export default function ItemForm({ id }: Props) {
                     <BlurredLineItem
                       label="Contaminants found"
                       value={contaminants.length}
+                      labelClassName="text-red-500"
+                    />
+
+                    <BlurredLineItem
+                      label="Toxins above health guidelines"
+                      value={contaminantsAboveLimit.length}
                       labelClassName="text-red-500"
                     />
 

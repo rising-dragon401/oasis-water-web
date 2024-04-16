@@ -1,15 +1,15 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import { FeedbackModal } from '@/components/shared/feedback-modal'
+import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/lib/hooks/use-debounce'
-import ResultsRow from './results-row'
-import { Search, Loader2 } from 'lucide-react'
 import algoliasearch from 'algoliasearch'
-import Typography from '@/components/typography'
-import { FeedbackModal } from '@/components/shared/feedback-modal'
+import { Loader2, Search } from 'lucide-react'
+import React, { useEffect, useRef } from 'react'
 import { AISearchDialog } from '../search-dialogue'
+import ResultsRow from './results-row'
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_APP_ID!,
@@ -36,6 +36,7 @@ export default function BasicSearch({
   const [inputFocused, setInputFocused] = React.useState(false)
   const [queryCompleted, setQueryCompleted] = React.useState(false)
   const [openFeedbackModal, setOpenFeedbackModal] = React.useState(false)
+  const [selectedFilters, setSelectedFilters] = React.useState<string[]>([])
 
   const debouncedQuery = useDebounce(query, 500)
 
@@ -66,12 +67,18 @@ export default function BasicSearch({
     }
   }, [debouncedQuery])
 
+  useEffect(() => {
+    if (indices) {
+      setSelectedFilters(indices)
+    }
+  }, [indices])
+
   const handleSearch = async (query: string) => {
     setIsLoading(true)
 
     let queries: any[] = []
-    if (indices) {
-      queries = indices.map((index) => ({
+    if (selectedFilters) {
+      queries = selectedFilters.map((index) => ({
         indexName: index,
         query: query,
         params: {
@@ -161,14 +168,20 @@ export default function BasicSearch({
         <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
           <div className="relative">
             <Input
-              placeholder={placeholder || 'Search water...'}
+              placeholder={
+                size !== 'large'
+                  ? 'Search water'
+                  : placeholder || 'Search water, locations, filters...'
+              }
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={` text-base flex gap-2 items-center px-4 ${getSearchPaddingY()} z-40 relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] shadow-md rounded-full`}
+              className={`md:text-base text-xs flex gap-2 items-center px-4 ${getSearchPaddingY()} relative bg-muted transition-colors border border-secondary-foreground md:min-w-[300px] min-w-[200px] shadow-md rounded-full`}
             />
 
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
+              {/* <SearchDropdown item={selectedFilters} setItem={setSelectedFilters} /> */}
+
               {isLoading && (
                 <Loader2 size={20} className="animate-spin text-secondary-foreground" />
               )}

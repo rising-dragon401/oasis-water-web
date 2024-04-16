@@ -1,7 +1,7 @@
 'use server'
 
+import { Ingredient, IngredientDescriptor } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
-import { IngredientDescriptor, Ingredient } from '@/types/custom'
 
 export const getItems = async () => {
   const supabase = await createSupabaseServerClient()
@@ -60,10 +60,13 @@ export const getItemDetails = async (id: string) => {
       .select('*')
       .in('id', ingredientIds)
 
-    const ingredientsMap = ingredients?.reduce((map, ingredient) => {
-      map[ingredient.id] = ingredient
-      return map
-    }, {} as Record<string, Ingredient>)
+    const ingredientsMap = ingredients?.reduce(
+      (map, ingredient) => {
+        map[ingredient.id] = ingredient
+        return map
+      },
+      {} as Record<string, Ingredient>
+    )
 
     const detailedIngredients = item.ingredients
       ? item.ingredients
@@ -120,7 +123,21 @@ export const getTopItems = async () => {
       .order('score', { ascending: false })
       .range(0, 10)
 
-    return items || []
+    if (!items) {
+      return []
+    }
+
+    const shuffleArray = (array: any) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[array[i], array[j]] = [array[j], array[i]] // Swap elements
+      }
+      return array
+    }
+
+    const shuffledItems = shuffleArray(items || [])
+
+    return shuffledItems
   } catch (error) {
     console.error(error)
     return []

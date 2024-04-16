@@ -5,6 +5,7 @@ import { getLocationDetails } from '@/app/actions/locations'
 import { incrementItemsViewed } from '@/app/actions/user'
 import ContaminantCard from '@/components/contamintant-card'
 import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
+import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
 import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
@@ -49,6 +50,11 @@ export default function LocationForm({ id }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, allIngredients])
 
+  const contaminants = location?.utilities[0]?.contaminants || []
+  const contaminantsAboveLimit = contaminants.filter(
+    (contaminant: any) => contaminant.exceedingLimit > 0
+  )
+
   if (isLoading) {
     return <ItemSkeleton />
   }
@@ -61,15 +67,29 @@ export default function LocationForm({ id }: Props) {
             <ItemImage src={location.image} alt={location.name} />
           </div>
 
-          <div className="flex md:flex-col flex-row w-full">
-            <Typography size="3xl" fontWeight="normal" className="w-2/3">
-              {location.name} Tap Water
-            </Typography>
+          <div className="flex flex-row w-full justify-between">
+            <div className="flex flex-col">
+              <Typography size="3xl" fontWeight="normal" className="w-2/3">
+                {location.name} Tap Water
+              </Typography>
+
+              <BlurredLineItem
+                label="Contaminants found"
+                value={contaminants.length}
+                labelClassName="text-red-500"
+              />
+
+              <BlurredLineItem
+                label="Toxins above health guidelines"
+                value={contaminantsAboveLimit.length}
+                labelClassName="text-red-500"
+              />
+            </div>
 
             <div className="w-1/3">
               <Score
                 score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
-                size="lg"
+                size="xl"
               />
             </div>
           </div>

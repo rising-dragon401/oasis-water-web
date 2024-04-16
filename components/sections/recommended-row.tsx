@@ -1,16 +1,15 @@
 'use client'
 
-import Typography from '@/components/typography'
-import React from 'react'
-import { getTopItems } from '@/app/actions/items'
-import { useEffect, useState } from 'react'
+import { getRandomItems } from '@/app/actions/items'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
+import Typography from '@/components/typography'
+import { useEffect, useState } from 'react'
 
 export default function RecommendedRow() {
   const [ranked, setRanked] = useState<any>([])
 
   const fetchRecommendedItems = async () => {
-    const recommended = await getTopItems()
+    const recommended = await getRandomItems()
     // const ranked_ = recommended.sort((a, b) => (b.score || 0) - (a.score || 0))
 
     setRanked(recommended)

@@ -38,8 +38,8 @@ export default function BlurredLineItem({ label, value, labelClassName }: Blurre
         <span
           onClick={showPaywall ? handleOpenPaywall : undefined}
           style={{
-            filter: showPaywall ? 'blur(4px)' : 'none',
-            cursor: showPaywall ? 'pointer' : 'default',
+            // filter: showPaywall ? 'blur(4px)' : 'none',
+            // cursor: showPaywall ? 'pointer' : 'default',
             minWidth: '3rem',
           }}
           className="min-w-14"
