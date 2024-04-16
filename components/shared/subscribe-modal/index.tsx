@@ -25,7 +25,7 @@ import {
   Users,
 } from 'lucide-react'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -65,8 +65,10 @@ const kSubscriptionPrice = 5
 
 export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
+  const pathname = usePathname()
   const { user } = useUserProvider()
   const { products } = useSubscription()
+
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
 
   const proProduct = products?.find(
@@ -80,8 +82,8 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
   const redirectToPayment = async () => {
     if (!user) {
-      toast('Please login and subscribe to access this content')
-      router.push('/auth/signin')
+      toast('Please login first to subscribe')
+      router.push(`/auth/signin?redirectUrl=${pathname}`)
       return
     }
 

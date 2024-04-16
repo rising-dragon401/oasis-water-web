@@ -1,11 +1,10 @@
 'use client'
 
 import Typography from '@/components/typography'
-import { SubscribeModal } from '../subscribe-modal'
-import { useState } from 'react'
 import { useUserProvider } from '@/providers/UserProvider'
-import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { SubscribeModal } from '../subscribe-modal'
 
 type BlurredLineItemProps = {
   label: string
@@ -22,13 +21,7 @@ export default function BlurredLineItem({ label, value, labelClassName }: Blurre
   const handleOpenPaywall = (e: React.MouseEvent) => {
     e.stopPropagation()
 
-    if (!user) {
-      toast('Please login and subscribe to access this content')
-      router.push('/auth/signin')
-      return
-    }
-
-    if (user && !subscription) {
+    if (!subscription) {
       setOpen(true)
     }
   }

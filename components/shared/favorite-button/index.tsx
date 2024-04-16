@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { CheckCircle, PlusCircle } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { useMemo } from 'react'
 import { toast } from 'sonner'
 
@@ -16,8 +16,8 @@ type Props = {
 
 export default function FavoriteButton({ item, size = 18 }: Props) {
   const { userFavorites, uid, fetchUserFavorites } = useUserProvider()
-
   const router = useRouter()
+  const pathname = usePathname()
 
   const isItemInFavorites = useMemo(
     () =>
@@ -34,7 +34,7 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
     // first check if user is logged in
     if (!uid) {
       toast('Please sign in to add items to your oasis')
-      router.push('/auth/signin')
+      router.push(`/auth/signin?redirectUrl=${pathname}`)
       return
     }
 

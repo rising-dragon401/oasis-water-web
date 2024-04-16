@@ -8,12 +8,14 @@ import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
 import { useUserProvider } from '@/providers/UserProvider'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { PropsWithChildren } from 'react'
 import { AccountMenu } from '../menu/account-menu'
 import SignUpButton from '../shared/sign-up-button'
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
   const { user } = useUserProvider()
+  const pathname = usePathname()
 
   return (
     <div className="min-h-[100vh] flex justify-center">
@@ -28,7 +30,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
               <AccountMenu />
             ) : (
               <div className="flex flex-row gap-4 items-center ml-4 w-full">
-                <Link href="/auth/signin" className="text-sm">
+                <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm">
                   Login
                 </Link>
                 <SignUpButton />

@@ -1,12 +1,10 @@
-import React from 'react'
 import { Button } from '@/components/ui/button'
-import cn from 'classnames'
-import { SubscribeModal } from '../subscribe-modal'
-import { useState } from 'react'
-import { Lock } from 'lucide-react'
 import { useUserProvider } from '@/providers/UserProvider'
-import { toast } from 'sonner'
-import { useRouter, usePathname } from 'next/navigation'
+import cn from 'classnames'
+import { Lock } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+import { SubscribeModal } from '../subscribe-modal'
 
 type PaywallContentProps = {
   children: React.ReactNode
@@ -30,13 +28,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
   const handleBlurClick = (e: React.MouseEvent) => {
     e.stopPropagation()
 
-    if (!user) {
-      toast('Please login and subscribe to access this content')
-      router.push('/auth/signin')
-      return
-    }
-
-    if (user && !subscription) {
+    if (!subscription) {
       setOpen(true)
     }
   }

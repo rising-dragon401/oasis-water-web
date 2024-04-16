@@ -1,20 +1,14 @@
 'use client'
 
-import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { useEffect } from 'react'
-import useLocalStorage from '@/lib/hooks/use-local-storage'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function SignUpButton({ referral }: { referral?: string }) {
-  const [previousPath, setPreviousPath] = useLocalStorage('oasis-previous-path', '/')
-
-  useEffect(() => {
-    if (referral) setPreviousPath(referral)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [referral])
+  const pathname = usePathname()
 
   return (
-    <Link href="/auth/signin">
+    <Link href={`/auth/signin?redirectUrl=${pathname}`}>
       <Button variant="default">Sign up</Button>
     </Link>
   )

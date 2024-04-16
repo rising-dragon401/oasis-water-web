@@ -15,7 +15,7 @@ import useDevice from '@/lib/hooks/use-device'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useAtom } from 'jotai'
 import { Lock, RotateCcw, SendHorizontal, Sparkles, X } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 import Typography from '../typography'
@@ -27,6 +27,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const inputRef = React.useRef<HTMLInputElement>(null)
   const { user, userData, subscription } = useUserProvider()
   const router = useRouter()
+  const pathname = usePathname()
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
@@ -97,7 +98,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     // check if user is signed in
     if (!user) {
       // return to auth
-      router.push('/auth/signin')
+      router.push(`/auth/signin?redirectUrl=${pathname}`)
       return
     }
 
