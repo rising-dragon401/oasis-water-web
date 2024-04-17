@@ -2,7 +2,6 @@
 
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import SubscribeButton from '@/components/shared/subscribe-button'
-import { SubscribeModal } from '@/components/shared/subscribe-modal'
 import Typography from '@/components/typography'
 import {
   DropdownMenu,
@@ -10,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, WaterFilter } from '@/types/custom'
 import { ChevronDown, Lock } from 'lucide-react'
@@ -22,9 +22,9 @@ type Props = {
 
 export default function RankingList({ title, items }: Props) {
   const { subscription } = useUserProvider()
+  const { openModal } = useModal()
+
   const [sortMethod, setSortMethod] = useState('name')
-  const [open, setOpen] = useState(false)
-  // const [showUnlockButton, setShowUnlockButton] = useState(false)
 
   useEffect(() => {
     if (subscription) {
@@ -51,7 +51,7 @@ export default function RankingList({ title, items }: Props) {
     if (subscription) {
       setSortMethod('score')
     } else {
-      setOpen(true)
+      openModal('SubscriptionModal')
     }
   }
 
@@ -59,8 +59,6 @@ export default function RankingList({ title, items }: Props) {
 
   return (
     <div className="pb-14">
-      <SubscribeModal open={open} setOpen={setOpen} />
-
       <div className="py-4 flex flex-row justify-between md:mt-6">
         <Typography size="3xl" fontWeight="normal">
           {title}

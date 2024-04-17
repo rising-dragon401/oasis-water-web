@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button'
+import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import cn from 'classnames'
 import { Lock } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import { SubscribeModal } from '../subscribe-modal'
+import { usePathname } from 'next/navigation'
+import React from 'react'
 
 type PaywallContentProps = {
   children: React.ReactNode
@@ -19,17 +19,15 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
   hideButton = false,
   label,
 }) => {
-  const router = useRouter()
   const pathname = usePathname()
-  const { user, subscription, userData } = useUserProvider()
-
-  const [open, setOpen] = useState(false)
+  const { openModal } = useModal()
+  const { subscription, userData } = useUserProvider()
 
   const handleBlurClick = (e: React.MouseEvent) => {
     e.stopPropagation()
 
     if (!subscription) {
-      setOpen(true)
+      openModal('SubscriptionModal')
     }
   }
 
@@ -46,8 +44,6 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
 
   return (
     <>
-      <SubscribeModal open={open} setOpen={setOpen} />
-
       <div
         className={cn('relative rounded-lg  hover:cursor-pointer', className)}
         onClick={handleBlurClick}

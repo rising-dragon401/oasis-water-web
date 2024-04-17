@@ -15,16 +15,22 @@ import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 import ManageSubscriptionButton from '../shared/manage-subscription-btn'
 import SignOutButton from './log-out-button'
 
 export function AccountMenu() {
   const { userData, user, subscription } = useUserProvider()
+  const [open, setOpen] = useState(false)
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full ">
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger>
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full"
+          onClick={() => setOpen(!open)}
+        >
           <Avatar className="h-8 w-8">
             <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
           </Avatar>
@@ -58,7 +64,6 @@ export function AccountMenu() {
 
         {user && !subscription && (
           <div className="p-2">
-            {' '}
             <SubscribeButton />
           </div>
         )}

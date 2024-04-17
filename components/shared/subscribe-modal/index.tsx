@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import useSubscription from '@/lib/hooks/use-subscription'
+import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
@@ -63,11 +64,12 @@ const FEATURES = [
 
 const kSubscriptionPrice = 5
 
-export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
+export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { user } = useUserProvider()
   const { products } = useSubscription()
+  const { closeModal } = useModal()
 
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
 
@@ -83,7 +85,8 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const redirectToPayment = async () => {
     if (!user) {
       toast('Please login first to subscribe')
-      router.push(`/auth/signin?redirectUrl=${pathname}`)
+      closeModal('SubscriptionModal')
+      router.push(`/auth/signin?redirectUrl=${pathname}&modal=SubscriptionModal`)
       return
     }
 
@@ -118,7 +121,7 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
         setOpen(!open)
       }}
     >
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh]">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center">Upgrade your health</DialogTitle>
           <Image
@@ -133,7 +136,8 @@ export function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           </Typography>
           <div className="flex w-full justify-center">
             <DialogDescription className="text-center max-w-72">
-              Is your health and longevity worth ${kSubscriptionPrice} a month? We hope so.
+              Improve your health and longevity by accessing the most up to date research and
+              scientific data on health products recommended for you.
             </DialogDescription>
           </div>
         </DialogHeader>

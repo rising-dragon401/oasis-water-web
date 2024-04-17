@@ -6,20 +6,47 @@ import MobileNavbar from '@/components/menu/mobile-navbar'
 import Footer from '@/components/shared/footer'
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
+import { ModalName, useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { PropsWithChildren } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { PropsWithChildren, Suspense, useEffect } from 'react'
 import { AccountMenu } from '../menu/account-menu'
 import SignUpButton from '../shared/sign-up-button'
+
+type Props = {
+  openModal: (modalName: ModalName) => void
+  isOpen: boolean
+}
+
+const SearchParamsComponent = ({ openModal, isOpen }: Props) => {
+  const searchParams = useSearchParams()
+  const modalToOpen = searchParams.get('modalToOpen')
+
+  useEffect(() => {
+    if (modalToOpen) {
+      console.log('isOpen', isOpen)
+      if (!isOpen) {
+        openModal(modalToOpen as ModalName)
+      }
+    }
+  }, []) // Include all dependencies
+
+  return null // This component doesn't render anything itself
+}
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
   const { user } = useUserProvider()
   const pathname = usePathname()
+  const { openModal, isOpen } = useModal()
 
   return (
     <div className="min-h-[100vh] flex justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-3xl sm:max-w-xl max-w-sm w-full">
+        <Suspense fallback={<div>Loading...</div>}>
+          <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
+        </Suspense>
+
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
 
@@ -30,7 +57,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
               <AccountMenu />
             ) : (
               <div className="flex flex-row gap-4 items-center ml-4 w-full">
-                <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm">
+                <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
                   Login
                 </Link>
                 <SignUpButton />
@@ -59,7 +86,9 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </div>
         </div>
 
-        <div className="py-3 min-h-[70vh] flex justify-center w-full">{children}</div>
+        <div className="py-3 min-h-[70vh] flex justify-center w-full overflow-y-scroll">
+          {children}
+        </div>
 
         <Footer />
       </div>

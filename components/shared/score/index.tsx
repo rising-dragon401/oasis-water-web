@@ -2,9 +2,8 @@
 
 import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
+import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
-import { useState } from 'react'
-import { SubscribeModal } from '../subscribe-modal'
 
 type Props = {
   score: number
@@ -13,8 +12,7 @@ type Props = {
 
 export default function Score({ score, size }: Props) {
   const { subscription } = useUserProvider()
-
-  const [open, setOpen] = useState(false)
+  const { openModal } = useModal()
 
   const radius =
     size === 'xl' ? 80 : size === 'lg' ? 70 : size === 'md' ? 60 : size === 'sm' ? 50 : 40
@@ -47,10 +45,8 @@ export default function Score({ score, size }: Props) {
   if (!subscription) {
     return (
       <>
-        <SubscribeModal open={open} setOpen={setOpen} />
-
         <div
-          onClick={() => setOpen(true)}
+          onClick={() => openModal('SubscriptionModal')}
           className="relative flex justify-center items-center"
           style={{ width: svgSize, height: svgSize }}
         >

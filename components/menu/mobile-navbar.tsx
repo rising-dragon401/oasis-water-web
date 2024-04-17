@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
-import { kDiscordInvite } from '@/lib/constants/socials'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Droplet, Filter, Heart, Menu, Milk, X } from 'lucide-react'
 import Link from 'next/link'
@@ -72,25 +71,6 @@ export default function MobileNavbar() {
             <DropdownMenuItem className="flex flex-row gap-2 items-center my-2">
               <Filter className="text-secondary w-4 h-4" />
               <Link href="/search/filters">Filters</Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/mission">About</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/blog/how_we_score_water">How Scoring Works</Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="my-2 justify-start">
-              <Link href="/blog/water_testing_parter">Test your water</Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="my-2 justify-start">
-              <a href={kDiscordInvite} target="_blank" rel="noopener noreferrer">
-                Community
-              </a>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />

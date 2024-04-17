@@ -1,12 +1,9 @@
 import Logo from '@/components/shared/logo'
 import Link from 'next/link'
-import { FaXTwitter, FaTiktok, FaYoutube, FaInstagram, FaDiscord } from 'react-icons/fa6'
-import EmailSubscribe from '../email-subscribe'
-import JoinWaitListButton from '../join-waitlist-button'
-import Typography from '@/components/typography'
-import { FeedbackModal } from '../feedback-modal'
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { FaDiscord, FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
+import EmailSubscribe from '../email-subscribe'
+import { FeedbackModal } from '../feedback-modal'
 
 export default function Footer() {
   const [openFeedback, setOpenFeedback] = useState(false)
@@ -14,19 +11,19 @@ export default function Footer() {
   return (
     <footer className="overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex md:flex-row md:gap-2 flex-col-reverse justify-between gap-4">
+        <div className="flex md:flex-row md:gap-2 flex-col-reverse justify-between items-center gap-4">
           <div className="mb-4 sm:mb-0 block md:hidden">
-            <div className="mb-4">
+            <div className="mb-4 flex justify-center md:justify-start">
               <Link href="/" aria-label="Logo">
                 <Logo />
               </Link>
             </div>
             <div className="text-sm text-secondary">
-              © Oasis <span className="text-secondary">-</span> All rights reserved.
+              © Live Oasis, LLC <span className="text-secondary">-</span> All rights reserved.
             </div>
           </div>
 
-          <div className="h-full flex flex-col md:flex-col lg:flex-col justify-between">
+          <div className="h-full flex flex-col md:flex-col lg:flex-col justify-between items-center md:items-start">
             <div className="mb-4 sm:mb-0 hidden md:block">
               <div className="mb-4">
                 <Link href="/" aria-label="Logo">
@@ -34,7 +31,7 @@ export default function Footer() {
                 </Link>
               </div>
               <div className="text-sm text-secondary">
-                © oasis <span className="text-secondary">-</span> All rights reserved.
+                © Live Oasis, LLC <span className="text-secondary">-</span> All rights reserved.
               </div>
             </div>
             <ul className="my-8 flex-row gap-4 flex list-none">
@@ -78,7 +75,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
             <h6 className="text-sm text-secondary font-bold mb-2">Quick links</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
@@ -86,7 +83,7 @@ export default function Footer() {
                   href="/search/bottled-water"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
-                  Top bottled water
+                  Bottled water
                 </Link>
               </li>
               <li>
@@ -102,7 +99,7 @@ export default function Footer() {
                   href="/filters"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
-                  Top filters
+                  Filters
                 </Link>
               </li>
               <li>
@@ -110,10 +107,26 @@ export default function Footer() {
                   About
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/blog/how_we_score_water"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  How Scoring Works
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blog/water_testing_parter"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  Test your water
+                </Link>
+              </li>
             </ul>
           </div>
 
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
             <h6 className="text-sm text-secondary font-bold mb-2">Information</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
@@ -145,10 +158,19 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
+          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
             <h6 className="text-sm text-secondary font-bold mb-2">Support</h6>
             <ul className="text-sm space-y-2 list-none">
               <FeedbackModal open={openFeedback} setOpen={setOpenFeedback} />
+
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  window.open('https://discord.gg/AhapvnXxAy', '_blank')
+                }}
+              >
+                Community
+              </div>
 
               <div
                 className="cursor-pointer"

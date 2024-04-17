@@ -8,7 +8,7 @@ import TapWaterSection from '@/components/sections/tap-water-section'
 import TopRatedSection from '@/components/sections/top-rated-section'
 import Typography from '@/components/typography'
 
-export default async function Home() {
+export default function Home() {
   return (
     <SubpageLayout>
       <div className="flex h-full flex-col pt-28 max-w-full">

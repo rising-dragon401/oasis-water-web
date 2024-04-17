@@ -2,13 +2,14 @@ import { createSupabaseServerClient } from '@/utils/supabase/server'
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
+// This is only called for Provider Supabase auth, not email password
+// email passowrd is handled in onAuthStateChanged listener
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
 
   const redirectUrl = requestUrl.searchParams.get('redirectUrl') || '/'
-
-  console.log('code: ', code)
+  const modalToOpen = requestUrl.searchParams.get('modal') || ''
 
   if (code) {
     const supabase = await createSupabaseServerClient()
@@ -22,7 +23,9 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  console.log('requestUrl.origin: ', requestUrl.origin + redirectUrl)
-
-  return NextResponse.redirect(requestUrl.origin + redirectUrl)
+  let finalRedirectUrl = requestUrl.origin + redirectUrl
+  if (modalToOpen) {
+    finalRedirectUrl += modalToOpen
+  }
+  return NextResponse.redirect(finalRedirectUrl)
 }

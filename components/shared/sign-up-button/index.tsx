@@ -9,7 +9,9 @@ export default function SignUpButton({ referral }: { referral?: string }) {
 
   return (
     <Link href={`/auth/signin?redirectUrl=${pathname}`}>
-      <Button variant="default">Sign up</Button>
+      <Button variant="default" className="w-full">
+        Sign up
+      </Button>
     </Link>
   )
 }

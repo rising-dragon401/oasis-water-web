@@ -1,11 +1,12 @@
-import { lato } from './fonts'
-import cn from 'classnames'
-import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from '@/components/ui/sonner'
-import { CSPostHogProvider } from './providers'
-import SupabaseProvider from '../providers/SupabaseProvider'
+import { ModalProvider } from '@/providers/ModalProvider'
 import UserProvider from '@/providers/UserProvider'
+import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import cn from 'classnames'
+import SupabaseProvider from '../providers/SupabaseProvider'
+import { lato } from './fonts'
+import { CSPostHogProvider } from './providers'
 
 import '@/styles/globals.css'
 
@@ -63,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SupabaseProvider>
             <UserProvider>
               <main id="skip" className="h-[calc(100dvh)]">
-                {children}
+                <ModalProvider>{children}</ModalProvider>
                 <SpeedInsights />
               </main>
 

@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
 import useDevice from '@/lib/hooks/use-device'
+import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useAtom } from 'jotai'
 import { Lock, RotateCcw, SendHorizontal, Sparkles, X } from 'lucide-react'
@@ -21,13 +22,12 @@ import { toast } from 'sonner'
 import Typography from '../typography'
 import ChatList from './chat-list'
 
-import { SubscribeModal } from '../shared/subscribe-modal'
-
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const { user, userData, subscription } = useUserProvider()
   const router = useRouter()
   const pathname = usePathname()
+  const { openModal } = useModal()
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
@@ -214,7 +214,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   }
 
   const handleOpenSubscription = () => {
-    setOpenSubscription(true)
+    openModal('SubscriptionModal')
   }
 
   const SearchInput = () => {
@@ -262,7 +262,6 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   return (
     <>
-      <SubscribeModal open={openSubscription} setOpen={setOpenSubscription} />
       <Button
         onClick={handleSearchButtonClick}
         variant="outline"

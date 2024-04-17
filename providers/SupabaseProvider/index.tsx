@@ -1,8 +1,9 @@
 'use client'
 
-import { useRouter, usePathname } from 'next/navigation'
-import { createContext, useContext, useEffect, useState } from 'react'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { createClient } from '@/utils/supabase/client'
+import { usePathname, useRouter } from 'next/navigation'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type SupabaseContext = {
@@ -16,6 +17,8 @@ const Context = createContext<SupabaseContext | undefined>(undefined)
 export default function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [activeSession, setActiveSession] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
+  const [redirectUrl, setRedirectUrl] = useLocalStorage('redirectUrl', '/')
+  const [modalToOpen, setModalToOpen] = useLocalStorage('modalToOpen', '')
 
   const supabase = createClient()
   const router = useRouter()
@@ -34,9 +37,24 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
 
       setUser(session?.user)
 
+      // TODO - handle redirect and open modal here based on searchparams
       if (event === 'SIGNED_IN' && session?.access_token && pathname.startsWith('/auth')) {
         toast('Welcome back')
         router.push('/')
+
+        console.log('modalToOpen', modalToOpen)
+        console.log('redirectUrl', redirectUrl)
+
+        if (modalToOpen) {
+          router.push(`${redirectUrl}?modalToOpen=${modalToOpen}`)
+        } else if (redirectUrl) {
+          router.push(redirectUrl)
+        } else {
+          router.push('/')
+        }
+
+        setRedirectUrl('')
+        setModalToOpen('')
       }
 
       if (authPages.includes(pathname) && !session) {
