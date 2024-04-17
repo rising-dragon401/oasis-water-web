@@ -77,8 +77,8 @@ export default function BasicSearch({
     setIsLoading(true)
 
     let queries: any[] = []
-    if (selectedFilters) {
-      queries = selectedFilters.map((index) => ({
+    if (indices && indices.length > 0) {
+      queries = indices.map((index) => ({
         indexName: index,
         query: query,
         params: {
