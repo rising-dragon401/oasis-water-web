@@ -1,4 +1,5 @@
 import Logo from '@/components/shared/logo'
+import Typography from '@/components/typography'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaDiscord, FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
@@ -11,7 +12,7 @@ export default function Footer() {
   return (
     <footer className="overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        <div className="flex md:flex-row md:gap-2 flex-col-reverse justify-between items-center gap-4">
+        <div className="flex md:flex-row md:gap-2 flex-col-reverse justify-between md:items-start items-center gap-4">
           <div className="mb-4 sm:mb-0 block md:hidden">
             <div className="mb-4 flex justify-center md:justify-start">
               <Link href="/" aria-label="Logo">
@@ -199,6 +200,20 @@ export default function Footer() {
           <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
             <EmailSubscribe />
           </div>
+        </div>
+
+        <div className="py-2 text-center mt-8 bg-muted border-input border rounded-md">
+          <Typography size="sm" fontWeight="normal">
+            🌴 Created by {` `}
+            <a
+              href="https://twitter.com/cormachayden_"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              Cormac Hayden
+            </a>
+          </Typography>
         </div>
       </div>
     </footer>

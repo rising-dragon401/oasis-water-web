@@ -21,7 +21,7 @@ import SignUpButton from '../shared/sign-up-button'
 import SignOutButton from './log-out-button'
 
 export default function MobileNavbar() {
-  const { uid, userData, subscription } = useUserProvider()
+  const { uid, user, userData, subscription } = useUserProvider()
 
   const [isOpen, setIsOpen] = React.useState(false)
   const [isMounted, setIsMounted] = useState(false)
@@ -77,15 +77,20 @@ export default function MobileNavbar() {
 
             <ManageSubscriptionButton />
 
+            {user && (
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <Link href={`/account/oasis/${user?.id}`} className="flex flex-row items-center">
+                  <Heart className="mr-2 h-4 w-4" />
+                  My Oasis
+                </Link>
+              </DropdownMenuItem>
+            )}
+
             {uid && userData ? (
               <DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 {!subscription && <SubscribeButton />}
-                <DropdownMenuItem className="my-2 justify-start">
-                  <Heart className="mr-2 h-4 w-4" />
 
-                  <Link href="/account/my-oasis">Favorites</Link>
-                </DropdownMenuItem>
                 <SignOutButton />
               </DropdownMenuGroup>
             ) : (
