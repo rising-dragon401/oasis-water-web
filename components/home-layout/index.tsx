@@ -56,7 +56,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
             {user ? (
               <AccountMenu />
             ) : (
-              <div className="flex flex-row gap-4 items-center ml-4 w-screen">
+              <div className="flex flex-row gap-4 items-center ml-4">
                 <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
                   Login
                 </Link>
