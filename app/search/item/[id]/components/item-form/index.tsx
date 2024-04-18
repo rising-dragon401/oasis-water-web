@@ -124,6 +124,8 @@ export default function ItemForm({ id }: Props) {
 
                     <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'Unknown'} />
 
+                    <BlurredLineItem label="Packaging" value={item?.packaging || 'Unknown'} />
+
                     <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
                       {item.affiliate_url && (
                         <Button
