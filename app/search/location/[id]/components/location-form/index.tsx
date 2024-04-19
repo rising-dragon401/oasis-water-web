@@ -87,10 +87,10 @@ export default function LocationForm({ id }: Props) {
               />
             </div>
 
-            <div className="w-1/3">
+            <div className="w-1/2">
               <Score
                 score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
-                size="xl"
+                size="lg"
               />
             </div>
           </div>
