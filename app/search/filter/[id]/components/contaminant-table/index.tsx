@@ -1,10 +1,12 @@
 'use client'
 
-import useSWR from 'swr'
 import { getAllContaminants } from '@/app/actions/filters'
-import { Contaminant } from '@/types/custom'
-import { CheckCircle2, X } from 'lucide-react'
 import { ContaminantFiltersDropdown } from '@/components/contamintant-card/contaminant-filters-dropdown'
+import { Contaminant } from '@/types/custom'
+import { determineLink } from '@/utils/helpers'
+import { CheckCircle2, X } from 'lucide-react'
+import Link from 'next/link'
+import useSWR from 'swr'
 
 type Props = {
   filteredContaminants: Contaminant[]
@@ -49,7 +51,7 @@ export default function ContaminantTable({ filteredContaminants }: Props) {
         {sortedContaminants?.map((contaminant, index) => (
           <tr key={index}>
             <td className="px-2 py-4  md:text-sm text-xs font-medium text-gray-900 max-w-36 text-wrap">
-              {contaminant.name}
+              <Link href={determineLink(contaminant)}>{contaminant.name}</Link>
             </td>
             <td className="px-2 py-4 whitespace-nowrap text-sm text-gray-500 max-w-14">
               {filteredContaminants.some((fc) => fc.id === contaminant.id) ? (

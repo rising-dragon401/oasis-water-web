@@ -129,6 +129,11 @@ export const getAllContaminants = async () => {
     return []
   }
 
+  await contaminants.forEach((contaminant) => {
+    // @ts-ignore
+    contaminant.type = 'ingredient'
+  })
+
   return contaminants
 }
 

@@ -1,5 +1,7 @@
 'use client'
 
+import { getFiltersByContaminant } from '@/app/actions/filters'
+import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -11,10 +13,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { WaterFilter } from '@/types/custom'
+import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
-import { getFiltersByContaminant } from '@/app/actions/filters'
-import Typography from '@/components/typography'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type Props = {
   contaminantId: number
@@ -36,7 +37,10 @@ export function ContaminantFiltersDropdown({ contaminantId, align }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Filters that remove this</Button>
+        <Button variant="outline">
+          Filters that remove this
+          <ChevronDown className="w-4 h-4 ml-2" />
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72" align={align}>
         <DropdownMenuLabel>Filters</DropdownMenuLabel>

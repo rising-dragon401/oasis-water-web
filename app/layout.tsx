@@ -6,7 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next'
 import cn from 'classnames'
 import SupabaseProvider from '../providers/SupabaseProvider'
 import { lato } from './fonts'
-import { CSPostHogProvider } from './providers'
+// import { CSPostHogProvider } from './providers'
 
 import '@/styles/globals.css'
 
@@ -59,21 +59,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sizes="<generated>"
       />
 
-      <CSPostHogProvider>
-        <body>
-          <SupabaseProvider>
-            <UserProvider>
-              <main id="skip" className="h-[calc(100dvh)]">
-                <ModalProvider>{children}</ModalProvider>
-                <SpeedInsights />
-              </main>
+      {/* <CSPostHogProvider> */}
+      <body>
+        <SupabaseProvider>
+          <UserProvider>
+            <main id="skip" className="h-[calc(100dvh)]">
+              <ModalProvider>{children}</ModalProvider>
+              <SpeedInsights />
+            </main>
 
-              <Analytics />
-              <Toaster />
-            </UserProvider>
-          </SupabaseProvider>
-        </body>
-      </CSPostHogProvider>
+            <Analytics />
+            <Toaster />
+          </UserProvider>
+        </SupabaseProvider>
+      </body>
+      {/* </CSPostHogProvider> */}
     </html>
   )
 }
