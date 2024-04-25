@@ -9,6 +9,8 @@ import ItemImage from '@/components/shared/item-image'
 import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
+import UnindexedDisclaimer from '@/components/shared/unindexed-disclaimer'
+import UntestedDisclaimer from '@/components/shared/untested-disclaimer'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
@@ -93,7 +95,7 @@ export default function FilterForm({ id }: Props) {
     <div className="flex-col flex w-full md:px-0 px-2">
       <div className="md:py-10 py-6">
         <div className="flex md:flex-row flex-col gap-6">
-          <div className="flex justify-center md:w-1/2 w-full">
+          <div className="flex justify-center md:w-2/5 w-full">
             {filter.affiliate_url ? (
               <Link href={filter.affiliate_url} target="_blank" rel="noopener noreferrer">
                 <ItemImage src={filter.image} alt={filter.name} />
@@ -103,8 +105,8 @@ export default function FilterForm({ id }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col justify-start">
-            <div className="flex flex-row justify-between  gap-2">
+          <div className="flex flex-col justify-start w-3/5">
+            <div className="flex flex-row justify-between gap-2">
               <div className="flex flex-col gap-2 w-2/3">
                 <Typography size="3xl" fontWeight="normal">
                   {filter.name}
@@ -152,13 +154,19 @@ export default function FilterForm({ id }: Props) {
           </div>
         </div>
 
-        <PaywallContent className="mt-8" label="Unlock all data and reports">
-          <div className="flex flex-col gap-6 mt-10">
-            <ContaminantTable filteredContaminants={filter.contaminants_filtered} />
-          </div>
+        {filter.is_indexed !== false && <UntestedDisclaimer />}
 
-          {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
-        </PaywallContent>
+        {filter.is_indexed !== false ? (
+          <PaywallContent className="mt-8" label="Unlock all data and reports">
+            <div className="flex flex-col gap-6 mt-10">
+              <ContaminantTable filteredContaminants={filter.contaminants_filtered} />
+            </div>
+
+            {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
+          </PaywallContent>
+        ) : (
+          <UnindexedDisclaimer />
+        )}
       </div>
 
       <RecommendedFiltersRow />

@@ -9,6 +9,8 @@ import ItemImage from '@/components/shared/item-image'
 import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
+import UnindexedDisclaimer from '@/components/shared/unindexed-disclaimer'
+import UntestedDisclaimer from '@/components/shared/untested-disclaimer'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
@@ -78,7 +80,7 @@ export default function ItemForm({ id }: Props) {
     <div className="flex-col flex w-full">
       <div className="md:py-10 pt-2 pb-6 md:px-0 px-4">
         <div className="flex md:flex-row flex-col gap-6">
-          <div className="flex justify-center w-full md:w-1/2">
+          <div className="flex justify-center w-full md:w-2/5">
             {item.affiliate_url ? (
               <Link href={item.affiliate_url} target="_blank" rel="noopener noreferrer">
                 <ItemImage src={item.image} alt={item.name} />
@@ -88,7 +90,7 @@ export default function ItemForm({ id }: Props) {
             )}
           </div>
 
-          <div className="flex flex-row gap-2 w-full">
+          <div className="flex flex-row gap-2 md:w-3/5">
             <div className="flex flex-col md:gap-2 md:w-3/5">
               <Typography size="3xl" fontWeight="normal">
                 {item.name}
@@ -141,18 +143,7 @@ export default function ItemForm({ id }: Props) {
                     </div>
                   </div>
                 ) : (
-                  <>
-                    <Typography size="base" fontWeight="normal" className="text-secondary">
-                      ⚠️ NO REPORTS LOCATED – PROCEED WITH CAUTION.
-                    </Typography>
-                    <div className="flex flex-col gap-6 mt-6">
-                      <Typography size="base" fontWeight="normal" className="text-secondary">
-                        This item has not been tested or rated yet. This usally means the company
-                        has not publicized or refuses to share their lab reports so we cannot
-                        recommend or provide a score for this item.
-                      </Typography>
-                    </div>
-                  </>
+                  <UnindexedDisclaimer />
                 )}
               </>
             </div>
@@ -162,6 +153,8 @@ export default function ItemForm({ id }: Props) {
             </div>
           </div>
         </div>
+
+        {item.is_indexed !== false && <UntestedDisclaimer />}
 
         {item.is_indexed !== false && (
           <PaywallContent className="mt-6" label="Unlock All Data & Reports">
