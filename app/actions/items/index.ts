@@ -93,7 +93,7 @@ export const getItemDetails = async (id: string) => {
               exceedingLimit: exceedingLimit,
             }
           })
-          ?.filter((ingredient) => ingredient !== null)
+          ?.filter((ingredient: any) => ingredient !== null)
       : []
 
     const itemWithDetails = {
@@ -101,7 +101,7 @@ export const getItemDetails = async (id: string) => {
       brand: item.brand,
       ingredients: detailedIngredients,
       company: item.company,
-      contaminants: detailedIngredients?.filter((ingredient) => ingredient?.is_contaminant),
+      contaminants: detailedIngredients?.filter((ingredient: any) => ingredient?.is_contaminant),
     }
 
     return itemWithDetails

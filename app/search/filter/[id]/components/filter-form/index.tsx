@@ -15,7 +15,7 @@ import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import ContaminantTable from '../contaminant-table'
 import ItemSkeleton from '../item-skeleton'
@@ -45,37 +45,64 @@ export default function FilterForm({ id }: Props) {
     return filter
   }
 
-  const commonContaminants = allContaminants?.filter(
-    (contaminant) => contaminant.is_common === true
+  const commonContaminants = useMemo(
+    () => allContaminants?.filter((contaminant) => contaminant.is_common === true),
+    [allContaminants]
   )
 
-  const uncommonContaminants = allContaminants?.filter(
-    (contaminant) => contaminant.is_common !== true
+  const uncommonContaminants = useMemo(
+    () => allContaminants?.filter((contaminant) => contaminant.is_common !== true),
+    [allContaminants]
   )
 
-  const notFilteredContaminants = allContaminants?.filter(
-    (contaminant) =>
-      !filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+  const notFilteredContaminants = useMemo(
+    () =>
+      allContaminants?.filter(
+        (contaminant) =>
+          !filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+      ),
+    [allContaminants, filter.contaminants_filtered]
   )
 
-  const commonContaminantsFiltered = allContaminants?.filter(
-    (contaminant) =>
-      contaminant.is_common === true &&
-      filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+  const commonContaminantsFiltered = useMemo(
+    () =>
+      allContaminants?.filter(
+        (contaminant) =>
+          contaminant.is_common === true &&
+          filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+      ),
+    [allContaminants, filter.contaminants_filtered]
   )
 
-  const uncommonContaminantsFiltered = allContaminants?.filter(
-    (contaminant) =>
-      contaminant.is_common !== true &&
-      filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+  const uncommonContaminantsFiltered = useMemo(
+    () =>
+      allContaminants?.filter(
+        (contaminant) =>
+          contaminant.is_common !== true &&
+          filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+      ),
+    [allContaminants, filter.contaminants_filtered]
   )
 
-  const percentCommonFiltered = Math.round(
-    ((commonContaminantsFiltered?.length ?? 0) / (commonContaminants?.length ?? 1)) * 100
+  const percentCommonFiltered = useMemo(
+    () =>
+      Math.round(
+        ((commonContaminantsFiltered?.length ?? 0) / (commonContaminants?.length ?? 1)) * 100
+      ),
+    [commonContaminantsFiltered, commonContaminants]
   )
 
-  const percentUncommonFiltered = Math.round(
-    ((uncommonContaminantsFiltered?.length ?? 0) / (uncommonContaminants?.length ?? 1)) * 100
+  const percentUncommonFiltered = useMemo(
+    () =>
+      Math.round(
+        ((uncommonContaminantsFiltered?.length ?? 0) / (uncommonContaminants?.length ?? 1)) * 100
+      ),
+    [uncommonContaminantsFiltered, uncommonContaminants]
+  )
+
+  const categoriesFiltered = useMemo(
+    () => filter.filtered_contaminant_categories ?? [],
+    [filter.filtered_contaminant_categories]
   )
 
   useEffect(() => {
@@ -158,8 +185,11 @@ export default function FilterForm({ id }: Props) {
 
         {filter.is_indexed !== false ? (
           <PaywallContent className="mt-8" label="Unlock all data and reports">
-            <div className="flex flex-col gap-6 mt-10">
-              <ContaminantTable filteredContaminants={filter.contaminants_filtered} />
+            <div className="flex flex-col gap-6 mt-6">
+              <ContaminantTable
+                filteredContaminants={filter.contaminants_filtered}
+                categories={categoriesFiltered}
+              />
             </div>
 
             {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}

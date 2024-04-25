@@ -1,12 +1,12 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Wallet } from 'lucide-react'
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
+import { Wallet } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 
 export default function ManageSubscriptionButton() {
   const router = useRouter()
@@ -34,6 +34,7 @@ export default function ManageSubscriptionButton() {
     setIsLoadingCustomerPortal(false)
   }
 
+  // @ts-ignore
   if (subscription && subscription.status === 'active') {
     return (
       <DropdownMenuItem className="hover:cursor-pointer" asChild>

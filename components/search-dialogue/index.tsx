@@ -230,6 +230,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
             className="bg-muted w-full rounded-full h-12"
           />
 
+          {/* @ts-ignore */}
           {!subscription || subscription.status !== 'active' ? (
             <Button
               type="submit"

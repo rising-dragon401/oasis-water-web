@@ -171,6 +171,7 @@ export type Database = {
       ingredients: {
         Row: {
           benefits: string | null
+          category: Database["public"]["Enums"]["ingredient_category"] | null
           description: string | null
           health_guideline: number | null
           id: number
@@ -187,6 +188,7 @@ export type Database = {
         }
         Insert: {
           benefits?: string | null
+          category?: Database["public"]["Enums"]["ingredient_category"] | null
           description?: string | null
           health_guideline?: number | null
           id?: number
@@ -203,6 +205,7 @@ export type Database = {
         }
         Update: {
           benefits?: string | null
+          category?: Database["public"]["Enums"]["ingredient_category"] | null
           description?: string | null
           health_guideline?: number | null
           id?: number
@@ -468,6 +471,27 @@ export type Database = {
         }
         Relationships: []
       }
+      research: {
+        Row: {
+          created_at: string
+          file_url: string | null
+          id: number
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_url?: string | null
+          id?: number
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_url?: string | null
+          id?: number
+          title?: string | null
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at: string | null
@@ -625,9 +649,11 @@ export type Database = {
           contaminants_filtered: number[] | null
           created_at: string
           description: string | null
+          filtered_contaminant_categories: Json[] | null
           id: number
           image: string | null
           is_draft: boolean | null
+          is_indexed: boolean | null
           name: string
           recommended: boolean | null
           score: number | null
@@ -641,9 +667,11 @@ export type Database = {
           contaminants_filtered?: number[] | null
           created_at?: string
           description?: string | null
+          filtered_contaminant_categories?: Json[] | null
           id?: number
           image?: string | null
           is_draft?: boolean | null
+          is_indexed?: boolean | null
           name: string
           recommended?: boolean | null
           score?: number | null
@@ -657,9 +685,11 @@ export type Database = {
           contaminants_filtered?: number[] | null
           created_at?: string
           description?: string | null
+          filtered_contaminant_categories?: Json[] | null
           id?: number
           image?: string | null
           is_draft?: boolean | null
+          is_indexed?: boolean | null
           name?: string
           recommended?: boolean | null
           score?: number | null
@@ -821,6 +851,20 @@ export type Database = {
         | "rain"
         | "unknown"
       email_subscriptions: "newsletter"
+      ingredient_category:
+        | "Chemical Disinfectants"
+        | "Fluoride"
+        | "Haloacetic Acids"
+        | "Heavy Metals"
+        | "Herbicides"
+        | "Microplastics"
+        | "Perfluorinated Chemicals (PFAS)"
+        | "Pesticides"
+        | "Pharmaceuticals"
+        | "Phthalates"
+        | "Radiological Elements"
+        | "Semi-Volatile Compounds"
+        | "Volatile Organic Compounds (VOCs)"
       item_type: "bottled_water" | "tap_water" | "filter"
       packaging:
         | "plastic"

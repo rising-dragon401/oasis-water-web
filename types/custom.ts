@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Database } from './supabase'
 
 export type Ingredient = Database['public']['Tables']['ingredients']['Row']
@@ -37,3 +38,5 @@ export interface SubscriptionWithProduct extends Subscription {
   prices: PriceWithProduct | null
   plan: string | null
 }
+
+export type IngredientCategory = Database['public']['Enums']['ingredient_category']
