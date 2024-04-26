@@ -118,7 +118,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/blog/water_testing_parter"
+                  href="/blog/water_testing_partner"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
                   Test your water

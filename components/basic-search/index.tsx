@@ -91,7 +91,7 @@ export default function BasicSearch({
           indexName: 'items',
           query: query,
           params: {
-            hitsPerPage: numResults || 5,
+            hitsPerPage: numResults || 15,
           },
         },
         {
