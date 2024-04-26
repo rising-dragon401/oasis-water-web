@@ -2,10 +2,8 @@ import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
 import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import CTASection from '@/components/sections/cta-section'
-import FilterSection from '@/components/sections/filter-section'
 import LowestRatedSection from '@/components/sections/lowest-rated-section'
 import TapWaterSection from '@/components/sections/tap-water-section'
-import TopRatedSection from '@/components/sections/top-rated-section'
 import Typography from '@/components/typography'
 
 export default function Home() {
@@ -18,17 +16,17 @@ export default function Home() {
               Do you know what&apos;s in your water?
             </Typography>
             <Typography size="lg" fontWeight="normal" className="max-w-lg">
-              Search bottled water, tap water locations and filters to see what contaminants are
-              inside
+              90% of water contains toxins, microplastics and contaminants. Search what&apos;s
+              inside yours 👇
             </Typography>
           </div>
 
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="flex flex-col mt-14 mb-10">
+        {/* <div className="flex flex-col mt-14 mb-10">
           <TopRatedSection />
-        </div>
+        </div> */}
 
         <div className="flex flex-col mt-10 mb-10">
           <LowestRatedSection />
@@ -38,9 +36,9 @@ export default function Home() {
           <TapWaterSection />
         </div>
 
-        <div className="flex flex-col mt-10 mb-20">
+        {/* <div className="flex flex-col mt-10 mb-20">
           <FilterSection />
-        </div>
+        </div> */}
 
         <div className="mb-32">
           <BlogPreviewSection />
