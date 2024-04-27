@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { WaterFilter } from '@/types/custom'
-import { ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
@@ -37,10 +36,7 @@ export function ContaminantFiltersDropdown({ contaminantId, align }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          Filters that remove this
-          <ChevronDown className="w-4 h-4 ml-2" />
-        </Button>
+        <Button variant="ghost">Filters</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72" align={align}>
         <DropdownMenuLabel>Filters</DropdownMenuLabel>

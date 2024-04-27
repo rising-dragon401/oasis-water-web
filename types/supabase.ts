@@ -865,6 +865,11 @@ export type Database = {
         | "Radiological Elements"
         | "Semi-Volatile Compounds"
         | "Volatile Organic Compounds (VOCs)"
+        | "Microbiologicals"
+        | "Minerals"
+        | "Inorganics"
+        | "Other"
+        | "Disinfectant by-product"
       item_type: "bottled_water" | "tap_water" | "filter"
       packaging:
         | "plastic"

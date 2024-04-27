@@ -45,45 +45,95 @@ export default function FilterForm({ id }: Props) {
     return filter
   }
 
+  // get common water contaminants
   const commonContaminants = useMemo(
     () => allContaminants?.filter((contaminant) => contaminant.is_common === true),
     [allContaminants]
   )
 
+  // get uncommon water contaminants
   const uncommonContaminants = useMemo(
     () => allContaminants?.filter((contaminant) => contaminant.is_common !== true),
     [allContaminants]
   )
 
-  const notFilteredContaminants = useMemo(
-    () =>
-      allContaminants?.filter(
-        (contaminant) =>
-          !filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
-      ),
-    [allContaminants, filter.contaminants_filtered]
+  // get categories filtred (if any)
+  const categoriesFiltered = useMemo(
+    () => filter.filtered_contaminant_categories ?? [],
+    [filter.filtered_contaminant_categories]
   )
 
+  // get the category contamiannts that are filtered
+  const contaminantsFilteredFromCategory = useMemo(() => {
+    console.log('categoriesFiltered: ', categoriesFiltered)
+    return categoriesFiltered.flatMap((category: any) => {
+      const percent = category.percentage
+
+      console.log('percent: ', percent)
+
+      const contaminantsInCategory =
+        allContaminants?.filter((contaminant) => contaminant.category === category.category) || []
+
+      const sliceIndex = Math.ceil(contaminantsInCategory.length * (percent / 100))
+
+      const contaminantsInCategoryByPercent = contaminantsInCategory.slice(0, sliceIndex)
+
+      console.log('contaminantsInCategoryByPercent: ', contaminantsInCategoryByPercent)
+
+      return contaminantsInCategoryByPercent.map((contaminant) => {
+        return {
+          id: contaminant.id,
+          name: contaminant.name,
+        }
+      })
+    })
+  }, [allContaminants, categoriesFiltered])
+
+  console.log('contaminantsFilteredFromCategory: ', contaminantsFilteredFromCategory)
+
+  // combine normal filtered contaminants with category filtered contaminants
+  const combinedFilteredContaminants = useMemo(() => {
+    const flatContaminantsFromCategory = contaminantsFilteredFromCategory.flat()
+    const uniqueContaminants = new Map()
+
+    // Add contaminants filtered directly
+    filter?.contaminants_filtered?.forEach((contaminant: any) => {
+      uniqueContaminants.set(contaminant.id, contaminant)
+    })
+
+    // Add contaminants filtered from categories
+    flatContaminantsFromCategory.forEach((contaminant: any) => {
+      if (!uniqueContaminants.has(contaminant.id)) {
+        uniqueContaminants.set(contaminant.id, contaminant)
+      }
+    })
+
+    return Array.from(uniqueContaminants.values())
+  }, [contaminantsFilteredFromCategory, filter.contaminants_filtered])
+
+  // now get the common contaminants that are filtered
   const commonContaminantsFiltered = useMemo(
     () =>
       allContaminants?.filter(
         (contaminant) =>
           contaminant.is_common === true &&
-          filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+          combinedFilteredContaminants.some((filtered: any) => filtered.id === contaminant.id)
       ),
-    [allContaminants, filter.contaminants_filtered]
+    [allContaminants, combinedFilteredContaminants]
   )
 
+  // and the uncommon contaminants that are filtered
   const uncommonContaminantsFiltered = useMemo(
     () =>
       allContaminants?.filter(
         (contaminant) =>
           contaminant.is_common !== true &&
-          filter.contaminants_filtered?.some((filtered: any) => filtered.id === contaminant.id)
+          combinedFilteredContaminants.some((filtered: any) => filtered.id === contaminant.id)
       ),
-    [allContaminants, filter.contaminants_filtered]
+    [allContaminants, combinedFilteredContaminants]
   )
 
+  // along with the percentage of common and uncommon contaminants filtered
   const percentCommonFiltered = useMemo(
     () =>
       Math.round(
@@ -98,11 +148,6 @@ export default function FilterForm({ id }: Props) {
         ((uncommonContaminantsFiltered?.length ?? 0) / (uncommonContaminants?.length ?? 1)) * 100
       ),
     [uncommonContaminantsFiltered, uncommonContaminants]
-  )
-
-  const categoriesFiltered = useMemo(
-    () => filter.filtered_contaminant_categories ?? [],
-    [filter.filtered_contaminant_categories]
   )
 
   useEffect(() => {
