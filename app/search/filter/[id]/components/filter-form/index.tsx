@@ -89,8 +89,6 @@ export default function FilterForm({ id }: Props) {
     })
   }, [allContaminants, categoriesFiltered])
 
-  console.log('contaminantsFilteredFromCategory: ', contaminantsFilteredFromCategory)
-
   // combine normal filtered contaminants with category filtered contaminants
   const combinedFilteredContaminants = useMemo(() => {
     const flatContaminantsFromCategory = contaminantsFilteredFromCategory.flat()
@@ -177,7 +175,7 @@ export default function FilterForm({ id }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col justify-start w-3/5">
+          <div className="flex flex-col justify-start md:w-3/5">
             <div className="flex flex-row justify-between gap-2">
               <div className="flex flex-col gap-2 w-2/3">
                 <Typography size="3xl" fontWeight="normal">
@@ -224,6 +222,12 @@ export default function FilterForm({ id }: Props) {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="flex flex-row gap-2 mt-4">
+          <Typography size="base" fontWeight="normal" className="text-seoncdary-foreground">
+            {filter.description}
+          </Typography>
         </div>
 
         {filter.is_indexed !== false && <UntestedDisclaimer />}

@@ -44,6 +44,7 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
           return {
             id: contaminant.id,
             name: contaminant.name,
+            is_common: contaminant.is_common,
             isFiltered: 'unknown',
           }
         })
@@ -54,6 +55,7 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
           return {
             id: contaminant.id,
             name: contaminant.name,
+            is_common: contaminant.is_common,
             isFiltered: filteredContaminants.some((fc) => fc.id === contaminant.id),
           }
         })
@@ -106,7 +108,7 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
                     key={contaminant.name}
                   >
                     <div className="w-96" key={contaminant.name}>
-                      {contaminant.name}
+                      {contaminant.name} {contaminant?.is_common ? '(c)' : ''}
                     </div>
                     <div className="w-14">
                       {contaminant.isFiltered ? (
