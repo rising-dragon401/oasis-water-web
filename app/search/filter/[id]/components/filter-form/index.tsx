@@ -194,6 +194,8 @@ export default function FilterForm({ id }: Props) {
                     '0'
                   }
                   labelClassName="text-red-500"
+                  tooltipContent="Learn more"
+                  tooltipLink="/blog/how_we_score_water"
                 />
                 <BlurredLineItem
                   label="Uncommon contaminants filtered"
@@ -202,6 +204,8 @@ export default function FilterForm({ id }: Props) {
                     '0'
                   }
                   labelClassName="text-red-500"
+                  tooltipContent="Learn more"
+                  tooltipLink="/blog/how_we_score_water"
                 />
 
                 {filter.affiliate_url && (
@@ -210,7 +214,7 @@ export default function FilterForm({ id }: Props) {
                     onClick={() => {
                       window.open(filter.affiliate_url, '_blank')
                     }}
-                    className="w-40"
+                    className="w-40 mt-6"
                   >
                     Buy Now <ArrowUpRight size={16} className="ml-2 w-" />
                   </Button>
