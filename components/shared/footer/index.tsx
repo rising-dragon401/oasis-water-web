@@ -182,15 +182,15 @@ export default function Footer() {
                 Feedback
               </div>
               <li>
-                <a
-                  href="mailto:cormac@live-oasis.com"
+                <Link
+                  href="/contact"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
                   Contact
-                </a>
+                </Link>
               </li>
               <li>
-                <Link href="/faqs" className="text-secondary  transition duration-150 ease-in-out">
+                <Link href="/faqs" className="text-secondary transition duration-150 ease-in-out">
                   FAQs
                 </Link>
               </li>

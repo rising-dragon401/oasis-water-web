@@ -1,11 +1,10 @@
+import Typography from '@/components/typography'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import SubpageLayout from '@/components/home-layout'
-import Typography from '@/components/typography'
 
 const FAQ_LIST = [
   {
@@ -30,9 +29,9 @@ const FAQ_LIST = [
 
 export default function FAQs() {
   return (
-    <SubpageLayout>
+    <div>
       <div className="w-full mt-14">
-        <div className="pt-4 pb-8 flex flex-row justify-between">
+        <div className=" flex flex-row justify-between">
           <Typography size="2xl" fontWeight="normal">
             Frequently asked questions
           </Typography>
@@ -46,6 +45,6 @@ export default function FAQs() {
           ))}
         </Accordion>
       </div>
-    </SubpageLayout>
+    </div>
   )
 }
