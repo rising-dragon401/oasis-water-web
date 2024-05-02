@@ -69,16 +69,12 @@ export default function FilterForm({ id }: Props) {
     return categoriesFiltered.flatMap((category: any) => {
       const percent = category.percentage
 
-      console.log('percent: ', percent)
-
       const contaminantsInCategory =
         allContaminants?.filter((contaminant) => contaminant.category === category.category) || []
 
       const sliceIndex = Math.ceil(contaminantsInCategory.length * (percent / 100))
 
       const contaminantsInCategoryByPercent = contaminantsInCategory.slice(0, sliceIndex)
-
-      console.log('contaminantsInCategoryByPercent: ', contaminantsInCategoryByPercent)
 
       return contaminantsInCategoryByPercent.map((contaminant) => {
         return {
@@ -177,7 +173,7 @@ export default function FilterForm({ id }: Props) {
 
           <div className="flex flex-col justify-start md:w-3/5">
             <div className="flex flex-row justify-between gap-2">
-              <div className="flex flex-col gap-2 w-2/3">
+              <div className="flex flex-col  w-2/3">
                 <Typography size="3xl" fontWeight="normal">
                   {filter.name}
                 </Typography>
@@ -187,26 +183,34 @@ export default function FilterForm({ id }: Props) {
                   </Typography>
                 </Link>
 
-                <BlurredLineItem
-                  label="Common contaminants filtered"
-                  value={
-                    `${commonContaminantsFiltered?.length.toString()} (${percentCommonFiltered}%)` ||
-                    '0'
-                  }
-                  labelClassName="text-red-500"
-                  tooltipContent="Learn more"
-                  tooltipLink="/blog/how_we_score_water"
-                />
-                <BlurredLineItem
-                  label="Uncommon contaminants filtered"
-                  value={
-                    `${uncommonContaminantsFiltered?.length.toString()} (${percentUncommonFiltered}%)` ||
-                    '0'
-                  }
-                  labelClassName="text-red-500"
-                  tooltipContent="Learn more"
-                  tooltipLink="/blog/how_we_score_water"
-                />
+                <div className="flex flex-col gap-y-2 mt-4">
+                  <BlurredLineItem
+                    label="Common contaminants filtered"
+                    value={
+                      `${commonContaminantsFiltered?.length.toString()} (${percentCommonFiltered}%)` ||
+                      '0'
+                    }
+                    labelClassName="text-red-500"
+                    tooltipContent="Learn more"
+                    tooltipLink="/blog/how_we_score_water"
+                  />
+                  <BlurredLineItem
+                    label="Uncommon contaminants filtered"
+                    value={
+                      `${uncommonContaminantsFiltered?.length.toString()} (${percentUncommonFiltered}%)` ||
+                      '0'
+                    }
+                    labelClassName="text-red-500"
+                    tooltipContent="Learn more"
+                    tooltipLink="/blog/how_we_score_water"
+                  />
+                  <BlurredLineItem
+                    label="Certifications"
+                    value={filter.certifications?.join(', ') || 'None'}
+                    tooltipContent="Learn more"
+                    tooltipLink="/blog/how_we_score_water"
+                  />
+                </div>
 
                 {filter.affiliate_url && (
                   <Button
