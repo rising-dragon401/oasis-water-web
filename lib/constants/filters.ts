@@ -14,7 +14,7 @@ export const IngredientCategories: IngredientCategory[] = [
   'Semi-Volatile Compounds',
   'Volatile Organic Compounds (VOCs)',
   'Microbiologicals',
-  // 'Microplastics',
+  'Microplastics',
   'Inorganics',
   'Other',
 ]

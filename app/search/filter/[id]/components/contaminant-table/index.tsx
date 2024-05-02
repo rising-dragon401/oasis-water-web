@@ -79,9 +79,13 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
   }, [allContaminants, filteredContaminants])
 
   return (
-    <>
+    <div>
       <Typography size="xl" fontWeight="normal" className="text-secondary">
         Contaminants filtered
+      </Typography>
+      <Typography size="xs" fontWeight="normal" className="text-secondary">
+        *Note some filters only list categories and % filtered so individual contaminants may or may
+        not be filtered. This is our best guess based on the information provided.
       </Typography>
 
       {contaminantsByCategory.map((item) => (
@@ -89,7 +93,7 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
           <AccordionItem value="item-1">
             <AccordionTrigger className="w-full flex flex-row justify-start">
               <div className="w-full justify-start flex">
-                <Typography size="lg" fontWeight="normal" className="text-secondary">
+                <Typography size="lg" fontWeight="normal" className="text-secondary text-left">
                   {item.category}
                 </Typography>
               </div>
@@ -196,6 +200,6 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
           ))}
         </div>
       )} */}
-    </>
+    </div>
   )
 }
