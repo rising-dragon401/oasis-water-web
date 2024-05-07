@@ -15,6 +15,7 @@ export default function Home() {
             <Typography size="5xl" fontWeight="bold">
               Do you know what&apos;s in your water?
             </Typography>
+
             <Typography size="lg" fontWeight="normal" className="max-w-lg">
               90% of water contains toxins, microplastics and contaminants. Search what&apos;s
               inside yours 👇
