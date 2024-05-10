@@ -2,6 +2,7 @@
 
 import { addFavorite, removeFavorite } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
+import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { CheckCircle, PlusCircle } from 'lucide-react'
@@ -15,9 +16,10 @@ type Props = {
 }
 
 export default function FavoriteButton({ item, size = 18 }: Props) {
-  const { userFavorites, uid, fetchUserFavorites } = useUserProvider()
+  const { userFavorites, uid, subscription, fetchUserFavorites } = useUserProvider()
   const router = useRouter()
   const pathname = usePathname()
+  const { openModal } = useModal()
 
   const isItemInFavorites = useMemo(
     () =>
@@ -33,8 +35,14 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
 
     // first check if user is logged in
     if (!uid) {
-      toast('Please sign in to add items to your oasis')
+      toast('Please sign in and subscribe to add items to your Oasis')
       router.push(`/auth/signin?redirectUrl=${pathname}`)
+      return
+    }
+
+    if (!subscription) {
+      toast('Please subscribe to add items to your oasis')
+      openModal('SubscriptionModal')
       return
     }
 

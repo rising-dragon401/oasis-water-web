@@ -58,14 +58,14 @@ export default function FavoritesList({ userId }: { userId: string }) {
   return (
     <div className="pb-8">
       {!loading && (
-        <div className="py-4 gap-4 flex w-full flex-row justify-between">
+        <div className="py-4 gap-4 flex w-full flex-row justify-between items-start">
           <div className="flex flex-col gap-2">
             <Avatar className="h-24 w-24">
               <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
             </Avatar>
 
             <Typography size="2xl" fontWeight="normal">
-              {`${userData?.full_name || userData?.email || 'User'}'s oasis`}
+              {`${userData?.full_name || userData?.email || 'User'}'s Oasis`}
             </Typography>
           </div>
 
@@ -76,7 +76,10 @@ export default function FavoritesList({ userId }: { userId: string }) {
       )}
 
       <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
-        {favorites && favorites.map((fav: any) => <ItemPreviewCard key={fav.id} item={fav} />)}
+        {favorites &&
+          favorites.map((fav: any) => (
+            <ItemPreviewCard key={fav.id} item={fav} showFavoriteButton />
+          ))}
       </div>
     </div>
   )

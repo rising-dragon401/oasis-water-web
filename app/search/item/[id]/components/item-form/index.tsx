@@ -83,10 +83,10 @@ export default function ItemForm({ id }: Props) {
           <div className="flex justify-center w-full md:w-2/5">
             {item.affiliate_url ? (
               <Link href={item.affiliate_url} target="_blank" rel="noopener noreferrer">
-                <ItemImage src={item.image} alt={item.name} />
+                <ItemImage src={item.image} alt={item.name} item={item} />
               </Link>
             ) : (
-              <ItemImage src={item.image} alt={item.name} />
+              <ItemImage src={item.image} alt={item.name} item={item} />
             )}
           </div>
 

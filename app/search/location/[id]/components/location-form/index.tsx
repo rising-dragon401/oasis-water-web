@@ -65,7 +65,7 @@ export default function LocationForm({ id }: Props) {
       <div className="md:py-10 py-6 px-2">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="flex justify-center w-full md:w-1/2">
-            <ItemImage src={location.image} alt={location.name} />
+            <ItemImage src={location.image} alt={location.name} item={location} />
           </div>
 
           <div className="flex flex-row w-full justify-between">

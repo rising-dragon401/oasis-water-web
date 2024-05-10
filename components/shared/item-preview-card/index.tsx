@@ -10,9 +10,10 @@ import FavoriteButton from '../favorite-button'
 type Props = {
   item: Item | TapWaterLocation | WaterFilter
   showWarning?: boolean
+  showFavoriteButton?: boolean
 }
 
-export default function ItemPreviewCard({ item, showWarning }: Props) {
+export default function ItemPreviewCard({ item, showWarning, showFavoriteButton }: Props) {
   const renderScore = () => {
     const score = item?.score || 0
 
@@ -54,7 +55,6 @@ export default function ItemPreviewCard({ item, showWarning }: Props) {
   return (
     <Link href={determineLink()} className="flex flex-col hover:opacity-80 mt-4 relative">
       <div className="relative md:w-80 md:h-80 w-40 h-40">
-        {' '}
         {/* Make this div relative */}
         <Image
           src={item.image || ''}
@@ -66,9 +66,11 @@ export default function ItemPreviewCard({ item, showWarning }: Props) {
           alt={item.name}
         />
         {/* Position the FavoriteButton relative to the image */}
-        <div className="absolute top-0 right-0">
-          <FavoriteButton item={item} />
-        </div>
+        {showFavoriteButton && (
+          <div className="absolute top-0 right-0">
+            <FavoriteButton item={item} />
+          </div>
+        )}
         {/* Position renderScore relative to the image */}
         {item.score && <div className="absolute bottom-2 right-2">{renderScore()}</div>}
         {/* Position the warning symbol relative to the image */}

@@ -164,10 +164,10 @@ export default function FilterForm({ id }: Props) {
           <div className="flex justify-center md:w-2/5 w-full">
             {filter.affiliate_url ? (
               <Link href={filter.affiliate_url} target="_blank" rel="noopener noreferrer">
-                <ItemImage src={filter.image} alt={filter.name} />
+                <ItemImage src={filter.image} alt={filter.name} item={filter} />
               </Link>
             ) : (
-              <ItemImage src={filter.image} alt={filter.name} />
+              <ItemImage src={filter.image} alt={filter.name} item={filter} />
             )}
           </div>
 
