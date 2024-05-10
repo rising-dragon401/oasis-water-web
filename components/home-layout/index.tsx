@@ -41,11 +41,25 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
   const { openModal, isOpen } = useModal()
 
   return (
-    <div className="min-h-[100vh] flex justify-center">
+    <div className="min-h-[100vh] flex n justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-3xl sm:max-w-xl max-w-sm w-full">
         <Suspense fallback={<div>Loading...</div>}>
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
+
+        <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
+          <Typography size="sm" fontWeight="normal">
+            iOS app is live 🎉 {` `}
+            <a
+              href="https://apps.apple.com/us/app/oasis-water-health-ratings/id6499478532"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline font-bold"
+            >
+              Download Now
+            </a>
+          </Typography>
+        </div>
 
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />

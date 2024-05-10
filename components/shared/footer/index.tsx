@@ -202,7 +202,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="py-2 text-center mt-8 bg-muted border-input border rounded-md">
+        <div className="py-2 text-center mt-8 bg-muted border-input border rounded-lg">
           <Typography size="sm" fontWeight="normal">
             🌴 Created by {` `}
             <a
