@@ -65,6 +65,7 @@ export default function BasicSearch({
     } else {
       setResults([])
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery])
 
   useEffect(() => {
@@ -117,6 +118,13 @@ export default function BasicSearch({
         },
         {
           indexName: 'companies',
+          query: query,
+          params: {
+            hitsPerPage: numResults || 3,
+          },
+        },
+        {
+          indexName: 'users',
           query: query,
           params: {
             hitsPerPage: numResults || 3,

@@ -72,9 +72,9 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           </div>
         )}
         {/* Position renderScore relative to the image */}
-        {item.score && <div className="absolute bottom-2 right-2">{renderScore()}</div>}
+        {item.score && <div className="absolute bottom-2 right-3">{renderScore()}</div>}
         {/* Position the warning symbol relative to the image */}
-        {!item.score && showWarning && (
+        {!item.score && (
           <div className="absolute bottom-2 right-3">
             <Typography size="xl" fontWeight="normal" className="text-red-500">
               ⚠️

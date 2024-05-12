@@ -58,7 +58,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
           </div>
         )}
         {/* Blurred children content */}
-        <div className="filter blur-md overflow-hidden">{children}</div>
+        <div className="filter blur-lg overflow-hidden">{children}</div>
       </div>
     </>
   )

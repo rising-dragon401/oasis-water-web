@@ -33,6 +33,8 @@ export async function getCurrentUserData(uid?: string | null) {
     userId = uid
   }
 
+  console.log('getCurrentUserData', userId)
+
   if (!userId) {
     return null
   }
@@ -83,6 +85,8 @@ export async function updateUserData(column: string, value: any) {
 
   const user = session?.user
 
+  console.log('updateUserData', column, value)
+
   try {
     if (!user) {
       throw new Error('No user found')
@@ -98,8 +102,9 @@ export async function updateUserData(column: string, value: any) {
       throw new Error(error.message)
     }
 
-    return data
+    return true
   } catch (e) {
+    console.error('Error updating user data:', e)
     return false
   }
 }
@@ -119,24 +124,10 @@ export async function updateUserFullName(uid: string, fullName: string) {
   return data[0]
 }
 
-export async function getUserFavorites(uid?: string | null) {
+export async function getUserFavorites(uid: string) {
   const supabase = await createSupabaseServerClient()
-  const session = await getSession()
 
-  const user = session?.user
-
-  if (!user) {
-    return null
-  }
-
-  let userId = null
-  if (!uid) {
-    userId = user.id
-  } else {
-    userId = uid
-  }
-
-  const { data, error } = await supabase.from('favorites').select('*').eq('uid', userId)
+  const { data, error } = await supabase.from('favorites').select('*').eq('uid', uid)
 
   if (error) {
     throw new Error(error.message)

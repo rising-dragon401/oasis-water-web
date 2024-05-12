@@ -1,9 +1,9 @@
-import { Item, TapWaterLocation, WaterFilter, Ingredient } from '@/types/custom'
-import Image from 'next/image'
 import Typography from '@/components/typography'
-import Link from 'next/link'
-import { Droplet, Filter, Milk, Building, Atom } from 'lucide-react'
+import { Ingredient, Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { determineLink } from '@/utils/helpers'
+import { Atom, Building, Droplet, Filter, Milk, User } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 
 type ExtendedType = {
   type?: string
@@ -27,6 +27,8 @@ export default function ResultsRow({ itemResult }: Props) {
       return <Atom className="text-secondary-foreground" />
     } else if (itemResult.type === 'company') {
       return <Building className="text-secondary-foreground" />
+    } else if (itemResult.type === 'user') {
+      return <User className="text-secondary-foreground" />
     } else {
       return <Milk className="text-secondary-foreground" />
     }

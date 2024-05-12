@@ -62,7 +62,7 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
       addFavorite(uid, item.type, item.id)
     }
 
-    fetchUserFavorites()
+    fetchUserFavorites(uid)
   }
 
   return (

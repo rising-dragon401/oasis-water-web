@@ -19,9 +19,10 @@ import { getStripe } from '@/utils/stripe-client'
 import {
   Dna,
   FlaskConical,
-  MessageCircle,
   Microscope,
+  Palmtree,
   Plus,
+  Search,
   SearchCheck,
   Users,
 } from 'lucide-react'
@@ -41,12 +42,20 @@ const FEATURES = [
     icon: <FlaskConical className="w-4 h-4" />,
   },
   {
-    label: 'Most up to date research',
-    icon: <SearchCheck className="w-4 h-4" />,
+    label: 'Bottled water, filters and tap water',
+    icon: <Search className="w-4 h-4" />,
   },
   {
-    label: 'AI search',
-    icon: <MessageCircle className="w-4 h-4" />,
+    label: 'Explore and build your own Oasis',
+    icon: <Palmtree className="w-4 h-4" />,
+  },
+  // {
+  //   label: 'AI search',
+  //   icon: <MessageCircle className="w-4 h-4" />,
+  // },
+  {
+    label: 'Most up to date research',
+    icon: <SearchCheck className="w-4 h-4" />,
   },
   {
     label: 'Personalized recommendations',
@@ -142,7 +151,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           </div>
         </DialogHeader>
 
-        <div className="flex flex-col gap-2 px-6 py-4 rounded-md bg-muted">
+        <div className="flex flex-col gap-3 px-6 py-4 rounded-md bg-muted">
           {FEATURES.map((feature) => (
             <SubscriptionItem key={feature.label} label={feature.label} icon={feature.icon} />
           ))}

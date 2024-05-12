@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Heart } from 'lucide-react'
+import { Palmtree } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import ManageSubscriptionButton from '../shared/manage-subscription-btn'
@@ -78,8 +78,8 @@ export function AccountMenu() {
           </DropdownMenuItem> */}
 
         <DropdownMenuItem className="hover:cursor-pointer" asChild>
-          <Link href={`/account/oasis/${user.id}`} className="flex flex-row items-center">
-            <Heart className="mr-2 h-4 w-4" />
+          <Link href={`/oasis/${user.id}`} className="flex flex-row items-center">
+            <Palmtree className="mr-2 h-4 w-4" />
             My Oasis
           </Link>
         </DropdownMenuItem>

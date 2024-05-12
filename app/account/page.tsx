@@ -5,6 +5,7 @@ import Typography from '@/components/typography'
 // import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useUserProvider } from '@/providers/UserProvider'
 import NameForm from './components/name-form'
+import { OasisSwitch } from './components/oasis-switch'
 import PasswordResetForm from './components/password-reset-form'
 
 export default function AccountSettings() {
@@ -16,11 +17,17 @@ export default function AccountSettings() {
         <Typography size="xl" fontWeight="bold" className="mb-4">
           Settings
         </Typography>
-        <Typography size="base" fontWeight="normal">
+        <Typography size="base" fontWeight="normal" className="mb-2">
           You are logged in as <span className="font-bold">{userData?.email}</span> using {provider}
         </Typography>
+
         <PasswordResetForm />
         <NameForm />
+
+        <div className="mt-4">
+          <OasisSwitch userData={userData} />
+        </div>
+
         {/* <Tabs defaultValue="account" className="w-[400px]">
           <TabsList>
             <TabsTrigger value="account">Account</TabsTrigger>

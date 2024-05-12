@@ -27,8 +27,9 @@ interface UserContextType {
   userFavorites: any[] | null | undefined
   emailSubscriptions: any[] | null | undefined
   subscription: SubscriptionWithProduct | null | undefined
+  loadingUser: boolean
   refreshUserData: () => void
-  fetchUserFavorites: () => void
+  fetchUserFavorites: (uid: string) => void
   logout: () => void
 }
 
@@ -46,6 +47,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const supabase = createClient()
   const { session, user } = useSupabase()
 
+  const [loading, setLoading] = useState<boolean>(true)
   const [activeSession, setActiveSession] = useState<any>(null)
   const [userId, setUserId] = useState<string | null | undefined>(null)
   const [provider, setProvider] = useState<any>(null)
@@ -60,7 +62,10 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (session && session !== activeSession) {
       initUser(session)
       refreshUserData(session.user.id)
+    } else {
+      setLoading(false)
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, activeSession])
 
@@ -74,8 +79,10 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setUserData(data)
   }
 
-  const fetchUserFavorites = async () => {
-    const favs = await getUserFavorites()
+  const fetchUserFavorites = async (uid: string | null) => {
+    if (!uid) return
+
+    const favs = await getUserFavorites(uid)
     setUserFavorites(favs)
   }
 
@@ -97,9 +104,11 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       await Promise.all([
         fetchSubscription(userId),
         fetchUserData(userId),
-        fetchUserFavorites(),
+        fetchUserFavorites(userId),
         fetchEmailSubscriptions(user?.id),
       ])
+
+      setLoading(false)
     },
     [user?.id]
   )
@@ -126,6 +135,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       userData,
       userFavorites,
       emailSubscriptions,
+      loadingUser: loading,
       refreshUserData,
       fetchUserFavorites,
       logout,
@@ -138,6 +148,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       userData,
       userFavorites,
       emailSubscriptions,
+      loading,
       refreshUserData,
       fetchUserFavorites,
       logout,
