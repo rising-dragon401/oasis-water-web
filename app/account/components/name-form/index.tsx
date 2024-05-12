@@ -1,5 +1,6 @@
 'use client'
 
+import { addUserToAlgolia } from '@/app/actions/algolia'
 import { updateUserData } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -32,6 +33,14 @@ export default function NameForm() {
     const res = await updateUserData('full_name', newName)
 
     if (res) {
+      const userObject = {
+        id: userData.id,
+        name: newName,
+        is_oasis_public: userData.is_oasis_public,
+        image: userData.avatar_url,
+      }
+
+      addUserToAlgolia(userObject)
       toast('Name updated successfully')
       redirect('/')
     } else {
