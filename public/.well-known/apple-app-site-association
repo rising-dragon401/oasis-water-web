@@ -5,7 +5,7 @@
       {
         "appID": "KNX998J7B5.com.liveoasis.oasis",
         "paths": [
-          "/oasis/*"
+          "/search/oasis/*"
         ]
       }
     ]
