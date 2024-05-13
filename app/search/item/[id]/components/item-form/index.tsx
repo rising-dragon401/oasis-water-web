@@ -157,7 +157,7 @@ export default function ItemForm({ id }: Props) {
         {item.is_indexed !== false && <UntestedDisclaimer />}
 
         {item.is_indexed !== false && (
-          <PaywallContent className="mt-6" label="Unlock All Data & Reports">
+          <>
             {sortedContaminants && sortedContaminants.length > 0 && (
               <div className="flex flex-col gap-6 mt-6">
                 <Typography size="2xl" fontWeight="normal">
@@ -195,8 +195,10 @@ export default function ItemForm({ id }: Props) {
               )}
             </>
 
-            {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
-          </PaywallContent>
+            <PaywallContent className="mt-6" label="Unlock All Data & Reports">
+              {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
+            </PaywallContent>
+          </>
         )}
       </div>
 

@@ -121,13 +121,13 @@ export default function LocationForm({ id }: Props) {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <PaywallContent className="mt-8" label="View contaminants">
-                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                        {utility.contaminants.map((contaminant: any) => (
-                          <ContaminantCard key={contaminant.id} data={contaminant} />
-                        ))}
-                      </div>
-                    </PaywallContent>
+                    {/* <PaywallContent className="mt-8" label="View contaminants"> */}
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                      {utility.contaminants.map((contaminant: any) => (
+                        <ContaminantCard key={contaminant.id} data={contaminant} />
+                      ))}
+                    </div>
+                    {/* </PaywallContent> */}
                   </AccordionContent>
                 </AccordionItem>
               ))}

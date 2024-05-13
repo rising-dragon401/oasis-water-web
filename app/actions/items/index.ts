@@ -148,7 +148,7 @@ export const getRandomItems = async () => {
   const supabase = await createSupabaseServerClient()
 
   try {
-    const { data: items, error } = await supabase.from('items').select().range(0, 10)
+    const { data: items, error } = await supabase.from('items').select().range(0, 5)
 
     return items || []
   } catch (error) {
@@ -165,7 +165,7 @@ export const getWorstItems = async () => {
     .select()
     .or('is_indexed.is.null,is_indexed.eq.true')
     .order('score', { ascending: true })
-    .range(0, 10)
+    .range(0, 5)
 
   return items || []
 }

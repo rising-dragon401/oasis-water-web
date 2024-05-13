@@ -241,7 +241,7 @@ export default function FilterForm({ id }: Props) {
         {filter.is_indexed !== false && <UntestedDisclaimer />}
 
         {filter.is_indexed !== false ? (
-          <PaywallContent className="mt-8" label="Unlock all data and reports">
+          <>
             <div className="flex flex-col gap-6 mt-6">
               <ContaminantTable
                 filteredContaminants={filter.contaminants_filtered}
@@ -249,8 +249,10 @@ export default function FilterForm({ id }: Props) {
               />
             </div>
 
-            {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
-          </PaywallContent>
+            <PaywallContent className="mt-8" label="Unlock all data and reports">
+              {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
+            </PaywallContent>
+          </>
         ) : (
           <UnindexedDisclaimer />
         )}
