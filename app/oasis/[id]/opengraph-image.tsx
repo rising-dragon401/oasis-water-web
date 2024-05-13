@@ -36,8 +36,10 @@ export default async function Image({ params }: { params: { id: string } }) {
           width: '100%',
           height: '100%',
           display: 'flex',
+          flexDirection: 'row',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          padding: '24px',
         }}
       >
         <img
@@ -48,8 +50,11 @@ export default async function Image({ params }: { params: { id: string } }) {
           alt="image for water"
         />
         {score && (
-          <div style={{ display: 'flex', position: 'absolute', top: 60, right: 50 }}>
-            <ScoreOG score={score} />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <p>Oasis water health score: </p>
+            <div style={{ display: 'flex', position: 'absolute', top: 60, right: 50 }}>
+              <ScoreOG score={score} />
+            </div>
           </div>
         )}
       </div>

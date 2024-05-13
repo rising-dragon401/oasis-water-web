@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import useSubscription from '@/lib/hooks/use-subscription'
 import { useUserProvider } from '@/providers/UserProvider'
+import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { Loader2, Share } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -22,6 +23,7 @@ export default function FavoritesList({ userId }: { userId: string }) {
   const { subscription } = useSubscription()
   const router = useRouter()
 
+  const [oasisScore, setOasisScore] = useState<number | null>(null)
   const [oasisUser, setOasisUser] = useState<any>(null)
   const [loadingFavorites, setLoadingFavorites] = useState<boolean>(true)
 
@@ -59,6 +61,26 @@ export default function FavoritesList({ userId }: { userId: string }) {
   const { data: favorites } = useSWR(`userFavorites-${userId}`, fetchUserFavorites)
 
   const isAuthUser = uid === userId
+
+  // calculate oasis score
+  useEffect(() => {
+    if (favorites) {
+      calculateScore(favorites)
+    }
+  }, [favorites])
+
+  const calculateScore = async (favorites: any[]) => {
+    let totalCount = 0
+    let totalScore = 0
+
+    await favorites.map((fav: Item | TapWaterLocation | WaterFilter) => {
+      totalScore += fav.score || 0
+      totalCount += 1
+    })
+
+    const finalScore = Math.round(totalScore / totalCount)
+    setOasisScore(finalScore)
+  }
 
   const handleShare = () => {
     if (!navigator.clipboard) {
@@ -102,7 +124,7 @@ export default function FavoritesList({ userId }: { userId: string }) {
         </div>
 
         <div className="flex flex-row gap-1 max-h-24">
-          <Score score={userData?.score || 0} size="md" showScore={true} />
+          <Score score={oasisScore || 0} size="md" showScore={true} />
           <Button variant="ghost" onClick={handleShare}>
             <Share className="w-6 h-6" />
           </Button>
