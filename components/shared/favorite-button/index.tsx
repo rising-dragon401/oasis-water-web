@@ -1,6 +1,6 @@
 'use client'
 
-import { addFavorite, removeFavorite } from '@/app/actions/user'
+import { addFavorite, calculateUserScore, removeFavorite } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
@@ -62,6 +62,8 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
       addFavorite(uid, item.type, item.id)
     }
 
+    // recalculate score and fetch updated favs
+    calculateUserScore(uid)
     fetchUserFavorites(uid)
   }
 

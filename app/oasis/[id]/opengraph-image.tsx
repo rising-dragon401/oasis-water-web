@@ -1,9 +1,8 @@
 // Learn more: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image
 
-import { getItem } from '@/app/actions/items'
+import { getCurrentUserData } from '@/app/actions/user'
 import ScoreOG from '@/components/shared/score-og'
 import { OG_IMAGE } from '@/lib/constants/images'
-import { Item } from '@/types/custom'
 import { ImageResponse } from 'next/og'
 
 // Route segment config
@@ -19,13 +18,14 @@ export const contentType = 'image/png'
 
 // Image generation
 export default async function Image({ params }: { params: { id: string } }) {
+  // user id
   const id = params.id
 
-  // fetch data
-  const item = (await getItem(id)) as Item | null
+  const userData = await getCurrentUserData(id)
+  const avatar = userData?.avatar_url || OG_IMAGE
 
-  const image = item && item.image
-  const score = item && item.score
+  const image = avatar
+  const score = userData?.score || 0
 
   return new ImageResponse(
     (
@@ -53,20 +53,6 @@ export default async function Image({ params }: { params: { id: string } }) {
           </div>
         )}
       </div>
-    ),
-    // ImageResponse options
-    {
-      // For convenience, we can re-use the exported opengraph-image
-      // size config to also set the ImageResponse's width and height.
-      ...size,
-      //   fonts: [
-      //     {
-      //       name: 'Inter',
-      //       data: await interSemiBold,
-      //       style: 'normal',
-      //       weight: 400,
-      //     },
-      //   ],
-    }
+    )
   )
 }

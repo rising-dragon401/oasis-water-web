@@ -85,6 +85,32 @@ export type Database = {
           },
         ]
       }
+      deletion_requests: {
+        Row: {
+          created_at: string
+          id: number
+          user_id_to_delete: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          user_id_to_delete?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          user_id_to_delete?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deletion_requests_user_id_to_delete_fkey"
+            columns: ["user_id_to_delete"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           content: string | null
@@ -599,37 +625,46 @@ export type Database = {
       }
       users: {
         Row: {
+          assistant_id: string | null
           avatar_url: string | null
           billing_address: Json | null
           created_at: string
           email: string | null
           full_name: string | null
           id: string
+          is_oasis_public: boolean | null
           metadata: Json | null
           payment_method: Json | null
           permissions: Database["public"]["Enums"]["permission"] | null
+          score: number | null
         }
         Insert: {
+          assistant_id?: string | null
           avatar_url?: string | null
           billing_address?: Json | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id: string
+          is_oasis_public?: boolean | null
           metadata?: Json | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
+          score?: number | null
         }
         Update: {
+          assistant_id?: string | null
           avatar_url?: string | null
           billing_address?: Json | null
           created_at?: string
           email?: string | null
           full_name?: string | null
           id?: string
+          is_oasis_public?: boolean | null
           metadata?: Json | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
+          score?: number | null
         }
         Relationships: [
           {
@@ -645,6 +680,7 @@ export type Database = {
         Row: {
           affiliate_url: string | null
           brand: number | null
+          certifications: Database["public"]["Enums"]["certifications"][] | null
           company: number
           contaminants_filtered: number[] | null
           created_at: string
@@ -663,6 +699,9 @@ export type Database = {
         Insert: {
           affiliate_url?: string | null
           brand?: number | null
+          certifications?:
+            | Database["public"]["Enums"]["certifications"][]
+            | null
           company: number
           contaminants_filtered?: number[] | null
           created_at?: string
@@ -681,6 +720,9 @@ export type Database = {
         Update: {
           affiliate_url?: string | null
           brand?: number | null
+          certifications?:
+            | Database["public"]["Enums"]["certifications"][]
+            | null
           company?: number
           contaminants_filtered?: number[] | null
           created_at?: string
@@ -850,6 +892,7 @@ export type Database = {
         | "well"
         | "rain"
         | "unknown"
+      certifications: "NSF" | "IAPMO" | "WQA" | "SGS" | "ANAB"
       email_subscriptions: "newsletter"
       ingredient_category:
         | "Chemical Disinfectants"

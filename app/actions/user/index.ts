@@ -79,23 +79,30 @@ export async function getCurrentUserEmail() {
   return user.email
 }
 
-export async function updateUserData(column: string, value: any) {
+export async function updateUserData(column: string, value: any, uid?: string) {
   const supabase = await createSupabaseServerClient()
-  const session = await getSession()
 
-  const user = session?.user
+  let userId
 
-  console.log('updateUserData', column, value)
+  if (uid) {
+    userId = uid
+  } else {
+    const session = await getSession()
+
+    const user = session?.user
+
+    userId = user?.id
+  }
 
   try {
-    if (!user) {
+    if (!userId) {
       throw new Error('No user found')
     }
 
     const { data, error } = await supabase
       .from('users')
       .update({ [column]: value })
-      .eq('id', user.id)
+      .eq('id', userId)
       .single()
 
     if (error) {
@@ -189,6 +196,8 @@ export async function addFavorite(uid: string, type: ItemType, itemId: number) {
   if (error) {
     throw new Error(error.message)
   }
+
+  // then update user score
 
   return data
 }
@@ -395,4 +404,26 @@ export const incrementItemsViewed = async () => {
   }
 
   return data
+}
+
+export const calculateUserScore = async (uid: string) => {
+  try {
+    const favs = await getUserFavorites(uid)
+
+    let score = 0
+    let totalCount = 0
+    let totalScore = 0
+
+    // get average
+    await favs.map((fav: any) => {
+      totalScore += fav.score || 0
+      totalCount += 1
+    })
+
+    score = Math.round(totalScore / totalCount)
+
+    return updateUserData('score', score, uid)
+  } catch {
+    return false
+  }
 }
