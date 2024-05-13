@@ -8,9 +8,10 @@ import { useUserProvider } from '@/providers/UserProvider'
 type Props = {
   score: number
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  showScore?: boolean
 }
 
-export default function Score({ score, size }: Props) {
+export default function Score({ score, size, showScore = false }: Props) {
   const { subscription } = useUserProvider()
   const { openModal } = useModal()
 
@@ -42,7 +43,8 @@ export default function Score({ score, size }: Props) {
     }
   }
 
-  if (!subscription) {
+  // Gray out blue circle if no subscription
+  if (!subscription && !showScore) {
     return (
       <>
         <div
@@ -111,10 +113,7 @@ export default function Score({ score, size }: Props) {
         style={{ width: '100%', height: '100%' }}
       >
         <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-          <PaywallContent label="" hideButton={true}>
-            {score}
-          </PaywallContent>
-          / 100
+          {score} / 100
         </Typography>
 
         <span className="text-secondary" style={{ fontSize: fontSize }}>

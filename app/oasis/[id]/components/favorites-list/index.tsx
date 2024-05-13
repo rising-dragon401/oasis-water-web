@@ -36,6 +36,10 @@ export default function FavoritesList({ userId }: { userId: string }) {
   }, [userId])
 
   const fetchOasisUser = async () => {
+    if (!userId) {
+      return
+    }
+
     const res = await getCurrentUserData(userId)
     if (res) {
       setOasisUser(res)
@@ -45,6 +49,10 @@ export default function FavoritesList({ userId }: { userId: string }) {
   }
 
   const fetchUserFavorites = async () => {
+    if (!userId) {
+      return
+    }
+
     const favorites = await getUserFavorites(userId)
     setLoadingFavorites(false)
     return favorites
@@ -116,7 +124,7 @@ export default function FavoritesList({ userId }: { userId: string }) {
         </div>
 
         <div className="flex flex-row gap-1 max-h-24">
-          <Score score={oasisScore || 0} size="md" />
+          <Score score={oasisScore || 0} size="md" showScore={true} />
           <Button variant="ghost" onClick={handleShare}>
             <Share className="w-6 h-6" />
           </Button>
