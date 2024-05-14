@@ -12,7 +12,6 @@ import useSubscription from '@/lib/hooks/use-subscription'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { Loader2, Share } from 'lucide-react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -111,19 +110,25 @@ export default function FavoritesList({ userId }: { userId: string }) {
     <div className="pb-8 w-full px-2">
       <div className="py-4 gap-4 flex w-full flex-row justify-between items-start">
         <div className="flex flex-col gap-2 w-full">
-          <Avatar className="h-24 w-24">
-            <AvatarImage src={oasisUser?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
-          </Avatar>
+          <div className="flex flex-row">
+            <Avatar className="h-24 w-24">
+              <AvatarImage src={oasisUser?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
+            </Avatar>
+          </div>
 
-          <div className="flex flex-col gap-1 justify-start">
+          <div className="flex flex-col gap-0 justify-start">
             <Typography size="xl" fontWeight="normal">
               {`${oasisUser?.full_name || oasisUser?.email || 'User'}'s Oasis`}
             </Typography>
-            {isAuthUser && <Link href="/account">Edit</Link>}
+            {oasisUser?.bio && (
+              <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
+                {oasisUser?.bio}
+              </Typography>
+            )}
           </div>
         </div>
 
-        <div className="flex flex-row gap-1 max-h-24">
+        <div className="flex flex-row gap-0 max-h-24">
           <Score score={oasisScore || 0} size="md" showScore={true} />
           <Button variant="ghost" onClick={handleShare}>
             <Share className="w-6 h-6" />

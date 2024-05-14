@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Droplet, Filter, Menu, Milk, Palmtree, X } from 'lucide-react'
+import { Droplet, Filter, Menu, Milk, Palmtree, User, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import SignUpButton from '../shared/sign-up-button'
@@ -82,6 +82,15 @@ export default function MobileNavbar() {
                 <Link href={`/oasis/${user?.id}`} className="flex flex-row items-center">
                   <Palmtree className="mr-2 h-4 w-4" />
                   My Oasis
+                </Link>
+              </DropdownMenuItem>
+            )}
+
+            {user && (
+              <DropdownMenuItem className="hover:cursor-pointer" asChild>
+                <Link href={`/account`} className="flex flex-row items-center">
+                  <User className="mr-2 h-4 w-4" />
+                  Settings
                 </Link>
               </DropdownMenuItem>
             )}

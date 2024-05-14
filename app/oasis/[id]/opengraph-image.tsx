@@ -26,37 +26,39 @@ export default async function Image({ params }: { params: { id: string } }) {
 
   const image = avatar
   const score = userData?.score || 0
+  const name = userData?.full_name
 
   return new ImageResponse(
     (
       <div
         style={{
-          fontSize: 128,
           background: 'white',
-          width: '100%',
           height: '100%',
+          width: '100%',
           display: 'flex',
-          flexDirection: 'row',
+          flexDirection: 'column',
+          justifyContent: 'center',
           alignItems: 'center',
-          justifyContent: 'space-between',
           padding: '24px',
+          paddingLeft: '36px',
+          paddingRight: '36px',
         }}
       >
         <img
           src={image || OG_IMAGE}
-          width="100%"
-          height="100%"
+          width="160px"
+          height="160px"
           style={{ objectFit: 'contain' }}
           alt="image for water"
         />
-        {score && (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <p>Oasis water health score: </p>
-            <div style={{ display: 'flex', position: 'absolute', top: 60, right: 50 }}>
-              <ScoreOG score={score} />
-            </div>
-          </div>
-        )}
+
+        <p style={{ fontSize: 48, width: '1000px', textAlign: 'center' }}>
+          {name && name + "'s"} water health score:{' '}
+        </p>
+
+        <div style={{ display: 'flex', paddingTop: '20px', paddingBottom: '20px' }}>
+          <ScoreOG score={score} />
+        </div>
       </div>
     )
   )

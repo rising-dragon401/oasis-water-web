@@ -1,5 +1,3 @@
-import React from 'react'
-
 type Props = {
   score: number
   isFull?: boolean
@@ -7,7 +5,7 @@ type Props = {
 
 export default function ScorOG({ score, isFull }: Props) {
   const radius = 115
-  const strokeWidth = 6
+  const strokeWidth = 10
   const svgSize = 2 * (radius + strokeWidth) // Adjust SVG size to accommodate stroke
   const circumference = 2 * Math.PI * radius
   const offset = circumference - (score / 100) * circumference

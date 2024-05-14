@@ -2,11 +2,12 @@
 
 import { addUserToAlgolia } from '@/app/actions/algolia'
 import { updateUserData } from '@/app/actions/user'
+import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { useUserProvider } from '@/providers/UserProvider'
-import { redirect } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
@@ -14,45 +15,55 @@ export default function NameForm() {
   const { userData } = useUserProvider()
 
   const [newName, setNewName] = useState('')
+  const [newBio, setNewBio] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (userData && userData.full_name) {
-      setNewName(userData.full_name)
+    if (userData) {
+      setNewName(userData.full_name || '')
+      setNewBio(userData.bio || '')
     }
   }, [userData])
 
-  const handleChangeName = async () => {
-    if (!newName) {
-      toast('Name is required')
-      return
-    }
-
-    setLoading(true)
-
-    const res = await updateUserData('full_name', newName)
-
-    if (res) {
-      const userObject = {
-        id: userData.id,
-        name: newName,
-        is_oasis_public: userData.is_oasis_public,
-        image: userData.avatar_url,
+  const handleUpdate = async () => {
+    try {
+      if (!newName || !newBio) {
+        toast('Name and bio are required')
+        return
       }
 
-      addUserToAlgolia(userObject)
-      toast('Name updated successfully')
-      redirect('/')
-    } else {
-      toast('Error updating name')
-    }
+      setLoading(true)
 
+      const res = await updateUserData('full_name', newName)
+      const res2 = await updateUserData('bio', newBio)
+
+      if (res && res2) {
+        const userObject = {
+          id: userData.id,
+          name: newName,
+          bio: newBio,
+          is_oasis_public: userData.is_oasis_public,
+          image: userData.avatar_url,
+        }
+
+        await addUserToAlgolia(userObject)
+        toast('Profile updated')
+      } else {
+        toast('Error updating name')
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error)
+      toast('Error updating profile')
+    }
     setLoading(false)
   }
 
   return (
     <div className="flex flex-col mt-2">
-      <div className="mx-auto flex w-full flex-col space-y-6 ">
+      <Typography size="base" fontWeight="bold" className="mb-2">
+        Profile
+      </Typography>
+      <div className="mx-auto flex w-full flex-col space-y-2">
         <div className="flex flex-col w-96 space-y-2">
           <Label htmlFor="password" className="text-sm">
             Name
@@ -65,11 +76,21 @@ export default function NameForm() {
               onChange={(e) => setNewName(e.target.value)}
               className="w-full"
             />
-            <Button type="button" loading={loading} onClick={handleChangeName} className="w-40">
-              Update
-            </Button>
           </div>
         </div>
+
+        <div className="flex flex-col w-96 space-y-2">
+          <Label htmlFor="password" className="text-sm">
+            Bio
+          </Label>
+          <div className="flex flex-row w-full space-x-2">
+            <Textarea value={newBio} onChange={(e) => setNewBio(e.target.value)} />
+          </div>
+        </div>
+
+        <Button type="button" loading={loading} onClick={handleUpdate} className="w-40 mt-2">
+          Update
+        </Button>
       </div>
     </div>
   )

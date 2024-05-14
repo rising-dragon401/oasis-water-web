@@ -22,9 +22,10 @@ export default function AccountSettings() {
         </Typography>
 
         <PasswordResetForm />
+
         <NameForm />
 
-        <div className="mt-4">
+        <div className="mt-6">
           <OasisSwitch userData={userData} />
         </div>
 
