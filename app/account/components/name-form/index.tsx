@@ -2,6 +2,7 @@
 
 import { addUserToAlgolia } from '@/app/actions/algolia'
 import { updateUserData } from '@/app/actions/user'
+import { ImageUpload } from '@/components/shared/image-upload'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,12 +17,14 @@ export default function NameForm() {
 
   const [newName, setNewName] = useState('')
   const [newBio, setNewBio] = useState('')
+  const [newAvatar, setNewAvatar] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (userData) {
       setNewName(userData.full_name || '')
       setNewBio(userData.bio || '')
+      setNewAvatar(userData.avatar_url || '')
     }
   }, [userData])
 
@@ -34,8 +37,10 @@ export default function NameForm() {
 
       setLoading(true)
 
+      // todo combine these into one call
       const res = await updateUserData('full_name', newName)
       const res2 = await updateUserData('bio', newBio)
+      const res3 = await updateUserData('avatar_url', newAvatar)
 
       if (res && res2) {
         const userObject = {
@@ -43,7 +48,7 @@ export default function NameForm() {
           name: newName,
           bio: newBio,
           is_oasis_public: userData.is_oasis_public,
-          image: userData.avatar_url,
+          image: newAvatar,
         }
 
         await addUserToAlgolia(userObject)
@@ -64,6 +69,15 @@ export default function NameForm() {
         Profile
       </Typography>
       <div className="mx-auto flex w-full flex-col space-y-2">
+        <div className="flex flex-col w-96 space-y-2">
+          <ImageUpload
+            itemId={userData?.id}
+            label="Avatar"
+            file={newAvatar}
+            setFile={setNewAvatar}
+          />
+        </div>
+
         <div className="flex flex-col w-96 space-y-2">
           <Label htmlFor="password" className="text-sm">
             Name

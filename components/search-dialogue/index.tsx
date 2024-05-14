@@ -227,7 +227,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
             name="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="bg-muted w-full rounded-full h-12"
+            className="bg-muted w-full rounded-full h-12 "
           />
 
           {/* @ts-ignore */}
@@ -263,17 +263,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   return (
     <>
-      <Button
-        onClick={handleSearchButtonClick}
-        variant="outline"
-        className="gap-2 rounded-full h-8"
-      >
-        {size === 'large' && (
-          <Typography size="base" fontWeight="normal">
-            Ask Oasis
-          </Typography>
-        )}
-
+      <Button onClick={handleSearchButtonClick} variant="ghost" className="gap-2 rounded-full h-8">
         <Sparkles className="w-4 h-4 text-secondary" />
         {/* <kbd
           className="absolute right-3 top-2.5

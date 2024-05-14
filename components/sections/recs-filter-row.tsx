@@ -1,10 +1,9 @@
 'use client'
 
-import Typography from '@/components/typography'
-import React from 'react'
 import { getTopFilters } from '@/app/actions/filters'
-import { useEffect, useState } from 'react'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
+import Typography from '@/components/typography'
+import { useEffect, useState } from 'react'
 
 export default function RecommendedFiltersRow() {
   const [ranked, setRanked] = useState<any>([])

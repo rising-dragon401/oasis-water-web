@@ -1,11 +1,10 @@
 'use client'
 
-import Typography from '@/components/typography'
-import React from 'react'
 import { getRecommendedFilter } from '@/app/actions/filters'
-import { useEffect, useState } from 'react'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import PaywallContent from '@/components/shared/paywall-content'
+import Typography from '@/components/typography'
+import { useEffect, useState } from 'react'
 
 type RecommendedFilterRowProps = {
   contaminants: any[]

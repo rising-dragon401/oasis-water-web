@@ -1,8 +1,7 @@
-import Link from 'next/link'
-import Typography from '@/components/typography'
-import React from 'react'
-import ItemPreviewCard from '@/components/shared/item-preview-card'
 import { getWorstItems } from '@/app/actions/items'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
+import Typography from '@/components/typography'
+import Link from 'next/link'
 
 export default async function LowestRatedSection() {
   const lowestItems = await getWorstItems()

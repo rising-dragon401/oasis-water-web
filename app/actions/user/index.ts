@@ -427,3 +427,16 @@ export const calculateUserScore = async (uid: string) => {
     return false
   }
 }
+
+export const getUsersWithOasis = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase.from('users').select('*').eq('is_oasis_public', true)
+
+  if (error) {
+    console.error('Error fetching users with oasis:', error)
+    return null
+  }
+
+  return data
+}

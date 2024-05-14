@@ -21,12 +21,14 @@ export default function AccountSettings() {
           You are logged in as <span className="font-bold">{userData?.email}</span> using {provider}
         </Typography>
 
-        <PasswordResetForm />
+        <div className="flex flex-col space-y-6">
+          <PasswordResetForm />
 
-        <NameForm />
+          <NameForm />
 
-        <div className="mt-6">
-          <OasisSwitch userData={userData} />
+          <div className="mt-6">
+            <OasisSwitch userData={userData} />
+          </div>
         </div>
 
         {/* <Tabs defaultValue="account" className="w-[400px]">

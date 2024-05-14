@@ -115,14 +115,9 @@ export default function HomeNavbar() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <div
-            onClick={() =>
-              window.open(`${process.env.NEXT_PUBLIC_BASE_URL}blog/water_testing_partner`, '_blank')
-            }
-            className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
-          >
-            Water testing
-          </div>
+          <Link href="/users" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            People
+          </Link>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <div

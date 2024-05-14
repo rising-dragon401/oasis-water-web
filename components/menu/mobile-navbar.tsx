@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Droplet, Filter, Menu, Milk, Palmtree, User, X } from 'lucide-react'
+import { Droplet, Filter, Menu, Milk, Palmtree, User, Users, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import SignUpButton from '../shared/sign-up-button'
@@ -54,23 +54,28 @@ export default function MobileNavbar() {
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48 mr-2 p-2" align="end">
           <DropdownMenuGroup>
-            <DropdownMenuItem className="my-2 justify-start">
+            <DropdownMenuItem className="justify-start">
               <Link href="/search/bottled-water" className="flex flex-row gap-2 items-center">
                 <Milk className="text-secondary w-4 h-4" />
                 Bottled waters
               </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="my-2 justify-start">
+            <DropdownMenuItem className="justify-start">
               <Link href="/search/tap-water" className="flex flex-row gap-2 items-center">
                 <Droplet className="text-secondary w-4 h-4" />
                 Tap water
               </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem className="flex flex-row gap-2 items-center my-2">
+            <DropdownMenuItem className="flex flex-row gap-2 items-center">
               <Filter className="text-secondary w-4 h-4" />
               <Link href="/search/filters">Filters</Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="flex flex-row gap-2 items-center">
+              <Users className="text-secondary w-4 h-4" />
+              <Link href="/users">People</Link>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />

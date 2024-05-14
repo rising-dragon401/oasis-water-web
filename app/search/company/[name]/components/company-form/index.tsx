@@ -1,12 +1,12 @@
 'use client'
 
-import Typography from '@/components/typography'
-import React, { useEffect, useState } from 'react'
-import ItemSkeleton from '../company-skeleton'
 import { getCompanyByName, getCompanyItems } from '@/app/actions/companies'
-import { Company } from '@/types/custom'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
+import Typography from '@/components/typography'
+import { Company } from '@/types/custom'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import ItemSkeleton from '../company-skeleton'
 
 type Props = {
   name: string

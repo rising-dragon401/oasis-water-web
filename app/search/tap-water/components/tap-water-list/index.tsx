@@ -1,10 +1,9 @@
-import Typography from '@/components/typography'
-import React, { useMemo } from 'react'
-import { TapWaterLocation } from '@/types/custom'
-import ItemPreviewCard from '@/components/shared/item-preview-card'
 import BasicSearch from '@/components/basic-search'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
+import Typography from '@/components/typography'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { US_STATES } from '@/lib/constants/locations'
+import { TapWaterLocation } from '@/types/custom'
 
 type Props = {
   locations: TapWaterLocation[] | null

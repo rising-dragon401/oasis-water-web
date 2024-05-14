@@ -2,7 +2,7 @@ import { addUserToAlgolia, deleteUserFromAlgolia } from '@/app/actions/algolia'
 import { updateUserData } from '@/app/actions/user'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type Props = {
@@ -11,6 +11,10 @@ type Props = {
 
 export function OasisSwitch({ userData }: Props) {
   const [checked, setChecked] = useState(userData?.is_oasis_public)
+
+  useEffect(() => {
+    setChecked(userData?.is_oasis_public)
+  }, [userData])
 
   const handleChange = async (value: boolean) => {
     setChecked(value)
