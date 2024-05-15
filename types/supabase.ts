@@ -628,8 +628,11 @@ export type Database = {
           assistant_id: string | null
           avatar_url: string | null
           billing_address: Json | null
+          bio: string | null
           created_at: string
           email: string | null
+          followers: string[] | null
+          following: string[] | null
           full_name: string | null
           id: string
           is_oasis_public: boolean | null
@@ -642,8 +645,11 @@ export type Database = {
           assistant_id?: string | null
           avatar_url?: string | null
           billing_address?: Json | null
+          bio?: string | null
           created_at?: string
           email?: string | null
+          followers?: string[] | null
+          following?: string[] | null
           full_name?: string | null
           id: string
           is_oasis_public?: boolean | null
@@ -656,8 +662,11 @@ export type Database = {
           assistant_id?: string | null
           avatar_url?: string | null
           billing_address?: Json | null
+          bio?: string | null
           created_at?: string
           email?: string | null
+          followers?: string[] | null
+          following?: string[] | null
           full_name?: string | null
           id?: string
           is_oasis_public?: boolean | null
@@ -800,6 +809,71 @@ export type Database = {
           parent_page_id: number
           path: string
           meta: Json
+        }[]
+      }
+      get_random_filters: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          affiliate_url: string | null
+          brand: number | null
+          certifications: Database["public"]["Enums"]["certifications"][] | null
+          company: number
+          contaminants_filtered: number[] | null
+          created_at: string
+          description: string | null
+          filtered_contaminant_categories: Json[] | null
+          id: number
+          image: string | null
+          is_draft: boolean | null
+          is_indexed: boolean | null
+          name: string
+          recommended: boolean | null
+          score: number | null
+          sources: Json[] | null
+          type: Database["public"]["Enums"]["item_type"]
+        }[]
+      }
+      get_random_items: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          affiliate_url: string | null
+          brand: number | null
+          company: number
+          created_at: string
+          description: string | null
+          filtration_methods:
+            | Database["public"]["Enums"]["water_filtration_methods"][]
+            | null
+          fts: unknown | null
+          id: number
+          image: string
+          ingredients: Json[] | null
+          is_distilled: boolean | null
+          is_indexed: boolean | null
+          metadata: Json | null
+          name: string
+          packaging: Database["public"]["Enums"]["packaging"] | null
+          recommended: boolean | null
+          score: number | null
+          sources: Json[] | null
+          type: Database["public"]["Enums"]["item_type"]
+          water_source:
+            | Database["public"]["Enums"]["bottled_water_source"]
+            | null
+        }[]
+      }
+      get_random_locations: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          id: number
+          image: string | null
+          is_featured: boolean | null
+          name: string
+          score: number | null
+          state: string | null
+          type: Database["public"]["Enums"]["item_type"]
+          utilities: Json[] | null
         }[]
       }
       hnswhandler: {

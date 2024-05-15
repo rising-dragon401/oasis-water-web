@@ -1,8 +1,10 @@
 'use client'
 
-import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
+import { useModal } from '@/providers/ModalProvider'
+import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
+import { Lock } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import FavoriteButton from '../favorite-button'
@@ -14,6 +16,9 @@ type Props = {
 }
 
 export default function ItemPreviewCard({ item, showWarning, showFavoriteButton }: Props) {
+  const { subscription } = useUserProvider()
+  const { openModal } = useModal()
+
   const renderScore = () => {
     const score = item?.score || 0
 
@@ -21,8 +26,8 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
     const color = 'text-blue-800'
 
     return (
-      <div>
-        <PaywallContent label="Unlock score" hideButton={true}>
+      <div className="flex flex-col items-end gap-1">
+        {subscription ? (
           <Typography
             size="2xl"
             fontWeight="normal"
@@ -30,7 +35,12 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           >
             {score}
           </Typography>
-        </PaywallContent>
+        ) : (
+          <button onClick={() => openModal('SubscriptionModal')}>
+            <Lock size={16} />
+          </button>
+        )}
+
         <Typography
           size="xs"
           fontWeight="normal"

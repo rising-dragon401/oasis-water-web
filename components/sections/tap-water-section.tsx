@@ -1,10 +1,10 @@
-import { getFeaturedLocations } from '@/app/actions/locations'
+import { getRandomLocations } from '@/app/actions/locations'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
 import Link from 'next/link'
 
 export default async function TapWaterSection() {
-  const featured = await getFeaturedLocations()
+  const featured = await getRandomLocations()
 
   return (
     <div>

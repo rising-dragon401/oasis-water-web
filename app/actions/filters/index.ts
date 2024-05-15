@@ -32,13 +32,15 @@ export const getFilters = async () => {
 export const getRandomFilters = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: filters, error } = await supabase
-    .from('water_filters')
-    .select()
-    .order('random()')
-    .limit(5)
+  const { data, error } = await supabase.rpc('get_random_filters')
 
-  return filters
+  if (error) {
+    console.error('error', error)
+
+    return []
+  }
+
+  return data
 }
 
 export const getTopFilters = async () => {

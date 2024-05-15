@@ -1,9 +1,9 @@
 'use client'
 
-import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
+import { Lock } from 'lucide-react'
 
 type Props = {
   score: number
@@ -70,10 +70,9 @@ export default function Score({ score, size, showScore = false }: Props) {
               Score:
             </Typography>
             <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-              <PaywallContent label="" hideButton={true}>
-                <div className="bg-blue-600 rounded-full w-6 h-6"></div>
-                {/* {score} */}
-              </PaywallContent>
+              <button onClick={() => openModal('SubscriptionModal')}>
+                <Lock className="text-primary w-4 h-4" />
+              </button>
               / 100
             </Typography>
           </div>

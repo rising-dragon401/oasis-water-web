@@ -33,8 +33,6 @@ export async function getCurrentUserData(uid?: string | null) {
     userId = uid
   }
 
-  console.log('getCurrentUserData', userId)
-
   if (!userId) {
     return null
   }

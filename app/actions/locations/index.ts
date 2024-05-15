@@ -1,7 +1,7 @@
 'use server'
 
+import { Ingredient, IngredientDescriptor } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
-import { IngredientDescriptor, Ingredient } from '@/types/custom'
 
 export const getLocations = async () => {
   const supabase = await createSupabaseServerClient()
@@ -96,6 +96,20 @@ export const getLocation = async (id: string) => {
     .single()
 
   return location
+}
+
+export const getRandomLocations = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase.rpc('get_random_locations')
+
+  if (error) {
+    console.error('error', error)
+
+    return []
+  }
+
+  return data
 }
 
 export const getFeaturedLocations = async () => {
