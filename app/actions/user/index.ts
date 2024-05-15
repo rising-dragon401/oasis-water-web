@@ -440,3 +440,75 @@ export const getUsersWithOasis = async () => {
 
   return data
 }
+
+export const followUser = async (uid: string, followId: string) => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: authUserFollowing, error: fetchError } = await supabase
+    .from('users')
+    .select('following')
+    .eq('uid', uid)
+    .single()
+
+  console.log('authUserFollowing array: ', authUserFollowing)
+
+  // if (fetchError) {
+  //   console.error('Error fetching user data:', fetchError)
+  //   return null
+  // }
+
+  // const { data: userToUpdate, error: updateUserError } = await supabase
+  //   .from('users')
+  //   .update({ following: supabase.functions.append(followId) })
+  //   .match({ uid: uid })
+  //   .single()
+
+  // const { data: followerToUpdate, error: updateFollowerError } = await supabase
+  //   .from('users')
+  //   .update({ followers: supabase.functions.append(uid) })
+  //   .match({ uid: followId })
+  //   .single()
+
+  // if (error) {
+  //   console.error('Error following user:', error)
+  //   return false
+  // }
+
+  // return data
+}
+
+export const unFollowUser = async (uid: string, followId: string) => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: authUserFollowing, error: fetchError } = await supabase
+    .from('users')
+    .select('following')
+    .eq('uid', uid)
+    .single()
+
+  console.log('authUserFollowing array: ', authUserFollowing)
+
+  // if (fetchError) {
+  //   console.error('Error fetching user data:', fetchError)
+  //   return null
+  // }
+
+  // const { data: userToUpdate, error: updateUserError } = await supabase
+  //   .from('users')
+  //   .update({ following: supabase.functions.append(followId) })
+  //   .match({ uid: uid })
+  //   .single()
+
+  // const { data: followerToUpdate, error: updateFollowerError } = await supabase
+  //   .from('users')
+  //   .update({ followers: supabase.functions.append(uid) })
+  //   .match({ uid: followId })
+  //   .single()
+
+  // if (error) {
+  //   console.error('Error following user:', error)
+  //   return false
+  // }
+
+  // return data
+}

@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { mutate, default as useSWR } from 'swr'
+// import FollowButton from '@/components/shared/follow-button'
 
 export default function FavoritesList({ userId }: { userId: string }) {
   const { uid, userData, loadingUser } = useUserProvider()
