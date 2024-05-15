@@ -1,10 +1,10 @@
-import { getFilters } from '@/app/actions/filters'
+import { getRandomFilters } from '@/app/actions/filters'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
 import Link from 'next/link'
 
 export default async function FilterSection() {
-  const filters = await getFilters()
+  const filters = await getRandomFilters()
 
   return (
     <div>

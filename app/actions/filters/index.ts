@@ -6,7 +6,7 @@ import { createSupabaseServerClient } from '@/utils/supabase/server'
 export const getFilters = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: filters, error } = await supabase.from('water_filters').select().limit(5)
+  const { data: filters, error } = await supabase.from('water_filters').select()
 
   if (!filters) {
     return []
@@ -27,6 +27,18 @@ export const getFilters = async () => {
   )
 
   return filtersWithCompany
+}
+
+export const getRandomFilters = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: filters, error } = await supabase
+    .from('water_filters')
+    .select()
+    .order('random()')
+    .limit(5)
+
+  return filters
 }
 
 export const getTopFilters = async () => {
