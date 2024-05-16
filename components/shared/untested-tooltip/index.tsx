@@ -14,9 +14,8 @@ export function UntestedTooltip() {
         <TooltipContent>
           <p className="max-w-sm">
             This item has not been tested in the lab yet, so we cannot verify what contaminants are
-            present. This usally means the company has not publicized or refuses to share their lab
-            reports so we cannot recommend or provide a score for this item. We are working to
-            independently test everything ourselves soon.
+            present. Unverified items are docked 60 points by default to account for unknown
+            contaminants. We are in the process of independently testing everything ourselves.
           </p>
         </TooltipContent>
       </Tooltip>
