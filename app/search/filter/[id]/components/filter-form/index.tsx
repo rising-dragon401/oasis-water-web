@@ -6,11 +6,11 @@ import { incrementItemsViewed } from '@/app/actions/user'
 import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
+import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
 import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
-import UnindexedDisclaimer from '@/components/shared/unindexed-disclaimer'
-import UntestedDisclaimer from '@/components/shared/untested-disclaimer'
+import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
@@ -65,7 +65,6 @@ export default function FilterForm({ id }: Props) {
 
   // get the category contamiannts that are filtered
   const contaminantsFilteredFromCategory = useMemo(() => {
-    console.log('categoriesFiltered: ', categoriesFiltered)
     return categoriesFiltered.flatMap((category: any) => {
       const percent = category.percentage
 
@@ -238,7 +237,7 @@ export default function FilterForm({ id }: Props) {
           </Typography>
         </div>
 
-        {filter.is_indexed !== false && <UntestedDisclaimer />}
+        {filter.is_indexed !== false && <OasisDisclaimer />}
 
         {filter.is_indexed !== false ? (
           <>
@@ -254,7 +253,7 @@ export default function FilterForm({ id }: Props) {
             </PaywallContent>
           </>
         ) : (
-          <UnindexedDisclaimer />
+          <UntestedTooltip />
         )}
       </div>
 

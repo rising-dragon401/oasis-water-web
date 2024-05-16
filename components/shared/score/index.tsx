@@ -3,7 +3,7 @@
 import Typography from '@/components/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Lock } from 'lucide-react'
+import { AlertTriangle, Lock } from 'lucide-react'
 
 type Props = {
   score: number
@@ -38,8 +38,10 @@ export default function Score({ score, size, showScore = false }: Props) {
       return 'Alright'
     } else if (score >= 35) {
       return 'Poor'
-    } else {
+    } else if (score >= 0 && score !== null) {
       return 'Bad'
+    } else {
+      return 'WARNING'
     }
   }
 
@@ -111,9 +113,18 @@ export default function Score({ score, size, showScore = false }: Props) {
         className="absolute flex flex-col justify-center items-center"
         style={{ width: '100%', height: '100%' }}
       >
-        <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-          {score} / 100
-        </Typography>
+        {score ? (
+          <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+            {score} / 100
+          </Typography>
+        ) : (
+          <div className="flex flex-row gap-1">
+            <AlertTriangle className="text-red-500" />
+            <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+              / 100
+            </Typography>
+          </div>
+        )}
 
         <span className="text-secondary" style={{ fontSize: fontSize }}>
           {grade()}

@@ -4,7 +4,7 @@ import Typography from '@/components/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
-import { Lock } from 'lucide-react'
+import { AlertTriangle, Lock } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import FavoriteButton from '../favorite-button'
@@ -21,12 +21,10 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
 
   const renderScore = () => {
     const score = item?.score || 0
-
-    // const color = score >= 70 ? 'text-green-500' : score >= 40 ? 'text-yellow-500' : 'text-red-500'
     const color = 'text-blue-800'
 
     return (
-      <div className="flex flex-col items-end gap-1">
+      <div className="flex flex-col items-end ">
         {subscription ? (
           <Typography
             size="2xl"
@@ -41,6 +39,21 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           </button>
         )}
 
+        <Typography
+          size="xs"
+          fontWeight="normal"
+          className="!no-underline text-secondary text-right"
+        >
+          /100
+        </Typography>
+      </div>
+    )
+  }
+
+  const renderWarning = () => {
+    return (
+      <div className="flex flex-col items-end gap-1">
+        <AlertTriangle className="text-red-500" />
         <Typography
           size="xs"
           fontWeight="normal"
@@ -84,13 +97,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
         {/* Position renderScore relative to the image */}
         {item.score && <div className="absolute bottom-2 right-3">{renderScore()}</div>}
         {/* Position the warning symbol relative to the image */}
-        {!item.score && (
-          <div className="absolute bottom-2 right-3">
-            <Typography size="xl" fontWeight="normal" className="text-red-500">
-              ⚠️
-            </Typography>
-          </div>
-        )}
+        {!item.score && <div className="absolute bottom-2 right-3">{renderWarning()}</div>}
       </div>
       <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
         <div className="flex flex-col">

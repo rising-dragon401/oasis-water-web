@@ -1,5 +1,5 @@
-import { useMemo } from 'react'
 import Typography from '@/components/typography'
+import { useMemo } from 'react'
 
 type Props = {
   ingredients: any[]
@@ -20,7 +20,7 @@ export default function IngredientsCard({ ingredients }: Props) {
               {ingredient.name}
             </Typography>
             <Typography size="base" fontWeight="normal" className="mb-4 text-secondary">
-              {ingredient.amount} {ingredient.measure}
+              {ingredient.amount || 'N/A'} {ingredient.measure}
             </Typography>
           </div>
 

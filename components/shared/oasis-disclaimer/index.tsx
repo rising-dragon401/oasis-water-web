@@ -1,6 +1,6 @@
 import Typography from '@/components/typography'
 
-export default function UntestedDisclaimer() {
+export default function OasisDisclaimer() {
   return (
     <div className="bg-muted p-4 rounded-md border-secondary-foreground border mt-4">
       <Typography size="xs" fontWeight="normal" className="text-secondary">

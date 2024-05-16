@@ -6,11 +6,11 @@ import ContaminantCard from '@/components/contamintant-card'
 import RecommendedRow from '@/components/sections/recommended-row'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
+import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
 import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
-import UnindexedDisclaimer from '@/components/shared/unindexed-disclaimer'
-import UntestedDisclaimer from '@/components/shared/untested-disclaimer'
+import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
@@ -29,7 +29,6 @@ export default function ItemForm({ id }: Props) {
   const [isLoading, setIsLoading] = useState(true)
 
   const fetchItem = async (id: string) => {
-    console.log('get item details')
     const item = await getItemDetails(id)
 
     if (item) {
@@ -102,104 +101,115 @@ export default function ItemForm({ id }: Props) {
               </Link>
 
               <>
-                {item.is_indexed !== false ? (
-                  <div className="flex flex-col">
-                    <BlurredLineItem
-                      label="Contaminants found"
-                      value={contaminants.length}
-                      labelClassName="text-red-500"
-                    />
+                {item.is_indexed === false && <UntestedTooltip />}
 
-                    <BlurredLineItem
-                      label="Toxins above health guidelines"
-                      value={contaminantsAboveLimit.length}
-                      labelClassName="text-red-500"
-                    />
+                <div className="flex flex-col">
+                  <BlurredLineItem
+                    label="Contaminants found"
+                    value={contaminants.length}
+                    labelClassName="text-red-500"
+                  />
 
-                    <BlurredLineItem label="Microplastics" value={nanoPlasticsValue} />
+                  <BlurredLineItem
+                    label="Toxins above health guidelines"
+                    value={contaminantsAboveLimit.length}
+                    labelClassName="text-red-500"
+                  />
 
-                    <BlurredLineItem label="Fluoride" value={fluorideValue} />
+                  <BlurredLineItem label="Microplastics" value={nanoPlasticsValue} />
 
-                    <BlurredLineItem label="pH" value={item.metadata?.ph_level} />
+                  <BlurredLineItem label="Fluoride" value={fluorideValue} />
 
-                    <BlurredLineItem label="TDS" value={item.metadata?.tds ?? 'Unknown'} />
+                  <BlurredLineItem label="pH" value={item.metadata?.ph_level} />
 
-                    <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'Unknown'} />
+                  <BlurredLineItem label="TDS" value={item.metadata?.tds ?? 'Unknown'} />
 
-                    <BlurredLineItem label="Packaging" value={item?.packaging || 'Unknown'} />
+                  <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'Unknown'} />
 
-                    <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
-                      {item.affiliate_url && (
-                        <Button
-                          variant={item.score > 70 ? 'outline' : 'outline'}
-                          onClick={() => {
-                            window.open(item.affiliate_url, '_blank')
-                          }}
-                        >
-                          Buy Now
-                          <ArrowUpRight size={16} className="ml-2" />
-                        </Button>
-                      )}
-                    </div>
+                  <BlurredLineItem label="Packaging" value={item?.packaging || 'Unknown'} />
+
+                  <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
+                    {item.affiliate_url && (
+                      <Button
+                        variant={item.score > 70 ? 'outline' : 'outline'}
+                        onClick={() => {
+                          window.open(item.affiliate_url, '_blank')
+                        }}
+                      >
+                        Buy Now
+                        <ArrowUpRight size={16} className="ml-2" />
+                      </Button>
+                    )}
                   </div>
-                ) : (
-                  <UnindexedDisclaimer />
-                )}
+                </div>
               </>
             </div>
 
             <div className="flex md:flex-row md:justify-start md:gap-10 md:items-start flex-col-reverse justify-end items-end">
-              {item.is_indexed !== false && <Score score={item.score} size="lg" />}
+              <Score score={item.score} size="lg" />{' '}
             </div>
           </div>
         </div>
 
-        {item.is_indexed !== false && <UntestedDisclaimer />}
+        {item.is_indexed !== false && <OasisDisclaimer />}
 
-        {item.is_indexed !== false && (
-          <>
-            {sortedContaminants && sortedContaminants.length > 0 && (
-              <div className="flex flex-col gap-6 mt-6">
-                <Typography size="2xl" fontWeight="normal">
-                  Contaminants ☠️
-                </Typography>
-                <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                  {sortedContaminants.map((contaminant: any, index: number) => (
-                    <ContaminantCard key={contaminant.id || index} data={contaminant} />
-                  ))}
-                </div>
+        <>
+          <div className="flex flex-col gap-2 mt-6">
+            <Typography size="2xl" fontWeight="normal">
+              Contaminants ☠️
+            </Typography>
+            {sortedContaminants && sortedContaminants.length > 0 ? (
+              <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                {sortedContaminants.map((contaminant: any, index: number) => (
+                  <ContaminantCard key={contaminant.id || index} data={contaminant} />
+                ))}
               </div>
-            )}
-
-            <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-6">
-              <MetaDataCard title="Source" description={item.metadata?.source} />
-              <MetaDataCard
-                title="Treatment Process"
-                description={
-                  Array.isArray(item.filtration_methods) && item.filtration_methods.length > 0
-                    ? item.filtration_methods.join(', ') + '. ' + item.metadata?.treatment_process
-                    : item.metadata?.treatment_process
-                }
-              />
-            </div>
-
-            <>
-              {item?.ingredients?.length > 0 && (
-                <div className="flex flex-col gap-6 my-10">
-                  <Typography size="2xl" fontWeight="normal">
-                    Other Ingredients
+            ) : (
+              <>
+                {item.is_indexed !== false ? (
+                  <Typography size="base" fontWeight="normal">
+                    No contaminants found
                   </Typography>
+                ) : (
+                  <Typography size="base" fontWeight="normal" className="text-secondary">
+                    Unable to verify the safety of this product or the contaminants it contains.
+                  </Typography>
+                )}
+              </>
+            )}
+          </div>
 
-                  <IngredientsCard ingredients={item.ingredients} />
-                </div>
-              )}
-            </>
+          <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-6">
+            <MetaDataCard title="Source" description={item.metadata?.source || 'Unkown'} />
+            <MetaDataCard
+              title="Treatment Process"
+              description={
+                Array.isArray(item.filtration_methods) && item.filtration_methods.length > 0
+                  ? item.filtration_methods.join(', ') + '. ' + item.metadata?.treatment_process
+                  : item.metadata?.treatment_process
+              }
+            />
+          </div>
 
-            <PaywallContent className="mt-6" label="Unlock All Data & Reports">
-              {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
-            </PaywallContent>
-          </>
-        )}
+          <div className="flex flex-col gap-2 my-10">
+            <Typography size="2xl" fontWeight="normal">
+              Other Ingredients
+            </Typography>
+            {item?.ingredients?.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                <IngredientsCard ingredients={item.ingredients} />
+              </div>
+            ) : (
+              <Typography size="base" fontWeight="normal">
+                Unknown ingredients
+              </Typography>
+            )}
+          </div>
+
+          <PaywallContent className="mt-6" label="Unlock All Data & Reports">
+            {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
+          </PaywallContent>
+        </>
       </div>
 
       <RecommendedRow />
