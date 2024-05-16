@@ -35,6 +35,12 @@ export interface ProductWithPrices extends Product {
 export interface PriceWithProduct extends Price {
   products: Product | null
 }
+
+export type NutrientDescriptor = {
+  nutrient_id: number | null
+  name: string
+  amount: number | null
+}
 export interface SubscriptionWithProduct extends Subscription {
   prices: PriceWithProduct | null
   plan: string | null

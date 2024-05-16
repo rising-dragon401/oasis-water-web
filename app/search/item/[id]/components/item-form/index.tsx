@@ -6,6 +6,7 @@ import ContaminantCard from '@/components/contamintant-card'
 import RecommendedRow from '@/components/sections/recommended-row'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
+import NutritionTable from '@/components/shared/nutrition-table'
 import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
 import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
@@ -205,6 +206,15 @@ export default function ItemForm({ id }: Props) {
               </Typography>
             )}
           </div>
+
+          {item.nutrients && item.nutrients.length > 0 && (
+            <div className="flex flex-col gap-2 my-10">
+              <Typography size="2xl" fontWeight="normal">
+                Nutrition
+              </Typography>
+              <NutritionTable nutrients={item.nutrients} />
+            </div>
+          )}
 
           <PaywallContent className="mt-6" label="Unlock All Data & Reports">
             {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
