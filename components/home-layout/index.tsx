@@ -100,7 +100,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </div>
         </div>
 
-        <div className="py-3 min-h-[70vh] flex justify-center w-full overflow-y-scroll">
+        <div className="py-3 min-h-[70vh] flex justify-center w-full overflow-y-scroll hide-scrollbar">
           {children}
         </div>
 

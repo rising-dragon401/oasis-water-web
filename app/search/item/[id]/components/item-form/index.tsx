@@ -187,7 +187,7 @@ export default function ItemForm({ id }: Props) {
               description={
                 Array.isArray(item.filtration_methods) && item.filtration_methods.length > 0
                   ? item.filtration_methods.join(', ') + '. ' + item.metadata?.treatment_process
-                  : item.metadata?.treatment_process
+                  : item.metadata?.treatment_process || 'Unknown'
               }
             />
           </div>
