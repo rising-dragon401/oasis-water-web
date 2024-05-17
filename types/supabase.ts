@@ -266,6 +266,7 @@ export type Database = {
           is_indexed: boolean | null
           metadata: Json | null
           name: string
+          nutrients: Json[] | null
           packaging: Database["public"]["Enums"]["packaging"] | null
           recommended: boolean | null
           score: number | null
@@ -292,6 +293,7 @@ export type Database = {
           is_indexed?: boolean | null
           metadata?: Json | null
           name: string
+          nutrients?: Json[] | null
           packaging?: Database["public"]["Enums"]["packaging"] | null
           recommended?: boolean | null
           score?: number | null
@@ -318,6 +320,7 @@ export type Database = {
           is_indexed?: boolean | null
           metadata?: Json | null
           name?: string
+          nutrients?: Json[] | null
           packaging?: Database["public"]["Enums"]["packaging"] | null
           recommended?: boolean | null
           score?: number | null
@@ -419,6 +422,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      nutrients: {
+        Row: {
+          benefits: string | null
+          created_at: string
+          id: number
+          name: string | null
+          risks: string | null
+          sources: Json[] | null
+          unit: string | null
+        }
+        Insert: {
+          benefits?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          risks?: string | null
+          sources?: Json[] | null
+          unit?: string | null
+        }
+        Update: {
+          benefits?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          risks?: string | null
+          sources?: Json[] | null
+          unit?: string | null
+        }
+        Relationships: []
       }
       prices: {
         Row: {
@@ -790,6 +823,7 @@ export type Database = {
           is_indexed: boolean | null
           metadata: Json | null
           name: string
+          nutrients: Json[] | null
           packaging: Database["public"]["Enums"]["packaging"] | null
           recommended: boolean | null
           score: number | null
@@ -852,6 +886,7 @@ export type Database = {
           is_indexed: boolean | null
           metadata: Json | null
           name: string
+          nutrients: Json[] | null
           packaging: Database["public"]["Enums"]["packaging"] | null
           recommended: boolean | null
           score: number | null
@@ -987,7 +1022,11 @@ export type Database = {
         | "Inorganics"
         | "Other"
         | "Disinfectant by-product"
-      item_type: "bottled_water" | "tap_water" | "filter"
+        | "Fruits"
+        | "Juices"
+        | "Additives"
+        | "Botanicals"
+      item_type: "bottled_water" | "tap_water" | "filter" | "flavored_water"
       packaging:
         | "plastic"
         | "glass"
