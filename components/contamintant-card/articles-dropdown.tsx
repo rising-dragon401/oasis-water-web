@@ -9,8 +9,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Source } from '@/types/custom'
-import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
+import Link from 'next/link'
 
 type Props = {
   sources: Source[]
@@ -20,7 +20,7 @@ export function ArticlesDropdown({ sources }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Articles</Button>
+        <Button variant="outline">Sources</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-96" align="end">
         <DropdownMenuLabel>Articles</DropdownMenuLabel>

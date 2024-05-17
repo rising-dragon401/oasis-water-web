@@ -10,7 +10,7 @@ export type Item = Database['public']['Tables']['items']['Row'] & {
 export type TapWaterLocation = Database['public']['Tables']['tap_water_locations']['Row'] & {
   company_name?: string | null
 }
-export type ItemType = 'bottled_water' | 'tap_water' | 'filter'
+export type ItemType = 'bottled_water' | 'tap_water' | 'filter' | 'flavored_water'
 export type WaterFilter = Database['public']['Tables']['water_filters']['Row'] & {
   company_name?: string | null
 }

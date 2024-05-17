@@ -1,3 +1,4 @@
+import Typography from '@/components/typography'
 import {
   Card,
   CardContent,
@@ -6,9 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import Typography from '@/components/typography'
 import { ArticlesDropdown } from './articles-dropdown'
-import { ContaminantFiltersDropdown } from './contaminant-filters-dropdown'
 
 type Props = {
   data: any
@@ -51,20 +50,16 @@ export default function ContaminantCard({ data }: Props) {
               Amount: {data?.amount} {data?.unit} {data?.measure}
             </Typography>
           )}
-          {data.health_guideline && (
-            <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
-              Health Guideline: {data?.health_guideline} {data?.measure}
-            </Typography>
-          )}
-          {data.legal_limit && (
-            <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
-              Legal Limit: {data?.legal_limit} {data?.measure}
-            </Typography>
-          )}
+          <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
+            Health Guideline:{' '}
+            {data?.health_guideline ? `${data.health_guideline} ${data.measure}` : 'None'}
+          </Typography>
+
+          <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
+            Legal Limit: {data?.legal_limit ? `${data.legal_limit} ${data.measure}` : 'None'}
+          </Typography>
         </CardContent>
         <CardFooter className="flex flex-row  w-full justify-between p-0">
-          <ContaminantFiltersDropdown contaminantId={data?.id || ''} align="start" />
-
           {data?.sources ? <ArticlesDropdown sources={data?.sources || []} /> : <div></div>}
         </CardFooter>
       </CardHeader>

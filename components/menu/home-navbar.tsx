@@ -29,9 +29,9 @@ const components: {
   logo: React.ReactNode
 }[] = [
   {
-    title: 'Bottled waters',
+    title: 'Water & Drinks',
     href: '/search/bottled-water',
-    description: 'Discover the health rating of your bottled water.',
+    description: 'Discover the health rating of your bottled water, flavored water and more.',
     logo: <Milk className="text-secondary w-4 h-4" />,
   },
   {
@@ -86,7 +86,7 @@ export default function HomeNavbar() {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Water</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Explore</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
               {components.map((component) => (

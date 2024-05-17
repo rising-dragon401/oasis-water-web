@@ -181,7 +181,7 @@ export default function ItemForm({ id }: Props) {
           </div>
 
           <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-6">
-            <MetaDataCard title="Source" description={item.metadata?.source || 'Unkown'} />
+            <MetaDataCard title="Water source" description={item.metadata?.source || 'Unkown'} />
             <MetaDataCard
               title="Treatment Process"
               description={
