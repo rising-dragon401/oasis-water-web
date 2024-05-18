@@ -1,16 +1,43 @@
 'use client'
 
+import { getUserFavorites } from '@/app/actions/user'
 import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
 import { User } from '@/types/custom'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useMemo } from 'react'
+import useSWR from 'swr'
 
 type Props = {
   user: User
 }
 
 export default function UserPreviewCard({ user }: Props) {
+  const fetchUserFavorites = async () => {
+    if (!user.id) {
+      return
+    }
+
+    const favorites = await getUserFavorites(user.id)
+    return favorites
+  }
+
+  const { data: favorites } = useSWR(`userFavorites-${user.id}`, fetchUserFavorites)
+
+  const userScore = useMemo(async () => {
+    let totalCount = 0
+    let totalScore = 0
+
+    await favorites?.map((fav: any) => {
+      totalScore += fav.score || 0
+      totalCount += 1
+    })
+
+    const finalScore = Math.round(totalScore / totalCount)
+    return finalScore
+  }, [favorites])
+
   const renderScore = () => {
     const score = user?.score || 0
 
@@ -39,6 +66,8 @@ export default function UserPreviewCard({ user }: Props) {
     )
   }
 
+  console.log('userScore: ', user)
+
   return (
     <Link href={`/oasis/${user.id}`} className="flex flex-col hover:opacity-80 mt-4 relative">
       <div className="relative md:w-56 md:h-56 w-40 h-40">
@@ -65,14 +94,6 @@ export default function UserPreviewCard({ user }: Props) {
         </div>
         {/* Position renderScore relative to the image */}
         {user.score && <div>{renderScore()}</div>}
-        {/* Position the warning symbol relative to the image */}
-        {!user.score && (
-          <div>
-            <Typography size="xl" fontWeight="normal" className="text-red-500">
-              ⚠️
-            </Typography>
-          </div>
-        )}
       </div>
     </Link>
   )

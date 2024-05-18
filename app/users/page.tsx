@@ -10,7 +10,7 @@ export default async function UsersPage() {
   return (
     <SubpageLayout>
       <div className="flex h-full flex-col pt-16 pb-20 md:px-0 px-4 max-w-full">
-        <div className="mb-8 flex flex-col w-full items-center justify-center gap-6 ">
+        <div className="flex flex-col w-full items-center justify-center gap-6 mb-12">
           <div className="flex flex-col items-center text-center gap-2 mb-4">
             <Typography size="5xl" fontWeight="bold">
               See what others drink.
@@ -32,7 +32,7 @@ export default async function UsersPage() {
         {usersWithOasis && usersWithOasis?.length > 0 ? (
           <div className="grid md:grid-cols-4 grid-cols-2 w-full gap-6">
             {usersWithOasis.map((user: any) => (
-              <UserPreviewCard key={user.id} user={user} />
+              <>{user.score && <UserPreviewCard key={user.id} user={user} />}</>
             ))}
           </div>
         ) : (

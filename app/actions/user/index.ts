@@ -436,7 +436,15 @@ export const getUsersWithOasis = async () => {
     return null
   }
 
-  return data
+  // check if user has favorites
+  const users = await Promise.all(
+    data.map(async (user) => {
+      const favorites = await getUserFavorites(user.id)
+      return { ...user, favorites }
+    })
+  )
+
+  return users
 }
 
 export const followUser = async (uid: string, followId: string) => {
