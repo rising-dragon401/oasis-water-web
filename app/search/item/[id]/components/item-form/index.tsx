@@ -8,7 +8,6 @@ import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
 import NutritionTable from '@/components/shared/nutrition-table'
 import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
-import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
@@ -216,9 +215,9 @@ export default function ItemForm({ id }: Props) {
             </div>
           )}
 
-          <PaywallContent className="mt-6" label="Unlock All Data & Reports">
-            {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
-          </PaywallContent>
+          {/* <PaywallContent className="mt-6" label="Unlock All Data & Reports"> */}
+          {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
+          {/* </PaywallContent> */}
         </>
       </div>
 
