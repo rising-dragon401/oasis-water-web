@@ -35,7 +35,7 @@ export default function Score({ score, size, showScore = false }: Props) {
     } else if (score >= 70) {
       return 'Good'
     } else if (score >= 50) {
-      return 'Alright'
+      return 'Pretty good'
     } else if (score >= 35) {
       return 'Poor'
     } else if (score >= 0 && score !== null) {
