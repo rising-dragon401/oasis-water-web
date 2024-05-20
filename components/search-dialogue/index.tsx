@@ -342,7 +342,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           setOpen(!open)
         }}
       >
-        <DialogContent className="md:max-h-[80vh] lg:!max-w-3xl md:!max-w-2xl max-w-none mt-1 mb-2 w-[90vw] max-h-[90vh] rounded-xl overflow-y-auto text-black">
+        <DialogContent className="md:max-h-[80vh] lg:!max-w-3xl md:!max-w-2xl max-w-none mt-1 mb-2 w-[90vw] max-h-[85vh] rounded-xl overflow-y-auto text-black">
           {messages.length > 1 || isLoading ? (
             <>
               <DialogHeader className="sticky flex flex-row items-center w-full justify-between px-4">
@@ -360,7 +360,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
               </DialogHeader>
 
               <div className="flex flex-col relative items-center">
-                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll max-h-[44vh] min-h-[44vh]">
+                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll min-h-[44vh]">
                   <ChatList
                     messages={messages}
                     isLoading={isLoading}
@@ -370,7 +370,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
                 </div>
 
                 <DialogFooter className="flex flex-col gap-2 w-full h-16 items-center relative">
-                  {isLoading && (
+                  {/* {isLoading && (
                     <Button
                       variant="outline"
                       className="self-center mb-2 rounded-full h-6 w-24 shadow-sm absolute"
@@ -378,7 +378,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
                     >
                       Cancel
                     </Button>
-                  )}
+                  )} */}
 
                   {SearchInput()}
                 </DialogFooter>
