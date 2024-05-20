@@ -1,7 +1,6 @@
 import { ApplicationError, UserError } from '@/lib/errors'
 import { determineLink } from '@/utils/helpers'
 import { createClient } from '@supabase/supabase-js'
-import { OpenAIStream, StreamingTextResponse } from 'ai'
 import { codeBlock, oneLine } from 'common-tags'
 import GPT3Tokenizer from 'gpt3-tokenizer'
 import OpenAI from 'openai'
@@ -11,9 +10,9 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-export const runtime = 'edge'
+export const runtime = 'nodejs'
 
-export async function POST(req: Request) {
+export async function POST(req: Request, res: Response) {
   try {
     if (!supabaseUrl) {
       throw new ApplicationError('Missing environment variable SUPABASE_URL')
@@ -25,29 +24,48 @@ export async function POST(req: Request) {
 
     const { query, assistant_id, thread_id } = await req.json()
 
+    console.log('query: ', query)
+    console.log('thread_id: ', thread_id)
+    console.log('assistant_id: ', assistant_id)
+
+    if (!query || !assistant_id || !thread_id) {
+      throw new UserError('Missing query, assistant_id, or thread_id in request data')
+    }
+
+    // cancel any existing runs
+    const runs = await openai.beta.threads.runs.list(thread_id)
+    if (runs.data.length > 0) {
+      for (const run of runs.data) {
+        if (run.status !== 'completed') {
+          console.log(`Cancelling run with ID: ${run.id} because status is ${run.status}`)
+          await openai.beta.threads.runs.cancel(thread_id, run.id)
+        }
+      }
+    }
+
     const oasisPaths = {
       'All bottled water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/bottled-water`,
       'All filters': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/filters`,
       'All tap water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/tap-water`,
     }
 
-    const systemMessage = `
-      You are a clean drinking water and healhty product longevity companion, scientist, and expert.
+    // const systemMessage = `
+    //   You are a clean drinking water and health product longevity companion, scientist, and expert.
 
-      Users ask you about specific water items or general questions about research and health. Provide them with research backed, concise answers to lead them to a healthy lifestyle.
-          
-      Reply in markdown to format including data but sounding like a human conversation. Keep your answers brief.
+    //   Users ask you about specific water items or general questions about personal health and longevity. Provide them with research backed, concise answers to lead them to a healthy lifestyle.
 
-      Prioritze data from Oasis. And display the relevant data in your answer in addition to the helpful links for the user to learn more.
+    //   Reply in markdown to format including data but sounding like a human conversation. Keep your answers brief.
 
-      Include markdown relative learn more button. "Learn more" buttons should link to PagePath
+    //   Prioritze data from Oasis.
 
-      These general paths might help too: ${JSON.stringify(oasisPaths, null, 2)}
+    //   Include markdown applicable learn more button. "Learn more" buttons should link to PagePath
 
-      Only link to Oasis pages. Buttons should contain descriptive labels based on the content  titleand only use them where necessary.
+    //   These general paths might help too: ${JSON.stringify(oasisPaths, null, 2)}
 
-      Button Syntax: [Click Me](http://example.com "oasis-button")
-    `
+    //   Only link to Oasis pages. Buttons should contain descriptive labels based on the content titleand only use them where necessary.
+
+    //   Button Syntax: [Click Me](http://example.com "oasis-button")
+    // `
 
     // console.log('systemMessage: ', systemMessage)
 
@@ -195,16 +213,12 @@ export async function POST(req: Request) {
 
       Question: ${sanitizedQuery}
     `
+    console.log('prompt: ', prompt)
 
-    // Make query
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4-1106-preview',
+    const stream = await openai.beta.threads.runs.create(thread_id, {
+      assistant_id: assistant_id,
       stream: true,
-      messages: [
-        {
-          role: 'system',
-          content: systemMessage,
-        },
+      additional_messages: [
         {
           role: 'user',
           content: prompt,
@@ -212,55 +226,9 @@ export async function POST(req: Request) {
       ],
     })
 
-    const stream = OpenAIStream(response)
+    return new Response(stream.toReadableStream())
 
-    // Respond with the stream
-    return new StreamingTextResponse(stream)
-
-    /////// Assistants API - commenting out until stremaing is supported   ///////
-    // let threadId = thread_id
-    // // Create a thread
-    // if (!thread_id) {
-    //   const thread = await openai.beta.threads.create()
-    //   threadId = thread.id
-    // }
-
-    // // adds message to thread
-    // const message = await openai.beta.threads.messages.create(threadId, {
-    //   role: 'user',
-    //   content: prompt,
-    // })
-
-    // // runs assistant thread
-    // let run = await openai.beta.threads.runs.create(threadId, {
-    //   assistant_id: assistant_id,
-    //   // instructions: "Please address the user as Jane Doe. The user has a premium account."
-    // })
-
-    // // create a timeout loop that checks if run.status === completed
-    // while (run.status !== 'completed') {
-    //   await new Promise((resolve) => setTimeout(resolve, 1000)) // wait for 1 second before checking again
-    //   run = await openai.beta.threads.runs.retrieve(threadId, run.id) // update the run status
-    // }
-
-    // // once completed, get updated messages
-    // const messages = await openai.beta.threads.messages.list(threadId)
-
-    // const chatReply = messages.data[messages.data.length - 1]
-
-    // // @ts-ignore
-    // const chatReplyText = messages.data[0].content[0].text.value
-
-    // return new Response(
-    //   JSON.stringify({
-    //     content: chatReplyText,
-    //     thread_id: threadId,
-    //   }),
-    //   {
-    //     status: 200,
-    //     headers: { 'Content-Type': 'application/json' },
-    //   }
-    // )
+    // return new StreamingTextResponse(stream)
   } catch (err) {
     if (err instanceof UserError) {
       return new Response(

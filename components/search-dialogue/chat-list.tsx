@@ -1,14 +1,16 @@
-import { ChatMessage } from './chat-message'
 import { Loader2 } from 'lucide-react'
+import { ChatMessage } from './chat-message'
 
 export interface ChatList {
   messages: any[]
   isLoading: boolean
+  messagesEndRef: any
+  userAvatar?: string
 }
 
-export default function ChatList({ messages, isLoading }: ChatList) {
+export default function ChatList({ messages, isLoading, userAvatar, messagesEndRef }: ChatList) {
   return (
-    <div className="relative mx-auto min-w-[60vw] max-w-2xl md:px-4">
+    <div className="relative mx-auto  max-w-2xl md:px-4">
       {messages.map((message, index) => (
         <div key={index} className="my-4 md:my-8">
           <ChatMessage
@@ -16,9 +18,12 @@ export default function ChatList({ messages, isLoading }: ChatList) {
             index={index}
             messagesLength={messages.length}
             isLoading={isLoading}
+            userAvatar={userAvatar}
           />
         </div>
       ))}
+
+      <div ref={messagesEndRef} />
 
       {isLoading && messages[messages.length - 1]?.content.length < 10 && (
         <div className="flex justify-center w-full">

@@ -11,20 +11,22 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
-import useDevice from '@/lib/hooks/use-device'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useAtom } from 'jotai'
-import { Lock, RotateCcw, SendHorizontal, Sparkles, X } from 'lucide-react'
+import { Lock, SendHorizontal, Sparkles, X } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
-import * as React from 'react'
+import { AssistantStream } from 'openai/lib/AssistantStream'
+import React, { useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 import Typography from '../typography'
 import ChatList from './chat-list'
 
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
-  const inputRef = React.useRef<HTMLInputElement>(null)
-  const { user, userData, subscription } = useUserProvider()
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const { user, uid, userData, subscription } = useUserProvider()
   const router = useRouter()
   const pathname = usePathname()
   const { openModal } = useModal()
@@ -36,15 +38,10 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const [messages, setMessages] = useAtom(messagesAtom)
   const [threadId, setThreadId] = useAtom(threadIdAtom)
   const [abortController, setAbortController] = React.useState<AbortController>()
-  const [openSubscription, setOpenSubscription] = React.useState(false)
 
-  const { isMobile } = useDevice()
-
-  React.useEffect(() => {
-    if (userData?.assistant_id) {
-      setAssistantId(userData.assistant_id)
-    }
-  }, [userData])
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -60,9 +57,28 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // TODO should be persistant for each user
+  React.useEffect(() => {
+    if (userData?.assistant_id) {
+      setAssistantId(userData.assistant_id)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData])
+
+  React.useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 0)
+    }
+  }, [open])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
   async function createNewAssistant() {
     try {
       const response = await fetch('/api/create-new-assistant', {
@@ -86,20 +102,46 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     }
   }
 
-  React.useEffect(() => {
-    if (open) {
-      setTimeout(() => {
-        inputRef.current?.focus()
-      }, 0)
+  async function createNewThread() {
+    try {
+      const response = await fetch('/api/create-new-thread', {
+        method: 'POST',
+        body: JSON.stringify({
+          uid,
+          assistantId,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setThreadId(data.id)
+        return data.id
+      } else {
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      return null
     }
-  }, [open])
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      console.log('enter')
+      handleSubmit(e)
+    }
+  }
 
   const handleSearchButtonClick = () => {
     // check if user is signed in
     if (!user) {
+      toast('Sign in to use Oasis AI')
       // return to auth
       router.push(`/auth/signin?redirectUrl=${pathname}`)
       return
+    } else if (!subscription) {
+      openModal('SubscriptionModal')
     }
 
     setOpen(true)
@@ -111,6 +153,8 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   }
 
   const handleSubmit = async (e: any) => {
+    console.log('submit')
+
     e.preventDefault()
 
     try {
@@ -135,6 +179,21 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         return
       }
 
+      // initi threadId
+      let thread: string | null = threadId
+      if (!thread) {
+        thread = await createNewThread()
+      }
+
+      if (!thread) {
+        console.log('no thread id found')
+        return
+      }
+
+      console.log('thread:', thread)
+      console.log('assistant:', assistant)
+
+      // prepare messages
       setMessages((messages) => [...messages, newMessage])
 
       // create instance of AbortController to handle stream cancellation
@@ -147,7 +206,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         role: 'assistant',
         content: '',
       }
-      // setThreadId(data.thread_id)
+
       setMessages((messages) => [...messages, newAssistantMessage])
 
       const response = await fetch('/api/send-message', {
@@ -155,45 +214,52 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         body: JSON.stringify({
           query,
           assistant_id: assistant,
-          thread_id: threadId,
+          thread_id: thread,
         }),
         signal,
       })
 
-      let fullNewMessage = ''
-
-      if (response?.status === 400) {
-        const object = await response.json()
-        const err = object.error
-        toast(err)
-        handleResetFailedSend()
+      if (!response.body) {
         return
       }
+      const runner = AssistantStream.fromReadableStream(response.body)
 
-      const textDecoder = new TextDecoder()
-      const reader = response?.body?.getReader()
-
-      let chunk = await reader?.read()
-      const chunkContent = textDecoder.decode(chunk?.value)
-
-      fullNewMessage += chunkContent
-
-      // finish reading the response
-      while (!chunk?.done) {
-        chunk = await reader?.read()
-        const chunkContent = textDecoder.decode(chunk?.value)
-        fullNewMessage += chunkContent
+      let fullNewMessage = ''
+      runner.on('textDelta', (_delta, contentSnapshot) => {
+        fullNewMessage = contentSnapshot.value
 
         setMessages((prevMessages) => {
           const newMessages = [...prevMessages]
           newMessages[newMessages.length - 1].content = fullNewMessage
           return newMessages
         })
-      }
+      })
 
-      setIsLoading(false)
+      runner.on('messageDone', (message) => {
+        //  // get final message content
+        //  const finalContent = message.content[0].type == 'text' ? message.content[0].text.value : ''
+
+        //  // add assistant message to list of messages
+        //  setMessages((prevMessages) => [
+        //    ...prevMessages,
+        //    {
+        //      role: 'assistant',
+        //      content: finalContent,
+        //      createdAt: new Date(),
+        //    },
+        //  ])
+
+        // remove busy indicator
+        setIsLoading(false)
+      })
+
+      runner.on('error', (error) => {
+        console.error(error)
+        setIsLoading(false)
+      })
     } catch (e) {
       handleResetFailedSend()
+      setIsLoading(false)
     }
   }
 
@@ -223,11 +289,12 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         <div className="flex items-center relative justify-between">
           <Input
             ref={inputRef}
-            placeholder="Search water questions"
+            placeholder="Message Oasis"
             name="search"
             value={query}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setQuery(e.target.value)}
-            className="bg-muted w-full rounded-full h-12 "
+            className="bg-muted w-full rounded-full h-12 pl-6"
           />
 
           {/* @ts-ignore */}
@@ -253,10 +320,12 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
             </Button>
           )}
         </div>
-        <Typography size="xs" fontWeight="normal">
-          *Please note this feature is in early beta and is experimental. It may hallucinate and
-          provide inaccurate answers.
-        </Typography>
+        <div className="p-1 pb-2">
+          <Typography size="xs" fontWeight="normal">
+            *Please note this feature is in early beta and is experimental. It may hallucinate and
+            provide inaccurate answers.
+          </Typography>
+        </div>
       </div>
     )
   }
@@ -265,16 +334,6 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     <>
       <Button onClick={handleSearchButtonClick} variant="ghost" className="gap-2 rounded-full h-8">
         <Sparkles className="w-4 h-4 text-secondary" />
-        {/* <kbd
-          className="absolute right-3 top-2.5
-          pointer-events-none inline-flex h-5 select-none items-center gap-1
-          rounded border border-slate-100 bg-slate-100 px-1.5
-          font-mono text-[10px] font-medium
-          text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400
-          opacity-100 "
-        >
-          <span className="text-xs">⌘</span>K
-        </kbd>{' '} */}
       </Button>
 
       <Dialog
@@ -290,10 +349,8 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
                 <DialogTitle className="text-left w-30">Chat with Oasis</DialogTitle>
 
                 <div className="flex flex-row gap-2">
-                  <Button variant="outline" className="h-8" onClick={handleReset}>
-                    <RotateCcw className="h-4 w-4 mr-1" />
-
-                    {!isMobile && <span className="hidden md:inline">Reset</span>}
+                  <Button variant="ghost" className="h-8 p-0 mr-1" onClick={handleReset}>
+                    <span className="inline">Reset</span>
                   </Button>
 
                   <Button variant="outline" className="h-8" onClick={() => setOpen(false)}>
@@ -304,7 +361,12 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
               <div className="flex flex-col relative items-center">
                 <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll max-h-[44vh] min-h-[44vh]">
-                  <ChatList messages={messages} isLoading={isLoading} />
+                  <ChatList
+                    messages={messages}
+                    isLoading={isLoading}
+                    userAvatar={userData?.avatar_url}
+                    messagesEndRef={messagesEndRef}
+                  />
                 </div>
 
                 <DialogFooter className="flex flex-col gap-2 w-full h-16 items-center relative">

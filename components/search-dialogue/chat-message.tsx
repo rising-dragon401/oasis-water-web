@@ -1,7 +1,7 @@
-import remarkGfm from 'remark-gfm'
-import { cn } from '@/lib/utils'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { cn } from '@/lib/utils'
+import remarkGfm from 'remark-gfm'
 import { OasisButton } from '../custom-markdown'
 
 const OasisAvatar =
@@ -12,8 +12,9 @@ const FallBackAvatar =
 export interface ChatMessageProps {
   message: any
   isLoading: boolean
-  index?: number
   messagesLength: number
+  index?: number
+  userAvatar?: string
 }
 
 export function ChatMessage({
@@ -21,37 +22,29 @@ export function ChatMessage({
   isLoading,
   index,
   messagesLength,
+  userAvatar,
   ...props
 }: ChatMessageProps) {
   return (
     <div
-      className={cn('group relative mb-4 flex items-start md:-ml-12 ', {
+      className={cn('group relative mb-4 flex items-start', {
         'flex-row-reverse': message.role === 'user',
       })}
       {...props}
     >
+      {message.role === 'assistant' && (
+        <Avatar className="flex md:h-8 md:w-8 h-6 w-6">
+          <AvatarImage src={OasisAvatar} alt="chat avatar" />
+          <AvatarFallback>O</AvatarFallback>
+        </Avatar>
+      )}
       <div
-        className={cn(
-          'flex md:h-8 md:w-8 h-6 w-6 shrink-0 select-none items-center justify-center rounded-full border shadow',
-          message.role === 'user' ? 'bg-background ' : 'bg-primary text-primaryMuted'
-        )}
+        className={`space-y-2 overflow-hidden rounded-xl px-4 ${message.role === 'user' ? 'bg-muted py-2' : 'flex justify-start w-full'}
+      `}
       >
-        {message.role === 'assistant' ? (
-          <Avatar className="md:h-8 md:w-8 h-6 w-6">
-            <AvatarImage src={OasisAvatar} alt="chat avatar" />
-            <AvatarFallback>O</AvatarFallback>
-          </Avatar>
-        ) : (
-          <Avatar className="md:h-8 md:w-8 h-6 w-6">
-            <AvatarImage src={FallBackAvatar} alt="chat avatar" />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
-        )}
-      </div>
-      <div className="flex-1 md:px-1 md:ml-4 ml-2 space-y-2 overflow-hidden">
         <MemoizedReactMarkdown
-          className={`prose break-words prose-p:leading-relaxed prose-pre:p- md:text-lg text-sm',
-            ${message.role === 'user' ? 'text-right text-slate-600 mr-2' : 'text-slate-900'}`}
+          className={`prose break-words prose-p:leading-relaxed prose-pre:p- md:text-lg text-sm bg-background',
+            ${message.role === 'user' ? 'text-right text-slate-600' : 'text-slate-900'}`}
           remarkPlugins={[remarkGfm]}
           components={{
             p({ children }) {
