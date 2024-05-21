@@ -8,7 +8,7 @@ export default async function LowestRatedSection() {
 
   return (
     <div>
-      <div className="py-4 flex flex-row justify-between">
+      <div className="flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
           Lowest rated bottled water
         </Typography>

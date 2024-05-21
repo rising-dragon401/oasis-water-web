@@ -3,7 +3,6 @@
 import { getCurrentUserData, getUserFavorites } from '@/app/actions/user'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Score from '@/components/shared/score'
-import SubscribeButton from '@/components/shared/subscribe-button'
 import Typography from '@/components/typography'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -152,41 +151,24 @@ export default function FavoritesList({ userId }: { userId: string }) {
           ) : (
             <div className="flex w-full justify-center flex-col items-center mt-10">
               <Typography size="xl" fontWeight="normal">
-                User has not added anything to their Oasis yet
+                No items in this Oasis
               </Typography>
               {isAuthUser && (
                 <>
                   {userData ? (
-                    <div>
-                      {subscription ? (
-                        <div>
-                          <Typography size="base" fontWeight="normal">
-                            Start adding your favorite items to your Oasis
-                          </Typography>
-                          <Button
-                            variant="secondary"
-                            className="mt-4"
-                            onClick={() => {
-                              router.push('/')
-                            }}
-                          >
-                            Explore
-                          </Button>
-                        </div>
-                      ) : (
-                        <div>
-                          <Typography
-                            size="base"
-                            fontWeight="normal"
-                            className="text-secondar text-center"
-                          >
-                            Subscribe to start adding your favorite items to your Oasis
-                          </Typography>
-                          <div className="mt-4">
-                            <SubscribeButton />
-                          </div>
-                        </div>
-                      )}
+                    <div className="w-full flex flex-col justify-center items-center">
+                      <Typography size="base" fontWeight="normal">
+                        Start adding your favorite items to your Oasis
+                      </Typography>
+                      <Button
+                        variant="outline"
+                        className="mt-4"
+                        onClick={() => {
+                          router.push('/')
+                        }}
+                      >
+                        Explore
+                      </Button>
                     </div>
                   ) : (
                     <div className="flex flex-col">

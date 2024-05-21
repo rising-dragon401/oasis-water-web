@@ -71,7 +71,7 @@ const FEATURES = [
   },
 ]
 
-const kSubscriptionPrice = 5
+const kSubscriptionPrice = 7.99
 
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()

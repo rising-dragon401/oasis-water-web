@@ -19,7 +19,7 @@ export default function ItemImage({ src, alt, item }: ItemImageProps) {
         placeholder="blur"
         className="rounded-lg md:w-[600px] md:h-full w-72 h-72 object-cover"
       />
-      <div className="absolute top-0 right-0">
+      <div className="absolute top-1 right-1">
         <FavoriteButton item={item} />
       </div>
     </div>

@@ -23,7 +23,7 @@ export default function ChatList({ messages, isLoading, userAvatar, messagesEndR
         </div>
       ))}
 
-      <div ref={messagesEndRef} />
+      <div ref={messagesEndRef} className="mt-6" />
 
       {isLoading && messages[messages.length - 1]?.content.length < 10 && (
         <div className="flex justify-center w-full">

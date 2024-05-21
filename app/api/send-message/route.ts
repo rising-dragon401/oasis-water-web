@@ -227,8 +227,6 @@ export async function POST(req: Request, res: Response) {
     })
 
     return new Response(stream.toReadableStream())
-
-    // return new StreamingTextResponse(stream)
   } catch (err) {
     if (err instanceof UserError) {
       return new Response(

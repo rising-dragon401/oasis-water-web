@@ -1,7 +1,6 @@
 'use client'
 
 import { getUserFavorites } from '@/app/actions/user'
-import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
 import { User } from '@/types/custom'
 import Image from 'next/image'
@@ -46,15 +45,9 @@ export default function UserPreviewCard({ user }: Props) {
 
     return (
       <div>
-        <PaywallContent label="Unlock score" hideButton={true}>
-          <Typography
-            size="2xl"
-            fontWeight="normal"
-            className={`!no-underline ${color} text-right`}
-          >
-            {score}
-          </Typography>
-        </PaywallContent>
+        <Typography size="2xl" fontWeight="normal" className={`!no-underline ${color} text-right`}>
+          {score}
+        </Typography>
         <Typography
           size="xs"
           fontWeight="normal"
