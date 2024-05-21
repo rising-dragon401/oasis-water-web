@@ -27,7 +27,7 @@ export function ChatMessage({
 }: ChatMessageProps) {
   return (
     <div
-      className={cn('group relative mb-4 flex items-start', {
+      className={cn('group relative mb-4 flex items-start max-w-2xl', {
         'flex-row-reverse': message.role === 'user',
       })}
       {...props}
@@ -39,7 +39,7 @@ export function ChatMessage({
         </Avatar>
       )}
       <div
-        className={`space-y-2 overflow-hidden rounded-xl px-4 ${message.role === 'user' ? 'bg-muted py-2' : 'flex justify-start w-full'}
+        className={`space-y-2 overflow-hidden  rounded-xl px-4 ${message.role === 'user' ? 'bg-muted py-2' : 'flex justify-start w-full'}
       `}
       >
         <MemoizedReactMarkdown
