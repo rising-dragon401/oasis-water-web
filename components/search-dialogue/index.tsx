@@ -215,6 +215,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           query,
           assistant_id: assistant,
           thread_id: thread,
+          // is_stream: false,
         }),
         signal,
       })
@@ -360,7 +361,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
               </DialogHeader>
 
               <div className="flex flex-col relative items-center">
-                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll min-h-[44vh]">
+                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll min-h-[44vh] w-full">
                   <ChatList
                     messages={messages}
                     isLoading={isLoading}

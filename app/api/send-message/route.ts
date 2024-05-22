@@ -240,9 +240,15 @@ export async function POST(req: Request, res: Response) {
         await new Promise((resolve) => setTimeout(resolve, 1000))
       }
 
+      // now retrieve messages in the thread
+      const messages = await openai.beta.threads.messages.list(thread_id)
+
+      const lastMessage = messages.data[messages.data.length - 1]
+      const lastMessageContent = lastMessage.content
+
       return new Response(
         JSON.stringify({
-          completion: completion,
+          content: lastMessageContent,
         }),
         {
           headers: { 'Content-Type': 'application/json' },
