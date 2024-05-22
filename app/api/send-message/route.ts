@@ -11,6 +11,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
 export const runtime = 'nodejs'
+export const maxDuration = 300
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -245,6 +246,8 @@ export async function POST(req: Request, res: Response) {
 
       const lastMessage = messages.data[messages.data.length - 1]
       const lastMessageContent = lastMessage.content
+
+      console.log('lastMessageContent: ', lastMessageContent)
 
       return new Response(
         JSON.stringify({

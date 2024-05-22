@@ -215,10 +215,12 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           query,
           assistant_id: assistant,
           thread_id: thread,
-          // is_stream: false,
+          is_stream: false,
         }),
         signal,
       })
+
+      console.log('response:', response)
 
       if (!response.body) {
         return
