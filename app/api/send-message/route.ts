@@ -22,7 +22,7 @@ export async function POST(req: Request, res: Response) {
       throw new ApplicationError('Missing environment variable SUPABASE_SERVICE_ROLE_KEY')
     }
 
-    const { query, assistant_id, thread_id } = await req.json()
+    const { query, assistant_id, thread_id, is_stream } = await req.json()
 
     console.log('query: ', query)
     console.log('thread_id: ', thread_id)
@@ -215,19 +215,54 @@ export async function POST(req: Request, res: Response) {
     `
     console.log('prompt: ', prompt)
 
-    const stream = await openai.beta.threads.runs.create(thread_id, {
-      assistant_id: assistant_id,
-      stream: true,
-      model: 'gpt-4o',
-      additional_messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-    })
+    if (is_stream === false) {
+      // create run and wait for completion
+      const run = await openai.beta.threads.runs.create(thread_id, {
+        assistant_id: assistant_id,
+        model: 'gpt-4o',
+        additional_messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      })
 
-    return new Response(stream.toReadableStream())
+      // Polling to wait until the run status is 'completed'
+      let completion
+      while (true) {
+        const statusCheck = await openai.beta.threads.runs.retrieve(thread_id, run.id)
+        if (statusCheck.status === 'completed') {
+          completion = statusCheck
+          break
+        }
+        // Wait for a short period before checking the status again
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      }
+
+      return new Response(
+        JSON.stringify({
+          completion: completion,
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    } else {
+      const stream = await openai.beta.threads.runs.create(thread_id, {
+        assistant_id: assistant_id,
+        stream: true,
+        model: 'gpt-4o',
+        additional_messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      })
+
+      return new Response(stream.toReadableStream())
+    }
   } catch (err) {
     if (err instanceof UserError) {
       return new Response(
