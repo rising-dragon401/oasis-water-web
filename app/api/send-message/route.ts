@@ -218,6 +218,7 @@ export async function POST(req: Request, res: Response) {
     const stream = await openai.beta.threads.runs.create(thread_id, {
       assistant_id: assistant_id,
       stream: true,
+      model: 'gpt-4o',
       additional_messages: [
         {
           role: 'user',
