@@ -22,6 +22,15 @@ import { toast } from 'sonner'
 import Typography from '../typography'
 import ChatList from './chat-list'
 
+const STARTER_PROMPTS = [
+  'Filters that remove PFAS',
+  'Why are microplastics in water?',
+  'Bottled water with Fluoride',
+  'Water filters for lead',
+  'What are phthalates?',
+  'What are PFAS?',
+]
+
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -129,7 +138,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       console.log('enter')
-      handleSubmit(e)
+      handleSubmit(e, query)
     }
   }
 
@@ -152,18 +161,21 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     setQuery('')
   }
 
-  const handleSubmit = async (e: any) => {
-    console.log('submit')
-
+  const handleSubmit = async (e: any, query_: string) => {
     e.preventDefault()
+
+    const question = query || query_
 
     try {
       setIsLoading(true)
 
       const newMessage = {
         role: 'user',
-        content: query,
+        content: question,
       }
+
+      // prepare messages
+      setMessages((messages) => [...messages, newMessage])
 
       setQuery('')
 
@@ -193,9 +205,6 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
       console.log('thread:', thread)
       console.log('assistant:', assistant)
 
-      // prepare messages
-      setMessages((messages) => [...messages, newMessage])
-
       // create instance of AbortController to handle stream cancellation
       const abortController_ = new AbortController()
       setAbortController(abortController_)
@@ -212,7 +221,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
       const response = await fetch('/api/send-message', {
         method: 'POST',
         body: JSON.stringify({
-          query,
+          query: question,
           assistant_id: assistant,
           thread_id: thread,
           is_stream: false,
@@ -317,7 +326,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
               variant="ghost"
               className="absolute right-0 h-14 rounded-full"
               style={{ top: '50%', transform: 'translateY(-50%)' }}
-              onClick={handleSubmit}
+              onClick={(e) => handleSubmit(e, query)}
             >
               <SendHorizontal className="w-6 h-6 text-primary" />
             </Button>
@@ -388,7 +397,27 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
               </div>
             </>
           ) : (
-            <div className="flex">{SearchInput()}</div>
+            <div className="flex flex-col gap-4">
+              <div className="gap-2 flex md:flex-row flex-col">
+                {STARTER_PROMPTS.sort(() => 0.5 - Math.random())
+                  .slice(0, 3)
+                  .map((prompt, index) => (
+                    <Button
+                      key={index}
+                      variant="outline"
+                      className="text-left h-6"
+                      onClick={(e) => {
+                        setQuery(prompt)
+                        handleSubmit(e, prompt)
+                      }}
+                    >
+                      {prompt}
+                    </Button>
+                  ))}
+              </div>
+
+              {SearchInput()}
+            </div>
           )}
         </DialogContent>
       </Dialog>

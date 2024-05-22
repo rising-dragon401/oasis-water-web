@@ -10,7 +10,6 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-export const runtime = 'nodejs'
 export const maxDuration = 300
 
 export async function POST(req: Request, res: Response) {
@@ -207,14 +206,14 @@ export async function POST(req: Request, res: Response) {
 
     const data = await getData()
 
-    console.log('data: ', data)
+    // console.log('data: ', data)
 
     const prompt = codeBlock`
-      Oasis data: ${JSON.stringify(data)}
-
       Question: ${sanitizedQuery}
+
+      Relevent oasis data to use to formulate your answer: ${JSON.stringify(data)}
     `
-    console.log('prompt: ', prompt)
+    // console.log('prompt: ', prompt)
 
     if (is_stream === false) {
       // create run and wait for completion
@@ -244,10 +243,11 @@ export async function POST(req: Request, res: Response) {
       // now retrieve messages in the thread
       const messages = await openai.beta.threads.messages.list(thread_id)
 
-      const lastMessage = messages.data[messages.data.length - 1]
-      const lastMessageContent = lastMessage.content
+      console.log('messages[0]: ', messages.data[0].content)
+      console.log('messages[1]: ', messages.data[1].content)
 
-      console.log('lastMessageContent: ', lastMessageContent)
+      const lastMessage = messages.data[0]
+      const lastMessageContent = lastMessage.content
 
       return new Response(
         JSON.stringify({
