@@ -142,7 +142,7 @@ export default function RankingList({ title, items }: Props) {
 
       {!subscription && (
         <div className="w-full justify-center flex flex-row gap-4">
-          <SubscribeButton label="Unlock ranked list sorted by score" className="w-70" />
+          <SubscribeButton label="See the top items by score" className="w-70" />
         </div>
       )}
 

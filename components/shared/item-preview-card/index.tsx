@@ -94,10 +94,6 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
             <FavoriteButton item={item} />
           </div>
         )}
-        {/* Position renderScore relative to the image */}
-        {/* {item.score && <div className="absolute bottom-2 right-3">{renderScore()}</div>} */}
-        {/* Position the warning symbol relative to the image */}
-        {!item.score && <div className="absolute bottom-2 right-3">{renderWarning()}</div>}
       </div>
       <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
         <div className="flex flex-col">
@@ -118,6 +114,11 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
             </Typography>
           )}
         </div>
+
+        {/* Position renderScore relative to the image */}
+        {item.score && <div>{renderScore()}</div>}
+        {/* Position the warning symbol relative to the image */}
+        {!item.score && <div>{renderWarning()}</div>}
       </div>
     </Link>
   )
