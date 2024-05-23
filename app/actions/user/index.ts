@@ -300,14 +300,6 @@ export async function getSubscription(uid: string | null) {
 export const getActiveProductsWithPrices = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const session = await getSession()
-
-  const user = session?.user
-
-  if (!user) {
-    return null
-  }
-
   const { data, error } = await supabase
     .from('products')
     .select('*, prices(*)')
