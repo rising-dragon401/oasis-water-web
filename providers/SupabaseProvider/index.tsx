@@ -39,7 +39,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
 
       // TODO - handle redirect and open modal here based on searchparams
       if (event === 'SIGNED_IN' && session?.access_token && pathname.startsWith('/auth')) {
-        toast('Welcome back')
+        toast('Logged in')
         router.push('/')
 
         console.log('modalToOpen', modalToOpen)

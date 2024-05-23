@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       // 4. Create a checkout session in Stripe
       let session
       if (price.type === 'recurring') {
-        session = await stripe.checkout.sessions.create({
+        const sessionParams = {
           payment_method_types: ['card'],
           billing_address_collection: 'required',
           customer,
@@ -55,10 +55,15 @@ export async function POST(req: Request) {
           },
           success_url: `${getURL()}/`,
           cancel_url: `${getURL()}/`,
-          client_reference_id: referral || null,
-        })
+        }
+        if (referral) {
+          // @ts-ignore
+          sessionParams.client_reference_id = referral
+        }
+        // @ts-ignore
+        session = await stripe.checkout.sessions.create(sessionParams)
       } else if (price.type === 'one_time') {
-        session = await stripe.checkout.sessions.create({
+        const sessionParams = {
           payment_method_types: ['card'],
           billing_address_collection: 'required',
           customer,
@@ -75,8 +80,13 @@ export async function POST(req: Request) {
           allow_promotion_codes: true,
           success_url: `${getURL()}/`,
           cancel_url: `${getURL()}/`,
-          client_reference_id: referral || null,
-        })
+        }
+        if (referral) {
+          // @ts-ignore
+          sessionParams.client_reference_id = referral
+        }
+        // @ts-ignore
+        session = await stripe.checkout.sessions.create(sessionParams)
       }
 
       if (session) {

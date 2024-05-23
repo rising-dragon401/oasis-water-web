@@ -51,7 +51,7 @@ export default function Score({ score, size, showScore = false }: Props) {
       <>
         <div
           onClick={() => openModal('SubscriptionModal')}
-          className="relative flex justify-center items-center"
+          className="relative flex justify-center items-center cursor-pointer "
           style={{ width: svgSize, height: svgSize }}
         >
           <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
@@ -85,7 +85,7 @@ export default function Score({ score, size, showScore = false }: Props) {
 
   return (
     <div
-      className="relative flex justify-center items-center"
+      className="relative flex justify-center items-center cursor-pointer"
       style={{ width: svgSize, height: svgSize }}
     >
       <svg className="progress-ring absolute" width={svgSize} height={svgSize}>

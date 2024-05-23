@@ -19,8 +19,8 @@ import { getStripe } from '@/utils/stripe-client'
 import {
   Dna,
   FlaskConical,
+  MessageCircle,
   Microscope,
-  Palmtree,
   Plus,
   Search,
   SearchCheck,
@@ -46,13 +46,9 @@ const FEATURES = [
     icon: <Search className="w-4 h-4" />,
   },
   {
-    label: 'Explore and build your own Oasis',
-    icon: <Palmtree className="w-4 h-4" />,
+    label: 'Oasis AI',
+    icon: <MessageCircle className="w-4 h-4" />,
   },
-  // {
-  //   label: 'AI search',
-  //   icon: <MessageCircle className="w-4 h-4" />,
-  // },
   {
     label: 'Most up to date research',
     icon: <SearchCheck className="w-4 h-4" />,
@@ -62,7 +58,7 @@ const FEATURES = [
     icon: <Dna className="w-4 h-4" />,
   },
   {
-    label: 'Supports Oasis to further our research',
+    label: 'Supports Oasis lab testing',
     icon: <Microscope className="w-4 h-4" />,
   },
   {
@@ -103,10 +99,22 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
   )
 
+  console.log('proProduct: ', proProduct)
+  console.log(
+    'process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME: ',
+    process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
+  )
+
   const proPrice =
     proProduct?.prices.find(
       (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID
     ) ?? null
+
+  console.log('proPrice: ', proPrice)
+  console.log(
+    'process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID: ',
+    process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID
+  )
 
   const redirectToPayment = async () => {
     if (!user) {
@@ -123,6 +131,8 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }
 
     setLoadingCheckoutSession(true)
+
+    console.log('referral: ', referral)
 
     try {
       const { sessionId } = await postData({
@@ -175,15 +185,6 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
         </div>
 
         <DialogFooter className="flex flex-col-reverse gap-2 w-full">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => {
-              setOpen(false)
-            }}
-          >
-            Not now
-          </Button>
           <Button
             variant="default"
             className="px-4 w-full"
