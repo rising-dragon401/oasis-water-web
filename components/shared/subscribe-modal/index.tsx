@@ -28,7 +28,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 type SubscribeModalProps = {
@@ -81,6 +81,23 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const { closeModal } = useModal()
 
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
+  const [referral, setReferral] = useState(null)
+
+  useEffect(() => {
+    // @ts-ignore
+    if (typeof Rewardful !== 'undefined') {
+      // @ts-ignore
+      rewardful('ready', function () {
+        // @ts-ignore
+        if (Rewardful.referral) {
+          // @ts-ignore
+          setReferral(Rewardful.referral)
+          // @ts-ignore
+          console.log('Rewardful.referral: ', Rewardful.referral)
+        }
+      })
+    }
+  }, [])
 
   const proProduct = products?.find(
     (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
@@ -110,7 +127,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     try {
       const { sessionId } = await postData({
         url: '/api/create-checkout-session',
-        data: { price: proPrice },
+        data: { price: proPrice, referral: referral },
       })
 
       const stripe = await getStripe()

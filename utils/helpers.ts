@@ -47,7 +47,13 @@ export const determineLink = (item: any) => {
   }
 }
 
-export const postData = async ({ url, data }: { url: string; data?: { price: Price } }) => {
+export const postData = async ({
+  url,
+  data,
+}: {
+  url: string
+  data?: { price: Price; referral: string | null }
+}) => {
   const res = await fetch(url, {
     method: 'POST',
     headers: new Headers({ 'Content-Type': 'application/json' }),

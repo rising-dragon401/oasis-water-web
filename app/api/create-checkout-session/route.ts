@@ -1,8 +1,8 @@
-import { getSession } from '@/utils/supabase/server'
 import { ApplicationError } from '@/lib/errors'
+import { getURL } from '@/utils/helpers'
 import { stripe } from '@/utils/stripe'
 import { createOrRetrieveCustomer } from '@/utils/supabase-admin'
-import { getURL } from '@/utils/helpers'
+import { getSession } from '@/utils/supabase/server'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     // 1. Destructure the price and quantity from the POST body
-    const { price, quantity = 1, metadata = {} } = await req.json()
+    const { price, quantity = 1, metadata = {}, referral } = await req.json()
 
     try {
       // 2. Get the user from Supabase auth
@@ -55,6 +55,7 @@ export async function POST(req: Request) {
           },
           success_url: `${getURL()}/`,
           cancel_url: `${getURL()}/`,
+          client_reference_id: referral || null,
         })
       } else if (price.type === 'one_time') {
         session = await stripe.checkout.sessions.create({
@@ -74,6 +75,7 @@ export async function POST(req: Request) {
           allow_promotion_codes: true,
           success_url: `${getURL()}/`,
           cancel_url: `${getURL()}/`,
+          client_reference_id: referral || null,
         })
       }
 
