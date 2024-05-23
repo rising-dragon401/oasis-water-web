@@ -10,7 +10,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
-import { kDiscordInvite } from '@/lib/constants/socials'
+import { kAffiliatePortal } from '@/lib/constants/socials'
 import { cn } from '@/lib/utils'
 import { Droplet, Filter, Milk } from 'lucide-react'
 import Link from 'next/link'
@@ -103,6 +103,11 @@ export default function HomeNavbar() {
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
+          <Link href="/users" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            People
+          </Link>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
           <NavigationMenuTrigger>About</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
@@ -114,17 +119,22 @@ export default function HomeNavbar() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <Link href="/users" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            People
-          </Link>
-        </NavigationMenuItem>
+        {/* 
         <NavigationMenuItem>
           <div
             onClick={() => window.open(kDiscordInvite, '_blank')}
             className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
           >
             Community
+          </div>
+        </NavigationMenuItem> */}
+
+        <NavigationMenuItem>
+          <div
+            onClick={() => window.open(kAffiliatePortal, '_blank')}
+            className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
+          >
+            Affiliates
           </div>
         </NavigationMenuItem>
       </NavigationMenuList>

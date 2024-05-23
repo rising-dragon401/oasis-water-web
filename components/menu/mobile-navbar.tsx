@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
+import { kAffiliatePortal } from '@/lib/constants/socials'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Droplet, Filter, Menu, Milk, Palmtree, User, Users, X } from 'lucide-react'
 import Link from 'next/link'
@@ -80,6 +81,17 @@ export default function MobileNavbar() {
 
             <DropdownMenuSeparator />
 
+            <DropdownMenuItem>
+              <div
+                onClick={() => window.open(kAffiliatePortal, '_blank')}
+                className="flex flex-row gap-2 items-center"
+              >
+                Affiliates
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
             <ManageSubscriptionButton />
 
             {user && (
@@ -110,7 +122,7 @@ export default function MobileNavbar() {
             ) : (
               <DropdownMenuGroup>
                 <DropdownMenuItem>
-                  <Link href="/auth/signin" className="text-sm py-2">
+                  <Link href="/auth/signin" className="text-sm pb-2">
                     Login
                   </Link>
                 </DropdownMenuItem>

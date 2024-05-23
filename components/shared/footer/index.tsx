@@ -1,5 +1,6 @@
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
+import { kAffiliatePortal, kDiscordInvite } from '@/lib/constants/socials'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaDiscord, FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
@@ -167,7 +168,7 @@ export default function Footer() {
               <div
                 className="cursor-pointer"
                 onClick={() => {
-                  window.open('https://discord.gg/AhapvnXxAy', '_blank')
+                  window.open(kDiscordInvite, '_blank')
                 }}
               >
                 Community
@@ -194,6 +195,15 @@ export default function Footer() {
                   FAQs
                 </Link>
               </li>
+
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  window.open(kAffiliatePortal, '_blank')
+                }}
+              >
+                Affiliates
+              </div>
             </ul>
           </div>
 
