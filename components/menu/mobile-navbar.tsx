@@ -90,13 +90,17 @@ export default function MobileNavbar() {
               </div>
             </DropdownMenuItem>
 
+            <DropdownMenuItem>
+              <Link href="/blog/water_testing_partner">Lab testing</Link>
+            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
 
             <ManageSubscriptionButton />
 
             {user && (
               <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                <Link href={`/oasis/${user?.id}`} className="flex flex-row items-center">
+                <Link href={`/${user?.id}`} className="flex flex-row items-center">
                   <Palmtree className="mr-2 h-4 w-4" />
                   My Oasis
                 </Link>

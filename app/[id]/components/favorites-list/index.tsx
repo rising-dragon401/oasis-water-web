@@ -87,7 +87,7 @@ export default function FavoritesList({ userId }: { userId: string }) {
       return
     }
 
-    const urlToShare = `${process.env.NEXT_PUBLIC_BASE_URL}oasis/${userId}`
+    const urlToShare = `${process.env.NEXT_PUBLIC_BASE_URL}${userId}`
     navigator.clipboard
       .writeText(urlToShare)
       .then(() => {

@@ -99,22 +99,10 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
   )
 
-  console.log('proProduct: ', proProduct)
-  console.log(
-    'process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME: ',
-    process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
-  )
-
   const proPrice =
     proProduct?.prices.find(
       (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID
     ) ?? null
-
-  console.log('proPrice: ', proPrice)
-  console.log(
-    'process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID: ',
-    process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID
-  )
 
   const redirectToPayment = async () => {
     if (!user) {
@@ -131,8 +119,6 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }
 
     setLoadingCheckoutSession(true)
-
-    console.log('referral: ', referral)
 
     try {
       const { sessionId } = await postData({

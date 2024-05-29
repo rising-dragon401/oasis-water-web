@@ -71,7 +71,7 @@ export function AccountMenu() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className="hover:cursor-pointer" asChild>
-          <Link href={`/oasis/${user.id}`} className="flex flex-row items-center">
+          <Link href={`/${user.id}`} className="flex flex-row items-center">
             <Palmtree className="mr-2 h-4 w-4" />
             My Oasis
           </Link>

@@ -12,17 +12,17 @@ import '@/styles/globals.css'
 
 const meta = {
   title: 'Oasis',
-  description: 'Your source of clean water.',
+  description: 'Healthy shopping assistant for water',
   cardImage:
     'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
   robots: 'follow, index',
   favicon: '/favicon.ico',
-  url: 'https://oasis.ai',
+  url: 'https://live-oasis.com',
   type: 'website',
 }
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasis.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://live-oasis.com'),
   openGraph: {
     title: meta.title,
     description: meta.description,

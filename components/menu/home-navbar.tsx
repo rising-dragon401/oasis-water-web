@@ -107,7 +107,7 @@ export default function HomeNavbar() {
             People
           </Link>
         </NavigationMenuItem>
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <NavigationMenuTrigger>About</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
@@ -118,16 +118,16 @@ export default function HomeNavbar() {
               ))}
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
-        {/* 
+        </NavigationMenuItem> */}
+
         <NavigationMenuItem>
-          <div
-            onClick={() => window.open(kDiscordInvite, '_blank')}
+          <Link
+            href="/blog/water_testing_partner"
             className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
           >
-            Community
-          </div>
-        </NavigationMenuItem> */}
+            Lab testing
+          </Link>
+        </NavigationMenuItem>
 
         <NavigationMenuItem>
           <div

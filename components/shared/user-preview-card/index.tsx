@@ -60,7 +60,7 @@ export default function UserPreviewCard({ user }: Props) {
   }
 
   return (
-    <Link href={`/oasis/${user.id}`} className="flex flex-col hover:opacity-80 mt-4 relative">
+    <Link href={`/${user.id}`} className="flex flex-col hover:opacity-80 mt-4 relative">
       <div className="relative md:w-56 md:h-56 w-40 h-40">
         {/* Make this div relative */}
         <Image
