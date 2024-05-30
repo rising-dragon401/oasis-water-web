@@ -29,7 +29,7 @@ const components: {
   logo: React.ReactNode
 }[] = [
   {
-    title: 'Water & Drinks',
+    title: 'Bottled water',
     href: '/search/bottled-water',
     description: 'Discover the health rating of your bottled water, flavored water and more.',
     logo: <Milk className="text-secondary w-4 h-4" />,
@@ -41,9 +41,9 @@ const components: {
     logo: <Droplet className="text-secondary w-4 h-4" />,
   },
   {
-    title: 'Filters',
+    title: 'Water Filters',
     href: '/search/filters',
-    description: 'Find the best filter for your water.',
+    description: 'Find the best filter for your tap water and bottled water.',
     logo: <Filter className="text-secondary w-4 h-4" />,
   },
 ]

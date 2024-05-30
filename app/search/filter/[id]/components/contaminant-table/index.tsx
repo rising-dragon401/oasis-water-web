@@ -45,7 +45,7 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
             id: contaminant.id,
             name: contaminant.name,
             is_common: contaminant.is_common,
-            isFiltered: 'unknown',
+            isFiltered: filteredContaminants.some((fc) => fc.id === contaminant.id) || 'unknown',
           }
         })
         percentageFiltered = categories.find((item) => item.category === category)?.percentage
@@ -115,11 +115,10 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
                       {contaminant.name} {contaminant?.is_common ? '(c)' : ''}
                     </div>
                     <div className="w-14">
-                      {contaminant.isFiltered ? (
+                      {contaminant.isFiltered === true && (
                         <CheckCircle2 className="w-4 h-4 text-center" />
-                      ) : (
-                        <X className="w-4 h-4" />
                       )}
+                      {contaminant.isFiltered === false && <X className="w-4 h-4 text-center" />}
                     </div>
                     <ContaminantFiltersDropdown contaminantId={contaminant?.id} align="end" />
                   </Link>

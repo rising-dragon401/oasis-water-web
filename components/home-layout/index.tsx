@@ -1,5 +1,6 @@
 'use client'
 
+import { getIngredients } from '@/app/actions/ingredients'
 import BasicSearch from '@/components/basic-search'
 import HomeNavbar from '@/components/menu/home-navbar'
 import MobileNavbar from '@/components/menu/mobile-navbar'
@@ -11,6 +12,7 @@ import { useUserProvider } from '@/providers/UserProvider'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { PropsWithChildren, Suspense, useEffect } from 'react'
+import useSWR from 'swr'
 import { AccountMenu } from '../menu/account-menu'
 import SignUpButton from '../shared/sign-up-button'
 
@@ -39,6 +41,9 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
   const { user } = useUserProvider()
   const pathname = usePathname()
   const { openModal, isOpen } = useModal()
+
+  // load for future use
+  const { data: allIngredients } = useSWR('ingredients', getIngredients)
 
   return (
     <div className="min-h-[100vh] flex n justify-center">

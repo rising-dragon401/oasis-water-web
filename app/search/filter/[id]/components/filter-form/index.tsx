@@ -1,6 +1,6 @@
 'use client'
 
-import { getAllContaminants, getFilterDetails } from '@/app/actions/filters'
+import { getFilterDetails } from '@/app/actions/filters'
 import { getIngredients } from '@/app/actions/ingredients'
 import { incrementItemsViewed } from '@/app/actions/user'
 import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
@@ -15,7 +15,7 @@ import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import ContaminantTable from '../contaminant-table'
 import ItemSkeleton from '../item-skeleton'
@@ -28,7 +28,6 @@ export default function FilterForm({ id }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<any>({})
 
-  const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
   const { data: allIngredients } = useSWR('ingredients', getIngredients)
 
   const fetchFilter = async (id: string) => {
@@ -45,103 +44,13 @@ export default function FilterForm({ id }: Props) {
     return filter
   }
 
-  // get common water contaminants
-  const commonContaminants = useMemo(
-    () => allContaminants?.filter((contaminant) => contaminant.is_common === true),
-    [allContaminants]
-  )
-
-  // get uncommon water contaminants
-  const uncommonContaminants = useMemo(
-    () => allContaminants?.filter((contaminant) => contaminant.is_common !== true),
-    [allContaminants]
-  )
-
-  // get categories filtred (if any)
-  const categoriesFiltered = useMemo(
-    () => filter.filtered_contaminant_categories ?? [],
-    [filter.filtered_contaminant_categories]
-  )
-
-  // get the category contamiannts that are filtered
-  const contaminantsFilteredFromCategory = useMemo(() => {
-    return categoriesFiltered.flatMap((category: any) => {
-      const percent = category.percentage
-
-      const contaminantsInCategory =
-        allContaminants?.filter((contaminant) => contaminant.category === category.category) || []
-
-      const sliceIndex = Math.ceil(contaminantsInCategory.length * (percent / 100))
-
-      const contaminantsInCategoryByPercent = contaminantsInCategory.slice(0, sliceIndex)
-
-      return contaminantsInCategoryByPercent.map((contaminant) => {
-        return {
-          id: contaminant.id,
-          name: contaminant.name,
-        }
-      })
-    })
-  }, [allContaminants, categoriesFiltered])
-
-  // combine normal filtered contaminants with category filtered contaminants
-  const combinedFilteredContaminants = useMemo(() => {
-    const flatContaminantsFromCategory = contaminantsFilteredFromCategory.flat()
-    const uniqueContaminants = new Map()
-
-    // Add contaminants filtered directly
-    filter?.contaminants_filtered?.forEach((contaminant: any) => {
-      uniqueContaminants.set(contaminant.id, contaminant)
-    })
-
-    // Add contaminants filtered from categories
-    flatContaminantsFromCategory.forEach((contaminant: any) => {
-      if (!uniqueContaminants.has(contaminant.id)) {
-        uniqueContaminants.set(contaminant.id, contaminant)
-      }
-    })
-
-    return Array.from(uniqueContaminants.values())
-  }, [contaminantsFilteredFromCategory, filter.contaminants_filtered])
-
-  // now get the common contaminants that are filtered
-  const commonContaminantsFiltered = useMemo(
-    () =>
-      allContaminants?.filter(
-        (contaminant) =>
-          contaminant.is_common === true &&
-          combinedFilteredContaminants.some((filtered: any) => filtered.id === contaminant.id)
-      ),
-    [allContaminants, combinedFilteredContaminants]
-  )
-
-  // and the uncommon contaminants that are filtered
-  const uncommonContaminantsFiltered = useMemo(
-    () =>
-      allContaminants?.filter(
-        (contaminant) =>
-          contaminant.is_common !== true &&
-          combinedFilteredContaminants.some((filtered: any) => filtered.id === contaminant.id)
-      ),
-    [allContaminants, combinedFilteredContaminants]
-  )
-
   // along with the percentage of common and uncommon contaminants filtered
-  const percentCommonFiltered = useMemo(
-    () =>
-      Math.round(
-        ((commonContaminantsFiltered?.length ?? 0) / (commonContaminants?.length ?? 1)) * 100
-      ),
-    [commonContaminantsFiltered, commonContaminants]
-  )
+  const percentCommonFiltered = filter?.percent_common_filtered
 
-  const percentUncommonFiltered = useMemo(
-    () =>
-      Math.round(
-        ((uncommonContaminantsFiltered?.length ?? 0) / (uncommonContaminants?.length ?? 1)) * 100
-      ),
-    [uncommonContaminantsFiltered, uncommonContaminants]
-  )
+  const percentUncommonFiltered = filter?.percent_uncommon_filtered
+
+  // percentCommonFiltered
+  //percentUncommonFiltered
 
   useEffect(() => {
     fetchFilter(id)
@@ -185,20 +94,14 @@ export default function FilterForm({ id }: Props) {
                 <div className="flex flex-col gap-y-2 mt-4">
                   <BlurredLineItem
                     label="Common contaminants filtered"
-                    value={
-                      `${commonContaminantsFiltered?.length.toString()} (${percentCommonFiltered}%)` ||
-                      '0'
-                    }
+                    value={`${percentCommonFiltered}%` || '0'}
                     labelClassName="text-red-500"
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
                   />
                   <BlurredLineItem
                     label="Uncommon contaminants filtered"
-                    value={
-                      `${uncommonContaminantsFiltered?.length.toString()} (${percentUncommonFiltered}%)` ||
-                      '0'
-                    }
+                    value={`${percentUncommonFiltered}%` || '0'}
                     labelClassName="text-red-500"
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
@@ -244,7 +147,7 @@ export default function FilterForm({ id }: Props) {
             <div className="flex flex-col gap-6 mt-6">
               <ContaminantTable
                 filteredContaminants={filter.contaminants_filtered}
-                categories={categoriesFiltered}
+                categories={filter.filtered_contaminant_categories}
               />
             </div>
 
