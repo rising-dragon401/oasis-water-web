@@ -20,6 +20,8 @@ export async function POST(req: Request) {
     // 1. Destructure the price and quantity from the POST body
     const { price, quantity = 1, metadata = {}, referral } = await req.json()
 
+    console.log('metadata: ', metadata)
+
     try {
       // 2. Get the user from Supabase auth
       const authSession = await getSession()
@@ -50,9 +52,7 @@ export async function POST(req: Request) {
           ],
           mode: 'subscription',
           allow_promotion_codes: true,
-          subscription_data: {
-            metadata,
-          },
+          subscription_data: metadata,
           success_url: `${getURL()}/`,
           cancel_url: `${getURL()}/`,
         }

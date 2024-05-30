@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -21,7 +20,6 @@ import {
   FlaskConical,
   MessageCircle,
   Microscope,
-  Plus,
   Search,
   SearchCheck,
   Users,
@@ -67,7 +65,8 @@ const FEATURES = [
   },
 ]
 
-const kSubscriptionPrice = 7.99
+// annual
+const kSubscriptionPrice = 47.99
 
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
@@ -120,10 +119,20 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
     setLoadingCheckoutSession(true)
 
+    // offer 3 day trial
+    const metadata = {
+      trial_settings: {
+        end_behavior: {
+          missing_payment_method: 'cancel',
+        },
+      },
+      trial_period_days: 3,
+    }
+
     try {
       const { sessionId } = await postData({
         url: '/api/create-checkout-session',
-        data: { price: proPrice, referral: referral },
+        data: { price: proPrice, metadata: metadata, referral: referral },
       })
 
       const stripe = await getStripe()
@@ -145,7 +154,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     >
       <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-center">Upgrade your health</DialogTitle>
+          <DialogTitle className="text-2xl text-center max-w-sm">
+            Unlock what is healthy for you
+          </DialogTitle>
           <Image
             src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
             alt="Unlock best water"
@@ -153,15 +164,23 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             height={200}
             className="rounded-lg h-40 object-cover object-center"
           />
-          <Typography size="xl" fontWeight="bold" className="text-center">
-            Oasis Pro ${kSubscriptionPrice} /mo
-          </Typography>
-          <div className="flex w-full justify-center">
+          <div>
+            <Typography size="xl" fontWeight="bold" className="text-center">
+              Oasis Pro
+            </Typography>
+            <Typography size="base" fontWeight="normal" className="text-center">
+              Free access for 3 days, then
+            </Typography>
+            <Typography size="base" fontWeight="normal" className="text-center">
+              ${kSubscriptionPrice} per year (${Math.round(kSubscriptionPrice / 12)} /month)
+            </Typography>
+          </div>
+          {/* <div className="flex w-full justify-center">
             <DialogDescription className="text-center max-w-72">
               Improve your health and longevity by accessing the most up to date research and
               scientific data on health products recommended for you.
             </DialogDescription>
-          </div>
+          </div> */}
         </DialogHeader>
 
         <div className="flex flex-col gap-3 px-6 py-4 rounded-md bg-muted">
@@ -170,17 +189,21 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           ))}
         </div>
 
-        <DialogFooter className="flex flex-col-reverse gap-2 w-full">
-          <Button
-            variant="default"
-            className="px-4 w-full"
-            onClick={redirectToPayment}
-            loading={loadingCheckoutSession}
-          >
-            <Plus className="w-4 h-4 mr-2 " />
-            Upgrade
-            {/* Upgrade ${kSubscriptionPrice} /mo */}
-          </Button>
+        <DialogFooter className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col">
+            <Button
+              variant="default"
+              className="px-4 w-full"
+              onClick={redirectToPayment}
+              loading={loadingCheckoutSession}
+            >
+              Start your 3 day free trial
+              {/* Upgrade ${kSubscriptionPrice} /mo */}
+            </Button>
+            <Typography size="sm" fontWeight="normal" className="text-center">
+              Cancel your trial anytime by going to settings and pressing Manage Subscription
+            </Typography>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

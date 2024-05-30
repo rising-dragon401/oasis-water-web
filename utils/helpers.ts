@@ -52,7 +52,7 @@ export const postData = async ({
   data,
 }: {
   url: string
-  data?: { price: Price; referral: string | null }
+  data?: { price: Price; metadata: any; referral: string | null }
 }) => {
   const res = await fetch(url, {
     method: 'POST',
