@@ -27,7 +27,7 @@ export function ChatMessage({
 }: ChatMessageProps) {
   return (
     <div
-      className={cn('group relative mb-4 flex items-start max-w-2xl', {
+      className={cn('group relative mb-4 flex items-start  !overflow-hidden ', {
         'flex-row-reverse': message.role === 'user',
       })}
       {...props}
@@ -39,16 +39,16 @@ export function ChatMessage({
         </Avatar>
       )}
       <div
-        className={`space-y-2 overflow-hidden  rounded-xl px-4 ${message.role === 'user' ? 'bg-muted py-2' : 'flex justify-start w-full'}
+        className={`space-y-2 rounded-xl px-4 ${message.role === 'user' ? 'bg-muted py-2' : 'flex justify-start w-full'}
       `}
       >
         <MemoizedReactMarkdown
-          className={`prose break-words prose-p:leading-relaxed prose-pre:p- md:text-lg text-sm bg-background',
+          className={`prose break-words prose-p:leading-relaxed prose-pre:p- md:text-base text-sm ',
             ${message.role === 'user' ? 'text-right text-slate-600' : 'text-slate-900'}`}
           remarkPlugins={[remarkGfm]}
           components={{
             p({ children }) {
-              return <p className={`md:text-base text-sm`}>{children}</p>
+              return <p className={`md:text-base text-sm p-0`}>{children}</p>
             },
             a: ({ href, title, children }) => {
               if (title === 'oasis-button') {

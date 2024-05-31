@@ -110,7 +110,7 @@ export async function POST(req: Request, res: Response) {
     })
 
     // console.log(`Match error:`, matchError)
-    // console.log(`Documents: ${JSON.stringify(documents)}`)
+    console.log(`Documents: ${JSON.stringify(documents)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
@@ -206,7 +206,7 @@ export async function POST(req: Request, res: Response) {
 
     const data = await getData()
 
-    // console.log('data: ', data)
+    // console.log('data: ', JSON.stringify(data))
 
     const prompt = codeBlock`
       Question: ${sanitizedQuery}
@@ -242,10 +242,6 @@ export async function POST(req: Request, res: Response) {
 
       // now retrieve messages in the thread
       const messages = await openai.beta.threads.messages.list(thread_id)
-
-      console.log('messages[0]: ', messages.data[0].content)
-      console.log('messages[1]: ', messages.data[1].content)
-
       const lastMessage = messages.data[0]
       const lastMessageContent = lastMessage.content
 
@@ -258,6 +254,8 @@ export async function POST(req: Request, res: Response) {
         }
       )
     } else {
+      console.log('creating response with stream')
+
       const stream = await openai.beta.threads.runs.create(thread_id, {
         assistant_id: assistant_id,
         stream: true,

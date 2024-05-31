@@ -29,6 +29,7 @@ const STARTER_PROMPTS = [
   'Water filters for lead',
   'What are phthalates?',
   'What are PFAS?',
+  'What foods have phthalates?',
 ]
 
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
@@ -42,11 +43,13 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
-  const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
   const [isLoading, setIsLoading] = React.useState(false)
+  const [starterPrompts, setStarterPrompts] = React.useState<string[]>([])
+  const [abortController, setAbortController] = React.useState<AbortController>()
+
+  const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
   const [messages, setMessages] = useAtom(messagesAtom)
   const [threadId, setThreadId] = useAtom(threadIdAtom)
-  const [abortController, setAbortController] = React.useState<AbortController>()
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -86,7 +89,16 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   useEffect(() => {
     scrollToBottom()
+
+    if (messages.length === 0) {
+      generateStarterPrompts()
+    }
   }, [messages])
+
+  const generateStarterPrompts = () => {
+    const prompts = STARTER_PROMPTS.sort(() => 0.5 - Math.random()).slice(0, 3)
+    setStarterPrompts(prompts)
+  }
 
   async function createNewAssistant() {
     try {
@@ -202,9 +214,6 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         return
       }
 
-      console.log('thread:', thread)
-      console.log('assistant:', assistant)
-
       // create instance of AbortController to handle stream cancellation
       const abortController_ = new AbortController()
       setAbortController(abortController_)
@@ -224,12 +233,10 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           query: question,
           assistant_id: assistant,
           thread_id: thread,
-          is_stream: false,
+          is_stream: true,
         }),
         signal,
       })
-
-      console.log('response:', response)
 
       if (!response.body) {
         return
@@ -354,7 +361,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           setOpen(!open)
         }}
       >
-        <DialogContent className="md:max-h-[80vh] lg:!max-w-3xl md:!max-w-2xl max-w-none mt-1 mb-2 w-[90vw] max-h-[85vh] rounded-xl overflow-y-auto text-black">
+        <DialogContent className="md:max-h-[80vh] lg:!max-w-3xl md:!max-w-2xl max-w-none mt-1 mb-2 w-[90vw] max-h-[85vh] rounded-xl  text-black">
           {messages.length > 1 || isLoading ? (
             <>
               <DialogHeader className="sticky flex flex-row items-center w-full justify-between px-4">
@@ -372,7 +379,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
               </DialogHeader>
 
               <div className="flex flex-col relative items-center">
-                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll min-h-[44vh] w-full">
+                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll hide-scrollbar min-h-[44vh] max-h-[60vh] w-full">
                   <ChatList
                     messages={messages}
                     isLoading={isLoading}
@@ -399,21 +406,19 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           ) : (
             <div className="flex flex-col gap-4">
               <div className="gap-2 flex md:flex-row flex-col">
-                {STARTER_PROMPTS.sort(() => 0.5 - Math.random())
-                  .slice(0, 3)
-                  .map((prompt, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      className="text-left h-6"
-                      onClick={(e) => {
-                        setQuery(prompt)
-                        handleSubmit(e, prompt)
-                      }}
-                    >
-                      {prompt}
-                    </Button>
-                  ))}
+                {starterPrompts.map((prompt, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="text-left h-8"
+                    onClick={(e) => {
+                      setQuery(prompt)
+                      handleSubmit(e, prompt)
+                    }}
+                  >
+                    {prompt}
+                  </Button>
+                ))}
               </div>
 
               {SearchInput()}
