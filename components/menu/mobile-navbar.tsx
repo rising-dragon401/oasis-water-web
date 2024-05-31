@@ -1,6 +1,5 @@
 'use client'
 
-import ManageSubscriptionButton from '@/components/shared/manage-subscription-btn'
 import SubscribeButton from '@/components/shared/subscribe-button'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -95,8 +94,6 @@ export default function MobileNavbar() {
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
-
-            <ManageSubscriptionButton />
 
             {user && (
               <DropdownMenuItem className="hover:cursor-pointer" asChild>

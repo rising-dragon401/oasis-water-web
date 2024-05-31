@@ -111,9 +111,15 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
         />
 
         {file ? (
-          <Button variant="ghost" onClick={onButtonClick} className="p-0">
-            <Image src={file} alt="Uploaded" width={300} height={300} className="rounded-full" />
-          </Button>
+          <div onClick={onButtonClick} className="cursor-pointer">
+            <Image
+              src={file}
+              alt="Uploaded"
+              width={300}
+              height={300}
+              className="rounded-full h-full w-full"
+            />
+          </div>
         ) : (
           <div className="flex flex-col justify-center items-center text-center gap-1">
             {loading && <Loader2 className="h-5 w-5 animate-spin" />}

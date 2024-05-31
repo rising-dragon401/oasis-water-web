@@ -16,7 +16,6 @@ import { useUserProvider } from '@/providers/UserProvider'
 import { Palmtree, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
-import ManageSubscriptionButton from '../shared/manage-subscription-btn'
 import SignOutButton from './log-out-button'
 
 export function AccountMenu() {
@@ -83,8 +82,6 @@ export function AccountMenu() {
             Settings
           </Link>
         </DropdownMenuItem>
-
-        <ManageSubscriptionButton />
 
         <SignOutButton />
       </DropdownMenuContent>
