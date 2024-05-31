@@ -28,6 +28,10 @@ const FILTERS: any[] = [
     id: 'flavored_water',
     name: 'Flavored',
   },
+  {
+    id: 'large_gallons',
+    name: 'Large gallons',
+  },
 ]
 
 type Props = {
@@ -39,7 +43,7 @@ export default function RankingList({ title, items }: Props) {
   const { subscription } = useUserProvider()
   const { openModal } = useModal()
 
-  const [filter, setFilter] = useState<ItemType | 'all' | null>('all')
+  const [filter, setFilter] = useState<ItemType | 'all' | 'large_gallons' | null>('all')
   const [sortMethod, setSortMethod] = useState('name')
   const [allItems, setAllItems] = useState<any[]>([])
   const [resultItems, setResultItems] = useState<any[]>([])
@@ -60,7 +64,11 @@ export default function RankingList({ title, items }: Props) {
   useEffect(() => {
     let filtered = allItems
     if (filter !== 'all') {
-      filtered = allItems.filter((item) => item.type === filter)
+      if (filter === 'large_gallons') {
+        filtered = allItems.filter((item) => item.tags && item.tags.includes('gallon'))
+      } else {
+        filtered = allItems.filter((item) => item.type === filter)
+      }
     }
     let sorted = filtered
     if (sortMethod === 'score') {
@@ -141,8 +149,8 @@ export default function RankingList({ title, items }: Props) {
       </div>
 
       {!subscription && (
-        <div className="w-full justify-center flex flex-row gap-4">
-          <SubscribeButton label="See the top items by score" className="w-70" />
+        <div className="w-full justify-center flex flex-row gap-4 mb-4">
+          <SubscribeButton label="Unlock the highest scoring items" className="w-70 px-8" />
         </div>
       )}
 
