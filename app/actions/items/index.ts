@@ -222,3 +222,28 @@ export const getFlavoredWater = async () => {
 
   return items || []
 }
+
+export const getWaterGallons = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: items, error } = await supabase.from('items').select().ilike('name', '%gallon%')
+  if (!items) {
+    return []
+  }
+
+  const itemsWithCompany = await Promise.all(
+    items.map(async (item) => {
+      const { data: company, error: companyError } = await supabase
+        .from('companies')
+        .select('name')
+        .eq('id', item.company)
+
+      return {
+        ...item,
+        company_name: company ? company[0].name : null,
+      }
+    })
+  )
+
+  return itemsWithCompany
+}

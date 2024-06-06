@@ -1,7 +1,7 @@
 'use client'
 
 import { getFilters } from '@/app/actions/filters'
-import { getFlavoredWater, getItems } from '@/app/actions/items'
+import { getFlavoredWater, getItems, getWaterGallons } from '@/app/actions/items'
 import { getLocations } from '@/app/actions/locations'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import SubscribeButton from '@/components/shared/subscribe-button'
@@ -13,55 +13,41 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useDevice from '@/lib/hooks/use-device'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, ItemType, WaterFilter } from '@/types/custom'
-import { Check, ChevronDown, CupSoda, Droplet, Filter, Lock, Milk } from 'lucide-react'
+import { Check, ChevronDown, CupSoda, Droplet, Filter, GlassWater, Lock, Milk } from 'lucide-react'
+import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import ItemSkeleton from './item-skeleton'
 
 const CATEGORIES = [
   {
     id: 'bottled-water',
     title: 'Bottled water',
     href: '/search/bottled-water',
-    logo: <Milk className="text-slate-400 w-4 h-4" />,
+    logo: <GlassWater className="text-slate-400 w-4 h-4" />,
   },
   {
     id: 'tap-water',
     title: 'Tap water',
-    href: '/search/tap-water',
     logo: <Droplet className="text-slate-400 w-4 h-4" />,
   },
   {
     id: 'filters',
     title: 'Water Filters',
-    href: '/search/filters',
     logo: <Filter className="text-slate-400 w-4 h-4" />,
   },
   {
     id: 'flavored-water',
     title: 'Flavored water',
-    href: '/search/bottled-water',
     logo: <CupSoda className="text-slate-400 w-4 h-4" />,
   },
-]
-
-const FILTERS: any[] = [
   {
-    id: 'all',
-    name: 'All waters',
-  },
-  {
-    id: 'bottled_water',
-    name: 'Still and Sparkling',
-  },
-  {
-    id: 'flavored_water',
-    name: 'Flavored',
-  },
-  {
-    id: 'large_gallons',
-    name: 'Large gallons',
+    id: 'water-gallons',
+    title: '5 Gallons',
+    logo: <Milk className="text-slate-400 w-4 h-4" />,
   },
 ]
 
@@ -73,7 +59,12 @@ type Props = {
 export default function RankingList({ title, items }: Props) {
   const { subscription, uid } = useUserProvider()
   const { openModal } = useModal()
+  const { isMobile } = useDevice()
+  const pathname = usePathname()
 
+  const lastPath = useCallback(() => pathname.split('/').pop() as ItemType, [pathname])
+
+  const [loading, setLoading] = useState(true)
   const [tabValue, setTabValue] = useState('bottled-water')
   const [filter, setFilter] = useState<ItemType | 'all' | 'large_gallons' | null>('all')
   const [sortMethod, setSortMethod] = useState('name')
@@ -82,12 +73,12 @@ export default function RankingList({ title, items }: Props) {
   const [filteredItems, setFilteredItems] = useState<any[]>([])
 
   const [bottledWater, setBottledWater] = useState<any[]>([])
+  const [waterGallons, setWaterGallons] = useState<any[]>([])
   const [tapWater, setTapWater] = useState<any[]>([])
   const [filters, setFilters] = useState<any[]>([])
   const [flavoredWater, setFlavoredWater] = useState<any[]>([])
 
   const [page, setPage] = useState(1)
-  const [hasMore, setHasMore] = useState(true)
 
   // Pagination
   const observer = useRef<IntersectionObserver>()
@@ -108,25 +99,35 @@ export default function RankingList({ title, items }: Props) {
       setBottledWater(items)
       setAllItems(items)
 
-      const locations = await getLocations()
-      if (locations) {
-        setTapWater(locations)
-      }
-
-      const filters = await getFilters()
-      if (filters) {
-        setFilters(filters)
-      }
-
-      const flavoredWater = await getFlavoredWater()
-      if (flavoredWater) {
-        setFlavoredWater(flavoredWater)
-      }
+      setLoading(false)
+      Promise.all([getLocations(), getFilters(), getFlavoredWater(), getWaterGallons()]).then(
+        ([locations, filters, flavoredWater, waterGallons]) => {
+          if (locations) {
+            setTapWater(locations)
+          }
+          if (filters) {
+            setFilters(filters)
+          }
+          if (flavoredWater) {
+            setFlavoredWater(flavoredWater)
+          }
+          if (waterGallons) {
+            setWaterGallons(waterGallons)
+          }
+        }
+      )
     }
 
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // handle existing /search routes
+  useEffect(() => {
+    if (lastPath && typeof lastPath === 'string') {
+      setTabValue(lastPath)
+    }
+  }, [lastPath])
 
   useEffect(() => {
     if (tabValue === 'bottled-water') {
@@ -137,6 +138,8 @@ export default function RankingList({ title, items }: Props) {
       setAllItems(filters)
     } else if (tabValue === 'flavored-water') {
       setAllItems(flavoredWater)
+    } else if (tabValue === 'water-gallons') {
+      setAllItems(waterGallons)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue])
@@ -151,22 +154,14 @@ export default function RankingList({ title, items }: Props) {
   }, [subscription, uid])
 
   useEffect(() => {
-    let filtered = allItems
-    if (filter !== 'all') {
-      if (filter === 'large_gallons') {
-        filtered = allItems.filter((item) => item.tags && item.tags.includes('gallon'))
-      } else {
-        filtered = allItems.filter((item) => item.type === filter)
-      }
-    }
-    let sorted = filtered
+    let sorted = allItems
     if (sortMethod === 'score') {
-      sorted = filtered?.sort((a, b) => (b.score || 0) - (a.score || 0))
+      sorted = sorted?.sort((a, b) => (b.score || 0) - (a.score || 0))
     } else if (sortMethod === 'name') {
-      sorted = filtered?.sort((a, b) => a.name.localeCompare(b.name))
+      sorted = sorted?.sort((a, b) => a.name.localeCompare(b.name))
     }
     setResultItems(sorted)
-  }, [filter, sortMethod, allItems])
+  }, [sortMethod, allItems])
 
   const handleClickSortByScore = () => {
     if (subscription) {
@@ -175,25 +170,54 @@ export default function RankingList({ title, items }: Props) {
       openModal('SubscriptionModal')
     }
   }
-
-  const handleFilterByType = (type: any) => {
-    setFilter(type)
-  }
-
   const itemsWithNoReports = filteredItems?.filter((item) => item.score === null)
+
+  const renderFilters = () => {
+    return (
+      <div className="flex flex-row w-full justify-end">
+        {!subscription && (
+          <SubscribeButton label="Unlock top scoring" className="md:w-70 w-54 px-8" />
+        )}
+
+        <div className="flex flex-row gap-4">
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-full px-3 max-w-56 h-8 hover:cursor-pointer">
+              Sort
+              <ChevronDown className="w-4 h-4" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={handleClickSortByScore} className="hover:cursor-pointer">
+                {!subscription && <Lock className="w-4 h-4 mr-2" />}
+                Score
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onClick={() => {
+                  setSortMethod('name')
+                }}
+                className="hover:cursor-pointer flex justify-between"
+              >
+                Name
+                {sortMethod === 'name' && <Check className="w-3 h-3" />}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="pb-14">
       <Tabs
         defaultValue={tabValue}
-        className="mt-10 "
+        className="md:mt-6 max-w-[95vw]"
         onValueChange={(value) => {
-          console.log('tab value', value)
           setTabValue(value)
         }}
       >
-        <div className="py-4 flex flex-row justify-between md:mt-6 w-full ">
-          <TabsList className="gap-4 bg-transparent">
+        <div className="py-4 flex flex-row justify-between w-full ">
+          <TabsList className="gap-2 bg-transparent flex justify-start md:max-w-[60vw] overflow-x-scroll hide-scrollbar">
             {CATEGORIES.map((category) => (
               <TabsTrigger
                 key={category.title}
@@ -210,70 +234,23 @@ export default function RankingList({ title, items }: Props) {
             ))}
           </TabsList>
 
-          <div className="flex flex-row gap-2">
-            <div className="flex flex-row gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-full px-3 max-w-56 h-8 hover:cursor-pointer">
-                  Filter
-                  <ChevronDown className="w-4 h-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {FILTERS.map((filt) => (
-                    <DropdownMenuItem
-                      key={filt.id}
-                      onClick={() => handleFilterByType(filt.id)}
-                      className="hover:cursor-pointer flex flex-row justify-between w-40"
-                    >
-                      {filt.name}
-                      {filt.id === filter && <Check className="w-3 h-3" />}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <div className="flex flex-row gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-full px-3 max-w-56 h-8 hover:cursor-pointer">
-                  Sort
-                  <ChevronDown className="w-4 h-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={handleClickSortByScore}
-                    className="hover:cursor-pointer"
-                  >
-                    {!subscription && <Lock className="w-4 h-4 mr-2" />}
-                    Score
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setSortMethod('name')
-                    }}
-                    className="hover:cursor-pointer"
-                  >
-                    Name
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </div>
+          <div className="md:flex hidden">{renderFilters()}</div>
         </div>
 
-        {!subscription && (
-          <div className="w-full justify-center flex flex-row gap-4 mb-2">
-            <SubscribeButton label="Unlock the highest scoring items" className="w-70 px-8" />
-          </div>
-        )}
+        <div className="md:hidden flex">{renderFilters()}</div>
 
         <TabsContent value={tabValue} className="w-full">
-          <div className="grid md:grid-cols-3 grid-cols-2 gap-6 md:min-w-[80vw] min-w-[80vw">
+          <div className="grid md:grid-cols-3 grid-cols-2 gap-6 w-full min-w-full max-w-[95vw]">
             {resultItems &&
               resultItems
                 .filter((item) => item.score !== null && !item.is_draft)
                 .slice(0, 20 * page)
                 .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
+
+            {loading &&
+              Array(10)
+                .fill(0)
+                .map((_, index) => <ItemSkeleton key={index} />)}
 
             {itemsWithNoReports && itemsWithNoReports.length > 0 && (
               <>
@@ -294,7 +271,7 @@ export default function RankingList({ title, items }: Props) {
               </>
             )}
 
-            {/* {hasMore && <div ref={lastItemRef} />} */}
+            <div ref={lastItemRef} />
           </div>
         </TabsContent>
       </Tabs>

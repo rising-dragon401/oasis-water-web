@@ -15,7 +15,7 @@ export default function SubscribeButton({
     <>
       <Button
         variant="default"
-        className={`w-full rounded-full ${className}`}
+        className={`w-full rounded-full ${className} bg-gradient-to-br from-primary`}
         onClick={() => openModal('SubscriptionModal')}
       >
         <Lock size={16} className="mr-2" />

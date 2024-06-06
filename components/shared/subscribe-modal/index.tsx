@@ -154,11 +154,12 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     >
       <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-center max-w-sm">
-            Unlock what is healthy for you
+          <DialogTitle className="text-2xl text-center max-w-xs">
+            Unlock the healthiest products for you
           </DialogTitle>
           <Image
             src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
+            blurDataURL="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
             alt="Unlock best water"
             width={425}
             height={200}
