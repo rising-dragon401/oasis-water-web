@@ -143,7 +143,7 @@ export default function HomeNavbar() {
 }
 
 const ListItem = React.forwardRef<React.ElementRef<'a'>, ListItemProps>(
-  ({ className, title, logo, children, href = '/', ...props }) => {
+  ({ className, title, logo, children, href = '/', ...props }, ref) => {
     // Provide a default value for href
     return (
       <li>
