@@ -10,7 +10,7 @@ export default async function LowestRatedSection() {
     <div>
       <div className="flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Lowest rated bottled water
+          Bottled water
         </Typography>
 
         <Link href="/search/bottled-water" className="underline italic text-primary">

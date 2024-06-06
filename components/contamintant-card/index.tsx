@@ -7,6 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import Link from 'next/link'
 import { ArticlesDropdown } from './articles-dropdown'
 
 type Props = {
@@ -14,6 +16,10 @@ type Props = {
 }
 
 export default function ContaminantCard({ data }: Props) {
+  const exceedingPercentage = data?.exceedingLimit
+    ? `${Number((data.exceedingLimit * 100).toFixed(0)).toLocaleString()}%`
+    : undefined
+
   return (
     <Card>
       <CardHeader>
@@ -23,44 +29,75 @@ export default function ContaminantCard({ data }: Props) {
             {data.exceedingLimit !== undefined &&
               data.exceedingLimit !== null &&
               data.exceedingLimit > 0 && (
-                <div className="rounded-full bg-primary w-full max-w-[8rem] gap-2 h-8 flex flex-row justify-center items-center">
-                  <Typography size="xl" fontWeight="normal" className="!text-background">
-                    {data.exceedingLimit}x
-                  </Typography>
-                  <Typography
-                    size="xs"
-                    fontWeight="normal"
-                    className="!text-secondary-foreground flex-wrap"
-                  >
-                    Guidelines
+                <div className="rounded-md bg-red-500 w-full !max-w-16	gap-2 h-6 flex flex-row justify-center items-center">
+                  <Typography size="base" fontWeight="normal" className="!text-background">
+                    {exceedingPercentage}
                   </Typography>
                 </div>
               )}
           </div>
         </CardTitle>
-        <CardDescription className="h-10 overflow-hidden">{data?.description}</CardDescription>
+        <CardDescription className="text-xs">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="max-h-12 overflow-hidden text-left">
+                {data?.description}
+              </TooltipTrigger>
+              <TooltipContent className="max-w-72">
+                <p>{data?.description}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </CardDescription>
         <CardContent className="pl-0">
-          <div className="h-24 overflow-hidden">
-            <Typography size="base" fontWeight="normal" className="text-secondary ">
-              Risks: {data?.risks}
+          <div className="h-14 overflow-hidden">
+            <Typography size="base" fontWeight="medium" className="text-secondary ">
+              ⚠️ Risks
+            </Typography>
+            <Typography size="xs" fontWeight="normal" className="text-secondary ">
+              {data?.risks}
             </Typography>
           </div>
           {data.amount && (
-            <Typography size="base" fontWeight="bold" className="text-secondary mt-2">
-              Amount: {data?.amount} {data?.unit} {data?.measure}
-            </Typography>
+            <div className="flex flex-col w-full mt-4">
+              <Typography size="base" fontWeight="medium" className="text-secondary">
+                Amounts
+              </Typography>
+              <div className="flex flex-row w-full justify-between">
+                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                  Contains:
+                </Typography>
+                <Typography size="sm" fontWeight="medium" className="text-secondary">
+                  {data?.amount} {data?.unit} {data?.measure}
+                </Typography>
+              </div>
+              <div className="flex flex-row w-full justify-between">
+                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                  Health Guideline:
+                </Typography>
+                <Typography size="sm" fontWeight="medium" className="text-secondary">
+                  {data?.health_guideline ? `${data.health_guideline} ${data.measure}` : 'None'}{' '}
+                </Typography>
+              </div>
+              <div className="flex flex-row w-full justify-between">
+                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                  Legal Limit:
+                </Typography>
+                <Typography size="sm" fontWeight="medium" className="text-secondary">
+                  {data?.legal_limit ? `${data.legal_limit} ${data.measure}` : 'None'}
+                </Typography>
+              </div>
+            </div>
           )}
-          <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
-            Health Guideline:{' '}
-            {data?.health_guideline ? `${data.health_guideline} ${data.measure}` : 'None'}
-          </Typography>
-
-          <Typography size="xs" fontWeight="normal" className="text-secondary mt-2">
-            Legal Limit: {data?.legal_limit ? `${data.legal_limit} ${data.measure}` : 'None'}
-          </Typography>
         </CardContent>
-        <CardFooter className="flex flex-row  w-full justify-between p-0">
+        <CardFooter className="flex flex-row h-10 w-full justify-between pl-0 pr-6 pb-0">
           {data?.sources ? <ArticlesDropdown sources={data?.sources || []} /> : <div></div>}
+
+          <Link href={`/search/ingredient/${data?.id}`} className="hover:pointer">
+            <Typography size="xs" fontWeight="normal" className="text-secondary">
+              Learn more
+            </Typography>
+          </Link>
         </CardFooter>
       </CardHeader>
     </Card>

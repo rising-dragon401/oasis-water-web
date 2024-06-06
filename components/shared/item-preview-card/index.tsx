@@ -13,9 +13,10 @@ type Props = {
   item: Item | TapWaterLocation | WaterFilter
   showWarning?: boolean
   showFavoriteButton?: boolean
+  width?: 'base' | 'lg'
 }
 
-export default function ItemPreviewCard({ item, showWarning, showFavoriteButton }: Props) {
+export default function ItemPreviewCard({ item, showWarning, showFavoriteButton, width }: Props) {
   const { subscription } = useUserProvider()
   const { openModal } = useModal()
 
@@ -24,7 +25,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
     const color = 'text-blue-800'
 
     return (
-      <div className="flex flex-col items-end ">
+      <div className="flex flex-col items-end">
         {subscription ? (
           <Typography
             size="2xl"
@@ -76,8 +77,8 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
   }
 
   return (
-    <Link href={determineLink()} className="flex flex-col hover:opacity-80 mt-4 relative">
-      <div className="relative lg:w-80 lg:h-80 md:w-72 md:h-72 sm:w-40 sm:h-40">
+    <Link href={determineLink()} className="flex flex-col hover:opacity-80 mt-4 relative w-full">
+      <div className="relative flex h-full w-full">
         {/* Make this div relative */}
         <Image
           src={item.image || ''}
@@ -95,7 +96,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           </div>
         )}
       </div>
-      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-80 w-40">
+      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start">
         <div className="flex flex-col">
           <Typography
             size="base"

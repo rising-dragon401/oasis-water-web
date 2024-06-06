@@ -9,17 +9,19 @@ export const getLocations = async () => {
   try {
     const { data: locations, error } = await supabase.from('tap_water_locations').select()
 
-    const locationsWithScores =
+    const filteredAndScoredLocations =
       locations &&
-      locations.map((location: any) => {
-        return {
-          ...location,
-          // @ts-ignore
-          score: location?.utilities?.length > 0 ? location?.utilities[0].score : 0,
-        }
-      })
+      locations
+        .filter((location: any) => location.name && location.image)
+        .map((location: any) => {
+          return {
+            ...location,
+            // @ts-ignore
+            score: location?.utilities?.length > 0 ? location?.utilities[0].score : 0,
+          }
+        })
 
-    return locationsWithScores
+    return filteredAndScoredLocations
   } catch (error) {
     console.error('Error fetching locations:', error)
     return []

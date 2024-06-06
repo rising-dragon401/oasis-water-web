@@ -214,3 +214,11 @@ export const getItemsWithIngredient = async (ingredientId: number) => {
     return []
   }
 }
+
+export const getFlavoredWater = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: items, error } = await supabase.from('items').select().eq('type', 'flavored_water')
+
+  return items || []
+}

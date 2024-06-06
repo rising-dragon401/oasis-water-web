@@ -1,8 +1,7 @@
 'use default'
 
-import Typography from '@/components/typography'
 import SignUpButton from '@/components/shared/sign-up-button'
-import JoinWaitListButton from '../shared/join-waitlist-button'
+import Typography from '@/components/typography'
 
 export default async function CTASection() {
   return (
@@ -10,7 +9,7 @@ export default async function CTASection() {
       <div className="mx-auto max-w-7xl sm:px-6 py-10">
         <div className="relative isolate overflow-hidden border-secondary border py-24 text-center rounded-3xl px-8">
           <Typography size="4xl" fontWeight="bold">
-            Making conscious consumption effortless
+            A healthier you starts with what you drink.
           </Typography>
           <Typography size="base" fontWeight="normal" className="text-secondary mt-6">
             Only water products rated over 70 are available for purchase, ensuring your choices are
