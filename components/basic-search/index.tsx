@@ -29,6 +29,8 @@ export default function BasicSearch({
   placeholder?: string
   numResults?: number
 }) {
+  const inputRef = useRef<HTMLInputElement>(null) // Create a ref for the input element
+
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
   const [query, setQuery] = React.useState<string>('')
   const [results, setResults] = React.useState<any[]>([])
@@ -57,6 +59,12 @@ export default function BasicSearch({
       document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [])
+
+  useEffect(() => {
+    if (isShowSearch && inputRef.current) {
+      inputRef.current.focus() // Automatically focus the input when isShowSearch is true
+    }
+  }, [isShowSearch])
 
   useEffect(() => {
     setQueryCompleted(false)
@@ -176,6 +184,7 @@ export default function BasicSearch({
         <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
           <div className="relative">
             <Input
+              ref={inputRef}
               placeholder={
                 size !== 'large'
                   ? 'Search water'

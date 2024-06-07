@@ -174,7 +174,7 @@ export default function RankingList({ title, items }: Props) {
 
   const renderFilters = () => {
     return (
-      <div className="flex flex-row w-full justify-end">
+      <div className="flex flex-row w-full justify-end items-center">
         {!subscription && (
           <SubscribeButton label="Unlock top scoring" className="md:w-70 w-54 px-8" />
         )}
