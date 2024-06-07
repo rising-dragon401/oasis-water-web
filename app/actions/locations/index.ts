@@ -3,11 +3,21 @@
 import { Ingredient, IngredientDescriptor } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
-export const getLocations = async () => {
+export const getLocations = async (limit?: number) => {
   const supabase = await createSupabaseServerClient()
 
   try {
-    const { data: locations, error } = await supabase.from('tap_water_locations').select()
+    let locations
+
+    if (limit) {
+      const { data } = await supabase.from('tap_water_locations').select().limit(limit)
+
+      locations = data
+    } else {
+      const { data } = await supabase.from('tap_water_locations').select()
+
+      locations = data
+    }
 
     const filteredAndScoredLocations =
       locations &&

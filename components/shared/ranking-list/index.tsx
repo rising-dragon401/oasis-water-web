@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import useDevice from '@/lib/hooks/use-device'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, ItemType, WaterFilter } from '@/types/custom'
@@ -67,7 +66,6 @@ type Props = {
 export default function RankingList({ title, items }: Props) {
   const { subscription, uid } = useUserProvider()
   const { openModal } = useModal()
-  const { isMobile } = useDevice()
   const pathname = usePathname()
 
   const lastPath = useCallback(() => pathname.split('/').pop() as ItemType, [pathname])
@@ -85,6 +83,7 @@ export default function RankingList({ title, items }: Props) {
   const [tapWater, setTapWater] = useState<any[]>([])
   const [filters, setFilters] = useState<any[]>([])
   const [flavoredWater, setFlavoredWater] = useState<any[]>([])
+  const [completeInit, setCompleteInit] = useState(false)
 
   const [page, setPage] = useState(1)
 
@@ -100,14 +99,17 @@ export default function RankingList({ title, items }: Props) {
     if (node) observer.current.observe(node)
   }, [])
 
-  // load items on first render
+  // load initial 20 items on page load
   useEffect(() => {
     const fetch = async () => {
-      const items = await getItems()
+      const items = await getItems(18)
+
       setBottledWater(items)
       setAllItems(items)
 
-      Promise.all([getLocations(), getFilters(), getFlavoredWater(), getWaterGallons()]).then(
+      setLoading(false)
+
+      Promise.all([getLocations(18), getFilters(18), getFlavoredWater(), getWaterGallons()]).then(
         ([locations, filters, flavoredWater, waterGallons]) => {
           if (locations) {
             setTapWater(locations)
@@ -124,12 +126,53 @@ export default function RankingList({ title, items }: Props) {
         }
       )
 
-      setLoading(false)
+      setCompleteInit(true)
     }
 
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // load all items
+  useEffect(() => {
+    if (completeInit) {
+      getItems().then((items) => {
+        setBottledWater(items)
+        if (tabValue === 'bottled-water') {
+          setAllItems(items)
+        }
+      })
+
+      getLocations().then((locations: any) => {
+        setTapWater(locations)
+        if (tabValue === 'tap-water') {
+          setAllItems(locations)
+        }
+      })
+
+      getFilters().then((filters) => {
+        setFilters(filters)
+        if (tabValue === 'filters') {
+          setAllItems(filters)
+        }
+      })
+
+      getFlavoredWater().then((flavoredWater) => {
+        setFlavoredWater(flavoredWater)
+        if (tabValue === 'flavored-water') {
+          setAllItems(flavoredWater)
+        }
+      })
+
+      getWaterGallons().then((waterGallons) => {
+        setWaterGallons(waterGallons)
+        if (tabValue === 'water-gallons') {
+          setAllItems(waterGallons)
+        }
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [completeInit])
 
   // handle existing /search routes
   useEffect(() => {
@@ -138,17 +181,10 @@ export default function RankingList({ title, items }: Props) {
     }
   }, [lastPath])
 
+  // manage tab switching
   useEffect(() => {
-    if (tabValue === 'bottled-water') {
-      setAllItems(bottledWater)
-    } else if (tabValue === 'tap-water') {
-      setAllItems(tapWater)
-    } else if (tabValue === 'filters') {
-      setAllItems(filters)
-    } else if (tabValue === 'flavored-water') {
-      setAllItems(flavoredWater)
-    } else if (tabValue === 'water-gallons') {
-      setAllItems(waterGallons)
+    if (tabValue) {
+      manageTab(tabValue)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue])
@@ -171,6 +207,20 @@ export default function RankingList({ title, items }: Props) {
     }
     setResultItems(sorted)
   }, [sortMethod, allItems])
+
+  const manageTab = (tabValue: any) => {
+    if (tabValue === 'bottled-water') {
+      setAllItems(bottledWater)
+    } else if (tabValue === 'tap-water') {
+      setAllItems(tapWater)
+    } else if (tabValue === 'filters') {
+      setAllItems(filters)
+    } else if (tabValue === 'flavored-water') {
+      setAllItems(flavoredWater)
+    } else if (tabValue === 'water-gallons') {
+      setAllItems(waterGallons)
+    }
+  }
 
   const handleClickSortByScore = () => {
     if (subscription) {
@@ -212,14 +262,7 @@ export default function RankingList({ title, items }: Props) {
             <div className="flex flex-row gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-full px-3 max-w-56 h-8 hover:cursor-pointer">
-                  {isMobile ? (
-                    <SlidersHorizontal className="w-4 h-4 ml-2" />
-                  ) : (
-                    <>
-                      <SlidersHorizontal className="w-4 h-4" />
-                      Sort
-                    </>
-                  )}
+                  <SlidersHorizontal className="w-4 h-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <Typography size="sm" fontWeight="medium" className="p-2">

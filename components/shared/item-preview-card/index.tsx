@@ -13,10 +13,9 @@ type Props = {
   item: Item | TapWaterLocation | WaterFilter
   showWarning?: boolean
   showFavoriteButton?: boolean
-  width?: 'base' | 'lg'
 }
 
-export default function ItemPreviewCard({ item, showWarning, showFavoriteButton, width }: Props) {
+export default function ItemPreviewCard({ item, showWarning, showFavoriteButton }: Props) {
   const { subscription } = useUserProvider()
   const { openModal } = useModal()
 
@@ -89,7 +88,6 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton,
           blurDataURL={item.image || ''}
           alt={item.name}
         />
-        {/* Position the FavoriteButton relative to the image */}
         {showFavoriteButton && (
           <div className="absolute top-0 right-0">
             <FavoriteButton item={item} />

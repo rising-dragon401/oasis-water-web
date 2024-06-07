@@ -3,10 +3,20 @@
 import { Ingredient } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
-export const getFilters = async () => {
+export const getFilters = async (limit?: number) => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: filters, error } = await supabase.from('water_filters').select()
+  let filters
+
+  if (limit) {
+    const { data } = await supabase.from('water_filters').select().limit(limit)
+
+    filters = data
+  } else {
+    const { data } = await supabase.from('water_filters').select()
+
+    filters = data
+  }
 
   if (!filters) {
     return []
