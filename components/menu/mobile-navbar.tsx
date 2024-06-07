@@ -14,7 +14,7 @@ import {
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { kAffiliatePortal } from '@/lib/constants/socials'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Droplet, Filter, Menu, Milk, Palmtree, User, Users, X } from 'lucide-react'
+import { Menu, Palmtree, Search, User, Users, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import SignUpButton from '../shared/sign-up-button'
@@ -55,22 +55,10 @@ export default function MobileNavbar() {
         <DropdownMenuContent className="w-48 mr-2 p-2" align="end">
           <DropdownMenuGroup>
             <DropdownMenuItem className="justify-start">
-              <Link href="/search/bottled-water" className="flex flex-row gap-2 items-center">
-                <Milk className="text-secondary w-4 h-4" />
-                Water & Drinks
+              <Link href="/" className="flex flex-row gap-2 items-center">
+                <Search className="text-secondary w-4 h-4" />
+                Explore
               </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="justify-start">
-              <Link href="/search/tap-water" className="flex flex-row gap-2 items-center">
-                <Droplet className="text-secondary w-4 h-4" />
-                Tap water
-              </Link>
-            </DropdownMenuItem>
-
-            <DropdownMenuItem className="flex flex-row gap-2 items-center">
-              <Filter className="text-secondary w-4 h-4" />
-              <Link href="/search/filters">Filters</Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem className="flex flex-row gap-2 items-center">

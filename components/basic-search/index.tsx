@@ -153,7 +153,7 @@ export default function BasicSearch({
   const getSearchPaddingY = () => {
     switch (size) {
       case 'small':
-        return 'py-4'
+        return 'py-2'
       case 'medium':
         return 'py-4'
       case 'large':
@@ -182,7 +182,7 @@ export default function BasicSearch({
 
       {isShowSearch && (
         <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
-          <div className="relative">
+          <div className="relative mx-2">
             <Input
               ref={inputRef}
               placeholder={
@@ -193,7 +193,7 @@ export default function BasicSearch({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={`md:text-base text-xs flex gap-2 items-center px-4 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] shadow-md rounded-full`}
+              className={`md:text-base text-base flex gap-2 items-center px-4 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
             />
 
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">

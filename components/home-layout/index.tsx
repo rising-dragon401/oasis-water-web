@@ -46,7 +46,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
   const { data: allIngredients } = useSWR('ingredients', getIngredients)
 
   return (
-    <div className="min-h-[100vh] flex n justify-center">
+    <div className="min-h-[100vh] flex justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-xl max-w-sm w-full">
         <Suspense fallback={<div>Loading...</div>}>
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
@@ -85,7 +85,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </div>
         </div>
 
-        <div className="md:hidden flex flex-row justify-between items-center  pt-1">
+        <div className="md:hidden flex flex-row justify-between items-center pt-1">
           <Link
             href="/"
             className="flex  flex-row items-center justify-center hover:cursor-pointer"
@@ -97,10 +97,10 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
             </Typography>
           </Link>
 
-          <div className="flex flex-row items-center gap-2">
-            <div className="flex justify-end">
+          <div className="flex justify-end w-full">
+            {/* <div className="flex justify-end">
               <BasicSearch showSearch={false} size="small" />
-            </div>
+            </div> */}
             <MobileNavbar />
           </div>
         </div>

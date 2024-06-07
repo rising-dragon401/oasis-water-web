@@ -17,7 +17,5 @@ Full text search: https://supabase.com/docs/guides/database/full-text-search?lan
 ## Ngrok
 
 ```
-ngrok http  https://kodiak-positive-snipe.ngrok-free.app 3000
+ngrok http --domain=quagga-adapted-sincerely.ngrok-free.app 3000
 ```
-
-ngrok http --domain=kodiak-positive-snipe.ngrok-free.app 3000

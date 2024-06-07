@@ -4,7 +4,6 @@ import { getFilters } from '@/app/actions/filters'
 import { getFlavoredWater, getItems, getWaterGallons } from '@/app/actions/items'
 import { getLocations } from '@/app/actions/locations'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
-import SubscribeButton from '@/components/shared/subscribe-button'
 import Typography from '@/components/typography'
 import {
   DropdownMenu,
@@ -17,7 +16,16 @@ import useDevice from '@/lib/hooks/use-device'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, ItemType, WaterFilter } from '@/types/custom'
-import { Check, ChevronDown, CupSoda, Droplet, Filter, GlassWater, Lock, Milk } from 'lucide-react'
+import {
+  Check,
+  CupSoda,
+  Droplet,
+  Filter,
+  GlassWater,
+  Lock,
+  Milk,
+  SlidersHorizontal,
+} from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
@@ -99,7 +107,6 @@ export default function RankingList({ title, items }: Props) {
       setBottledWater(items)
       setAllItems(items)
 
-      setLoading(false)
       Promise.all([getLocations(), getFilters(), getFlavoredWater(), getWaterGallons()]).then(
         ([locations, filters, flavoredWater, waterGallons]) => {
           if (locations) {
@@ -116,6 +123,8 @@ export default function RankingList({ title, items }: Props) {
           }
         }
       )
+
+      setLoading(false)
     }
 
     fetch()
@@ -172,52 +181,17 @@ export default function RankingList({ title, items }: Props) {
   }
   const itemsWithNoReports = filteredItems?.filter((item) => item.score === null)
 
-  const renderFilters = () => {
-    return (
-      <div className="flex flex-row w-full justify-end items-center">
-        {!subscription && (
-          <SubscribeButton label="Unlock top scoring" className="md:w-70 w-54 px-8" />
-        )}
-
-        <div className="flex flex-row gap-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-full px-3 max-w-56 h-8 hover:cursor-pointer">
-              Sort
-              <ChevronDown className="w-4 h-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleClickSortByScore} className="hover:cursor-pointer">
-                {!subscription && <Lock className="w-4 h-4 mr-2" />}
-                Score
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                onClick={() => {
-                  setSortMethod('name')
-                }}
-                className="hover:cursor-pointer flex justify-between"
-              >
-                Name
-                {sortMethod === 'name' && <Check className="w-3 h-3" />}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="pb-14">
+    <div className="pb-14 mt-4">
       <Tabs
         defaultValue={tabValue}
-        className="md:mt-6 max-w-[95vw]"
+        className="md:mt-6 xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-xl max-w-sm w-full"
         onValueChange={(value) => {
           setTabValue(value)
         }}
       >
-        <div className="py-4 flex flex-row justify-between w-full ">
-          <TabsList className="gap-2 bg-transparent flex justify-start md:max-w-[60vw] overflow-x-scroll hide-scrollbar">
+        <div className="py-2 flex flex-row justify-between w-full">
+          <TabsList className="gap-2 bg-transparent flex justify-start w-5/6 overflow-x-scroll hide-scrollbar">
             {CATEGORIES.map((category) => (
               <TabsTrigger
                 key={category.title}
@@ -234,10 +208,45 @@ export default function RankingList({ title, items }: Props) {
             ))}
           </TabsList>
 
-          <div className="md:flex hidden">{renderFilters()}</div>
-        </div>
+          <div className="flex flex-row justify-end items-center w-1/6">
+            <div className="flex flex-row gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-full px-3 max-w-56 h-8 hover:cursor-pointer">
+                  {isMobile ? (
+                    <SlidersHorizontal className="w-4 h-4 ml-2" />
+                  ) : (
+                    <>
+                      <SlidersHorizontal className="w-4 h-4" />
+                      Sort
+                    </>
+                  )}
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <Typography size="sm" fontWeight="medium" className="p-2">
+                    Sort by
+                  </Typography>
+                  <DropdownMenuItem
+                    onClick={handleClickSortByScore}
+                    className="hover:cursor-pointer"
+                  >
+                    {!subscription && <Lock className="w-4 h-4 mr-2" />}
+                    Score
+                  </DropdownMenuItem>
 
-        <div className="md:hidden flex">{renderFilters()}</div>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setSortMethod('name')
+                    }}
+                    className="hover:cursor-pointer flex justify-between"
+                  >
+                    Name
+                    {sortMethod === 'name' && <Check className="w-3 h-3" />}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        </div>
 
         <TabsContent value={tabValue} className="w-full">
           <div className="grid md:grid-cols-3 grid-cols-2 gap-6 w-full min-w-full max-w-[95vw]">
@@ -247,7 +256,7 @@ export default function RankingList({ title, items }: Props) {
                 .slice(0, 20 * page)
                 .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
 
-            {loading &&
+            {!resultItems?.length &&
               Array(10)
                 .fill(0)
                 .map((_, index) => <ItemSkeleton key={index} />)}
