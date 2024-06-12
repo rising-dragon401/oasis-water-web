@@ -97,3 +97,7 @@ html {
     opacity: 1;
   }
 }
+
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}

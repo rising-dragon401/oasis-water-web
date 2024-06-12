@@ -2,7 +2,6 @@
 
 import SubscribeButton from '@/components/shared/subscribe-button'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,16 +23,10 @@ export function AccountMenu() {
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger>
-        <Button
-          variant="ghost"
-          className="relative h-8 w-8 rounded-full"
-          onClick={() => setOpen(!open)}
-        >
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
-          </Avatar>
-        </Button>
+      <DropdownMenuTrigger className="relative h-8 w-8 rounded-full" onClick={() => setOpen(!open)}>
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={userData?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 hover:cursor-pointer" align="end" forceMount>
         {(userData?.full_name || userData?.email) && (

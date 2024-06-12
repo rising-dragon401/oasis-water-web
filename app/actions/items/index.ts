@@ -3,17 +3,27 @@
 import { Ingredient, IngredientDescriptor } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
-export const getItems = async (limit?: number) => {
+export const getItems = async ({
+  limit,
+  sortMethod,
+}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
   const supabase = await createSupabaseServerClient()
 
   let items
+  let orderBy = sortMethod || 'name'
+
+  console.log('orderBy: ', orderBy)
 
   if (limit) {
-    const { data } = await supabase.from('items').select().order('name').limit(limit)
+    const { data } = await supabase
+      .from('items')
+      .select()
+      .order(orderBy, { ascending: true })
+      .limit(limit)
 
     items = data
   } else {
-    const { data } = await supabase.from('items').select().order('name')
+    const { data } = await supabase.from('items').select().order(orderBy, { ascending: true })
 
     items = data
   }
@@ -225,18 +235,37 @@ export const getItemsWithIngredient = async (ingredientId: number) => {
   }
 }
 
-export const getFlavoredWater = async () => {
+export const getFlavoredWater = async ({
+  limit,
+  sortMethod,
+}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
+  let orderBy = sortMethod || 'name'
+
   const supabase = await createSupabaseServerClient()
 
-  const { data: items, error } = await supabase.from('items').select().eq('type', 'flavored_water')
+  const { data: items, error } = await supabase
+    .from('items')
+    .select()
+    .eq('type', 'flavored_water')
+    .order(orderBy, { ascending: true })
 
   return items || []
 }
 
-export const getWaterGallons = async () => {
+export const getWaterGallons = async ({
+  limit,
+  sortMethod,
+}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: items, error } = await supabase.from('items').select().ilike('name', '%gallon%')
+  let orderBy = sortMethod || 'name'
+
+  const { data: items, error } = await supabase
+    .from('items')
+    .select()
+    .ilike('name', '%gallon%')
+    .order(orderBy, { ascending: true })
+
   if (!items) {
     return []
   }

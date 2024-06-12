@@ -3,18 +3,27 @@
 import { Ingredient, IngredientDescriptor } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
-export const getLocations = async (limit?: number) => {
+export const getLocations = async ({
+  limit,
+  sortMethod,
+}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
   const supabase = await createSupabaseServerClient()
+
+  let orderBy = sortMethod || 'name'
 
   try {
     let locations
 
     if (limit) {
-      const { data } = await supabase.from('tap_water_locations').select().limit(limit)
+      const { data } = await supabase
+        .from('tap_water_locations')
+        .select()
+        .order(orderBy)
+        .limit(limit)
 
       locations = data
     } else {
-      const { data } = await supabase.from('tap_water_locations').select()
+      const { data } = await supabase.from('tap_water_locations').select().order(orderBy)
 
       locations = data
     }

@@ -77,11 +77,10 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
 
   return (
     <Link href={determineLink()} className="flex flex-col hover:opacity-80 relative w-full">
-      <div className="relative flex md:h-full h-48 w-full">
-        {/* Make this div relative */}
+      <div className="relative flex md:h-full w-full">
         <Image
           src={item.image || ''}
-          className="w-full h-full rounded-md object-cover hover:cursor-pointer"
+          className="lg:w-72 lg:h-72 md:w-64 md:h-64 w-44 h-44 rounded-md object-cover hover:cursor-pointer"
           width={300}
           height={300}
           quality={70}
@@ -94,12 +93,12 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           </div>
         )}
       </div>
-      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start">
+      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start lg:w-72 md:w-64 w-44">
         <div className="flex flex-col">
           <Typography
             size="base"
             fontWeight="bold"
-            className="!no-underline text-primary md:overflow-hidden md:max-w-64 flex-wrap md:max-h-14 max-h-24 md:whitespace-nowrap overflow-ellipsis"
+            className="!no-underline text-primary md:overflow-hidden flex-wrap md:whitespace-nowrap overflow-ellipsis"
           >
             {item.name}
           </Typography>

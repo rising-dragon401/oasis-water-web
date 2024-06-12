@@ -3,17 +3,21 @@
 import { Ingredient } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
-export const getFilters = async (limit?: number) => {
+export const getFilters = async ({
+  limit,
+  sortMethod,
+}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
   const supabase = await createSupabaseServerClient()
 
   let filters
+  let orderBy = sortMethod || 'name'
 
   if (limit) {
-    const { data } = await supabase.from('water_filters').select().limit(limit)
+    const { data } = await supabase.from('water_filters').select().order(orderBy).limit(limit)
 
     filters = data
   } else {
-    const { data } = await supabase.from('water_filters').select()
+    const { data } = await supabase.from('water_filters').select().order(orderBy)
 
     filters = data
   }
