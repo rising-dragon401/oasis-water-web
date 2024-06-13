@@ -12,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, ItemType, WaterFilter } from '@/types/custom'
@@ -75,7 +76,7 @@ type Props = {
 }
 
 export default function RankingList({ title, items }: Props) {
-  const { loadingUser, subscription, uid } = useUserProvider()
+  const { subscription, uid } = useUserProvider()
   const { openModal } = useModal()
   const pathname = usePathname()
 
@@ -88,16 +89,15 @@ export default function RankingList({ title, items }: Props) {
     flavored_water: true,
     water_gallons: true,
   })
-  const [tabValue, setTabValue] = useState<TabKeys>('bottled_water')
-  const [filter, setFilter] = useState<ItemType | 'all' | 'large_gallons' | null>('all')
+  const [tabValue, setTabValue] = useLocalStorage<TabKeys>('tabValue', 'bottled_water')
   const [sortMethod, setSortMethod] = useState('name')
-  const [allItems, setAllItems] = useState<any[]>([])
-  const [filteredItems, setFilteredItems] = useState<any[]>([])
-  const [bottledWater, setBottledWater] = useState<any[]>([])
-  const [waterGallons, setWaterGallons] = useState<any[]>([])
-  const [tapWater, setTapWater] = useState<any[]>([])
-  const [filters, setFilters] = useState<any[]>([])
-  const [flavoredWater, setFlavoredWater] = useState<any[]>([])
+  const [allItems, setAllItems] = useLocalStorage<any[]>('allItems', [])
+  const [filteredItems, setFilteredItems] = useLocalStorage<any[]>('filteredItems', [])
+  const [bottledWater, setBottledWater] = useLocalStorage<any[]>('bottledWater', [])
+  const [waterGallons, setWaterGallons] = useLocalStorage<any[]>('waterGallons', [])
+  const [tapWater, setTapWater] = useLocalStorage<any[]>('tapWater', [])
+  const [filters, setFilters] = useLocalStorage<any[]>('filters', [])
+  const [flavoredWater, setFlavoredWater] = useLocalStorage<any[]>('flavoredWater', [])
   const [completeInit, setCompleteInit] = useState(false)
   const [page, setPage] = useState(1)
 
@@ -118,10 +118,14 @@ export default function RankingList({ title, items }: Props) {
     const fetch = async () => {
       let sort: SortMethod = 'name'
 
-      const items = await getItems({ limit: 18, sortMethod: sort })
-      setBottledWater(items)
-      setFilteredItems(items)
-      setLoading((prev) => ({ ...prev, bottled_water: false }))
+      if (!items) {
+        const items = await getItems({ limit: 18, sortMethod: sort })
+        setBottledWater(items)
+        setFilteredItems(items)
+        setLoading((prev) => ({ ...prev, bottled_water: false }))
+      } else {
+        setLoading((prev) => ({ ...prev, bottled_water: false }))
+      }
 
       const fetchLocations = async () => {
         const locations = await getLocations({ limit: 18, sortMethod: sort })
@@ -155,10 +159,29 @@ export default function RankingList({ title, items }: Props) {
         }
       }
 
-      fetchLocations()
-      fetchFilters()
-      fetchFlavoredWater()
-      fetchWaterGallons()
+      if (!tapWater) {
+        fetchLocations()
+      } else {
+        setLoading((prev) => ({ ...prev, tap_water: false }))
+      }
+
+      if (!filters) {
+        fetchFilters()
+      } else {
+        setLoading((prev) => ({ ...prev, filter: false }))
+      }
+
+      if (!flavoredWater) {
+        fetchFlavoredWater()
+      } else {
+        setLoading((prev) => ({ ...prev, flavored_water: false }))
+      }
+
+      if (waterGallons) {
+        fetchWaterGallons()
+      } else {
+        setLoading((prev) => ({ ...prev, water_gallons: false }))
+      }
 
       setCompleteInit(true)
     }
@@ -175,35 +198,35 @@ export default function RankingList({ title, items }: Props) {
         sort = 'score'
       }
 
-      getItems().then((items) => {
+      getItems({ sortMethod: sort }).then((items) => {
         setBottledWater(items)
         if (tabValue === 'bottled_water') {
           setAllItems(items)
         }
       })
 
-      getLocations().then((locations: any) => {
+      getLocations({ sortMethod: sort }).then((locations: any) => {
         setTapWater(locations)
         if (tabValue === 'tap_water') {
           setAllItems(locations)
         }
       })
 
-      getFilters().then((filters) => {
+      getFilters({ sortMethod: sort }).then((filters) => {
         setFilters(filters)
         if (tabValue === 'filter') {
           setAllItems(filters)
         }
       })
 
-      getFlavoredWater().then((flavoredWater) => {
+      getFlavoredWater({ sortMethod: sort }).then((flavoredWater) => {
         setFlavoredWater(flavoredWater)
         if (tabValue === 'flavored_water') {
           setAllItems(flavoredWater)
         }
       })
 
-      getWaterGallons().then((waterGallons) => {
+      getWaterGallons({ sortMethod: sort }).then((waterGallons) => {
         setWaterGallons(waterGallons)
         if (tabValue === 'water_gallons') {
           setAllItems(waterGallons)

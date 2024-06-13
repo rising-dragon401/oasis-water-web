@@ -1,7 +1,6 @@
 import { IngredientCategory } from '@/types/custom'
 
 export const IngredientCategories: IngredientCategory[] = [
-  // 'Chemical Disinfectants',
   'Heavy Metals',
   'Haloacetic Acids',
   'Fluoride',
@@ -14,6 +13,7 @@ export const IngredientCategories: IngredientCategory[] = [
   'Semi-Volatile Compounds',
   'Volatile Organic Compounds (VOCs)',
   'Microbiologicals',
+  'Chemical Disinfectants',
   'Microplastics',
   'Inorganics',
   'Other',

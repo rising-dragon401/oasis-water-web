@@ -7,7 +7,6 @@ import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
 import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
-import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
@@ -151,9 +150,7 @@ export default function FilterForm({ id }: Props) {
               />
             </div>
 
-            <PaywallContent className="mt-8" label="Unlock all data and reports">
-              {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
-            </PaywallContent>
+            {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
           </>
         ) : (
           <UntestedTooltip />

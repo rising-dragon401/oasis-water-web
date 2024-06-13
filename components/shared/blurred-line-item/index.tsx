@@ -59,7 +59,7 @@ export default function BlurredLineItem({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" className="text-left pl-0 pb-0 mb-0 pt-0 h-8">
+              <Button variant="ghost" className="text-left pl-0 pb-0 mb-0 pt-0 rounded-none">
                 {content}
               </Button>
             </TooltipTrigger>
