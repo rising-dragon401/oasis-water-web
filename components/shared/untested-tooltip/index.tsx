@@ -6,8 +6,7 @@ export function UntestedTooltip() {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button variant="ghost" className="max-w-72 text-left px-0">
-            {' '}
+          <Button variant="ghost" className="max-w-72 text-left px-0 rounded-none">
             ⚠️ NO REPORTS LOCATED – PROCEED WITH CAUTION.
           </Button>
         </TooltipTrigger>

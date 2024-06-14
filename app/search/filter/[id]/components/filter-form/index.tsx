@@ -90,7 +90,9 @@ export default function FilterForm({ id }: Props) {
                   </Typography>
                 </Link>
 
-                <div className="flex flex-col gap-y-2 mt-4">
+                <div className="flex flex-col mt-4">
+                  {filter.is_indexed === false && <UntestedTooltip />}
+
                   <BlurredLineItem
                     label="Common contaminants filtered"
                     value={`${percentCommonFiltered}%` || '0'}
@@ -113,7 +115,7 @@ export default function FilterForm({ id }: Props) {
                   />
                 </div>
 
-                {filter.affiliate_url && (
+                {filter.affiliate_url && filter.score > 70 && (
                   <Button
                     variant={filter.score > 70 ? 'default' : 'outline'}
                     onClick={() => {
@@ -121,7 +123,7 @@ export default function FilterForm({ id }: Props) {
                     }}
                     className="w-40 mt-6"
                   >
-                    Buy Now <ArrowUpRight size={16} className="ml-2 w-" />
+                    Learn more <ArrowUpRight size={16} className="ml-2 w-" />
                   </Button>
                 )}
               </div>
@@ -141,20 +143,16 @@ export default function FilterForm({ id }: Props) {
 
         {filter.is_indexed !== false && <OasisDisclaimer />}
 
-        {filter.is_indexed !== false ? (
-          <>
-            <div className="flex flex-col gap-6 mt-6">
-              <ContaminantTable
-                filteredContaminants={filter.contaminants_filtered}
-                categories={filter.filtered_contaminant_categories}
-              />
-            </div>
+        <>
+          <div className="flex flex-col gap-6 mt-6">
+            <ContaminantTable
+              filteredContaminants={filter.contaminants_filtered}
+              categories={filter.filtered_contaminant_categories}
+            />
+          </div>
 
-            {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
-          </>
-        ) : (
-          <UntestedTooltip />
-        )}
+          {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
+        </>
       </div>
 
       <RecommendedFiltersRow />
