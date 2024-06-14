@@ -85,6 +85,8 @@ export default function BasicSearch({
   const handleSearch = async (query: string) => {
     setIsLoading(true)
 
+    const restrictToNameField = { restrictSearchableAttributes: ['name'] }
+
     let queries: any[] = []
     if (indices && indices.length > 0) {
       queries = indices.map((index) => ({
@@ -100,6 +102,8 @@ export default function BasicSearch({
           indexName: 'items',
           query: query,
           params: {
+            restrictSearchableAttributes: ['name'],
+
             hitsPerPage: numResults || 15,
           },
         },
@@ -107,6 +111,8 @@ export default function BasicSearch({
           indexName: 'tap_water_locations',
           query: query,
           params: {
+            restrictSearchableAttributes: ['name'],
+
             hitsPerPage: numResults || 5,
           },
         },
@@ -121,6 +127,7 @@ export default function BasicSearch({
           indexName: 'ingredients',
           query: query,
           params: {
+            restrictSearchableAttributes: ['name'],
             hitsPerPage: numResults || 3,
           },
         },
@@ -128,6 +135,8 @@ export default function BasicSearch({
           indexName: 'companies',
           query: query,
           params: {
+            restrictSearchableAttributes: ['name'],
+
             hitsPerPage: numResults || 3,
           },
         },
@@ -135,6 +144,8 @@ export default function BasicSearch({
           indexName: 'users',
           query: query,
           params: {
+            restrictSearchableAttributes: ['name'],
+
             hitsPerPage: numResults || 3,
           },
         },
@@ -143,6 +154,7 @@ export default function BasicSearch({
 
     await client.multipleQueries(queries).then(({ results }) => {
       const hits = results.map((result: any) => result.hits)
+      console.log('hits: ', hits)
       setResults(hits.flat())
     })
 
@@ -208,7 +220,7 @@ export default function BasicSearch({
           </div>
           {query.length > 1 && inputFocused && queryCompleted && (
             <div
-              className={`flex flex-col gap-2 bg-muted border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 ${getSearchTop()}`}
+              className={`flex flex-col gap-2 bg-muted border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 px-1 ${getSearchTop()}`}
             >
               {results.length > 0 && (
                 <div className="flex-grow ">
@@ -219,21 +231,18 @@ export default function BasicSearch({
               )}
 
               {!isLoading && (
-                <div className="flex items-center flex-wrap justify-between bg-muted  px-4 py-2">
+                <div className="flex items-center flex-wrap justify-between bg-muted p-2">
                   <div className="flex flex-col gap-2 items-center justify-center">
-                    <Typography size="base" fontWeight="normal">
-                      Not seeing what you are looking for?
-                    </Typography>
+                    <div
+                      onClick={() => {
+                        setOpenFeedbackModal(true)
+                      }}
+                    >
+                      <Typography size="base" fontWeight="normal" className="italic">
+                        Not seeing what you are looking for?
+                      </Typography>
+                    </div>
                   </div>
-                  <Button
-                    variant="outline"
-                    className="text-secondary-foreground"
-                    onClick={() => {
-                      setOpenFeedbackModal(true)
-                    }}
-                  >
-                    Let us know
-                  </Button>
                 </div>
               )}
             </div>
