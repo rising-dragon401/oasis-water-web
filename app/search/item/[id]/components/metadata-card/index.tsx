@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 type Props = {
   title: string
@@ -14,7 +7,7 @@ type Props = {
 
 export default function MetaDataCard({ title, description }: Props) {
   return (
-    <Card>
+    <Card className="bg-transparent">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

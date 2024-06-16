@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
+import cn from 'classnames'
 import Link from 'next/link'
 
 type BlurredLineItemProps = {
@@ -69,18 +70,18 @@ export default function BlurredLineItem({
           </Tooltip>
         </TooltipProvider>
       ) : (
-        <Typography size="base" fontWeight="normal" className="text-secondary my-0">
-          <span className={labelClassName}>{label}:</span>{' '}
-          <span
-            onClick={showPaywall ? handleOpenPaywall : undefined}
-            style={{
-              minWidth: '3rem',
-            }}
-            className="min-w-14"
+        <div className="my-0 gap-y-1 flex justify-between">
+          <Typography size="sm" fontWeight="normal">
+            {label}:
+          </Typography>{' '}
+          <Typography
+            size="sm"
+            fontWeight="medium"
+            className={cn(labelClassName, 'min-w-14 text-right')}
           >
             {value}
-          </span>
-        </Typography>
+          </Typography>
+        </div>
       )}
     </div>
   )

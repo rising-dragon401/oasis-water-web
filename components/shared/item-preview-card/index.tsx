@@ -24,7 +24,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
     const color = 'text-blue-800'
 
     return (
-      <div className="flex flex-col items-end">
+      <div className="flex flex-col items-end w-full text-right">
         {subscription ? (
           <Typography
             size="2xl"
@@ -76,7 +76,10 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
   }
 
   return (
-    <Link href={determineLink()} className="flex flex-col hover:opacity-80 relative w-72">
+    <Link
+      href={determineLink()}
+      className="flex flex-col hover:opacity-80 relative lg:w-72 md:w-72 w-44 border rounded-md"
+    >
       <div className="relative flex md:h-full w-full">
         <Image
           src={item.image || ''}
@@ -93,7 +96,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           </div>
         )}
       </div>
-      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start lg:w-72 md:w-64 w-44">
+      <div className="flex flex-row justify-between p-1 px-2 md:gap-2 items-start lg:w-72 md:w-72 w-44">
         <div className="flex flex-col w-5/6">
           <Typography
             size="base"
@@ -113,7 +116,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           )}
         </div>
 
-        <div className="flex  w-1/6">
+        <div className="flex w-1/6 justify-end">
           {/* Position renderScore relative to the image */}
           {item.score && <div>{renderScore()}</div>}
           {/* Position the warning symbol relative to the image */}

@@ -13,6 +13,7 @@ import Sources from '@/components/shared/sources'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
+import useDevice from '@/lib/hooks/use-device'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -25,6 +26,8 @@ type Props = {
 }
 
 export default function ItemForm({ id }: Props) {
+  const { isMobile } = useDevice()
+
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
 
@@ -103,7 +106,7 @@ export default function ItemForm({ id }: Props) {
               <>
                 {item.is_indexed === false && <UntestedTooltip />}
 
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-y-1 md:w-72 w-50 border rounded-md p-2 mt-1">
                   <BlurredLineItem
                     label="Contaminants found"
                     value={contaminants.length}
@@ -111,7 +114,7 @@ export default function ItemForm({ id }: Props) {
                   />
 
                   <BlurredLineItem
-                    label="Toxins above health guidelines"
+                    label="Above guidelines"
                     value={contaminantsAboveLimit.length}
                     labelClassName="text-red-500"
                   />
@@ -120,33 +123,47 @@ export default function ItemForm({ id }: Props) {
 
                   <BlurredLineItem label="Fluoride" value={fluorideValue} />
 
-                  <BlurredLineItem label="pH" value={item.metadata?.ph_level} />
+                  <BlurredLineItem
+                    label="pH"
+                    value={
+                      item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
+                        ? 'Unknown'
+                        : item.metadata.ph_level
+                    }
+                  />
 
-                  <BlurredLineItem label="TDS" value={item.metadata?.tds ?? 'Unknown'} />
+                  <BlurredLineItem
+                    label="TDS"
+                    value={
+                      item.metadata?.tds === 0 || item.metadata?.tds == null
+                        ? 'N/A'
+                        : item.metadata.tds
+                    }
+                  />
 
-                  <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'Unknown'} />
+                  <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'N/A'} />
 
                   <BlurredLineItem label="Packaging" value={item?.packaging || 'Unknown'} />
+                </div>
 
-                  <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
-                    {item.affiliate_url && (
-                      <Button
-                        variant={item.score > 70 ? 'outline' : 'outline'}
-                        onClick={() => {
-                          window.open(item.affiliate_url, '_blank')
-                        }}
-                      >
-                        Buy Now
-                        <ArrowUpRight size={16} className="ml-2" />
-                      </Button>
-                    )}
-                  </div>
+                <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
+                  {item.affiliate_url && item.score > 70 && (
+                    <Button
+                      variant={item.score > 70 ? 'outline' : 'outline'}
+                      onClick={() => {
+                        window.open(item.affiliate_url, '_blank')
+                      }}
+                    >
+                      Buy Now
+                      <ArrowUpRight size={16} className="ml-2" />
+                    </Button>
+                  )}
                 </div>
               </>
             </div>
 
             <div className="flex md:flex-row md:justify-start md:gap-10 md:items-start flex-col-reverse justify-end items-end">
-              <Score score={item.score} size="lg" />{' '}
+              <Score score={item.score} size={isMobile ? 'md' : 'lg'} />{' '}
             </div>
           </div>
         </div>
