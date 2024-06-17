@@ -114,6 +114,7 @@ export type Database = {
       documents: {
         Row: {
           content: string | null
+          created_at: string | null
           embedding: string | null
           id: number
           original_id: number | null
@@ -121,6 +122,7 @@ export type Database = {
         }
         Insert: {
           content?: string | null
+          created_at?: string | null
           embedding?: string | null
           id?: number
           original_id?: number | null
@@ -128,6 +130,7 @@ export type Database = {
         }
         Update: {
           content?: string | null
+          created_at?: string | null
           embedding?: string | null
           id?: number
           original_id?: number | null
@@ -197,6 +200,7 @@ export type Database = {
       ingredients: {
         Row: {
           benefits: string | null
+          bonus_score: number | null
           category: Database["public"]["Enums"]["ingredient_category"] | null
           description: string | null
           health_guideline: number | null
@@ -214,6 +218,7 @@ export type Database = {
         }
         Insert: {
           benefits?: string | null
+          bonus_score?: number | null
           category?: Database["public"]["Enums"]["ingredient_category"] | null
           description?: string | null
           health_guideline?: number | null
@@ -231,6 +236,7 @@ export type Database = {
         }
         Update: {
           benefits?: string | null
+          bonus_score?: number | null
           category?: Database["public"]["Enums"]["ingredient_category"] | null
           description?: string | null
           health_guideline?: number | null
@@ -247,6 +253,35 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      invite_codes: {
+        Row: {
+          created_at: string
+          id: string
+          redemptions: string[] | null
+          uid: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          redemptions?: string[] | null
+          uid?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          redemptions?: string[] | null
+          uid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "invite_codes_uid_fkey"
+            columns: ["uid"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       items: {
         Row: {
@@ -271,6 +306,7 @@ export type Database = {
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
+          tags: string | null
           type: Database["public"]["Enums"]["item_type"]
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
@@ -298,6 +334,7 @@ export type Database = {
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
+          tags?: string | null
           type: Database["public"]["Enums"]["item_type"]
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
@@ -325,6 +362,7 @@ export type Database = {
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
+          tags?: string | null
           type?: Database["public"]["Enums"]["item_type"]
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
@@ -667,11 +705,14 @@ export type Database = {
           followers: string[] | null
           following: string[] | null
           full_name: string | null
+          has_redeemed_free: boolean | null
           id: string
+          is_featured: boolean | null
           is_oasis_public: boolean | null
           metadata: Json | null
           payment_method: Json | null
           permissions: Database["public"]["Enums"]["permission"] | null
+          redeemed_invite_code: string | null
           score: number | null
         }
         Insert: {
@@ -684,11 +725,14 @@ export type Database = {
           followers?: string[] | null
           following?: string[] | null
           full_name?: string | null
+          has_redeemed_free?: boolean | null
           id: string
+          is_featured?: boolean | null
           is_oasis_public?: boolean | null
           metadata?: Json | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
+          redeemed_invite_code?: string | null
           score?: number | null
         }
         Update: {
@@ -701,11 +745,14 @@ export type Database = {
           followers?: string[] | null
           following?: string[] | null
           full_name?: string | null
+          has_redeemed_free?: boolean | null
           id?: string
+          is_featured?: boolean | null
           is_oasis_public?: boolean | null
           metadata?: Json | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
+          redeemed_invite_code?: string | null
           score?: number | null
         }
         Relationships: [
@@ -714,6 +761,13 @@ export type Database = {
             columns: ["id"]
             isOneToOne: true
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_redeemed_invite_code_fkey"
+            columns: ["redeemed_invite_code"]
+            isOneToOne: false
+            referencedRelation: "invite_codes"
             referencedColumns: ["id"]
           },
         ]
@@ -733,6 +787,8 @@ export type Database = {
           is_draft: boolean | null
           is_indexed: boolean | null
           name: string
+          percent_common_filtered: number | null
+          percent_uncommon_filtered: number | null
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
@@ -754,6 +810,8 @@ export type Database = {
           is_draft?: boolean | null
           is_indexed?: boolean | null
           name: string
+          percent_common_filtered?: number | null
+          percent_uncommon_filtered?: number | null
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
@@ -775,6 +833,8 @@ export type Database = {
           is_draft?: boolean | null
           is_indexed?: boolean | null
           name?: string
+          percent_common_filtered?: number | null
+          percent_uncommon_filtered?: number | null
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
@@ -828,6 +888,7 @@ export type Database = {
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
+          tags: string | null
           type: Database["public"]["Enums"]["item_type"]
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
@@ -861,6 +922,8 @@ export type Database = {
           is_draft: boolean | null
           is_indexed: boolean | null
           name: string
+          percent_common_filtered: number | null
+          percent_uncommon_filtered: number | null
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
@@ -891,6 +954,7 @@ export type Database = {
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
+          tags: string | null
           type: Database["public"]["Enums"]["item_type"]
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
@@ -1026,7 +1090,17 @@ export type Database = {
         | "Juices"
         | "Additives"
         | "Botanicals"
-      item_type: "bottled_water" | "tap_water" | "filter" | "flavored_water"
+        | "Sweeteners"
+        | "Fibers"
+        | "Prebiotics"
+        | "Organic Acids"
+        | "Trihalomethanes"
+      item_type:
+        | "bottled_water"
+        | "tap_water"
+        | "filter"
+        | "flavored_water"
+        | "mineral_packets"
       packaging:
         | "plastic"
         | "glass"

@@ -61,7 +61,48 @@ export default function FilterForm({ id }: Props) {
   }
 
   if (filter.is_draft) {
-    return <div>This filter has not been rated yet. Please check back later.</div>
+    return (
+      <div className="flex-col flex w-full md:px-0 px-2">
+        <div className="md:py-10 py-6">
+          <div className="flex md:flex-row flex-col gap-6">
+            <div className="flex justify-center md:w-2/5 w-full">
+              {filter.affiliate_url ? (
+                <Link href={filter.affiliate_url} target="_blank" rel="noopener noreferrer">
+                  <ItemImage src={filter.image} alt={filter.name} item={filter} />
+                </Link>
+              ) : (
+                <ItemImage src={filter.image} alt={filter.name} item={filter} />
+              )}
+            </div>
+
+            <div className="flex flex-col justify-start md:w-3/5">
+              <div className="flex flex-row justify-between gap-2">
+                <div className="flex flex-col  w-2/3">
+                  <Typography size="3xl" fontWeight="normal">
+                    {filter.name}
+                  </Typography>
+                  <Link href={`/search/company/${filter.company?.name}`}>
+                    <Typography
+                      size="base"
+                      fontWeight="normal"
+                      className="text-secondary-foreground"
+                    >
+                      {filter.brand?.name} - {filter.company?.name}
+                    </Typography>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="max-w-sm mt-6">
+                <Typography size="base" fontWeight="normal">
+                  This filter has not been fully tested and rated yet. Please check again later
+                </Typography>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

@@ -3,6 +3,7 @@ import { IngredientCategory } from '@/types/custom'
 export const IngredientCategories: IngredientCategory[] = [
   'Heavy Metals',
   'Haloacetic Acids',
+  'Trihalomethanes',
   'Fluoride',
   'Herbicides',
   'Perfluorinated Chemicals (PFAS)',
