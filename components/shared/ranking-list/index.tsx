@@ -16,27 +16,19 @@ import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, ItemType, WaterFilter } from '@/types/custom'
-import {
-  Check,
-  CupSoda,
-  Droplet,
-  Filter,
-  GlassWater,
-  Lock,
-  Milk,
-  SlidersHorizontal,
-} from 'lucide-react'
+import { ArrowUpDown, Check, Droplet, Filter, GlassWater, SlidersHorizontal } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
 
-type TabKeys = 'bottled_water' | 'tap_water' | 'filter' | 'flavored_water' | 'water_gallons'
+type TabKeys = 'bottled_water' | 'tap_water' | 'filter'
 
 type CategoryType = {
   id: TabKeys
   title: string
   href?: string
   logo: React.ReactElement
+  tags?: string[]
 }
 
 const CATEGORIES: CategoryType[] = [
@@ -45,27 +37,34 @@ const CATEGORIES: CategoryType[] = [
     title: 'Bottled water',
     href: '/search/bottled-water',
     logo: <GlassWater className="text-slate-400 w-4 h-4" />,
+    tags: ['still', 'sparkling', 'flavored', 'gallon'],
   },
   {
     id: 'filter',
-    title: 'Water Filters',
-    logo: <Filter className="text-slate-400 w-4 h-4" />,
+    title: 'Filters',
+    logo: <Filter className="text-slate-4000 w-4 h-4" />,
+    tags: ['tap', 'shower', 'bath'],
   },
-  {
-    id: 'flavored_water',
-    title: 'Flavored water',
-    logo: <CupSoda className="text-slate-400 w-4 h-4" />,
-  },
-  {
-    id: 'water_gallons',
-    title: '5 Gallons',
-    logo: <Milk className="text-slate-400 w-4 h-4" />,
-  },
+  // {
+  //   id: 'flavored_water',
+  //   title: 'Flavored water',
+  //   logo: <CupSoda className="text-slate-400 w-4 h-4" />,
+  // },
+  // {
+  //   id: 'water_gallons',
+  //   title: '5 Gallons',
+  //   logo: <Milk className="text-slate-400 w-4 h-4" />,
+  // },
   {
     id: 'tap_water',
     title: 'Tap water',
     logo: <Droplet className="text-slate-400 w-4 h-4" />,
   },
+  // {
+  //   id: 'shower_filters',
+  //   title: 'Shower filters',
+  //   logo: <ShowerHead className="text-slate-400 w-4 h-4" />,
+  // },
 ]
 
 type SortMethod = 'name' | 'score'
@@ -99,7 +98,10 @@ export default function RankingList({ title, items }: Props) {
   const [filters, setFilters] = useLocalStorage<any[]>('filters', [])
   const [flavoredWater, setFlavoredWater] = useLocalStorage<any[]>('flavoredWater', [])
   const [completeInit, setCompleteInit] = useState(false)
+  // const [loadedAll]
   const [page, setPage] = useState(1)
+  const [tags, setTags] = useState<string[]>([])
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   // Pagination.
   const observer = useRef<IntersectionObserver>()
@@ -118,7 +120,7 @@ export default function RankingList({ title, items }: Props) {
     const fetch = async () => {
       let sort: SortMethod = 'name'
 
-      if (!items) {
+      if (!bottledWater) {
         const items = await getItems({ limit: 18, sortMethod: sort })
         setBottledWater(items)
         setFilteredItems(items)
@@ -198,49 +200,42 @@ export default function RankingList({ title, items }: Props) {
         sort = 'score'
       }
 
-      getItems({ sortMethod: sort }).then((items) => {
-        setBottledWater(items)
-        if (tabValue === 'bottled_water') {
-          setAllItems(items)
-        }
-      })
+      if (bottledWater?.length < 20) {
+        getItems({ sortMethod: sort }).then((items) => {
+          setBottledWater(items)
+          if (tabValue === 'bottled_water') {
+            setAllItems(items)
+          }
+        })
+      }
 
-      getLocations({ sortMethod: sort }).then((locations: any) => {
-        setTapWater(locations)
-        if (tabValue === 'tap_water') {
-          setAllItems(locations)
-        }
-      })
+      if (tapWater?.length < 20) {
+        getLocations({ sortMethod: sort }).then((locations: any) => {
+          setTapWater(locations)
+          if (tabValue === 'tap_water') {
+            setAllItems(locations)
+          }
+        })
+      }
 
-      getFilters({ sortMethod: sort }).then((filters) => {
-        setFilters(filters)
-        if (tabValue === 'filter') {
-          setAllItems(filters)
-        }
-      })
-
-      getFlavoredWater({ sortMethod: sort }).then((flavoredWater) => {
-        setFlavoredWater(flavoredWater)
-        if (tabValue === 'flavored_water') {
-          setAllItems(flavoredWater)
-        }
-      })
-
-      getWaterGallons({ sortMethod: sort }).then((waterGallons) => {
-        setWaterGallons(waterGallons)
-        if (tabValue === 'water_gallons') {
-          setAllItems(waterGallons)
-        }
-      })
+      if (filters?.length < 20) {
+        getFilters({ sortMethod: sort }).then((filters) => {
+          setFilters(filters)
+          if (tabValue === 'filter') {
+            setAllItems(filters)
+          }
+        })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [completeInit])
+  }, [completeInit, tabValue, subscription, uid]) // Added subscription and uid to dependencies
 
   // handle existing /search routes
   useEffect(() => {
     if (lastPath && typeof lastPath === 'string') {
       setTabValue(lastPath)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastPath])
 
   // manage tab switching.
@@ -251,6 +246,7 @@ export default function RankingList({ title, items }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue])
 
+  // sorting and tag filtering logic
   useEffect(() => {
     if (!allItems) return
 
@@ -261,10 +257,17 @@ export default function RankingList({ title, items }: Props) {
       sorted = sorted?.sort((a, b) => a.name.localeCompare(b.name))
     }
 
-    if (sorted && sorted?.length > 5) {
-      setFilteredItems(sorted)
+    // Filter items based on selected tags
+    if (selectedTags.length > 0) {
+      sorted = sorted?.filter(
+        (item) => item?.tags && selectedTags.every((tag: string) => item.tags.includes(tag))
+      )
     }
-  }, [sortMethod, allItems])
+
+    setFilteredItems(sorted)
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sortMethod, allItems, selectedTags])
 
   // manage sort based on subscription
   useEffect(() => {
@@ -276,6 +279,8 @@ export default function RankingList({ title, items }: Props) {
   }, [subscription, uid])
 
   const manageTab = (tabValue: TabKeys) => {
+    setSelectedTags([])
+
     if (tabValue === 'bottled_water') {
       setAllItems(bottledWater)
     } else if (tabValue === 'tap_water') {
@@ -287,6 +292,8 @@ export default function RankingList({ title, items }: Props) {
     } else if (tabValue === 'water_gallons') {
       setAllItems(waterGallons)
     }
+
+    setTags(CATEGORIES.find((category) => category.id === tabValue)?.tags || [])
   }
 
   const handleClickSortByScore = () => {
@@ -309,7 +316,7 @@ export default function RankingList({ title, items }: Props) {
         }}
       >
         <div className="py-2 flex flex-row justify-between w-full">
-          <TabsList className="gap-2 bg-transparent flex justify-start w-5/6 overflow-x-scroll hide-scrollbar">
+          <TabsList className="gap-2 bg-transparent flex justify-start w-3/4 overflow-x-scroll hide-scrollbar">
             {CATEGORIES.map((category) => (
               <TabsTrigger
                 key={category.title}
@@ -327,36 +334,65 @@ export default function RankingList({ title, items }: Props) {
             ))}
           </TabsList>
 
-          <div className="flex flex-row justify-end items-center w-1/6">
-            <div className="flex flex-row gap-4">
+          <div className="flex flex-row justify-end items-center w-1/4">
+            {tags.length > 0 && (
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-full px-3 max-w-56 h-8 hover:cursor-pointer">
+                <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
                   <SlidersHorizontal className="w-4 h-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <Typography size="sm" fontWeight="medium" className="p-2">
-                    Sort by
+                  <Typography size="sm" fontWeight="bold" className="pl-1 py-1">
+                    Tags
                   </Typography>
-                  <DropdownMenuItem
-                    onClick={handleClickSortByScore}
-                    className="hover:cursor-pointer"
-                  >
-                    {!subscription && <Lock className="w-4 h-4 mr-2" />}
-                    Score
-                  </DropdownMenuItem>
-
-                  <DropdownMenuItem
-                    onClick={() => {
-                      setSortMethod('name')
-                    }}
-                    className="hover:cursor-pointer flex justify-between"
-                  >
-                    Name
-                    {sortMethod === 'name' && <Check className="w-3 h-3" />}
-                  </DropdownMenuItem>
+                  {tags.map((tag) => (
+                    <DropdownMenuItem
+                      onClick={() => {
+                        setSelectedTags((prev) => {
+                          if (prev.includes(tag)) {
+                            return prev.filter((t) => t !== tag)
+                          } else {
+                            return [...prev, tag]
+                          }
+                        })
+                      }}
+                      className="hover:cursor-pointer flex justify-between"
+                      key={tag}
+                    >
+                      {tag}
+                      {selectedTags.includes(tag) && <Check className="w-3 h-3" />}
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-            </div>
+            )}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
+                <ArrowUpDown className="w-4 h-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <Typography size="sm" fontWeight="bold" className="pl-1 py-1">
+                  Sort by
+                </Typography>
+                <DropdownMenuItem
+                  onClick={handleClickSortByScore}
+                  className="hover:cursor-pointer flex justify-between"
+                >
+                  Score
+                  {sortMethod === 'score' && <Check className="w-3 h-3" />}
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => {
+                    setSortMethod('name')
+                  }}
+                  className="hover:cursor-pointer flex justify-between"
+                >
+                  Name
+                  {sortMethod === 'name' && <Check className="w-3 h-3" />}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
@@ -367,6 +403,14 @@ export default function RankingList({ title, items }: Props) {
                 .filter((item) => item.score !== null && !item.is_draft)
                 .slice(0, 20 * page)
                 .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
+
+            {filteredItems?.length === 0 && (
+              <div className="flex flex-row justify-center items-center w-full">
+                <Typography size="base" fontWeight="bold">
+                  No results found. Try adjusting your filters
+                </Typography>
+              </div>
+            )}
 
             {loading[tabValue] &&
               Array(10)
