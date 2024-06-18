@@ -107,41 +107,49 @@ export default function ItemForm({ id }: Props) {
                 {item.is_indexed === false && <UntestedTooltip />}
 
                 <div className="flex flex-col gap-y-1 md:w-72 w-50 border rounded-md p-2 mt-1">
-                  <BlurredLineItem
-                    label="Contaminants found"
-                    value={contaminants.length}
-                    labelClassName="text-red-500"
-                  />
+                  {item.is_indexed === true && (
+                    <>
+                      <BlurredLineItem
+                        label="Contaminants found"
+                        value={contaminants.length}
+                        labelClassName="text-red-500"
+                      />
 
-                  <BlurredLineItem
-                    label="Above guidelines"
-                    value={contaminantsAboveLimit.length}
-                    labelClassName="text-red-500"
-                  />
+                      <BlurredLineItem
+                        label="Above guidelines"
+                        value={contaminantsAboveLimit.length}
+                        labelClassName="text-red-500"
+                      />
+                    </>
+                  )}
 
-                  <BlurredLineItem label="Microplastics" value={nanoPlasticsValue} />
+                  {item.type === 'bottled_water' && (
+                    <>
+                      <BlurredLineItem label="Microplastics" value={nanoPlasticsValue} />
 
-                  <BlurredLineItem label="Fluoride" value={fluorideValue} />
+                      <BlurredLineItem label="Fluoride" value={fluorideValue} />
 
-                  <BlurredLineItem
-                    label="pH"
-                    value={
-                      item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
-                        ? 'Unknown'
-                        : item.metadata.ph_level
-                    }
-                  />
+                      <BlurredLineItem
+                        label="pH"
+                        value={
+                          item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
+                            ? 'Unknown'
+                            : item.metadata.ph_level
+                        }
+                      />
 
-                  <BlurredLineItem
-                    label="TDS"
-                    value={
-                      item.metadata?.tds === 0 || item.metadata?.tds == null
-                        ? 'N/A'
-                        : item.metadata.tds
-                    }
-                  />
+                      <BlurredLineItem
+                        label="TDS"
+                        value={
+                          item.metadata?.tds === 0 || item.metadata?.tds == null
+                            ? 'N/A'
+                            : item.metadata.tds
+                        }
+                      />
 
-                  <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'N/A'} />
+                      <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'N/A'} />
+                    </>
+                  )}
 
                   <BlurredLineItem label="Packaging" value={item?.packaging || 'Unknown'} />
                 </div>
@@ -170,6 +178,14 @@ export default function ItemForm({ id }: Props) {
 
         {item.is_indexed !== false && <OasisDisclaimer />}
 
+        {item.description && (
+          <div className="flex flex-row gap-2 mt-4">
+            <Typography size="base" fontWeight="normal" className="text-seoncdary-foreground">
+              {item.description}
+            </Typography>
+          </div>
+        )}
+
         <>
           <div className="flex flex-col gap-2 mt-6">
             <Typography size="2xl" fontWeight="normal">
@@ -196,17 +212,19 @@ export default function ItemForm({ id }: Props) {
             )}
           </div>
 
-          <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-6">
-            <MetaDataCard title="Water source" description={item.metadata?.source || 'Unkown'} />
-            <MetaDataCard
-              title="Treatment Process"
-              description={
-                Array.isArray(item.filtration_methods) && item.filtration_methods.length > 0
-                  ? item.filtration_methods.join(', ') + '. ' + item.metadata?.treatment_process
-                  : item.metadata?.treatment_process || 'Unknown'
-              }
-            />
-          </div>
+          {item.type === 'bottled_water' && (
+            <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-6">
+              <MetaDataCard title="Water source" description={item.metadata?.source || 'Unkown'} />
+              <MetaDataCard
+                title="Treatment Process"
+                description={
+                  Array.isArray(item.filtration_methods) && item.filtration_methods.length > 0
+                    ? item.filtration_methods.join(', ') + '. ' + item.metadata?.treatment_process
+                    : item.metadata?.treatment_process || 'Unknown'
+                }
+              />
+            </div>
+          )}
 
           <div className="flex flex-col gap-2 my-10">
             <Typography size="2xl" fontWeight="normal">
@@ -232,13 +250,11 @@ export default function ItemForm({ id }: Props) {
             </div>
           )}
 
-          {/* <PaywallContent className="mt-6" label="Unlock All Data & Reports"> */}
           {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
-          {/* </PaywallContent> */}
         </>
       </div>
 
-      <RecommendedRow />
+      <RecommendedRow category={item.type} />
     </div>
   )
 }

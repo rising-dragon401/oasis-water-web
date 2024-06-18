@@ -1,6 +1,6 @@
 'use server'
 
-import { Ingredient, IngredientDescriptor } from '@/types/custom'
+import { Ingredient, IngredientDescriptor, ItemType } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export const getItems = async ({
@@ -164,11 +164,17 @@ export const getTopItems = async () => {
   }
 }
 
-export const getRandomItems = async () => {
+export const getRandomItems = async ({ type }: { type?: ItemType }) => {
   const supabase = await createSupabaseServerClient()
 
   try {
-    const { data: items, error } = await supabase.from('items').select().range(0, 5)
+    const query = supabase.from('items').select().range(0, 5)
+
+    if (type) {
+      query.eq('type', type)
+    }
+
+    const { data: items, error } = await query
 
     return items || []
   } catch (error) {
@@ -285,4 +291,21 @@ export const getWaterGallons = async ({
   )
 
   return itemsWithCompany
+}
+
+export const getMineralPackets = async ({
+  limit,
+  sortMethod,
+}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
+  let orderBy = sortMethod || 'name'
+
+  const supabase = await createSupabaseServerClient()
+
+  const { data: items, error } = await supabase
+    .from('items')
+    .select()
+    .eq('type', 'mineral_packets')
+    .order(orderBy, { ascending: true })
+
+  return items || []
 }

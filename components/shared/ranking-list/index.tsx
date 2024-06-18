@@ -1,7 +1,7 @@
 'use client'
 
 import { getFilters } from '@/app/actions/filters'
-import { getFlavoredWater, getItems, getWaterGallons } from '@/app/actions/items'
+import { getItems, getMineralPackets } from '@/app/actions/items'
 import { getLocations } from '@/app/actions/locations'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
@@ -16,12 +16,20 @@ import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, ItemType, WaterFilter } from '@/types/custom'
-import { ArrowUpDown, Check, Droplet, Filter, GlassWater, SlidersHorizontal } from 'lucide-react'
+import {
+  ArrowUpDown,
+  Check,
+  Droplet,
+  Filter,
+  Flower,
+  GlassWater,
+  SlidersHorizontal,
+} from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
 
-type TabKeys = 'bottled_water' | 'tap_water' | 'filter'
+type TabKeys = 'bottled_water' | 'tap_water' | 'filter' | 'mineral_packets'
 
 type CategoryType = {
   id: TabKeys
@@ -45,26 +53,16 @@ const CATEGORIES: CategoryType[] = [
     logo: <Filter className="text-slate-4000 w-4 h-4" />,
     tags: ['tap', 'shower', 'bath'],
   },
-  // {
-  //   id: 'flavored_water',
-  //   title: 'Flavored water',
-  //   logo: <CupSoda className="text-slate-400 w-4 h-4" />,
-  // },
-  // {
-  //   id: 'water_gallons',
-  //   title: '5 Gallons',
-  //   logo: <Milk className="text-slate-400 w-4 h-4" />,
-  // },
   {
     id: 'tap_water',
     title: 'Tap water',
     logo: <Droplet className="text-slate-400 w-4 h-4" />,
   },
-  // {
-  //   id: 'shower_filters',
-  //   title: 'Shower filters',
-  //   logo: <ShowerHead className="text-slate-400 w-4 h-4" />,
-  // },
+  {
+    id: 'mineral_packets',
+    title: 'Mineral packets',
+    logo: <Flower className="text-slate-400 w-4 h-4" />,
+  },
 ]
 
 type SortMethod = 'name' | 'score'
@@ -85,20 +83,17 @@ export default function RankingList({ title, items }: Props) {
     bottled_water: true,
     tap_water: true,
     filter: true,
-    flavored_water: true,
-    water_gallons: true,
+    mineral_packets: true,
   })
   const [tabValue, setTabValue] = useLocalStorage<TabKeys>('tabValue', 'bottled_water')
   const [sortMethod, setSortMethod] = useState('name')
   const [allItems, setAllItems] = useLocalStorage<any[]>('allItems', [])
   const [filteredItems, setFilteredItems] = useLocalStorage<any[]>('filteredItems', [])
   const [bottledWater, setBottledWater] = useLocalStorage<any[]>('bottledWater', [])
-  const [waterGallons, setWaterGallons] = useLocalStorage<any[]>('waterGallons', [])
+  const [mineralPackets, setMineralPackets] = useLocalStorage<any[]>('mineralPakets', [])
   const [tapWater, setTapWater] = useLocalStorage<any[]>('tapWater', [])
   const [filters, setFilters] = useLocalStorage<any[]>('filters', [])
-  const [flavoredWater, setFlavoredWater] = useLocalStorage<any[]>('flavoredWater', [])
   const [completeInit, setCompleteInit] = useState(false)
-  // const [loadedAll]
   const [page, setPage] = useState(1)
   const [tags, setTags] = useState<string[]>([])
   const [selectedTags, setSelectedTags] = useState<string[]>([])
@@ -145,19 +140,11 @@ export default function RankingList({ title, items }: Props) {
         }
       }
 
-      const fetchFlavoredWater = async () => {
-        const flavoredWater = await getFlavoredWater({ limit: 18, sortMethod: sort })
-        if (flavoredWater) {
-          setFlavoredWater(flavoredWater)
-          setLoading((prev) => ({ ...prev, flavored_water: false }))
-        }
-      }
-
-      const fetchWaterGallons = async () => {
-        const waterGallons = await getWaterGallons({ limit: 18, sortMethod: sort })
-        if (waterGallons) {
-          setWaterGallons(waterGallons)
-          setLoading((prev) => ({ ...prev, water_gallons: false }))
+      const fetchMineralPackets = async () => {
+        const minerals = await getMineralPackets({ limit: 18, sortMethod: sort })
+        if (minerals) {
+          setMineralPackets(minerals)
+          setLoading((prev) => ({ ...prev, mineral_packets: false }))
         }
       }
 
@@ -173,16 +160,10 @@ export default function RankingList({ title, items }: Props) {
         setLoading((prev) => ({ ...prev, filter: false }))
       }
 
-      if (!flavoredWater) {
-        fetchFlavoredWater()
+      if (!mineralPackets) {
+        fetchMineralPackets()
       } else {
-        setLoading((prev) => ({ ...prev, flavored_water: false }))
-      }
-
-      if (waterGallons) {
-        fetchWaterGallons()
-      } else {
-        setLoading((prev) => ({ ...prev, water_gallons: false }))
+        setLoading((prev) => ({ ...prev, mineral_packets: false }))
       }
 
       setCompleteInit(true)
@@ -223,6 +204,15 @@ export default function RankingList({ title, items }: Props) {
           setFilters(filters)
           if (tabValue === 'filter') {
             setAllItems(filters)
+          }
+        })
+      }
+
+      if (mineralPackets?.length < 20) {
+        getMineralPackets({ sortMethod: sort }).then((minerals) => {
+          setMineralPackets(minerals)
+          if (tabValue === 'mineral_packets') {
+            setAllItems(minerals)
           }
         })
       }
@@ -287,10 +277,8 @@ export default function RankingList({ title, items }: Props) {
       setAllItems(tapWater)
     } else if (tabValue === 'filter') {
       setAllItems(filters)
-    } else if (tabValue === 'flavored_water') {
-      setAllItems(flavoredWater)
-    } else if (tabValue === 'water_gallons') {
-      setAllItems(waterGallons)
+    } else if (tabValue === 'mineral_packets') {
+      setAllItems(mineralPackets)
     }
 
     setTags(CATEGORIES.find((category) => category.id === tabValue)?.tags || [])
@@ -304,7 +292,7 @@ export default function RankingList({ title, items }: Props) {
     }
   }
 
-  const itemsWithNoReports = filteredItems?.filter((item) => item.score === null)
+  // const itemsWithNoReports = filteredItems?.filter((item) => item.score === null)
 
   return (
     <div className="pb-14 mt-4">
@@ -316,7 +304,7 @@ export default function RankingList({ title, items }: Props) {
         }}
       >
         <div className="py-2 flex flex-row justify-between w-full">
-          <TabsList className="gap-2 bg-transparent flex justify-start w-3/4 overflow-x-scroll hide-scrollbar">
+          <TabsList className="gap-2 bg-transparent flex justify-start w-5/6 overflow-x-scroll hide-scrollbar">
             {CATEGORIES.map((category) => (
               <TabsTrigger
                 key={category.title}
@@ -334,7 +322,7 @@ export default function RankingList({ title, items }: Props) {
             ))}
           </TabsList>
 
-          <div className="flex flex-row justify-end items-center w-1/4">
+          <div className="flex flex-row justify-end items-center w-1/6">
             {tags.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
@@ -404,7 +392,7 @@ export default function RankingList({ title, items }: Props) {
                 .slice(0, 20 * page)
                 .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
 
-            {filteredItems?.length === 0 && (
+            {filteredItems?.length === 0 && !loading[tabValue] && (
               <div className="flex flex-row justify-center items-center w-full">
                 <Typography size="base" fontWeight="bold">
                   No results found. Try adjusting your filters
