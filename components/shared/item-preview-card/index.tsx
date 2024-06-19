@@ -101,7 +101,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           <Typography
             size="base"
             fontWeight="bold"
-            className="!no-underline text-primary md:overflow-hidden flex-wrap md:whitespace-nowrap overflow-ellipsis"
+            className="!no-underline text-primary flex-wrap overflow-hidden md:max-h-12 max-h-10"
           >
             {item.name}
           </Typography>

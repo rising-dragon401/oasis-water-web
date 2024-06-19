@@ -12,6 +12,7 @@ import Sources from '@/components/shared/sources'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
+import useDevice from '@/lib/hooks/use-device'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -24,6 +25,8 @@ type Props = {
 }
 
 export default function FilterForm({ id }: Props) {
+  const { isMobile } = useDevice()
+
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<any>({})
 
@@ -47,9 +50,6 @@ export default function FilterForm({ id }: Props) {
   const percentCommonFiltered = filter?.percent_common_filtered
 
   const percentUncommonFiltered = filter?.percent_uncommon_filtered
-
-  // percentCommonFiltered
-  //percentUncommonFiltered
 
   useEffect(() => {
     fetchFilter(id)
@@ -131,20 +131,20 @@ export default function FilterForm({ id }: Props) {
                   </Typography>
                 </Link>
 
-                <div className="flex flex-col mt-4">
+                <div className=" flex-col border rounded-md px-2 mt-4 w-full md:flex hidden">
                   {filter.is_indexed === false && <UntestedTooltip />}
 
                   <BlurredLineItem
-                    label="Common contaminants filtered"
+                    label="Common contaminants removed"
                     value={`${percentCommonFiltered}%` || '0'}
-                    labelClassName="text-red-500"
+                    // labelClassName="text-red-500"
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
                   />
                   <BlurredLineItem
-                    label="Uncommon contaminants filtered"
+                    label="Uncommon contaminants removed"
                     value={`${percentUncommonFiltered}%` || '0'}
-                    labelClassName="text-red-500"
+                    // labelClassName="text-red-500"
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
                   />
@@ -162,18 +162,43 @@ export default function FilterForm({ id }: Props) {
                     onClick={() => {
                       window.open(filter.affiliate_url, '_blank')
                     }}
-                    className="w-40 mt-6"
+                    className="w-40 mt-4"
                   >
-                    Learn more <ArrowUpRight size={16} className="ml-2 w-" />
+                    Learn more <ArrowUpRight size={16} />
                   </Button>
                 )}
               </div>
 
               <div className="flex w-1/2 justify-end">
-                <Score score={filter.score} size="lg" />
+                <Score score={filter.score} size={isMobile ? 'md' : 'lg'} />
               </div>
             </div>
           </div>
+        </div>
+
+        <div className=" flex-col border rounded-md px-2 mt-4 w-full md:hidden flex">
+          {filter.is_indexed === false && <UntestedTooltip />}
+
+          <BlurredLineItem
+            label="Common contaminants removed"
+            value={`${percentCommonFiltered}%` || '0'}
+            // labelClassName="text-red-500"
+            tooltipContent="Learn more"
+            tooltipLink="/blog/how_we_score_water"
+          />
+          <BlurredLineItem
+            label="Uncommon contaminants removed"
+            value={`${percentUncommonFiltered}%` || '0'}
+            // labelClassName="text-red-500"
+            tooltipContent="Learn more"
+            tooltipLink="/blog/how_we_score_water"
+          />
+          <BlurredLineItem
+            label="Certifications"
+            value={filter.certifications?.join(', ') || 'None'}
+            tooltipContent="Learn more"
+            tooltipLink="/blog/how_we_score_water"
+          />
         </div>
 
         <div className="flex flex-row gap-2 mt-4">

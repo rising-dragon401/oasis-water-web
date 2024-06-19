@@ -22,7 +22,7 @@ interface TypographyProps {
 const sizes = {
   xs: 'text-xs',
   sm: 'md:text-sm text-xs',
-  base: 'text-base',
+  base: 'md:text-base text-sm',
   lg: 'md:text-lg text-base',
   xl: 'md:text-xl text-lg',
   '2xl': 'md:text-2xl text-lg',

@@ -38,20 +38,18 @@ export default function BlurredLineItem({
   // && user?.metadata?.items_viewed < 3
 
   const content = (
-    <Typography size="base" fontWeight="normal" className="text-secondary my-0">
-      <span className={labelClassName}>{label}:</span>{' '}
-      <span
-        onClick={showPaywall ? handleOpenPaywall : undefined}
-        style={{
-          // filter: showPaywall ? 'blur(4px)' : 'none',
-          // cursor: showPaywall ? 'pointer' : 'default',
-          minWidth: '3rem',
-        }}
-        className="min-w-14"
+    <div className="my-0 gap-y-1 flex justify-between w-full">
+      <Typography size="sm" fontWeight="normal">
+        {label}:
+      </Typography>{' '}
+      <Typography
+        size="sm"
+        fontWeight="semibold"
+        className={cn(labelClassName, 'min-w-14 text-right')}
       >
         {value}
-      </span>
-    </Typography>
+      </Typography>
+    </div>
   )
 
   return (
@@ -60,7 +58,7 @@ export default function BlurredLineItem({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" className="text-left pl-0 pb-0 mb-0 pt-0 rounded-none">
+              <Button variant="ghost" className="text-left pl-0 pb-0 mb-0 pt-0 rounded-none w-full">
                 {content}
               </Button>
             </TooltipTrigger>
@@ -70,18 +68,7 @@ export default function BlurredLineItem({
           </Tooltip>
         </TooltipProvider>
       ) : (
-        <div className="my-0 gap-y-1 flex justify-between">
-          <Typography size="sm" fontWeight="normal">
-            {label}:
-          </Typography>{' '}
-          <Typography
-            size="sm"
-            fontWeight="medium"
-            className={cn(labelClassName, 'min-w-14 text-right')}
-          >
-            {value}
-          </Typography>
-        </div>
+        <>{content}</>
       )}
     </div>
   )

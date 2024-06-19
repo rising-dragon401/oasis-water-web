@@ -792,6 +792,7 @@ export type Database = {
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
+          tags: string | null
           type: Database["public"]["Enums"]["item_type"]
         }
         Insert: {
@@ -815,6 +816,7 @@ export type Database = {
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
+          tags?: string | null
           type: Database["public"]["Enums"]["item_type"]
         }
         Update: {
@@ -838,6 +840,7 @@ export type Database = {
           recommended?: boolean | null
           score?: number | null
           sources?: Json[] | null
+          tags?: string | null
           type?: Database["public"]["Enums"]["item_type"]
         }
         Relationships: [
@@ -927,6 +930,7 @@ export type Database = {
           recommended: boolean | null
           score: number | null
           sources: Json[] | null
+          tags: string | null
           type: Database["public"]["Enums"]["item_type"]
         }[]
       }
@@ -1095,6 +1099,8 @@ export type Database = {
         | "Prebiotics"
         | "Organic Acids"
         | "Trihalomethanes"
+        | "Synthetics"
+        | "Inorganic ingredient"
       item_type:
         | "bottled_water"
         | "tap_water"

@@ -39,7 +39,7 @@ export default function RecommendedRow({ category }: Props) {
         </Typography>
       </div>
 
-      <div className="flex overflow-x-auto gap-6 hide-scrollbar">
+      <div className="flex overflow-x-auto md:gap-6 gap-4 hide-scrollbar">
         {ranked &&
           ranked.map((item: any) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>

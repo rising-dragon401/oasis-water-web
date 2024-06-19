@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, ItemType, WaterFilter } from '@/types/custom'
@@ -85,14 +84,14 @@ export default function RankingList({ title, items }: Props) {
     filter: true,
     mineral_packets: true,
   })
-  const [tabValue, setTabValue] = useLocalStorage<TabKeys>('tabValue', 'bottled_water')
+  const [tabValue, setTabValue] = useState<TabKeys>('bottled_water')
+  const [allItems, setAllItems] = useState<any[]>([])
+  const [filteredItems, setFilteredItems] = useState<any[]>([])
+  const [bottledWater, setBottledWater] = useState<any[]>([])
+  const [mineralPackets, setMineralPackets] = useState<any[]>([])
+  const [tapWater, setTapWater] = useState<any[]>([])
+  const [filters, setFilters] = useState<any[]>([])
   const [sortMethod, setSortMethod] = useState('name')
-  const [allItems, setAllItems] = useLocalStorage<any[]>('allItems', [])
-  const [filteredItems, setFilteredItems] = useLocalStorage<any[]>('filteredItems', [])
-  const [bottledWater, setBottledWater] = useLocalStorage<any[]>('bottledWater', [])
-  const [mineralPackets, setMineralPackets] = useLocalStorage<any[]>('mineralPakets', [])
-  const [tapWater, setTapWater] = useLocalStorage<any[]>('tapWater', [])
-  const [filters, setFilters] = useLocalStorage<any[]>('filters', [])
   const [completeInit, setCompleteInit] = useState(false)
   const [page, setPage] = useState(1)
   const [tags, setTags] = useState<string[]>([])
@@ -335,13 +334,9 @@ export default function RankingList({ title, items }: Props) {
                   {tags.map((tag) => (
                     <DropdownMenuItem
                       onClick={() => {
-                        setSelectedTags((prev) => {
-                          if (prev.includes(tag)) {
-                            return prev.filter((t) => t !== tag)
-                          } else {
-                            return [...prev, tag]
-                          }
-                        })
+                        setSelectedTags((prevTags) =>
+                          prevTags.includes(tag) ? prevTags.filter((t) => t !== tag) : [tag]
+                        )
                       }}
                       className="hover:cursor-pointer flex justify-between"
                       key={tag}
@@ -391,14 +386,6 @@ export default function RankingList({ title, items }: Props) {
                 .filter((item) => item.score !== null && !item.is_draft)
                 .slice(0, 20 * page)
                 .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
-
-            {filteredItems?.length === 0 && !loading[tabValue] && (
-              <div className="flex flex-row justify-center items-center w-full">
-                <Typography size="base" fontWeight="bold">
-                  No results found. Try adjusting your filters
-                </Typography>
-              </div>
-            )}
 
             {loading[tabValue] &&
               Array(10)
