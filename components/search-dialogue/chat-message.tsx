@@ -1,17 +1,20 @@
-// import remarkGfm from 'remark-gfm'
-import { cn } from '@/lib/utils'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import Loader from '@/components/loader'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { cn } from '@/lib/utils'
+import remarkGfm from 'remark-gfm'
+import { OasisButton } from '../custom-markdown'
 
-const ChatAvatar =
+const OasisAvatar =
   'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/logo/icon.png'
+const FallBackAvatar =
+  'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/avatars/blue-gradient-1.png?t=2024-03-22T12%3A06%3A06.617Z'
 
 export interface ChatMessageProps {
   message: any
   isLoading: boolean
-  index?: number
   messagesLength: number
+  index?: number
+  userAvatar?: string
 }
 
 export function ChatMessage({
@@ -19,40 +22,39 @@ export function ChatMessage({
   isLoading,
   index,
   messagesLength,
+  userAvatar,
   ...props
 }: ChatMessageProps) {
   return (
     <div
-      className={cn('group relative mb-4 flex items-start md:-ml-12 ', {
+      className={cn('group relative mb-4 flex items-start  !overflow-hidden ', {
         'flex-row-reverse': message.role === 'user',
       })}
       {...props}
     >
+      {message.role === 'assistant' && (
+        <Avatar className="flex md:h-8 md:w-8 h-6 w-6">
+          <AvatarImage src={OasisAvatar} alt="chat avatar" />
+          <AvatarFallback>O</AvatarFallback>
+        </Avatar>
+      )}
       <div
-        className={cn(
-          'flex h-8 w-8 shrink-0 select-none items-center justify-center rounded-full border shadow',
-          message.role === 'user' ? 'bg-background ' : 'bg-primary text-primaryMuted'
-        )}
+        className={`space-y-2 rounded-xl px-4 ${message.role === 'user' ? 'bg-muted py-2' : 'flex justify-start w-full'}
+      `}
       >
-        {message.role === 'assistant' && (
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={ChatAvatar} alt="chat avatar" />
-            {/* <AvatarFallback>{name.charAt(0) || 'M'}</AvatarFallback> */}
-          </Avatar>
-        )}
-      </div>
-      <div className="flex-1 px-1 md:ml-4 ml-2 space-y-2 overflow-hidden">
         <MemoizedReactMarkdown
-          className={cn(
-            'prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 text-primaryMuted md:text-lg text-sm',
-            {
-              'text-right text-primaryMuted-foreground mr-2': message.role === 'user',
-            }
-          )}
-          // remarkPlugins={[remarkGfm]}
+          className={`prose break-words prose-p:leading-relaxed prose-pre:p- md:text-base text-sm ',
+            ${message.role === 'user' ? 'text-right text-slate-600' : 'text-slate-900'}`}
+          remarkPlugins={[remarkGfm]}
           components={{
             p({ children }) {
-              return <p className="md:text-lg text-sm">{children}</p>
+              return <p className={`md:text-base text-sm p-0`}>{children}</p>
+            },
+            a: ({ href, title, children }) => {
+              if (title === 'oasis-button') {
+                return <OasisButton href={href}>{children}</OasisButton>
+              }
+              return <a href={href}>{children}</a>
             },
           }}
         >

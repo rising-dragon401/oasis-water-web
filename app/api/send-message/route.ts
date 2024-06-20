@@ -1,21 +1,18 @@
-import type { NextRequest } from 'next/server'
+import { ApplicationError, UserError } from '@/lib/errors'
+import { determineLink } from '@/utils/helpers'
 import { createClient } from '@supabase/supabase-js'
 import { codeBlock, oneLine } from 'common-tags'
 import GPT3Tokenizer from 'gpt3-tokenizer'
-import { OpenAIStream, StreamingTextResponse, LangChainStream } from 'ai'
-import { ApplicationError, UserError } from '@/lib/errors'
-import { getModel } from '@/app/api/utils/model'
 import OpenAI from 'openai'
-import { LLMChain } from 'langchain/chains'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-export const runtime = 'edge'
+export const maxDuration = 300
 
-export async function POST(req: Request) {
+export async function POST(req: Request, res: Response) {
   try {
     if (!supabaseUrl) {
       throw new ApplicationError('Missing environment variable SUPABASE_URL')
@@ -25,35 +22,55 @@ export async function POST(req: Request) {
       throw new ApplicationError('Missing environment variable SUPABASE_SERVICE_ROLE_KEY')
     }
 
-    const { query, assistant_id, thread_id } = await req.json()
+    const { query, assistant_id, thread_id, is_stream } = await req.json()
 
-    const systemMessage = `
-      You are a clean drinking water assistant, scientist, and expert.
-    
-      Users send you a question about water, a zip code, location or brand of bottled water.
+    console.log('query: ', query)
+    console.log('thread_id: ', thread_id)
+    console.log('assistant_id: ', assistant_id)
 
-      If they send zip code or location respond with quality of tap water in that location, including the contaminants detected and their effects.
+    if (!query || !assistant_id || !thread_id) {
+      throw new UserError('Missing query, assistant_id, or thread_id in request data')
+    }
 
-      Else if they send a brand of bottled water and not a location: respond with Oaisys score, water source, owner/manufacturer, ph level,
-      fluoride level, treatment process and chemicals used, and the harms/benefits of ingredients and include all the chemicals/substances detected in the Full Testing Report with amounts over 0.0 or not ND.
-      
-      For all Return the Oaisys Page url and hyperlink it at the bottom of your reply.
-      
-      If missing any data, just ignore it.
+    // cancel any existing runs
+    const runs = await openai.beta.threads.runs.list(thread_id)
+    if (runs.data.length > 0) {
+      for (const run of runs.data) {
+        if (run.status !== 'completed') {
+          console.log(`Cancelling run with ID: ${run.id} because status is ${run.status}`)
+          await openai.beta.threads.runs.cancel(thread_id, run.id)
+        }
+      }
+    }
 
-      If there's no location or zip code the user is asking a qustion about clean drinking water in general.
-      Respond with the best of your ability and any supportive data.
+    const oasisPaths = {
+      'All bottled water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/bottled-water`,
+      'All filters': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/filters`,
+      'All tap water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/tap-water`,
+    }
 
-      Prioritze the data from context sections to inform your answer. Do not suggest looking for information elsewhere.
+    // const systemMessage = `
+    //   You are a clean drinking water and health product longevity companion, scientist, and expert.
 
-      Reply in markdown to format each section and data point to make it human readable, utilizing lists where applicable but not a
-      code snippet.)
-            
-      Provide concise short answers. Only refer to the data.
-      `
+    //   Users ask you about specific water items or general questions about personal health and longevity. Provide them with research backed, concise answers to lead them to a healthy lifestyle.
+
+    //   Reply in markdown to format including data but sounding like a human conversation. Keep your answers brief.
+
+    //   Prioritze data from Oasis.
+
+    //   Include markdown applicable learn more button. "Learn more" buttons should link to PagePath
+
+    //   These general paths might help too: ${JSON.stringify(oasisPaths, null, 2)}
+
+    //   Only link to Oasis pages. Buttons should contain descriptive labels based on the content titleand only use them where necessary.
+
+    //   Button Syntax: [Click Me](http://example.com "oasis-button")
+    // `
+
+    // console.log('systemMessage: ', systemMessage)
 
     const fullQuery = oneLine`
-     ${query} contaminents, score, ph, fluoride, treatment, chemicals, substances, testing, report, oaisys, page, url, zip, code, location, brand, bottled, water, clean, drinking, quality, tap, source, owner, manufacturer, brief, breakdown, benefits, harms
+     ${query}    
     `
 
     if (!query) {
@@ -76,133 +93,183 @@ export async function POST(req: Request) {
       })
     }
 
+    // console.log('query: ', query)
+
     // Create embedding from query
     const embeddingResponse = await openai.embeddings.create({
-      model: 'text-embedding-ada-002',
-      input: sanitizedQuery.replaceAll('\n', ' '),
-      // encoding_format: 'float',
+      model: 'text-embedding-3-small',
+      input: query,
     })
 
     const [{ embedding }] = embeddingResponse.data
 
-    const { error: matchError, data: pageSections } = await supabaseClient.rpc(
-      'match_page_sections',
-      {
-        embedding,
-        match_threshold: 0.8,
-        match_count: 10,
-        min_content_length: 50,
-      }
-    )
+    const { error: matchError, data: documents } = await supabaseClient.rpc('match_documents', {
+      query_embedding: embedding,
+      match_threshold: 0.4,
+      match_count: 5,
+    })
 
-    // console.log(`Match error: }`, matchError)
-    console.log(`Page sections: ${JSON.stringify(pageSections)}`)
+    // console.log(`Match error:`, matchError)
+    console.log(`Documents: ${JSON.stringify(documents)}`)
 
     if (matchError) {
       throw new ApplicationError('Failed to match page sections', matchError)
     }
 
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
-    let tokenCount = 0
-    let contextText = ''
     const maxTokenCount = 20000
 
-    for (let i = 0; i < pageSections.length; i++) {
-      const pageSection = pageSections[i]
-      const content = pageSection.content
-      const encoded = tokenizer.encode(content)
-      tokenCount += encoded.text.length
-
-      if (tokenCount + encoded.text.length > maxTokenCount) {
-        // If adding the entire content would exceed the limit, add a portion of it
-        const remainingSpace = maxTokenCount - tokenCount
-        const partialContent = content.slice(0, remainingSpace)
-        contextText += `${partialContent.trim()}\n---\n`
-        break
+    const formulateItemData = async (document: any) => {
+      let contentData
+      if (typeof document.content !== 'string') {
+        contentData = JSON.parse(document.content)
       } else {
-        // If adding the entire content would not exceed the limit, add it all
-        tokenCount += encoded.text.length
-        contextText += `${content.trim()}\n---\n`
+        contentData = document.content
+      }
+
+      const itemObject = {
+        id: document.original_id,
+        type: contentData?.type || '',
+        name: contentData?.name || '',
+      }
+
+      const pagePath = await determineLink(itemObject)
+
+      let content = document.content
+      const encoded = tokenizer.encode(content)
+      let contentField = ''
+
+      if (encoded.text.length > maxTokenCount) {
+        // If content exceeds the limit, truncate it
+        content = content.slice(0, maxTokenCount)
+        contentField = `${content.trim()}\n---\n`
+      } else {
+        // If content does not exceed the limit, use it as is
+        contentField = `${content.trim()}\n---\n`
+      }
+
+      return {
+        itemID: document?.original_id,
+        table: document?.original_table,
+        name: contentData?.name,
+        affiliateLink: contentData?.affiliateLink,
+        pagePath,
+        content: contentField,
       }
     }
 
-    // console.log(`Context text: `, contextText)
+    const getResearchMetadata = async (researchDocument: any) => {
+      const { data, error } = await supabaseClient
+        .from('research')
+        .select('file_url, title')
+        .eq('id', researchDocument.original_id)
+        .single()
+
+      if (error) {
+        console.error('Error fetching research document URL:', error)
+        throw new Error('Failed to fetch research document URL')
+      }
+
+      return {
+        link: data.file_url,
+        title: data.title,
+      }
+    }
+
+    const formulateResearchData = async (document: any) => {
+      const { link, title } = await getResearchMetadata(document)
+
+      return {
+        itemID: document?.original_id,
+        table: document?.original_table,
+        title: title,
+        pagePath: link,
+        content: document.content,
+      }
+    }
+
+    const getData = async () => {
+      return await Promise.all(
+        documents.map(async (document: any) => {
+          if (
+            document.original_table === 'water_filters' ||
+            document.original_table === 'items' ||
+            document.original_table === 'tap_water_locations'
+          ) {
+            return await formulateItemData(document)
+          } else if (document.original_table === 'research') {
+            return await formulateResearchData(document)
+          }
+        })
+      )
+    }
+
+    const data = await getData()
+
+    // console.log('data: ', JSON.stringify(data))
 
     const prompt = codeBlock`
-      Context sections:
-      ${contextText}
+      Question: ${sanitizedQuery}
 
-       Question: """
-      ${sanitizedQuery}
-      """
+      Relevent oasis data to use to formulate your answer: ${JSON.stringify(data)}
     `
+    // console.log('prompt: ', prompt)
 
-    /////// Legacy - Langchain    ///////
-    // Make query
+    if (is_stream === false) {
+      // create run and wait for completion
+      const run = await openai.beta.threads.runs.create(thread_id, {
+        assistant_id: assistant_id,
+        model: 'gpt-4o',
+        additional_messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      })
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4-1106-preview',
-      stream: true,
-      messages: [
+      // Polling to wait until the run status is 'completed'
+      let completion
+      while (true) {
+        const statusCheck = await openai.beta.threads.runs.retrieve(thread_id, run.id)
+        if (statusCheck.status === 'completed') {
+          completion = statusCheck
+          break
+        }
+        // Wait for a short period before checking the status again
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+      }
+
+      // now retrieve messages in the thread
+      const messages = await openai.beta.threads.messages.list(thread_id)
+      const lastMessage = messages.data[0]
+      const lastMessageContent = lastMessage.content
+
+      return new Response(
+        JSON.stringify({
+          content: lastMessageContent,
+        }),
         {
-          role: 'system',
-          content: systemMessage,
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-    })
-    const stream = OpenAIStream(response)
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    } else {
+      console.log('creating response with stream')
 
-    // Respond with the stream
-    return new StreamingTextResponse(stream)
+      const stream = await openai.beta.threads.runs.create(thread_id, {
+        assistant_id: assistant_id,
+        stream: true,
+        model: 'gpt-4o',
+        additional_messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+      })
 
-    /////// Assistants API - commenting out until stremaing is supported   ///////
-    // let threadId = thread_id
-    // // Create a thread
-    // if (!thread_id) {
-    //   const thread = await openai.beta.threads.create()
-    //   threadId = thread.id
-    // }
-
-    // // adds message to thread
-    // const message = await openai.beta.threads.messages.create(threadId, {
-    //   role: 'user',
-    //   content: prompt,
-    // })
-
-    // // runs assistant thread
-    // let run = await openai.beta.threads.runs.create(threadId, {
-    //   assistant_id: assistant_id,
-    //   // instructions: "Please address the user as Jane Doe. The user has a premium account."
-    // })
-
-    // // create a timeout loop that checks if run.status === completed
-    // while (run.status !== 'completed') {
-    //   await new Promise((resolve) => setTimeout(resolve, 1000)) // wait for 1 second before checking again
-    //   run = await openai.beta.threads.runs.retrieve(threadId, run.id) // update the run status
-    // }
-
-    // // once completed, get updated messages
-    // const messages = await openai.beta.threads.messages.list(threadId)
-
-    // const chatReply = messages.data[messages.data.length - 1]
-
-    // // @ts-ignore
-    // const chatReplyText = messages.data[0].content[0].text.value
-
-    // return new Response(
-    //   JSON.stringify({
-    //     content: chatReplyText,
-    //     thread_id: threadId,
-    //   }),
-    //   {
-    //     status: 200,
-    //     headers: { 'Content-Type': 'application/json' },
-    //   }
-    // )
+      return new Response(stream.toReadableStream())
+    }
   } catch (err) {
     if (err instanceof UserError) {
       return new Response(

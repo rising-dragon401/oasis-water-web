@@ -73,7 +73,7 @@ export default async function PostPage({ params }: PostProps) {
   }
 
   return (
-    <article className="pt-6 prose ">
+    <article className="pt-6 prose pb-20">
       <Typography size="4xl" fontWeight="normal" className="mb-2">
         {post.title}
       </Typography>

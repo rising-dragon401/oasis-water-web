@@ -1,44 +1,59 @@
 'use client'
 
-import * as React from 'react'
+import { updateUserData } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
-import { useCompletion } from 'ai/react'
-import { X, RotateCcw, Frown, CornerDownLeft, Search, Wand } from 'lucide-react'
-import { SEARCH_PREVIEW_QUESTIONS } from './constants'
-import { useAtom } from 'jotai'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
+import { useModal } from '@/providers/ModalProvider'
+import { useUserProvider } from '@/providers/UserProvider'
+import { useAtom } from 'jotai'
+import { Lock, SendHorizontal, Sparkles, X } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { AssistantStream } from 'openai/lib/AssistantStream'
+import React, { useEffect, useRef } from 'react'
+import { toast } from 'sonner'
+import Typography from '../typography'
 import ChatList from './chat-list'
-import useDevice from '@/lib/hooks/use-device'
-import { useToast } from '@/components/ui/use-toast'
 
-export function SearchDialog() {
-  const inputRef = React.useRef<HTMLInputElement>(null)
-  const { toast } = useToast()
+const STARTER_PROMPTS = [
+  'Filters that remove PFAS',
+  'Why are microplastics in water?',
+  'Bottled water with Fluoride',
+  'Water filters for lead',
+  'What are phthalates?',
+  'What are PFAS?',
+  'What foods have phthalates?',
+]
+
+export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const { user, uid, userData, subscription } = useUserProvider()
+  const router = useRouter()
+  const pathname = usePathname()
+  const { openModal } = useModal()
 
   const [open, setOpen] = React.useState(false)
   const [query, setQuery] = React.useState<string>('')
-  const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
   const [isLoading, setIsLoading] = React.useState(false)
-  const [messages, setMessages] = useAtom(messagesAtom)
-  const [threadId, setThreadId] = useAtom(threadIdAtom)
+  const [starterPrompts, setStarterPrompts] = React.useState<string[]>([])
   const [abortController, setAbortController] = React.useState<AbortController>()
 
-  const { isMobile } = useDevice()
+  const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
+  const [messages, setMessages] = useAtom(messagesAtom)
+  const [threadId, setThreadId] = useAtom(threadIdAtom)
 
-  React.useEffect(() => {
-    if (open && !assistantId) {
-      // createNewAssistant()
-    }
-  }, [open])
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -54,26 +69,15 @@ export function SearchDialog() {
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // TODO should be persistant for each user
-  async function createNewAssistant() {
-    try {
-      const response = await fetch('/api/create-new-assistant', {
-        method: 'POST',
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setAssistantId(data.id)
-      } else {
-        throw new Error(data.message)
-      }
-    } catch (error) {
-      console.error('Error:', error)
+  React.useEffect(() => {
+    if (userData?.assistant_id) {
+      setAssistantId(userData.assistant_id)
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData])
 
   React.useEffect(() => {
     if (open) {
@@ -83,7 +87,84 @@ export function SearchDialog() {
     }
   }, [open])
 
+  useEffect(() => {
+    scrollToBottom()
+
+    if (messages.length === 0) {
+      generateStarterPrompts()
+    }
+  }, [messages])
+
+  const generateStarterPrompts = () => {
+    const prompts = STARTER_PROMPTS.sort(() => 0.5 - Math.random()).slice(0, 3)
+    setStarterPrompts(prompts)
+  }
+
+  async function createNewAssistant() {
+    try {
+      const response = await fetch('/api/create-new-assistant', {
+        method: 'POST',
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        // add assistant to user
+        updateUserData('assistant_id', data.id)
+
+        setAssistantId(data.id)
+        return data.id
+      } else {
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      return null
+    }
+  }
+
+  async function createNewThread() {
+    try {
+      const response = await fetch('/api/create-new-thread', {
+        method: 'POST',
+        body: JSON.stringify({
+          uid,
+          assistantId,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setThreadId(data.id)
+        return data.id
+      } else {
+        throw new Error(data.message)
+      }
+    } catch (error) {
+      console.error('Error:', error)
+      return null
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      console.log('enter')
+      handleSubmit(e, query)
+    }
+  }
+
   const handleSearchButtonClick = () => {
+    // check if user is signed in
+    if (!user) {
+      toast('Sign in to use Oasis AI')
+      // return to auth
+      router.push(`/auth/signin?redirectUrl=${pathname}`)
+      return
+    } else if (!subscription) {
+      openModal('SubscriptionModal')
+    }
+
     setOpen(true)
   }
 
@@ -92,19 +173,46 @@ export function SearchDialog() {
     setQuery('')
   }
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit = async (e: any, query_: string) => {
     e.preventDefault()
+
+    const question = query || query_
 
     try {
       setIsLoading(true)
-      setQuery('')
 
       const newMessage = {
         role: 'user',
-        content: query,
+        content: question,
       }
 
+      // prepare messages
       setMessages((messages) => [...messages, newMessage])
+
+      setQuery('')
+
+      let assistant = assistantId
+
+      // first check for user assistantId
+      if (!userData.assistantId) {
+        assistant = await createNewAssistant()
+      }
+
+      if (!assistant) {
+        console.log('no assistant id found')
+        return
+      }
+
+      // initi threadId
+      let thread: string | null = threadId
+      if (!thread) {
+        thread = await createNewThread()
+      }
+
+      if (!thread) {
+        console.log('no thread id found')
+        return
+      }
 
       // create instance of AbortController to handle stream cancellation
       const abortController_ = new AbortController()
@@ -116,59 +224,61 @@ export function SearchDialog() {
         role: 'assistant',
         content: '',
       }
-      // setThreadId(data.thread_id)
+
       setMessages((messages) => [...messages, newAssistantMessage])
 
       const response = await fetch('/api/send-message', {
         method: 'POST',
         body: JSON.stringify({
-          query,
-          assistant_id: assistantId,
-          thread_id: threadId,
+          query: question,
+          assistant_id: assistant,
+          thread_id: thread,
+          is_stream: true,
         }),
         signal,
       })
 
-      let fullNewMessage = ''
-
-      if (response?.status === 400) {
-        const object = await response.json()
-        const err = object.error
-        toast({
-          title: err,
-        })
-        handleResetFailedSend()
+      if (!response.body) {
         return
       }
+      const runner = AssistantStream.fromReadableStream(response.body)
 
-      const textDecoder = new TextDecoder()
-      const reader = response?.body?.getReader()
-
-      let chunk = await reader?.read()
-      const chunkContent = textDecoder.decode(chunk?.value)
-
-      fullNewMessage += chunkContent
-
-      console.log('fullNewMessage: ', fullNewMessage)
-
-      // finish reading the response
-      while (!chunk?.done) {
-        chunk = await reader?.read()
-        const chunkContent = textDecoder.decode(chunk?.value)
-        fullNewMessage += chunkContent
+      let fullNewMessage = ''
+      runner.on('textDelta', (_delta, contentSnapshot) => {
+        fullNewMessage = contentSnapshot.value
 
         setMessages((prevMessages) => {
           const newMessages = [...prevMessages]
           newMessages[newMessages.length - 1].content = fullNewMessage
           return newMessages
         })
-      }
+      })
 
-      // const data = await response.json()
+      runner.on('messageDone', (message) => {
+        //  // get final message content
+        //  const finalContent = message.content[0].type == 'text' ? message.content[0].text.value : ''
 
-      setIsLoading(false)
+        //  // add assistant message to list of messages
+        //  setMessages((prevMessages) => [
+        //    ...prevMessages,
+        //    {
+        //      role: 'assistant',
+        //      content: finalContent,
+        //      createdAt: new Date(),
+        //    },
+        //  ])
+
+        // remove busy indicator
+        setIsLoading(false)
+      })
+
+      runner.on('error', (error) => {
+        console.error(error)
+        setIsLoading(false)
+      })
     } catch (e) {
       handleResetFailedSend()
+      setIsLoading(false)
     }
   }
 
@@ -188,84 +298,132 @@ export function SearchDialog() {
     setIsLoading(false)
   }
 
+  const handleOpenSubscription = () => {
+    openModal('SubscriptionModal')
+  }
+
+  const SearchInput = () => {
+    return (
+      <div className="flex flex-col w-full">
+        <div className="flex items-center relative justify-between">
+          <Input
+            ref={inputRef}
+            placeholder="Message Oasis"
+            name="search"
+            value={query}
+            onKeyDown={handleKeyDown}
+            onChange={(e) => setQuery(e.target.value)}
+            className="bg-muted w-full rounded-full h-12 pl-6"
+          />
+
+          {/* @ts-ignore */}
+          {!subscription || subscription.status !== 'active' ? (
+            <Button
+              type="submit"
+              variant="default"
+              className="absolute right-2 h-10 rounded-full"
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+              onClick={handleOpenSubscription}
+            >
+              Ask <Lock className="w-4 h-4 text-background ml-2" />
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              variant="ghost"
+              className="absolute right-0 h-14 rounded-full"
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
+              onClick={(e) => handleSubmit(e, query)}
+            >
+              <SendHorizontal className="w-6 h-6 text-primary" />
+            </Button>
+          )}
+        </div>
+        <div className="p-1 pb-2">
+          <Typography size="xs" fontWeight="normal">
+            *Please note this feature is in early beta and is experimental. It may hallucinate and
+            provide inaccurate answers.
+          </Typography>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
-      <button
-        onClick={handleSearchButtonClick}
-        className="text-base flex gap-2 items-center px-4 py-2 z-50 relative bg-muted transition-colors  rounded-md
-        border border-secondary-foreground 
-        min-w-[300px] shadow-md "
+      <Button onClick={handleSearchButtonClick} variant="ghost" className="gap-2 rounded-full h-8">
+        <Sparkles className="w-4 h-4 text-secondary" />
+      </Button>
+
+      <Dialog
+        open={open}
+        onOpenChange={() => {
+          setOpen(!open)
+        }}
       >
-        <Search width={15} />
-        <span className="border border-l h-5"></span>
-        <span className="inline-block ml-4">Search water</span>
-        <kbd
-          className="absolute right-3 top-2.5
-          pointer-events-none inline-flex h-5 select-none items-center gap-1
-          rounded border border-slate-100 bg-slate-100 px-1.5
-          font-mono text-[10px] font-medium
-          text-slate-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400
-          opacity-100 "
-        >
-          <span className="text-xs">⌘</span>K
-        </kbd>{' '}
-      </button>
+        <DialogContent className="md:max-h-[80vh] lg:!max-w-3xl md:!max-w-2xl max-w-none mt-1 mb-2 w-[90vw] max-h-[85vh] rounded-xl  text-black">
+          {messages.length > 1 || isLoading ? (
+            <>
+              <DialogHeader className="sticky flex flex-row items-center w-full justify-between px-4">
+                <DialogTitle className="text-left w-30">Chat with Oasis</DialogTitle>
 
-      <Dialog open={open} modal={true}>
-        <DialogContent className="md:max-h-[80vh] lg:!max-w-4xl md:!max-w-2xl m-6 md:w-full w-[90vw] max-h-[90vh] rounded-md overflow-y-auto text-black">
-          <DialogHeader className="sticky flex flex-row items-center w-full justify-between">
-            <DialogTitle className="text-left w-30">What bottled water do you drink?</DialogTitle>
+                <div className="flex flex-row gap-2">
+                  <Button variant="ghost" className="h-8 p-0 mr-1" onClick={handleReset}>
+                    <span className="inline">Reset</span>
+                  </Button>
 
-            <div className="flex flex-row gap-2">
-              <Button variant="outline" className="h-8" onClick={handleReset}>
-                <RotateCcw className="h-4 w-4 mr-1" />
+                  <Button variant="outline" className="h-8" onClick={() => setOpen(false)}>
+                    <X className="h-4 w-4 dark:text-gray-100" />
+                  </Button>
+                </div>
+              </DialogHeader>
 
-                {!isMobile && <span className="hidden md:inline">Reset</span>}
-              </Button>
+              <div className="flex flex-col relative items-center">
+                <div className="grid gap-4 py-1 text-slate-700 overflow-y-scroll hide-scrollbar min-h-[44vh] max-h-[60vh] w-full">
+                  <ChatList
+                    messages={messages}
+                    isLoading={isLoading}
+                    userAvatar={userData?.avatar_url}
+                    messagesEndRef={messagesEndRef}
+                  />
+                </div>
 
-              <Button variant="outline" className="h-8" onClick={() => setOpen(false)}>
-                <X className="h-4 w-4 dark:text-gray-100" />
-              </Button>
-            </div>
-          </DialogHeader>
+                <DialogFooter className="flex flex-col gap-2 w-full h-16 items-center relative">
+                  {/* {isLoading && (
+                    <Button
+                      variant="outline"
+                      className="self-center mb-2 rounded-full h-6 w-24 shadow-sm absolute"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </Button>
+                  )} */}
 
-          <form onSubmit={handleSubmit}>
-            <div className="grid gap-4 py-4 text-slate-700 overflow-y-scroll max-h-[62vh]">
-              <ChatList messages={messages} isLoading={isLoading} />
-            </div>
-
-            <DialogFooter className="flex md:flex-row flex-col gap-2 w-full pt-2">
-              <div className="w-full">
-                <Input
-                  ref={inputRef}
-                  // placeholder={
-                  //   SEARCH_PREVIEW_QUESTIONS[
-                  //     Math.floor(Math.random() * SEARCH_PREVIEW_QUESTIONS.length)
-                  //   ]
-                  // }
-                  placeholder="Smartwater"
-                  name="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  className="md:col-span-3 bg-muted"
-                />
-                <CornerDownLeft
-                  className={`absolute top-3 right-5 h-4 w-4 text-gray-300 transition-opacity ${
-                    query ? 'opacity-100' : 'opacity-0'
-                  }`}
-                />
+                  {SearchInput()}
+                </DialogFooter>
+              </div>
+            </>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <div className="gap-2 flex md:flex-row flex-col">
+                {starterPrompts.map((prompt, index) => (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className="text-left h-8"
+                    onClick={(e) => {
+                      setQuery(prompt)
+                      handleSubmit(e, prompt)
+                    }}
+                  >
+                    {prompt}
+                  </Button>
+                ))}
               </div>
 
-              {isLoading && (
-                <Button variant="outline" onClick={handleCancel}>
-                  Cancel
-                </Button>
-              )}
-              <Button type="submit" className="md:w-40 w-full">
-                Ask Oaisys
-              </Button>
-            </DialogFooter>
-          </form>
+              {SearchInput()}
+            </div>
+          )}
         </DialogContent>
       </Dialog>
     </>

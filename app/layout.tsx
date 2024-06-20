@@ -1,24 +1,28 @@
-import { lato } from './fonts'
-import cn from 'classnames'
+import { Toaster } from '@/components/ui/sonner'
+import { ModalProvider } from '@/providers/ModalProvider'
+import UserProvider from '@/providers/UserProvider'
 import { Analytics } from '@vercel/analytics/react'
-import { Toaster } from '@/components/ui/toaster'
-import { CSPostHogProvider } from './providers'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import cn from 'classnames'
+import SupabaseProvider from '../providers/SupabaseProvider'
+import { lato } from './fonts'
+// import { CSPostHogProvider } from './providers'
 
 import '@/styles/globals.css'
 
 const meta = {
-  title: 'Oaisys',
-  description: 'Your source of clean water.',
+  title: 'Oasis',
+  description: 'Healthy shopping assistant for water',
   cardImage:
     'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
   robots: 'follow, index',
   favicon: '/favicon.ico',
-  url: 'https://oaisys.ai',
+  url: 'https://live-oasis.com',
   type: 'website',
 }
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oaisys.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://live-oasis.com'),
   openGraph: {
     title: meta.title,
     description: meta.description,
@@ -34,7 +38,7 @@ export const metadata = {
         url: meta.cardImage,
         width: 1800,
         height: 1600,
-        alt: 'train your ai agent',
+        alt: 'water health checker',
       },
     ],
 
@@ -45,7 +49,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={cn(lato.className, 'bg-background mx-auto max-w-6xl')}>
+    <html lang="en" className={cn(lato.className, 'bg-background mx-auto')}>
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
       <link
@@ -55,13 +59,31 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         sizes="<generated>"
       />
 
-      <CSPostHogProvider>
-        <body>
-          {children}
-          <Analytics />
-          <Toaster />
-        </body>
-      </CSPostHogProvider>
+      {/* <CSPostHogProvider> */}
+      <body>
+        {/* Rewardful tracking scripts */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+            (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
+          `,
+          }}
+        ></script>
+        <script async src="https://r.wdfl.co/rw.js" data-rewardful="f64466"></script>
+
+        <SupabaseProvider>
+          <UserProvider>
+            <main id="skip" className="h-[calc(100dvh)]">
+              <ModalProvider>{children}</ModalProvider>
+              <SpeedInsights />
+            </main>
+
+            <Analytics />
+            <Toaster />
+          </UserProvider>
+        </SupabaseProvider>
+      </body>
+      {/* </CSPostHogProvider> */}
     </html>
   )
 }

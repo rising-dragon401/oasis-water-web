@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "KNX998J7B5.com.liveoasis.oasis",
+        "paths": [
+          "/search/oasis/*"
+        ]
+      }
+    ]
+  },
+  "activitycontinuation": {
+    "apps": [
+      "KNX998J7B5.com.liveoasis.oasis"
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "KNX998J7B5.com.liveoasis.oasis"
+    ]
+  }
+}

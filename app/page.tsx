@@ -1,22 +1,28 @@
-import { SearchDialog } from '@/components/search-dialogue'
+import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
+import RankingList from '@/components/shared/ranking-list'
 import Typography from '@/components/typography'
-import BlogPreviewSection from '@/components/blog-preview-section'
 
-export default function Home() {
+export default async function Home() {
   return (
     <SubpageLayout>
-      <div className="flex h-full flex-col justify-center pt-36 md:px-24">
-        <div className="mb-14">
-          <Typography size="5xl" fontWeight="bold">
-            Do you know what&apos;s in your water?
-          </Typography>
-        </div>
-        <SearchDialog />
+      <div className="flex h-full flex-col pt-14">
+        <div className="flex flex-col w-full items-center justify-center gap-y-4">
+          <div className="flex flex-col items-center text-center gap-2">
+            <Typography size="5xl" fontWeight="bold">
+              What&apos;s in your water?
+            </Typography>
 
-        <div className="md:mt-56 mt-32  mb-32">
-          <BlogPreviewSection />
+            <Typography size="lg" fontWeight="normal" className="max-w-lg">
+              90% of water contains toxins, microplastics and contaminants. Find the best water for
+              you 👇
+            </Typography>
+          </div>
+
+          <BasicSearch showSearch={true} size="large" />
         </div>
+
+        <RankingList />
       </div>
     </SubpageLayout>
   )

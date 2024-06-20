@@ -21,14 +21,14 @@ interface TypographyProps {
 
 const sizes = {
   xs: 'text-xs',
-  sm: 'text-sm',
-  base: 'text-base',
-  lg: 'text-lg',
-  xl: 'text-xl',
-  '2xl': 'text-2xl',
-  '3xl': 'text-3xl',
-  '4xl': 'text-4xl',
-  '5xl': 'text-5xl',
+  sm: 'md:text-sm text-xs',
+  base: 'md:text-base text-sm',
+  lg: 'md:text-lg text-base',
+  xl: 'md:text-xl text-lg',
+  '2xl': 'md:text-2xl text-lg',
+  '3xl': 'md:text-3xl text-xl',
+  '4xl': 'md:text-4xl text-3xl',
+  '5xl': 'md:text-5xl text-4xl',
   '6xl': 'text-6xl',
 }
 
@@ -47,7 +47,11 @@ const weights = {
 const Typography: React.FC<TypographyProps> = ({ size, fontWeight, children, className = '' }) => {
   const textSize = size ? sizes[size] : ''
   const textWeight = weights[fontWeight] || weights.normal
-  return <p className={`${textSize} ${textWeight} text-primary ${className}`}>{children}</p>
+  return (
+    <p className={`${textSize} ${textWeight} text-primary text-ellipsis	 ${className} text-red`}>
+      {children}
+    </p>
+  )
 }
 
 export default Typography
