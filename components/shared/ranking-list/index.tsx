@@ -14,7 +14,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Item, ItemType, WaterFilter } from '@/types/custom'
+import { ItemType } from '@/types/custom'
 import {
   ArrowUpDown,
   Check,
@@ -66,12 +66,7 @@ const CATEGORIES: CategoryType[] = [
 
 type SortMethod = 'name' | 'score'
 
-type Props = {
-  title?: string
-  items?: Item[] | WaterFilter[] | null
-}
-
-export default function RankingList({ title, items }: Props) {
+export default function RankingList() {
   const { subscription, uid } = useUserProvider()
   const { openModal } = useModal()
   const pathname = usePathname()
@@ -297,7 +292,7 @@ export default function RankingList({ title, items }: Props) {
         </div>
 
         <TabsContent value={tabValue} className="w-full">
-          <div className="grid md:grid-cols-3 grid-cols-2 gap-6 w-full min-w-full max-w-[95vw]">
+          <div className="grid md:grid-cols-3 grid-cols-2 gap-6 w-full min-w-full max-w-[95vw] ">
             {filteredItems &&
               filteredItems
                 .filter((item) => item.score !== null && !item.is_draft)

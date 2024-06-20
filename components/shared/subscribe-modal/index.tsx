@@ -202,7 +202,8 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center">
-              Cancel your trial anytime by going to settings and pressing Manage Subscription
+              Cancel your trial anytime by going to account settings. We have a no refund policy for
+              free trials.
             </Typography>
           </div>
         </DialogFooter>
