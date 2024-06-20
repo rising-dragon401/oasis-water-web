@@ -7,7 +7,7 @@ export default async function BottledWater() {
 
   return (
     <SubpageLayout>
-      <RankingList title="Water & drinks" items={items} />
+      <RankingList />
     </SubpageLayout>
   )
 }
