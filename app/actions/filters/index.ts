@@ -26,7 +26,7 @@ export const getFilters = async ({
     return []
   }
 
-  const filtersWithCompany = await Promise.all(
+  const filtersWithCompany: any = await Promise.all(
     filters.map(async (filter) => {
       const { data: company, error: companyError } = await supabase
         .from('companies')
@@ -186,7 +186,7 @@ export const getRecommendedFilter = async (contaminants: any[]) => {
   let highestScoringFilter: { [key: string]: any } | null = null
   let highestScore = 0
 
-  await filters.map((filter) => {
+  await filters.map((filter: any) => {
     const filteredContaminantsCount = contaminants.reduce((acc, contaminant) => {
       if (!filter.contaminants_filtered) {
         return null

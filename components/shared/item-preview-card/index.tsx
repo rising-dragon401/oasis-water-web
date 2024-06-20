@@ -78,7 +78,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
   return (
     <Link
       href={determineLink()}
-      className="flex flex-col hover:opacity-80 relative lg:w-72 md:w-72 w-44 border rounded-md"
+      className="flex flex-col hover:opacity-80 relative lg:w-72 md:w-72 w-44 border rounded-md fade-in"
     >
       <div className="relative flex md:h-full w-full">
         <Image

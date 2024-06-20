@@ -80,8 +80,8 @@ export default function RankingList({ title, items }: Props) {
 
   const [loading, setLoading] = useState({
     bottled_water: true,
-    tap_water: true,
     filter: true,
+    tap_water: true,
     mineral_packets: true,
   })
   const [tabValue, setTabValue] = useState<TabKeys>('bottled_water')
@@ -109,162 +109,79 @@ export default function RankingList({ title, items }: Props) {
     if (node) observer.current.observe(node)
   }, [])
 
-  // load initial 20 items on page load
+  const fetchData = async (
+    fetchFunction: () => Promise<any>,
+    setData: (data: any) => void,
+    setLoading: (loading: boolean) => void
+  ) => {
+    try {
+      const data = await fetchFunction()
+      setData(data)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
-    const fetch = async () => {
-      let sort: SortMethod = 'name'
+    const initialFetch = async () => {
+      const items = await getItems({ limit: 999, sortMethod: 'name' })
+      setBottledWater(items)
+      setAllItems(items)
 
-      if (!bottledWater) {
-        const items = await getItems({ limit: 18, sortMethod: sort })
-        setBottledWater(items)
-        setFilteredItems(items)
-        setLoading((prev) => ({ ...prev, bottled_water: false }))
-      } else {
-        setLoading((prev) => ({ ...prev, bottled_water: false }))
-      }
+      await fetchData(
+        () => getLocations({ limit: 999, sortMethod: 'name' }),
+        setTapWater,
+        (loading) => setLoading((prev) => ({ ...prev, tap_water: loading }))
+      )
 
-      const fetchLocations = async () => {
-        const locations = await getLocations({ limit: 18, sortMethod: sort })
-        if (locations) {
-          setTapWater(locations)
-          setLoading((prev) => ({ ...prev, tap_water: false }))
-        }
-      }
+      await fetchData(
+        () => getFilters({ limit: 999, sortMethod: 'name' }),
+        setFilters,
+        (loading) => setLoading((prev) => ({ ...prev, filter: loading }))
+      )
 
-      const fetchFilters = async () => {
-        const filters = await getFilters({ limit: 18, sortMethod: sort })
-        if (filters) {
-          setFilters(filters)
-          setLoading((prev) => ({ ...prev, filter: false }))
-        }
-      }
-
-      const fetchMineralPackets = async () => {
-        const minerals = await getMineralPackets({ limit: 18, sortMethod: sort })
-        if (minerals) {
-          setMineralPackets(minerals)
-          setLoading((prev) => ({ ...prev, mineral_packets: false }))
-        }
-      }
-
-      if (!tapWater) {
-        fetchLocations()
-      } else {
-        setLoading((prev) => ({ ...prev, tap_water: false }))
-      }
-
-      if (!filters) {
-        fetchFilters()
-      } else {
-        setLoading((prev) => ({ ...prev, filter: false }))
-      }
-
-      if (!mineralPackets) {
-        fetchMineralPackets()
-      } else {
-        setLoading((prev) => ({ ...prev, mineral_packets: false }))
-      }
+      await fetchData(
+        () => getMineralPackets({ limit: 999, sortMethod: 'name' }),
+        setMineralPackets,
+        (loading) => setLoading((prev) => ({ ...prev, mineral_packets: loading }))
+      )
 
       setCompleteInit(true)
     }
 
-    fetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    initialFetch()
   }, [])
 
-  // load all items
   useEffect(() => {
-    if (completeInit) {
-      let sort: SortMethod = 'name'
-      if (subscription && uid) {
-        sort = 'score'
-      }
-
-      if (bottledWater?.length < 20) {
-        getItems({ sortMethod: sort }).then((items) => {
-          setBottledWater(items)
-          if (tabValue === 'bottled_water') {
-            setAllItems(items)
-          }
-        })
-      }
-
-      if (tapWater?.length < 20) {
-        getLocations({ sortMethod: sort }).then((locations: any) => {
-          setTapWater(locations)
-          if (tabValue === 'tap_water') {
-            setAllItems(locations)
-          }
-        })
-      }
-
-      if (filters?.length < 20) {
-        getFilters({ sortMethod: sort }).then((filters) => {
-          setFilters(filters)
-          if (tabValue === 'filter') {
-            setAllItems(filters)
-          }
-        })
-      }
-
-      if (mineralPackets?.length < 20) {
-        getMineralPackets({ sortMethod: sort }).then((minerals) => {
-          setMineralPackets(minerals)
-          if (tabValue === 'mineral_packets') {
-            setAllItems(minerals)
-          }
-        })
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [completeInit, tabValue, subscription, uid]) // Added subscription and uid to dependencies
-
-  // handle existing /search routes
-  useEffect(() => {
-    if (lastPath && typeof lastPath === 'string') {
-      setTabValue(lastPath)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (lastPath && typeof lastPath === 'string') setTabValue(lastPath)
   }, [lastPath])
 
-  // manage tab switching.
   useEffect(() => {
-    if (tabValue) {
-      manageTab(tabValue)
-    }
+    if (tabValue) manageTab(tabValue)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabValue])
 
-  // sorting and tag filtering logic
   useEffect(() => {
     if (!allItems) return
 
-    let sorted = allItems
+    let sortedItems = [...allItems]
     if (sortMethod === 'score') {
-      sorted = sorted?.sort((a, b) => (b.score || 0) - (a.score || 0))
-    } else if (sortMethod === 'name') {
-      sorted = sorted?.sort((a, b) => a.name.localeCompare(b.name))
+      sortedItems.sort((a, b) => (b.score || 0) - (a.score || 0))
+    } else {
+      sortedItems.sort((a, b) => a.name.localeCompare(b.name))
     }
 
-    // Filter items based on selected tags
     if (selectedTags.length > 0) {
-      sorted = sorted?.filter(
-        (item) => item?.tags && selectedTags.every((tag: string) => item.tags.includes(tag))
+      sortedItems = sortedItems.filter((item) =>
+        selectedTags.every((tag) => item.tags.includes(tag))
       )
     }
 
-    setFilteredItems(sorted)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setFilteredItems(sortedItems)
   }, [sortMethod, allItems, selectedTags])
 
-  // manage sort based on subscription
   useEffect(() => {
-    if (!subscription || !uid) {
-      setSortMethod('name')
-    } else if (subscription && uid) {
-      setSortMethod('score')
-    }
+    setSortMethod(subscription && uid ? 'score' : 'name')
   }, [subscription, uid])
 
   const manageTab = (tabValue: TabKeys) => {
@@ -387,7 +304,7 @@ export default function RankingList({ title, items }: Props) {
                 .slice(0, 20 * page)
                 .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
 
-            {loading[tabValue] &&
+            {(loading[tabValue] || !completeInit || !filteredItems) &&
               Array(10)
                 .fill(0)
                 .map((_, index) => <ItemSkeleton key={index} />)}

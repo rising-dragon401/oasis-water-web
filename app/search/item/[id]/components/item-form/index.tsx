@@ -231,7 +231,7 @@ export default function ItemForm({ id }: Props) {
               Other Ingredients
             </Typography>
             {item?.ingredients?.length > 0 ? (
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 mt-1">
                 <IngredientsCard ingredients={item.ingredients} />
               </div>
             ) : (
