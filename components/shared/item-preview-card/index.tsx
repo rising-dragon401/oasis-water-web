@@ -80,7 +80,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
       href={determineLink()}
       className="flex flex-col hover:opacity-80 relative lg:w-72 md:w-72 w-44 border rounded-md fade-in"
     >
-      <div className="relative flex md:h-full w-full">
+      <div className="relative flex w-full">
         <Image
           src={item.image || ''}
           className="lg:w-72 lg:h-72 md:w-72 md:h-64 w-44 h-44 rounded-md object-cover hover:cursor-pointer"
@@ -97,7 +97,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
         )}
       </div>
       <div className="flex flex-row justify-between p-1 px-2 md:gap-2 items-start lg:w-72 md:w-72 w-44">
-        <div className="flex flex-col w-5/6">
+        <div className="flex flex-col w-5/6 justify-start">
           <Typography
             size="base"
             fontWeight="bold"
