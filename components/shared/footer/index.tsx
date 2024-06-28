@@ -153,6 +153,14 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/refund-policy"
+                  className="text-secondary  transition duration-150 ease-in-out"
+                >
+                  Refund policy
+                </Link>
+              </li>
+              <li>
                 <Link href="/terms" className="text-secondary  transition duration-150 ease-in-out">
                   Terms
                 </Link>

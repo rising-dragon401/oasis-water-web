@@ -201,9 +201,12 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               Start your 3 day free trial
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
-            <Typography size="sm" fontWeight="normal" className="text-center">
-              Cancel your trial anytime by going to account settings. We have a no refund policy for
-              free trials.
+            <Typography size="sm" fontWeight="normal" className="text-center italic">
+              Cancel your trial anytime in account settings. We do not offer refunds under any
+              circumstance as stated in our
+              <a href="/refund-policy" className="text-blue-500 underline">
+                {` `} Refund policy
+              </a>
             </Typography>
           </div>
         </DialogFooter>
