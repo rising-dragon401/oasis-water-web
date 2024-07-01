@@ -1,6 +1,13 @@
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
-import { kAffiliatePortal, kDiscordInvite } from '@/lib/constants/socials'
+import {
+  kAffiliatePortal,
+  kDiscordInvite,
+  kInstagram,
+  kTikTok,
+  kTwitter,
+  kYouTube,
+} from '@/lib/constants/socials'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaDiscord, FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
@@ -38,34 +45,22 @@ export default function Footer() {
             </div>
             <ul className="my-8 flex-row gap-4 flex list-none">
               <li>
-                <a href="https://twitter.com/live__oasis" target="_blank" rel="noopener noreferrer">
+                <a href={kTwitter} target="_blank" rel="noopener noreferrer">
                   <FaXTwitter className="text-primary" />
                 </a>
               </li>
               <li className="ml-2">
-                <a
-                  href="https://www.instagram.com/live__oasis"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={kInstagram} target="_blank" rel="noopener noreferrer">
                   <FaInstagram className="text-primary" />
                 </a>
               </li>
               <li className="ml-2">
-                <a
-                  href="https://www.tiktok.com/@live__oasis"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={kTikTok} target="_blank" rel="noopener noreferrer">
                   <FaTiktok className="text-primary" />
                 </a>
               </li>
               <li className="ml-2">
-                <a
-                  href="https://www.youtube.com/@live__oasis"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={kYouTube} target="_blank" rel="noopener noreferrer">
                   <FaYoutube className="text-primary" />
                 </a>
               </li>
