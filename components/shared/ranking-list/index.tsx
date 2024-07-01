@@ -119,29 +119,33 @@ export default function RankingList() {
 
   useEffect(() => {
     const initialFetch = async () => {
-      const items = await getItems({ limit: 999, sortMethod: 'name' })
-      setBottledWater(items)
-      setAllItems(items)
+      const itemsPromise = getItems({ limit: 999, sortMethod: 'name' }).then((items) => {
+        setBottledWater(items)
+        setLoading((prev) => ({ ...prev, bottled_water: false }))
+        setAllItems(items)
+        setCompleteInit(true)
+      })
 
-      await fetchData(
-        () => getLocations({ limit: 999, sortMethod: 'name' }),
-        setTapWater,
-        (loading) => setLoading((prev) => ({ ...prev, tap_water: loading }))
+      const filtersPromise = getFilters({ limit: 999, sortMethod: 'name' }).then((filters) => {
+        setFilters(filters)
+        setLoading((prev) => ({ ...prev, filter: false }))
+      })
+
+      const locationsPromise = getLocations({ limit: 999, sortMethod: 'name' }).then(
+        (locations) => {
+          setTapWater(locations)
+          setLoading((prev) => ({ ...prev, tap_water: false }))
+        }
       )
 
-      await fetchData(
-        () => getFilters({ limit: 999, sortMethod: 'name' }),
-        setFilters,
-        (loading) => setLoading((prev) => ({ ...prev, filter: loading }))
+      const mineralPacketsPromise = getMineralPackets({ limit: 999, sortMethod: 'name' }).then(
+        (mineralPackets) => {
+          setMineralPackets(mineralPackets)
+          setLoading((prev) => ({ ...prev, mineral_packets: false }))
+        }
       )
 
-      await fetchData(
-        () => getMineralPackets({ limit: 999, sortMethod: 'name' }),
-        setMineralPackets,
-        (loading) => setLoading((prev) => ({ ...prev, mineral_packets: loading }))
-      )
-
-      setCompleteInit(true)
+      await Promise.all([itemsPromise, filtersPromise, locationsPromise, mineralPacketsPromise])
     }
 
     initialFetch()

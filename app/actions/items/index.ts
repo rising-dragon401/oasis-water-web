@@ -7,11 +7,14 @@ export const getItems = async ({
   limit,
   sortMethod,
 }: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
+  console.log('getItems')
+
   const supabase = await createSupabaseServerClient()
 
   let items
   let orderBy = sortMethod || 'name'
 
+  console.log('lgetItems imit: ', limit)
   console.log('orderBy: ', orderBy)
 
   if (limit) {
@@ -32,21 +35,21 @@ export const getItems = async ({
     return []
   }
 
-  const itemsWithCompany = await Promise.all(
-    items.map(async (item) => {
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .select('name')
-        .eq('id', item.company)
+  // const itemsWithCompany = await Promise.all(
+  //   items.map(async (item) => {
+  //     const { data: company, error: companyError } = await supabase
+  //       .from('companies')
+  //       .select('name')
+  //       .eq('id', item.company)
 
-      return {
-        ...item,
-        company_name: company ? company[0].name : null,
-      }
-    })
-  )
+  //     return {
+  //       ...item,
+  //       company_name: company ? company[0].name : null,
+  //     }
+  //   })
+  // )
 
-  return itemsWithCompany
+  return items
 }
 
 export const getItem = async (id: string) => {

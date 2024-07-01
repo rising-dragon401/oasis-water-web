@@ -28,19 +28,23 @@ export const getLocations = async ({
       locations = data
     }
 
-    const filteredAndScoredLocations =
-      locations &&
-      locations
-        .filter((location: any) => location.name && location.image)
-        .map((location: any) => {
-          return {
-            ...location,
-            // @ts-ignore
-            score: location?.utilities?.length > 0 ? location?.utilities[0].score : 0,
-          }
-        })
+    if (!locations) {
+      return []
+    }
 
-    return filteredAndScoredLocations
+    // const filteredAndScoredLocations =
+    //   locations &&
+    //   locations
+    //     .filter((location: any) => location.name && location.image)
+    //     .map((location: any) => {
+    //       return {
+    //         ...location,
+    //         // @ts-ignore
+    //         score: location?.utilities?.length > 0 ? location?.utilities[0].score : 0,
+    //       }
+    //     })
+
+    return locations
   } catch (error) {
     console.error('Error fetching locations:', error)
     return []

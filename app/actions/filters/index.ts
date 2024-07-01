@@ -26,21 +26,21 @@ export const getFilters = async ({
     return []
   }
 
-  const filtersWithCompany: any = await Promise.all(
-    filters.map(async (filter) => {
-      const { data: company, error: companyError } = await supabase
-        .from('companies')
-        .select('name')
-        .eq('id', filter.company)
+  // const filtersWithCompany: any = await Promise.all(
+  //   filters.map(async (filter) => {
+  //     const { data: company, error: companyError } = await supabase
+  //       .from('companies')
+  //       .select('name')
+  //       .eq('id', filter.company)
 
-      return {
-        ...filter,
-        company_name: company ? company[0].name : null,
-      }
-    })
-  )
+  //     return {
+  //       ...filter,
+  //       company_name: company ? company[0].name : null,
+  //     }
+  //   })
+  // )
 
-  return filtersWithCompany
+  return filters
 }
 
 export const getRandomFilters = async () => {
