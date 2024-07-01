@@ -50,7 +50,7 @@ const CATEGORIES: CategoryType[] = [
     id: 'filter',
     title: 'Filters',
     logo: <Filter className="text-slate-4000 w-4 h-4" />,
-    tags: ['tap', 'shower', 'bath'],
+    tags: ['tap', 'shower'],
   },
   {
     id: 'tap_water',
@@ -172,7 +172,7 @@ export default function RankingList() {
 
     if (selectedTags.length > 0) {
       sortedItems = sortedItems.filter((item) =>
-        selectedTags.every((tag) => item.tags.includes(tag))
+        selectedTags.every((tag) => item?.tags?.includes(tag))
       )
     }
 
