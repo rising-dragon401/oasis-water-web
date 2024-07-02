@@ -15,15 +15,7 @@ import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
-import {
-  Dna,
-  FlaskConical,
-  MessageCircle,
-  Microscope,
-  Search,
-  SearchCheck,
-  Users,
-} from 'lucide-react'
+import { FlaskConical, MessageCircle, Microscope, Search, SearchCheck, Users } from 'lucide-react'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -36,7 +28,7 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: 'Unlock all ratings and data',
+    label: 'Unlock top ratings and data',
     icon: <FlaskConical className="w-4 h-4" />,
   },
   {
@@ -44,17 +36,17 @@ const FEATURES = [
     icon: <Search className="w-4 h-4" />,
   },
   {
-    label: 'Oasis AI',
-    icon: <MessageCircle className="w-4 h-4" />,
-  },
-  {
-    label: 'Most up to date research',
+    label: 'Scientific research',
     icon: <SearchCheck className="w-4 h-4" />,
   },
   {
-    label: 'Personalized recommendations',
-    icon: <Dna className="w-4 h-4" />,
+    label: 'Oasis AI',
+    icon: <MessageCircle className="w-4 h-4" />,
   },
+  // {
+  //   label: 'Personalized recommendations',
+  //   icon: <Dna className="w-4 h-4" />,
+  // },
   {
     label: 'Supports Oasis lab testing',
     icon: <Microscope className="w-4 h-4" />,
@@ -121,18 +113,18 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
     // offer 3 day trial
     const metadata = {
-      trial_settings: {
-        end_behavior: {
-          missing_payment_method: 'cancel',
-        },
-      },
-      trial_period_days: 3,
+      // trial_settings: {
+      //   end_behavior: {
+      //     missing_payment_method: 'cancel',
+      //   },
+      // },
+      // trial_period_days: 3,
     }
 
     try {
       const { sessionId } = await postData({
         url: '/api/create-checkout-session',
-        data: { price: proPrice, metadata: metadata, referral: referral },
+        data: { price: proPrice, metadata: {}, referral: referral },
       })
 
       const stripe = await getStripe()
@@ -155,7 +147,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
       <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh]">
         <DialogHeader>
           <DialogTitle className="text-2xl text-center max-w-xs">
-            Unlock the healthiest products for you
+            Unlock the healthiest water
           </DialogTitle>
           <Image
             src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
@@ -169,11 +161,13 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             <Typography size="xl" fontWeight="bold" className="text-center">
               Oasis Pro
             </Typography>
-            <Typography size="base" fontWeight="normal" className="text-center">
+            {/* <Typography size="base" fontWeight="normal" className="text-center">
               Free access for 3 days, then
-            </Typography>
+            </Typography> */}
             <Typography size="base" fontWeight="normal" className="text-center">
-              ${kSubscriptionPrice} per year (${Math.round(kSubscriptionPrice / 12)} /month)
+              ${Math.round(kSubscriptionPrice)} annual (only ${Math.round(kSubscriptionPrice / 12)}{' '}
+              {` `}
+              per month)
             </Typography>
           </div>
           {/* <div className="flex w-full justify-center">
@@ -194,19 +188,19 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           <div className="flex flex-col">
             <Button
               variant="default"
-              className="px-4 w-full"
+              className="px-4 w-full !font-bold"
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Start your 3 day free trial
+              Unlock top rated water
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
-            <Typography size="sm" fontWeight="normal" className="text-center italic">
-              Cancel your trial anytime in account settings. We do not offer refunds under any
-              circumstance as stated in our
+            <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
+              We do not offer refunds under any circumstance as stated in our
               <a href="/refund-policy" className="text-blue-500 underline">
-                {` `} Refund policy
+                {` `} Refund policy.
               </a>
+              {` `} Funds go to improving Oasis and testing.
             </Typography>
           </div>
         </DialogFooter>
