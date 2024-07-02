@@ -113,18 +113,18 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
     // offer 3 day trial
     const metadata = {
-      // trial_settings: {
-      //   end_behavior: {
-      //     missing_payment_method: 'cancel',
-      //   },
-      // },
-      // trial_period_days: 3,
+      trial_settings: {
+        end_behavior: {
+          missing_payment_method: 'cancel',
+        },
+      },
+      trial_period_days: 1,
     }
 
     try {
       const { sessionId } = await postData({
         url: '/api/create-checkout-session',
-        data: { price: proPrice, metadata: {}, referral: referral },
+        data: { price: proPrice, metadata: metadata, referral: referral },
       })
 
       const stripe = await getStripe()
@@ -161,9 +161,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             <Typography size="xl" fontWeight="bold" className="text-center">
               Oasis Pro
             </Typography>
-            {/* <Typography size="base" fontWeight="normal" className="text-center">
-              Free access for 3 days, then
-            </Typography> */}
+            <Typography size="base" fontWeight="normal" className="text-center">
+              Free access for 1 day, then
+            </Typography>
             <Typography size="base" fontWeight="normal" className="text-center">
               ${Math.round(kSubscriptionPrice)} annual (only ${Math.round(kSubscriptionPrice / 12)}{' '}
               {` `}
@@ -192,7 +192,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Unlock top rated water
+              Start free trial
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
