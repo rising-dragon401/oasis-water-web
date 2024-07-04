@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 import useSubscription from '@/lib/hooks/use-subscription'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
@@ -70,6 +71,8 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
   const [referral, setReferral] = useState(null)
 
+  const [, setRedirectUrl] = useLocalStorage('redirectUrl', '')
+
   useEffect(() => {
     // @ts-ignore
     if (typeof Rewardful !== 'undefined') {
@@ -97,7 +100,8 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
   const redirectToPayment = async () => {
     if (!user) {
-      toast('Please login first to subscribe')
+      setRedirectUrl(pathname)
+      toast('Please login first to subscribe and unlock ratings')
       closeModal('SubscriptionModal')
       router.push(`/auth/signin?redirectUrl=${pathname}&modal=SubscriptionModal`)
       return
@@ -112,14 +116,14 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(true)
 
     // offer 3 day trial
-    const metadata = {
-      // trial_settings: {
-      //   end_behavior: {
-      //     missing_payment_method: 'cancel',
-      //   },
-      // },
-      // trial_period_days: 3,
-    }
+    // const metadata = {
+    //   trial_settings: {
+    //     end_behavior: {
+    //       missing_payment_method: 'cancel',
+    //     },
+    //   },
+    //   trial_period_days: ,
+    // }
 
     try {
       const { sessionId } = await postData({
@@ -161,9 +165,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             <Typography size="xl" fontWeight="bold" className="text-center">
               Oasis Pro
             </Typography>
-            {/* <Typography size="base" fontWeight="normal" className="text-center">
-              Free access for 3 days, then
-            </Typography> */}
+            <Typography size="base" fontWeight="normal" className="text-center">
+              Free access for 1 day, then
+            </Typography>
             <Typography size="base" fontWeight="normal" className="text-center">
               ${Math.round(kSubscriptionPrice)} annual (only ${Math.round(kSubscriptionPrice / 12)}{' '}
               {` `}
@@ -192,7 +196,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Unlock top rated water
+              Start free trial
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">

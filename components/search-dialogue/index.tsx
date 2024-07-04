@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { assistantIdAtom, messagesAtom, threadIdAtom } from '@/lib/atoms'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useAtom } from 'jotai'
@@ -50,6 +51,8 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
   const [messages, setMessages] = useAtom(messagesAtom)
   const [threadId, setThreadId] = useAtom(threadIdAtom)
+
+  const [, setRedirectUrl] = useLocalStorage('redirectUrl', '')
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -158,6 +161,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     // check if user is signed in
     if (!user) {
       toast('Sign in to use Oasis AI')
+      setRedirectUrl(pathname)
       // return to auth
       router.push(`/auth/signin?redirectUrl=${pathname}`)
       return
