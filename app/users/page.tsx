@@ -13,11 +13,10 @@ export default async function UsersPage() {
         <div className="flex flex-col w-full items-center justify-center gap-6 mb-12">
           <div className="flex flex-col items-center text-center gap-2 mb-4">
             <Typography size="5xl" fontWeight="bold">
-              See what others drink.
+              See what others are drinking
             </Typography>
             <Typography size="base" fontWeight="normal" className="max-w-lg italic">
-              Beta: in progress of adding more people. Add products to your Oasis to show up in
-              results.
+              Add products to your Oasis to show up in results.
             </Typography>
           </div>
 

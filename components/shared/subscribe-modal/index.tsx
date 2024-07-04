@@ -16,7 +16,14 @@ import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
-import { FlaskConical, MessageCircle, Microscope, Search, SearchCheck, Users } from 'lucide-react'
+import {
+  ArrowUp10,
+  FlaskConical,
+  MessageCircle,
+  Microscope,
+  Search,
+  SearchCheck,
+} from 'lucide-react'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -29,11 +36,15 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: 'Unlock top ratings and data',
+    label: 'Water health ratings and data',
     icon: <FlaskConical className="w-4 h-4" />,
   },
   {
-    label: 'Bottled water, filters and tap water',
+    label: 'Sorted by score',
+    icon: <ArrowUp10 className="w-4 h-4" />,
+  },
+  {
+    label: 'Bottled water, filters and more',
     icon: <Search className="w-4 h-4" />,
   },
   {
@@ -52,10 +63,10 @@ const FEATURES = [
     label: 'Supports Oasis lab testing',
     icon: <Microscope className="w-4 h-4" />,
   },
-  {
-    label: 'Private community',
-    icon: <Users className="w-4 h-4" />,
-  },
+  // {
+  //   label: 'Private community',
+  //   icon: <Users className="w-4 h-4" />,
+  // },
 ]
 
 // annual
@@ -150,9 +161,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     >
       <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-center max-w-xs">
-            Unlock the healthiest water
-          </DialogTitle>
+          <DialogTitle className="text-2xl text-center">Unlock the healthiest water</DialogTitle>
           <Image
             src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
             blurDataURL="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
@@ -165,9 +174,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             <Typography size="xl" fontWeight="bold" className="text-center">
               Oasis Pro
             </Typography>
-            <Typography size="base" fontWeight="normal" className="text-center">
+            {/* <Typography size="base" fontWeight="normal" className="text-center">
               Free access for 1 day, then
-            </Typography>
+            </Typography> */}
             <Typography size="base" fontWeight="normal" className="text-center">
               ${Math.round(kSubscriptionPrice)} annual (only ${Math.round(kSubscriptionPrice / 12)}{' '}
               {` `}
@@ -196,7 +205,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Start free trial
+              Unock Oasis Pro
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
