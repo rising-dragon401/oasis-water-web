@@ -2,6 +2,7 @@
 
 import { addFavorite, calculateUserScore, removeFavorite } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { CheckCircle, PlusCircle } from 'lucide-react'
@@ -21,6 +22,7 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
 
   const [loadingFavorite, setLoadingFavorite] = React.useState(false)
   const [isItemInFavorites, setItemInFavorites] = React.useState(false)
+  const [, setRedirectUrl] = useLocalStorage('redirectUrl', '')
 
   useEffect(() => {
     const favoriteExists =
@@ -41,6 +43,7 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
     // first check if user is logged in
     if (!uid) {
       toast('Please sign in to add items to your Oasis')
+      setRedirectUrl(pathname)
       router.push(`/auth/signin?redirectUrl=${pathname}`)
       return
     }

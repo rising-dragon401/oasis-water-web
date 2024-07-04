@@ -63,8 +63,8 @@ export default function SignIn() {
         <div className="lg:p-8 flex">
           <div className="mx-auto flex w-full flex-col justify-center md:mt-14 mt-16 space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">Welcome back to your Oasis</h1>
-              <p className="text-sm text-muted-foreground">Live your healthiest life</p>
+              <h1 className="text-2xl font-semibold tracking-tight">Welcome to your Oasis</h1>
+              <p className="text-sm text-muted-foreground">Find the healthiest products for you</p>
             </div>
 
             <AuthUI showToast={showToast} toastMessage={toastMessage} />

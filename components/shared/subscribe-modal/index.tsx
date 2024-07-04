@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
+import useLocalStorage from '@/lib/hooks/use-local-storage'
 import useSubscription from '@/lib/hooks/use-subscription'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
@@ -70,6 +71,8 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
   const [referral, setReferral] = useState(null)
 
+  const [, setRedirectUrl] = useLocalStorage('redirectUrl', '')
+
   useEffect(() => {
     // @ts-ignore
     if (typeof Rewardful !== 'undefined') {
@@ -97,7 +100,8 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
   const redirectToPayment = async () => {
     if (!user) {
-      toast('Please login first to subscribe')
+      setRedirectUrl(pathname)
+      toast('Please login first to subscribe and unlock ratings')
       closeModal('SubscriptionModal')
       router.push(`/auth/signin?redirectUrl=${pathname}&modal=SubscriptionModal`)
       return

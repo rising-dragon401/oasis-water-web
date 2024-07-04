@@ -50,7 +50,7 @@ const CATEGORIES: CategoryType[] = [
     id: 'filter',
     title: 'Filters',
     logo: <Filter className="text-slate-4000 w-4 h-4" />,
-    tags: ['tap', 'shower'],
+    tags: ['tap', 'shower', 'bottle'],
   },
   {
     id: 'tap_water',
@@ -103,19 +103,6 @@ export default function RankingList() {
     })
     if (node) observer.current.observe(node)
   }, [])
-
-  const fetchData = async (
-    fetchFunction: () => Promise<any>,
-    setData: (data: any) => void,
-    setLoading: (loading: boolean) => void
-  ) => {
-    try {
-      const data = await fetchFunction()
-      setData(data)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   useEffect(() => {
     const initialFetch = async () => {
