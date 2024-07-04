@@ -5,6 +5,7 @@ import { getItems, getMineralPackets } from '@/app/actions/items'
 import { getLocations } from '@/app/actions/locations'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +24,7 @@ import {
   Flower,
   GlassWater,
   SlidersHorizontal,
+  TrendingUp,
 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
@@ -194,10 +196,21 @@ export default function RankingList() {
     }
   }
 
-  // const itemsWithNoReports = filteredItems?.filter((item) => item.score === null)
+  const UnlockTopButton = () => {
+    if (!subscription) {
+      return (
+        <Button variant="outline" className="flex flex-row gap-1" onClick={handleClickSortByScore}>
+          Unlock top rated
+          <TrendingUp className="w-4 h-4" />
+        </Button>
+      )
+    }
+  }
 
   return (
     <div className="pb-14 mt-4">
+      <div className="md:hidden flex w-full justify-center mb-3">{UnlockTopButton()}</div>
+
       <Tabs
         defaultValue={tabValue}
         className="md:mt-6 xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-xl max-w-sm w-full"
@@ -206,7 +219,7 @@ export default function RankingList() {
         }}
       >
         <div className="py-2 flex flex-row justify-between w-full">
-          <TabsList className="gap-2 bg-transparent flex justify-start w-5/6 overflow-x-scroll hide-scrollbar">
+          <TabsList className="gap-2 bg-transparent flex justify-start md:w-2/3 w-5/6 overflow-x-scroll hide-scrollbar">
             {CATEGORIES.map((category) => (
               <TabsTrigger
                 key={category.title}
@@ -214,7 +227,7 @@ export default function RankingList() {
                 disabled={loading[category.id] && category.id !== 'bottled_water'}
                 className={`flex flex-row justify-center items-center gap-1 
                 bg-transparent border rounded-lg w-full px-3 max-w-56 h-8 hover:shadow-md 
-                hover:cursor-pointer ${tabValue === category.id ? 'border-secondary' : ''}`}
+                hover:cursor-pointer ${tabValue === category.id ? 'border' : '!border-none'}`}
               >
                 {React.cloneElement(category.logo, {
                   className: `w-4 h-4 ${tabValue === category.id ? 'text-primary' : 'text-slate-400'}`,
@@ -224,7 +237,7 @@ export default function RankingList() {
             ))}
           </TabsList>
 
-          <div className="flex flex-row justify-end items-center w-1/6">
+          <div className="flex flex-row justify-end items-center md:w-1/3 w-1/6">
             {tags.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
@@ -252,33 +265,36 @@ export default function RankingList() {
               </DropdownMenu>
             )}
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
-                <ArrowUpDown className="w-4 h-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <Typography size="sm" fontWeight="bold" className="pl-1 py-1">
-                  Sort by
-                </Typography>
-                <DropdownMenuItem
-                  onClick={handleClickSortByScore}
-                  className="hover:cursor-pointer flex justify-between"
-                >
-                  Score
-                  {sortMethod === 'score' && <Check className="w-3 h-3" />}
-                </DropdownMenuItem>
+            {subscription && (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
+                  <ArrowUpDown className="w-4 h-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <Typography size="sm" fontWeight="bold" className="pl-1 py-1">
+                    Sort by
+                  </Typography>
+                  <DropdownMenuItem
+                    onClick={handleClickSortByScore}
+                    className="hover:cursor-pointer flex justify-between"
+                  >
+                    Score
+                    {sortMethod === 'score' && <Check className="w-3 h-3" />}
+                  </DropdownMenuItem>
 
-                <DropdownMenuItem
-                  onClick={() => {
-                    setSortMethod('name')
-                  }}
-                  className="hover:cursor-pointer flex justify-between"
-                >
-                  Name
-                  {sortMethod === 'name' && <Check className="w-3 h-3" />}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setSortMethod('name')
+                    }}
+                    className="hover:cursor-pointer flex justify-between"
+                  >
+                    Name
+                    {sortMethod === 'name' && <Check className="w-3 h-3" />}
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+            <div className="hidden md:flex">{UnlockTopButton()}</div>
           </div>
         </div>
 

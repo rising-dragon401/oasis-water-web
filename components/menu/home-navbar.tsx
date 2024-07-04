@@ -8,7 +8,6 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
-import { kAffiliatePortal } from '@/lib/constants/socials'
 import { cn } from '@/lib/utils'
 import { Droplet, Filter, Milk } from 'lucide-react'
 import Link from 'next/link'
@@ -105,12 +104,12 @@ export default function HomeNavbar() {
               ))}
             </ul>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
         <NavigationMenuItem>
           <Link href="/users" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            People
+            Community
           </Link>
-        </NavigationMenuItem> */}
+        </NavigationMenuItem>
         {/* <NavigationMenuItem>
           <NavigationMenuTrigger>About</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -133,14 +132,14 @@ export default function HomeNavbar() {
           </Link>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <div
             onClick={() => window.open(kAffiliatePortal, '_blank')}
             className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
           >
             Affiliates
           </div>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   )

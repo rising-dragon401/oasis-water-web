@@ -92,7 +92,7 @@ export default function ItemForm({ id }: Props) {
             )}
           </div>
 
-          <div className="flex flex-row gap-2 md:w-3/5">
+          <div className="flex flex-row gap-2 md:w-3/5 justify-between">
             <div className="flex flex-col md:gap-2 md:w-3/5">
               <Typography size="3xl" fontWeight="normal">
                 {item.name}

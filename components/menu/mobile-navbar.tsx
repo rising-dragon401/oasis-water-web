@@ -12,7 +12,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
-import { kAffiliatePortal } from '@/lib/constants/socials'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Menu, Palmtree, Search, User, Users, X } from 'lucide-react'
 import Link from 'next/link'
@@ -63,23 +62,23 @@ export default function MobileNavbar() {
 
             <DropdownMenuItem className="flex flex-row gap-2 items-center">
               <Users className="text-secondary w-4 h-4" />
-              <Link href="/users">People</Link>
+              <Link href="/users">Community</Link>
             </DropdownMenuItem>
 
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator /> */}
 
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <div
                 onClick={() => window.open(kAffiliatePortal, '_blank')}
                 className="flex flex-row gap-2 items-center"
               >
                 Affiliates
               </div>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
 
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Link href="/blog/water_testing_partner">Lab testing</Link>
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
 
             <DropdownMenuSeparator />
 
