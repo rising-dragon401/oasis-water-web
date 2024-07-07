@@ -72,7 +72,7 @@ export default function ItemForm({ id }: Props) {
           item.packaging === 'aluminum (can)' ||
           item.packaging === 'cardboard'
         ? 'Some'
-        : 'No'
+        : 'Minimal'
 
   if (isLoading || !item) {
     return <ItemSkeleton />
