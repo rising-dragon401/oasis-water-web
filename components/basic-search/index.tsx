@@ -199,15 +199,16 @@ export default function BasicSearch({
               placeholder={
                 size !== 'large'
                   ? 'Search water'
-                  : placeholder || 'Search water, locations, filters...'
+                  : placeholder || 'Bottled water, filters, tap water...'
               }
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setInputFocused(true)}
-              className={`md:text-base text-base flex gap-2 items-center px-4 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
+              icon={<Search className="w-4 h-4" />}
+              className={`md:text-base text-base flex gap-2 items-center pl-10 pr-6 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
             />
 
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
+            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
               {/* <SearchDropdown item={selectedFilters} setItem={setSelectedFilters} /> */}
 
               {isLoading && (

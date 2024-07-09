@@ -69,22 +69,24 @@ export default function LocationForm({ id }: Props) {
           </div>
 
           <div className="flex flex-row w-full justify-between">
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-y-2">
               <Typography size="3xl" fontWeight="normal" className="w-2/3">
                 {location.name} Tap Water
               </Typography>
 
-              <BlurredLineItem
-                label="Contaminants found"
-                value={contaminants.length}
-                labelClassName="text-red-500"
-              />
+              <div className="w-56 flex flex-col gap-y-2 border p-2 rounded-lg">
+                <BlurredLineItem
+                  label="Contaminants found"
+                  value={contaminants.length}
+                  labelClassName="text-red-500"
+                />
 
-              <BlurredLineItem
-                label="Toxins above health guidelines"
-                value={contaminantsAboveLimit.length}
-                labelClassName="text-red-500"
-              />
+                <BlurredLineItem
+                  label="Above guidelines"
+                  value={contaminantsAboveLimit.length}
+                  labelClassName="text-red-500"
+                />
+              </div>
             </div>
 
             <div className="w-1/2">
@@ -121,13 +123,13 @@ export default function LocationForm({ id }: Props) {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    {/* <PaywallContent className="mt-8" label="View contaminants"> */}
-                    <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                      {utility.contaminants.map((contaminant: any) => (
-                        <ContaminantCard key={contaminant.id} data={contaminant} />
-                      ))}
-                    </div>
-                    {/* </PaywallContent> */}
+                    <PaywallContent className="mt-8" label="View contaminants">
+                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                        {utility.contaminants.map((contaminant: any) => (
+                          <ContaminantCard key={contaminant.id} data={contaminant} />
+                        ))}
+                      </div>
+                    </PaywallContent>
                   </AccordionContent>
                 </AccordionItem>
               ))}
