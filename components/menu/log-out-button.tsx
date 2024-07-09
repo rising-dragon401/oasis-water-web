@@ -1,10 +1,10 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
-import { LogOut } from 'lucide-react'
-import { useUserProvider } from '@/providers/UserProvider'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
+import { useUserProvider } from '@/providers/UserProvider'
+import { LogOut } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export default function SignOutButton() {
   const router = useRouter()

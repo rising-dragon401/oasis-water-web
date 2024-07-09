@@ -8,6 +8,7 @@ import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
 import NutritionTable from '@/components/shared/nutrition-table'
 import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
+import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
@@ -125,9 +126,13 @@ export default function ItemForm({ id }: Props) {
 
                   {item.type === 'bottled_water' && (
                     <>
-                      <BlurredLineItem label="Microplastics" value={nanoPlasticsValue} />
+                      <BlurredLineItem
+                        label="Microplastics"
+                        value={nanoPlasticsValue}
+                        isPaywalled={true}
+                      />
 
-                      <BlurredLineItem label="Fluoride" value={fluorideValue} />
+                      <BlurredLineItem label="Fluoride" value={fluorideValue} isPaywalled={true} />
 
                       <BlurredLineItem
                         label="pH"
@@ -136,6 +141,7 @@ export default function ItemForm({ id }: Props) {
                             ? 'Unknown'
                             : item.metadata.ph_level
                         }
+                        isPaywalled={true}
                       />
 
                       <BlurredLineItem
@@ -145,13 +151,22 @@ export default function ItemForm({ id }: Props) {
                             ? 'N/A'
                             : item.metadata.tds
                         }
+                        isPaywalled={true}
                       />
 
-                      <BlurredLineItem label="PFAS" value={item.metadata?.pfas || 'N/A'} />
+                      <BlurredLineItem
+                        label="PFAS"
+                        value={item.metadata?.pfas || 'N/A'}
+                        isPaywalled={true}
+                      />
                     </>
                   )}
 
-                  <BlurredLineItem label="Packaging" value={item?.packaging || 'Unknown'} />
+                  <BlurredLineItem
+                    label="Packaging"
+                    value={item?.packaging || 'Unknown'}
+                    isPaywalled={true}
+                  />
                 </div>
 
                 <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
@@ -193,9 +208,11 @@ export default function ItemForm({ id }: Props) {
             </Typography>
             {sortedContaminants && sortedContaminants.length > 0 ? (
               <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                {sortedContaminants.map((contaminant: any, index: number) => (
-                  <ContaminantCard key={contaminant.id || index} data={contaminant} />
-                ))}
+                <PaywallContent label="Unlock contaminant amounts">
+                  {sortedContaminants.map((contaminant: any, index: number) => (
+                    <ContaminantCard key={contaminant.id || index} data={contaminant} />
+                  ))}
+                </PaywallContent>
               </div>
             ) : (
               <>
@@ -232,7 +249,9 @@ export default function ItemForm({ id }: Props) {
             </Typography>
             {item?.ingredients?.length > 0 ? (
               <div className="flex flex-col gap-4 mt-1">
-                <IngredientsCard ingredients={item.ingredients} />
+                <PaywallContent label="Unlock nutrients">
+                  <IngredientsCard ingredients={item.ingredients} />
+                </PaywallContent>
               </div>
             ) : (
               <Typography size="base" fontWeight="normal">

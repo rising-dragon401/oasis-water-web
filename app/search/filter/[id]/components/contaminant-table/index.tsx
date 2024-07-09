@@ -1,6 +1,7 @@
 'use client'
 
 import { getAllContaminants } from '@/app/actions/filters'
+import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
 import {
   Accordion,
@@ -81,52 +82,54 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
       <Typography size="xl" fontWeight="normal" className="text-secondary">
         Contaminants filtered
       </Typography>
-      <Typography size="xs" fontWeight="normal" className="text-secondary">
-        *Note some filters only list categories and % filtered so individual contaminants may or may
-        not be filtered. This is our best guess based on the information provided.
-      </Typography>
+      <PaywallContent label="Unlock contaminants this filter removes">
+        <Typography size="xs" fontWeight="normal" className="text-secondary">
+          *Note some filters only list categories and % filtered so individual contaminants may or
+          may not be filtered. This is our best guess based on the information provided.
+        </Typography>
 
-      {contaminantsByCategory.map((item) => (
-        <Accordion
-          key={item.category}
-          type="single"
-          collapsible
-          className="w-full bg-card rounded-md my-4 px-4"
-        >
-          <AccordionItem value="item-1">
-            <AccordionTrigger className="w-full flex flex-row justify-start rounded-md">
-              <div className="w-full justify-start flex">
-                <Typography size="lg" fontWeight="normal" className="text-secondary text-left">
-                  {item.category}
-                </Typography>
-              </div>
-              <div className="flex justify-end w-full md:mr-10 mr-4">
-                <Typography size="lg" fontWeight="normal" className="text-secondary justify-end">
-                  {item.percentageFiltered}%
-                </Typography>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-              <div className="flex flex-col gap-y-4 ml-4">
-                {item.contaminants?.map((contaminant) => (
-                  <Link
-                    href={determineLink(contaminant)}
-                    className="flex flex-row gap-6 justify-between items-center"
-                    key={contaminant.name}
-                  >
-                    {/* <div className="w-96" key={contaminant.name}>
+        {contaminantsByCategory.map((item) => (
+          <Accordion
+            key={item.category}
+            type="single"
+            collapsible
+            className="w-full bg-card rounded-md my-4 px-4"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="w-full flex flex-row justify-start rounded-md">
+                <div className="w-full justify-start flex">
+                  <Typography size="lg" fontWeight="normal" className="text-secondary text-left">
+                    {item.category}
+                  </Typography>
+                </div>
+                <div className="flex justify-end w-full md:mr-10 mr-4">
+                  <Typography size="lg" fontWeight="normal" className="text-secondary justify-end">
+                    {item.percentageFiltered}%
+                  </Typography>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent>
+                <div className="flex flex-col gap-y-4 ml-4">
+                  {item.contaminants?.map((contaminant) => (
+                    <Link
+                      href={determineLink(contaminant)}
+                      className="flex flex-row gap-6 justify-between items-center"
+                      key={contaminant.name}
+                    >
+                      {/* <div className="w-96" key={contaminant.name}>
                       {contaminant.name} {contaminant?.is_common ? '(c)' : ''}
                     </div> */}
-                    <Typography size="sm" fontWeight="normal" className="text-secondary">
-                      {contaminant.name}
-                    </Typography>
-                  </Link>
-                ))}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      ))}
+                      <Typography size="sm" fontWeight="normal" className="text-secondary">
+                        {contaminant.name}
+                      </Typography>
+                    </Link>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        ))}
+      </PaywallContent>
     </div>
   )
 }

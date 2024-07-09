@@ -140,22 +140,23 @@ export default function FilterForm({ id }: Props) {
                   </Typography>
                 </Link>
 
-                <div className=" flex-col border rounded-md px-2 mt-4 w-full md:flex hidden">
+                <div className=" flex-col border rounded-md p-2 mt-4 gap-y-4 w-full md:flex hidden">
                   {filter.is_indexed === false && <UntestedTooltip />}
 
                   <BlurredLineItem
                     label="Common contaminants removed"
                     value={`${percentCommonFiltered}%` || '0'}
-                    // labelClassName="text-red-500"
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
+                    isPaywalled={true}
                   />
+
                   <BlurredLineItem
-                    label="Uncommon contaminants removed"
+                    label="Uncommon ones"
                     value={`${percentUncommonFiltered}%` || '0'}
-                    // labelClassName="text-red-500"
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
+                    isPaywalled={true}
                   />
 
                   <BlurredLineItem
@@ -163,6 +164,7 @@ export default function FilterForm({ id }: Props) {
                     value={filter.certifications?.join(', ') || 'None'}
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
+                    isPaywalled={true}
                   />
                 </div>
 
@@ -192,16 +194,17 @@ export default function FilterForm({ id }: Props) {
           <BlurredLineItem
             label="Common contaminants removed"
             value={`${percentCommonFiltered}%` || '0'}
-            // labelClassName="text-red-500"
             tooltipContent="Learn more"
             tooltipLink="/blog/how_we_score_water"
+            isPaywalled={true}
           />
+
           <BlurredLineItem
             label="Uncommon contaminants removed"
             value={`${percentUncommonFiltered}%` || '0'}
-            // labelClassName="text-red-500"
             tooltipContent="Learn more"
             tooltipLink="/blog/how_we_score_water"
+            isPaywalled={true}
           />
 
           <BlurredLineItem
