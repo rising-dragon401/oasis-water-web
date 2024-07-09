@@ -28,7 +28,7 @@ export default function Footer() {
               </Link>
             </div>
             <div className="text-sm text-secondary">
-              © Live Oasis, LLC <span className="text-secondary">-</span> All rights reserved.
+              © Oasis <span className="text-secondary">-</span> All rights reserved.
             </div>
           </div>
 
@@ -40,7 +40,7 @@ export default function Footer() {
                 </Link>
               </div>
               <div className="text-sm text-secondary">
-                © Live Oasis, LLC <span className="text-secondary">-</span> All rights reserved.
+                © Oasis <span className="text-secondary">-</span> All rights reserved.
               </div>
             </div>
             <ul className="my-8 flex-row gap-4 flex list-none">

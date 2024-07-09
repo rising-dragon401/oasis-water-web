@@ -1,7 +1,6 @@
 'use client'
 
 import { getAllContaminants } from '@/app/actions/filters'
-import { ContaminantFiltersDropdown } from '@/components/contamintant-card/contaminant-filters-dropdown'
 import Typography from '@/components/typography'
 import {
   Accordion,
@@ -12,7 +11,6 @@ import {
 import { IngredientCategories } from '@/lib/constants/filters'
 import { Contaminant } from '@/types/custom'
 import { determineLink } from '@/utils/helpers'
-import { CheckCircle2, X } from 'lucide-react'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import useSWR from 'swr'
@@ -45,7 +43,7 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
             id: contaminant.id,
             name: contaminant.name,
             is_common: contaminant.is_common,
-            isFiltered: filteredContaminants.some((fc) => fc.id === contaminant.id) || 'unknown',
+            // isFiltered: filteredContaminants.some((fc) => fc.id === contaminant.id) || 'unknown',
           }
         })
         percentageFiltered = categories.find((item) => item.category === category)?.percentage
@@ -89,9 +87,14 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
       </Typography>
 
       {contaminantsByCategory.map((item) => (
-        <Accordion key={item.category} type="single" collapsible className="w-full">
+        <Accordion
+          key={item.category}
+          type="single"
+          collapsible
+          className="w-full bg-card rounded-md my-4 px-4"
+        >
           <AccordionItem value="item-1">
-            <AccordionTrigger className="w-full flex flex-row justify-start">
+            <AccordionTrigger className="w-full flex flex-row justify-start rounded-md">
               <div className="w-full justify-start flex">
                 <Typography size="lg" fontWeight="normal" className="text-secondary text-left">
                   {item.category}
@@ -104,23 +107,19 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
               </div>
             </AccordionTrigger>
             <AccordionContent>
-              <div className="flex flex-col gap-y-4">
+              <div className="flex flex-col gap-y-4 ml-4">
                 {item.contaminants?.map((contaminant) => (
                   <Link
                     href={determineLink(contaminant)}
                     className="flex flex-row gap-6 justify-between items-center"
                     key={contaminant.name}
                   >
-                    <div className="w-96" key={contaminant.name}>
+                    {/* <div className="w-96" key={contaminant.name}>
                       {contaminant.name} {contaminant?.is_common ? '(c)' : ''}
-                    </div>
-                    <div className="w-14">
-                      {contaminant.isFiltered === true && (
-                        <CheckCircle2 className="w-4 h-4 text-center" />
-                      )}
-                      {contaminant.isFiltered === false && <X className="w-4 h-4 text-center" />}
-                    </div>
-                    <ContaminantFiltersDropdown contaminantId={contaminant?.id} align="end" />
+                    </div> */}
+                    <Typography size="sm" fontWeight="normal" className="text-secondary">
+                      {contaminant.name}
+                    </Typography>
                   </Link>
                 ))}
               </div>

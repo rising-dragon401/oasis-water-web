@@ -47,6 +47,15 @@ export default function FilterForm({ id }: Props) {
   }
 
   // along with the percentage of common and uncommon contaminants filtered
+  const categoryPercentages =
+    filter?.filtered_contaminant_categories?.map((category: any) => category.percentage) || []
+  const averagePercentage =
+    categoryPercentages.length > 0
+      ? categoryPercentages.reduce((acc: any, percentage: number) => acc + percentage, 0) /
+        categoryPercentages.length
+      : 0
+
+  // along with the percentage of common and uncommon contaminants filtered
   const percentCommonFiltered = filter?.percent_common_filtered
 
   const percentUncommonFiltered = filter?.percent_uncommon_filtered
@@ -148,6 +157,7 @@ export default function FilterForm({ id }: Props) {
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
                   />
+
                   <BlurredLineItem
                     label="Certifications"
                     value={filter.certifications?.join(', ') || 'None'}
@@ -193,6 +203,7 @@ export default function FilterForm({ id }: Props) {
             tooltipContent="Learn more"
             tooltipLink="/blog/how_we_score_water"
           />
+
           <BlurredLineItem
             label="Certifications"
             value={filter.certifications?.join(', ') || 'None'}
