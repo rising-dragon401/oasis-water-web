@@ -16,5 +16,4 @@ export const IngredientCategories: IngredientCategory[] = [
   'Pharmaceuticals',
   'Phthalates',
   'Microbiologicals',
-  'Other',
 ]

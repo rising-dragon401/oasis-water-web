@@ -12,17 +12,17 @@ import '@/styles/globals.css'
 
 const meta = {
   title: 'Oasis',
-  description: 'Healthy shopping assistant for water',
+  description: 'Science-backed water ratings',
   cardImage:
     'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
   robots: 'follow, index',
   favicon: '/favicon.ico',
-  url: 'https://live-oasis.com',
+  url: 'https://oasiswater.app',
   type: 'website',
 }
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://live-oasis.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasiswater.app'),
   openGraph: {
     title: meta.title,
     description: meta.description,
@@ -38,7 +38,7 @@ export const metadata = {
         url: meta.cardImage,
         width: 1800,
         height: 1600,
-        alt: 'water health checker',
+        alt: 'water ratings',
       },
     ],
 
