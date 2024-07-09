@@ -52,7 +52,7 @@ const CATEGORIES: CategoryType[] = [
     id: 'filter',
     title: 'Filters',
     logo: <Filter className="text-slate-4000 w-4 h-4" />,
-    tags: ['tap', 'shower', 'bottle'],
+    tags: ['tap', 'shower', 'bottle', 'sink'],
   },
   {
     id: 'tap_water',
