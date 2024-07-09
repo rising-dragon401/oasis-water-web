@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils'
+
 export const Logo = ({ className = '', ...props }) => (
   <svg
     width="56"
@@ -5,7 +7,7 @@ export const Logo = ({ className = '', ...props }) => (
     viewBox="0 0 71.58 120"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="w-10 h-10 pt-2"
+    className={cn('w-10 h-10 pt-2', className)}
     {...props}
   >
     <g>

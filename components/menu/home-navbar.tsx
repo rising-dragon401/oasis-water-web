@@ -9,64 +9,16 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-import { Droplet, Filter, Milk } from 'lucide-react'
+import { FlaskConical, Search, Users } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
+import { AISearchDialog } from '../search-dialogue'
 import Typography from '../typography'
 
 interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
   logo?: React.ReactNode
   title: string
 }
-
-const components: {
-  title: string
-  href: string
-  description: string
-  logo: React.ReactNode
-}[] = [
-  {
-    title: 'Bottled water',
-    href: '/search/bottled-water',
-    description: 'Discover the health rating of your bottled water, flavored water and more.',
-    logo: <Milk className="text-secondary w-4 h-4" />,
-  },
-  {
-    title: 'Tap water',
-    href: '/search/tap-water',
-    description: 'Lookup what contaminants are inside your tap water',
-    logo: <Droplet className="text-secondary w-4 h-4" />,
-  },
-  {
-    title: 'Water Filters',
-    href: '/search/filters',
-    description: 'Find the best filter for your tap water and bottled water.',
-    logo: <Filter className="text-secondary w-4 h-4" />,
-  },
-]
-
-const aboutComponents: { title: string; href: string; description: string }[] = [
-  {
-    title: 'About',
-    href: '/about',
-    description: 'We make living a clean healthy life easy',
-  },
-  {
-    title: 'Mission',
-    href: '/mission',
-    description: 'We are dedicated to simplifying the journey towards conscious consumption.',
-  },
-  {
-    title: 'Blog',
-    href: '/blog',
-    description: 'Discover and read more about the water industry and Oasis.',
-  },
-  {
-    title: 'How Scoring Works',
-    href: '/blog/how_we_score_water',
-    description: 'The science and formula behind our water scoring system.',
-  },
-]
 
 export default function HomeNavbar() {
   return (
@@ -84,9 +36,12 @@ export default function HomeNavbar() {
 
         <NavigationMenuItem>
           <Link href="/" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <Search className="w-4 h-4 text-secondary mr-2" />
             Explore
           </Link>
         </NavigationMenuItem>
+
+        <AISearchDialog size="small" />
 
         {/* <NavigationMenuItem>
           <NavigationMenuTrigger>Explore</NavigationMenuTrigger>
@@ -107,9 +62,11 @@ export default function HomeNavbar() {
         </NavigationMenuItem> */}
         <NavigationMenuItem>
           <Link href="/users" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <Users className="w-4 h-4 text-secondary mr-2" />
             Community
           </Link>
         </NavigationMenuItem>
+
         {/* <NavigationMenuItem>
           <NavigationMenuTrigger>About</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -128,6 +85,7 @@ export default function HomeNavbar() {
             href="/blog/water_testing_partner"
             className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
           >
+            <FlaskConical className="w-4 h-4 text-secondary mr-2" />
             Lab testing
           </Link>
         </NavigationMenuItem>
