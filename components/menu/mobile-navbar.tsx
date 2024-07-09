@@ -16,6 +16,7 @@ import { useUserProvider } from '@/providers/UserProvider'
 import { Menu, Palmtree, Search, User, Users, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
+import { AISearchDialog } from '../search-dialogue'
 import SignUpButton from '../shared/sign-up-button'
 import SignOutButton from './log-out-button'
 
@@ -79,6 +80,8 @@ export default function MobileNavbar() {
             {/* <DropdownMenuItem>
               <Link href="/blog/water_testing_partner">Lab testing</Link>
             </DropdownMenuItem> */}
+
+            <AISearchDialog size="small" />
 
             <DropdownMenuSeparator />
 

@@ -1,30 +1,16 @@
 'use client'
 
+import Logo from '@/components/shared/logo'
 import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
 import useSubscription from '@/lib/hooks/use-subscription'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
-import {
-  ArrowUp10,
-  FlaskConical,
-  MessageCircle,
-  Microscope,
-  Search,
-  SearchCheck,
-} from 'lucide-react'
-import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -36,33 +22,25 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: 'Water health ratings and data',
-    icon: <FlaskConical className="w-4 h-4" />,
-  },
-  {
-    label: 'Sorted by score',
-    icon: <ArrowUp10 className="w-4 h-4" />,
-  },
-  {
-    label: 'Bottled water, filters and more',
-    icon: <Search className="w-4 h-4" />,
+    label: ' Unlock all scores and ratings',
+    icon: '🔓',
   },
   {
     label: 'Scientific research',
-    icon: <SearchCheck className="w-4 h-4" />,
+    icon: '🧬',
   },
   {
-    label: 'Oasis AI',
-    icon: <MessageCircle className="w-4 h-4" />,
+    label: 'Personal AI nutritionist',
+    icon: '🧑‍⚕️',
+  },
+  {
+    label: 'Supports lab testing',
+    icon: '🔬',
   },
   // {
   //   label: 'Personalized recommendations',
   //   icon: <Dna className="w-4 h-4" />,
   // },
-  {
-    label: 'Supports Oasis lab testing',
-    icon: <Microscope className="w-4 h-4" />,
-  },
   // {
   //   label: 'Private community',
   //   icon: <Users className="w-4 h-4" />,
@@ -127,19 +105,19 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(true)
 
     // offer 3 day trial
-    // const metadata = {
-    //   trial_settings: {
-    //     end_behavior: {
-    //       missing_payment_method: 'cancel',
-    //     },
-    //   },
-    //   trial_period_days: ,
-    // }
+    const metadata = {
+      trial_settings: {
+        end_behavior: {
+          missing_payment_method: 'cancel',
+        },
+      },
+      trial_period_days: 3,
+    }
 
     try {
       const { sessionId } = await postData({
         url: '/api/create-checkout-session',
-        data: { price: proPrice, metadata: {}, referral: referral },
+        data: { price: proPrice, metadata: metadata, referral: referral },
       })
 
       const stripe = await getStripe()
@@ -159,28 +137,25 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
         setOpen(!open)
       }}
     >
-      <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh]">
+      <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh] ">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-center">Unlock the healthiest water</DialogTitle>
-          <Image
+          {/* <DialogTitle className="text-2xl text-center">Unlock the healthiest water</DialogTitle> */}
+          {/* <Image
             src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
             blurDataURL="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
             alt="Unlock best water"
             width={425}
             height={200}
             className="rounded-lg h-40 object-cover object-center"
-          />
-          <div>
-            <Typography size="xl" fontWeight="bold" className="text-center">
+          /> */}
+
+          <div className="flex flex-col justify-center items-center">
+            <Logo className="w-20 h-20" />
+            <Typography size="2xl" fontWeight="bold" className="text-center mt-2">
               Oasis Pro
             </Typography>
-            {/* <Typography size="base" fontWeight="normal" className="text-center">
-              Free access for 1 day, then
-            </Typography> */}
-            <Typography size="base" fontWeight="normal" className="text-center">
-              ${Math.round(kSubscriptionPrice)} annual (only ${Math.round(kSubscriptionPrice / 12)}{' '}
-              {` `}
-              per month)
+            <Typography size="base" fontWeight="normal" className="text-center ">
+              Know what you are drinking
             </Typography>
           </div>
           {/* <div className="flex w-full justify-center">
@@ -191,7 +166,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           </div> */}
         </DialogHeader>
 
-        <div className="flex flex-col gap-3 px-6 py-4 rounded-md bg-muted">
+        <div className="flex flex-col gap-3 px-6 py-4 rounded-md bg-muted mx-8">
           {FEATURES.map((feature) => (
             <SubscriptionItem key={feature.label} label={feature.label} icon={feature.icon} />
           ))}
@@ -199,13 +174,17 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
         <DialogFooter className="flex flex-col gap-2 w-full">
           <div className="flex flex-col">
+            <Typography size="base" fontWeight="normal" className="text-secondary text-center mb-2">
+              ${Math.round(kSubscriptionPrice)} annual (${Math.round(kSubscriptionPrice / 52)} per
+              week)
+            </Typography>
             <Button
               variant="default"
               className="px-4 w-full !font-bold"
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Unock Oasis Pro
+              Start free trial
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
