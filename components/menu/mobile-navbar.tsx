@@ -77,9 +77,9 @@ export default function MobileNavbar() {
               </div>
             </DropdownMenuItem> */}
 
-            {/* <DropdownMenuItem>
-              <Link href="/blog/water_testing_partner">Lab testing</Link>
-            </DropdownMenuItem> */}
+            <DropdownMenuItem>
+              <Link href="/lab-testing">Lab testing</Link>
+            </DropdownMenuItem>
 
             <AISearchDialog size="small" />
 
