@@ -81,10 +81,7 @@ export default function HomeNavbar() {
         </NavigationMenuItem> */}
 
         <NavigationMenuItem>
-          <Link
-            href="/blog/water_testing_partner"
-            className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
-          >
+          <Link href="/lab-testing" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <FlaskConical className="w-4 h-4 text-secondary mr-2" />
             Lab testing
           </Link>
