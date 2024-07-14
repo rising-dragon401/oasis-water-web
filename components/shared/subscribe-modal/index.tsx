@@ -158,6 +158,10 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               Know what you are drinking
             </Typography>
           </div>
+          <Typography size="base" fontWeight="normal" className="text-secondary text-center mb-2">
+            ${Math.round(kSubscriptionPrice)} annual (${Math.round(kSubscriptionPrice / 52)} per
+            week)
+          </Typography>
           {/* <div className="flex w-full justify-center">
             <DialogDescription className="text-center max-w-72">
               Improve your health and longevity by accessing the most up to date research and
@@ -174,17 +178,13 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
         <DialogFooter className="flex flex-col gap-2 w-full">
           <div className="flex flex-col">
-            <Typography size="base" fontWeight="normal" className="text-secondary text-center mb-2">
-              ${Math.round(kSubscriptionPrice)} annual (${Math.round(kSubscriptionPrice / 52)} per
-              week)
-            </Typography>
             <Button
               variant="default"
               className="px-4 w-full !font-bold"
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Start free trial
+              Subscribe
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
