@@ -8,7 +8,7 @@ export default function SignUpButton({ referral }: { referral?: string }) {
   const pathname = usePathname()
 
   return (
-    <Link href={`/auth/signin?redirectUrl=${pathname}`}>
+    <Link href={`/auth/signin?redirectUrl=${pathname}&view=sign_up`}>
       <Button variant="default" className="w-full">
         Sign up
       </Button>

@@ -105,14 +105,14 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(true)
 
     // offer 3 day trial
-    // const metadata = {
-    //   trial_settings: {
-    //     end_behavior: {
-    //       missing_payment_method: 'cancel',
-    //     },
-    //   },
-    //   trial_period_days: 3,
-    // }
+    const metadata = {
+      // trial_settings: {
+      //   end_behavior: {
+      //     missing_payment_method: 'cancel',
+      //   },
+      // },
+      // trial_period_days: 3,
+    }
 
     try {
       const { sessionId } = await postData({
