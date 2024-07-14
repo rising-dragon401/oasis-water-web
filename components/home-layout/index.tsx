@@ -52,7 +52,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
 
-        {/* <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
+        <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
           <Typography size="sm" fontWeight="normal">
             iOS app is live 🎉 {` `}
             <a
@@ -64,7 +64,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
               Download Now
             </a>
           </Typography>
-        </div> */}
+        </div>
 
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
