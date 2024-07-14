@@ -9,6 +9,8 @@ import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useEffect } from 'react'
 
+type ViewType = 'sign_in' | 'sign_up'
+
 type Props = {
   showToast: boolean
   toastMessage: string
@@ -24,10 +26,17 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
   // Suspense boundary for useSearchParams
   const AuthComponentWithSuspense = () => {
     const searchParams = useSearchParams()
-    const redirectUrl = searchParams.get('redirectUrl')
-    const modal = searchParams.get('modal')
-    if (redirectUrl) setRedirectUrl(redirectUrl)
-    if (modal) setModalToOpen(modal)
+
+    useEffect(() => {
+      const redirectUrl = searchParams.get('redirectUrl')
+      const modal = searchParams.get('modal')
+
+      if (redirectUrl) setRedirectUrl(redirectUrl)
+      if (modal) setModalToOpen(modal)
+    }, [searchParams])
+
+    const view = (searchParams.get('view') as ViewType) || 'sign_in'
+    const modal = searchParams.get('modal') // Define modal here
 
     return (
       <Auth
@@ -35,6 +44,7 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
         providers={['google']}
         redirectTo={`${getURL()}/auth/callback?redirectUrl=${redirectUrl || '/'}?modalToOpen=${modal || ''}`}
         magicLink={true}
+        view={view || 'sign_in'}
         appearance={{
           theme: ThemeSupa,
           variables: {

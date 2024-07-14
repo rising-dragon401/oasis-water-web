@@ -308,6 +308,8 @@ export const getActiveProductsWithPrices = async () => {
     .order('metadata->index')
     .order('unit_amount', { foreignTable: 'prices' })
 
+  console.log('data: ', data)
+
   if (error) {
     console.log(error.message)
   }
