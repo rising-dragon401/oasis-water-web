@@ -299,6 +299,7 @@ export type Database = {
           ingredients: Json[] | null
           is_distilled: boolean | null
           is_indexed: boolean | null
+          is_private: boolean | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
@@ -327,6 +328,7 @@ export type Database = {
           ingredients?: Json[] | null
           is_distilled?: boolean | null
           is_indexed?: boolean | null
+          is_private?: boolean | null
           metadata?: Json | null
           name: string
           nutrients?: Json[] | null
@@ -355,6 +357,7 @@ export type Database = {
           ingredients?: Json[] | null
           is_distilled?: boolean | null
           is_indexed?: boolean | null
+          is_private?: boolean | null
           metadata?: Json | null
           name?: string
           nutrients?: Json[] | null
@@ -706,6 +709,7 @@ export type Database = {
           following: string[] | null
           full_name: string | null
           has_redeemed_free: boolean | null
+          has_reviewed_app: boolean | null
           id: string
           is_featured: boolean | null
           is_oasis_public: boolean | null
@@ -726,6 +730,7 @@ export type Database = {
           following?: string[] | null
           full_name?: string | null
           has_redeemed_free?: boolean | null
+          has_reviewed_app?: boolean | null
           id: string
           is_featured?: boolean | null
           is_oasis_public?: boolean | null
@@ -746,6 +751,7 @@ export type Database = {
           following?: string[] | null
           full_name?: string | null
           has_redeemed_free?: boolean | null
+          has_reviewed_app?: boolean | null
           id?: string
           is_featured?: boolean | null
           is_oasis_public?: boolean | null
@@ -884,6 +890,7 @@ export type Database = {
           ingredients: Json[] | null
           is_distilled: boolean | null
           is_indexed: boolean | null
+          is_private: boolean | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
@@ -951,6 +958,7 @@ export type Database = {
           ingredients: Json[] | null
           is_distilled: boolean | null
           is_indexed: boolean | null
+          is_private: boolean | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
@@ -1100,7 +1108,7 @@ export type Database = {
         | "Organic Acids"
         | "Trihalomethanes"
         | "Synthetics"
-        | "Inorganic ingredient"
+        | "Inorganic ingredients"
       item_type:
         | "bottled_water"
         | "tap_water"

@@ -35,6 +35,8 @@ export const getItems = async ({
     return []
   }
 
+  items = items.filter((item) => !item.is_private)
+
   // const itemsWithCompany = await Promise.all(
   //   items.map(async (item) => {
   //     const { data: company, error: companyError } = await supabase
