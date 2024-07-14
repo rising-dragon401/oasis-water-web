@@ -105,19 +105,19 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(true)
 
     // offer 3 day trial
-    const metadata = {
-      trial_settings: {
-        end_behavior: {
-          missing_payment_method: 'cancel',
-        },
-      },
-      trial_period_days: 3,
-    }
+    // const metadata = {
+    //   trial_settings: {
+    //     end_behavior: {
+    //       missing_payment_method: 'cancel',
+    //     },
+    //   },
+    //   trial_period_days: 3,
+    // }
 
     try {
       const { sessionId } = await postData({
         url: '/api/create-checkout-session',
-        data: { price: proPrice, metadata: metadata, referral: referral },
+        data: { price: proPrice, metadata: {}, referral: referral },
       })
 
       const stripe = await getStripe()
