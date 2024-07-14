@@ -184,15 +184,15 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Subscribe
+              Subscribe to Oasis Pro
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
-              We do not offer refunds under any circumstance as stated in our
+              We do not offer refunds as stated in our
               <a href="/refund-policy" className="text-blue-500 underline">
                 {` `} Refund policy.
               </a>
-              {` `} Funds go to improving Oasis and testing.
+              {` `} Funds go to improving Oasis and further lab testing.
             </Typography>
           </div>
         </DialogFooter>

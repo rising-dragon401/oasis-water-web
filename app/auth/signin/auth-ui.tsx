@@ -27,13 +27,16 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
   const AuthComponentWithSuspense = () => {
     const searchParams = useSearchParams()
 
-    const redirectUrl = searchParams.get('redirectUrl')
-    // default to sign_in
-    const view = (searchParams.get('view') as ViewType) || 'sign_in'
-    const modal = searchParams.get('modal')
+    useEffect(() => {
+      const redirectUrl = searchParams.get('redirectUrl')
+      const modal = searchParams.get('modal')
 
-    if (redirectUrl) setRedirectUrl(redirectUrl)
-    if (modal) setModalToOpen(modal)
+      if (redirectUrl) setRedirectUrl(redirectUrl)
+      if (modal) setModalToOpen(modal)
+    }, [searchParams])
+
+    const view = (searchParams.get('view') as ViewType) || 'sign_in'
+    const modal = searchParams.get('modal') // Define modal here
 
     return (
       <Auth
