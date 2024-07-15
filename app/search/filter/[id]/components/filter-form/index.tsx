@@ -145,7 +145,7 @@ export default function FilterForm({ id }: Props) {
 
                   <BlurredLineItem
                     label="Common contaminants removed"
-                    value={`${percentCommonFiltered}%` || '0'}
+                    value={percentCommonFiltered ? `${percentCommonFiltered}%` : 'Unknown'}
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
                     isPaywalled={true}
@@ -153,7 +153,7 @@ export default function FilterForm({ id }: Props) {
 
                   <BlurredLineItem
                     label="Uncommon ones"
-                    value={`${percentUncommonFiltered}%` || '0'}
+                    value={percentUncommonFiltered ? `${percentUncommonFiltered}%` : 'Unknown'}
                     tooltipContent="Learn more"
                     tooltipLink="/blog/how_we_score_water"
                     isPaywalled={true}
