@@ -119,7 +119,7 @@ export default function BasicSearch({
           indexName: 'water_filters',
           query: query,
           params: {
-            hitsPerPage: numResults || 3,
+            hitsPerPage: numResults || 10,
           },
         },
         {

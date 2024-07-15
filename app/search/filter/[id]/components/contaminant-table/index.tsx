@@ -104,7 +104,7 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
                 </div>
                 <div className="flex justify-end w-full md:mr-10 mr-4">
                   <Typography size="lg" fontWeight="normal" className="text-secondary justify-end">
-                    {item.percentageFiltered}%
+                    {item.percentageFiltered ? `${item.percentageFiltered}%` : 'Unknown'}
                   </Typography>
                 </div>
               </AccordionTrigger>
