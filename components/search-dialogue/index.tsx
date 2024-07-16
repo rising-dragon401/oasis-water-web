@@ -358,7 +358,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
       <Button
         onClick={handleSearchButtonClick}
         variant="ghost"
-        className="gap-2 rounded-full h-8 px-2"
+        className="gap-2 rounded-full h-8 px-4"
       >
         <Sparkles className="w-4 h-4 text-secondary" />
         Assistant

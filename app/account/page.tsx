@@ -9,7 +9,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 import NameForm from './components/name-form'
-import { OasisSwitch } from './components/oasis-switch'
 import PasswordResetForm from './components/password-reset-form'
 
 export default function AccountSettings() {
@@ -70,9 +69,9 @@ export default function AccountSettings() {
 
           <NameForm />
 
-          <div className="mt-6">
+          {/* <div className="mt-6">
             <OasisSwitch userData={userData} />
-          </div>
+          </div> */}
         </div>
 
         {/* <Tabs defaultValue="account" className="w-[400px]">

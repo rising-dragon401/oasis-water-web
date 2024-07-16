@@ -69,7 +69,7 @@ export default function NameForm() {
         Profile
       </Typography>
       <div className="mx-auto flex w-full flex-col space-y-2">
-        <div className="flex flex-col w-96 space-y-2">
+        <div className="flex flex-col space-y-2">
           <ImageUpload
             itemId={userData?.id}
             label="Avatar"

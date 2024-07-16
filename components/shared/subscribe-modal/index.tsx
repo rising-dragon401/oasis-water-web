@@ -152,7 +152,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           <div className="flex flex-col justify-center items-center">
             <Logo className="w-20 h-20" />
             <Typography size="2xl" fontWeight="bold" className="text-center mt-2">
-              Oasis Pro
+              Oasis Membership
             </Typography>
             <Typography size="base" fontWeight="normal" className="text-center ">
               Know what you are drinking
@@ -184,7 +184,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Subscribe to Oasis Pro
+              Unlock membership
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
