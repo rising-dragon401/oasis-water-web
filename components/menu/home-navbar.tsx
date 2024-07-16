@@ -9,10 +9,9 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-import { FlaskConical, Search, Users } from 'lucide-react'
+import { FlaskConical, Mail, Search } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
-import { AISearchDialog } from '../search-dialogue'
 import Typography from '../typography'
 
 interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
@@ -41,7 +40,7 @@ export default function HomeNavbar() {
           </Link>
         </NavigationMenuItem>
 
-        <AISearchDialog size="small" />
+        {/* <AISearchDialog size="small" /> */}
 
         {/* <NavigationMenuItem>
           <NavigationMenuTrigger>Explore</NavigationMenuTrigger>
@@ -60,12 +59,13 @@ export default function HomeNavbar() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem> */}
-        <NavigationMenuItem>
+
+        {/* <NavigationMenuItem>
           <Link href="/users" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <Users className="w-4 h-4 text-secondary mr-2" />
             Community
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         {/* <NavigationMenuItem>
           <NavigationMenuTrigger>About</NavigationMenuTrigger>
@@ -87,14 +87,12 @@ export default function HomeNavbar() {
           </Link>
         </NavigationMenuItem>
 
-        {/* <NavigationMenuItem>
-          <div
-            onClick={() => window.open(kAffiliatePortal, '_blank')}
-            className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
-          >
-            Affiliates
-          </div>
-        </NavigationMenuItem> */}
+        <NavigationMenuItem>
+          <Link href="/contact" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <Mail className="w-4 h-4 text-secondary mr-2" />
+            Contact us
+          </Link>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   )

@@ -14,8 +14,7 @@ export default async function Home() {
             </Typography>
 
             <Typography size="lg" fontWeight="normal" className="max-w-lg">
-              90% of water contains toxins, microplastics and contaminants. Search what you drink
-              👇👇
+              90% of water contains toxins, microplastics and contaminants. Search what you drink 👇
             </Typography>
           </div>
 

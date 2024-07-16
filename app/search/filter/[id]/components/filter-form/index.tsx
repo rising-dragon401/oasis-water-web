@@ -9,6 +9,7 @@ import ItemImage from '@/components/shared/item-image'
 import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
+import TestingCta from '@/components/shared/testing-cta'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -71,8 +72,8 @@ export default function FilterForm({ id }: Props) {
 
   if (filter.is_draft) {
     return (
-      <div className="flex-col flex w-full md:px-0 px-2">
-        <div className="md:py-10 py-6">
+      <div className="flex-col flex w-full md:px-0 px-2 gap-y-8">
+        <div className="md:pt-10 pt-6">
           <div className="flex md:flex-row flex-col gap-6">
             <div className="flex justify-center md:w-2/5 w-full">
               {filter.affiliate_url ? (
@@ -115,8 +116,8 @@ export default function FilterForm({ id }: Props) {
   }
 
   return (
-    <div className="flex-col flex w-full md:px-0 px-2">
-      <div className="md:py-10 py-6">
+    <div className="flex-col flex w-full md:px-0 px-2 gap-y-8">
+      <div className="md:pt-10 pt-6">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="flex justify-center md:w-2/5 w-full">
             {filter.affiliate_url ? (
@@ -234,6 +235,8 @@ export default function FilterForm({ id }: Props) {
           {filter?.sources && filter?.sources?.length > 0 && <Sources data={filter.sources} />}
         </>
       </div>
+
+      <TestingCta />
 
       <RecommendedFiltersRow />
     </div>

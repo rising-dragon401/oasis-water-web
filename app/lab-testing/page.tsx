@@ -1,6 +1,5 @@
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
-import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 
@@ -10,7 +9,7 @@ const TEST_KITS = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/comprehensive_water_test_kit.webp?t=2024-07-11T15%3A29%3A08.274Z',
     description:
-      'Tests for nearly all contaminants including heavy metals, bacteria, PFAS, radionuclides, glyphosate, pesticides, herbicides, haloacetic acids, trihalomethanes, disinfection byproducts, and more.',
+      'Tests for nearly all contaminants including heavy metals, bacteria, PFAS, radionuclides, glyphosate, pesticides, herbicides, haloacetic acids, trihalomethanes, and more.',
     price: 2750,
     affiliateLink: 'https://shrsl.com/4lt06',
   },
@@ -65,12 +64,19 @@ export default function LabTestingPage() {
       <div className="flex flex-col w-full px-4 pt-14 pb-10">
         <div className="flex flex-col w-full items-center mb-8">
           <Typography size="4xl" fontWeight="normal" className="text-center">
-            Water Lab Tests and Reports
+            Order water testing kits
           </Typography>
-          <Typography size="base" fontWeight="normal" className="mt-2 text-secondary text-center">
-            We partner with TapScore to provide comprehensive and state of the art testing
+          <Typography
+            size="base"
+            fontWeight="normal"
+            className="mt-2 text-secondary text-center max-w-2xl"
+          >
+            We partner with TapScore to provide comprehensive and state of the art water testing and
+            analysis. Get a personal testing kit shipped to your home to test tap water, bottled
+            water and more.
           </Typography>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {TEST_KITS.map((testKit) => (
             <a
@@ -80,24 +86,28 @@ export default function LabTestingPage() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <div className="flex w-full h-48">
+              <div className="flex w-full h-48 justify-center items-center">
                 <Image
                   src={testKit.image}
                   alt={testKit.name}
                   width={700}
                   height={700}
-                  className="w-56 h-full"
+                  className="w-48 h-full"
                 />
               </div>
-              <div className="flex flex-col gap-2 py-4">
+              <div className="flex flex-col gap-2 pb-4">
                 <Typography size="xl" fontWeight="normal" className="">
                   {testKit.name}
                 </Typography>
-                <Typography size="sm" fontWeight="normal" className="text-secondary h-24">
+                <Typography size="sm" fontWeight="normal" className="text-secondary h-20">
                   {testKit.description}
                 </Typography>
-                <div className="w-72 mt-2">
-                  <Button variant="outline">Learn more</Button>
+                <div className="flex flex-row justify-between items-center w-full">
+                  {/* <Button variant="outline">Order now</Button> */}
+
+                  <Typography size="xl" fontWeight="normal" className="text-secondary">
+                    ${testKit.price}
+                  </Typography>
                 </div>
               </div>
             </a>
@@ -114,6 +124,18 @@ export default function LabTestingPage() {
             </Typography>
             <ArrowRight className="w-8 h-8 text-primary" />
           </a>
+        </div>
+
+        <div className="flex flex-col gap-4 py-14 px-8 rounded-2xl mt-24 bg-muted border">
+          <Typography size="2xl" fontWeight="normal">
+            Consulting and test inquiries
+          </Typography>
+          <Typography size="base" fontWeight="normal" className="mt-2 text-secondary">
+            Need a custom test or want Oasis to review your water? Reach out to us at{' '}
+            <a href="mailto:cormac@live-oasis.com" className="underline">
+              cormac@live-oasis.com
+            </a>
+          </Typography>
         </div>
       </div>
     </SubpageLayout>

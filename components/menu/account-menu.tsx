@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Palmtree, User } from 'lucide-react'
+import { Heart, User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import SignOutButton from './log-out-button'
@@ -64,8 +64,8 @@ export function AccountMenu() {
 
         <DropdownMenuItem className="hover:cursor-pointer" asChild>
           <Link href={`/${user.id}`} className="flex flex-row items-center">
-            <Palmtree className="mr-2 h-4 w-4" />
-            My Oasis
+            <Heart className="mr-2 h-4 w-4" />
+            My products
           </Link>
         </DropdownMenuItem>
 

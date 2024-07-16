@@ -11,6 +11,7 @@ import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
 import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
+import TestingCta from '@/components/shared/testing-cta'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -80,8 +81,8 @@ export default function ItemForm({ id }: Props) {
   }
 
   return (
-    <div className="flex-col flex w-full">
-      <div className="md:py-10 pt-2 pb-6 md:px-0 px-4">
+    <div className="flex-col flex w-full gap-y-8">
+      <div className="md:pt-10 pt-2 md:px-0 px-4">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="flex justify-center w-full md:w-2/5">
             {item.affiliate_url ? (
@@ -272,6 +273,8 @@ export default function ItemForm({ id }: Props) {
           {item && item?.sources?.length > 0 && <Sources data={item.sources} />}
         </>
       </div>
+
+      <TestingCta />
 
       <RecommendedRow category={item.type} />
     </div>

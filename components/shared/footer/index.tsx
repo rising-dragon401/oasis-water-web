@@ -1,16 +1,9 @@
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
-import {
-  kAffiliatePortal,
-  kDiscordInvite,
-  kInstagram,
-  kTikTok,
-  kTwitter,
-  kYouTube,
-} from '@/lib/constants/socials'
+import { kAffiliatePortal, kInstagram, kTikTok, kTwitter, kYouTube } from '@/lib/constants/socials'
 import Link from 'next/link'
 import { useState } from 'react'
-import { FaDiscord, FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
+import { FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import EmailSubscribe from '../email-subscribe'
 import { FeedbackModal } from '../feedback-modal'
 
@@ -64,11 +57,11 @@ export default function Footer() {
                   <FaYoutube className="text-primary" />
                 </a>
               </li>
-              <li className="ml-2">
+              {/* <li className="ml-2">
                 <a href="https://discord.gg/AhapvnXxAy" target="_blank" rel="noopener noreferrer">
                   <FaDiscord className="text-primary" />
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -100,11 +93,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-secondary  transition duration-150 ease-in-out">
-                  About
-                </Link>
-              </li>
-              <li>
                 <Link
                   href="/blog/how_we_score_water"
                   className="text-secondary transition duration-150 ease-in-out"
@@ -114,7 +102,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/blog/water_testing_partner"
+                  href="/lab-testing"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
                   Test your water
@@ -167,16 +155,6 @@ export default function Footer() {
             <h6 className="text-sm text-secondary font-bold mb-2">Support</h6>
             <ul className="text-sm space-y-2 list-none">
               <FeedbackModal open={openFeedback} setOpen={setOpenFeedback} />
-
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  window.open(kDiscordInvite, '_blank')
-                }}
-              >
-                Community
-              </div>
-
               <div
                 className="cursor-pointer"
                 onClick={() => {
@@ -198,14 +176,13 @@ export default function Footer() {
                   FAQs
                 </Link>
               </li>
-
               <div
                 className="cursor-pointer"
                 onClick={() => {
                   window.open(kAffiliatePortal, '_blank')
                 }}
               >
-                Affiliates
+                Influencer program
               </div>
             </ul>
           </div>

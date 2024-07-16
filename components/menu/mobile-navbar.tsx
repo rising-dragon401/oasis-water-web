@@ -13,10 +13,9 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Menu, Palmtree, Search, User, Users, X } from 'lucide-react'
+import { FlaskConical, Heart, Menu, Search, User, Users, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { AISearchDialog } from '../search-dialogue'
 import SignUpButton from '../shared/sign-up-button'
 import SignOutButton from './log-out-button'
 
@@ -67,29 +66,21 @@ export default function MobileNavbar() {
             </DropdownMenuItem>
 
             {/* <DropdownMenuSeparator /> */}
-
-            {/* <DropdownMenuItem>
-              <div
-                onClick={() => window.open(kAffiliatePortal, '_blank')}
-                className="flex flex-row gap-2 items-center"
-              >
-                Affiliates
-              </div>
-            </DropdownMenuItem> */}
-
             <DropdownMenuItem>
+              <FlaskConical className="w-4 h-4 text-secondary mr-2" />
+
               <Link href="/lab-testing">Lab testing</Link>
             </DropdownMenuItem>
 
-            <AISearchDialog size="small" />
+            {/* <AISearchDialog size="small" /> */}
 
             <DropdownMenuSeparator />
 
             {user && (
               <DropdownMenuItem className="hover:cursor-pointer" asChild>
                 <Link href={`/${user?.id}`} className="flex flex-row items-center">
-                  <Palmtree className="mr-2 h-4 w-4" />
-                  My Oasis
+                  <Heart className="mr-2 h-4 w-4" />
+                  My products
                 </Link>
               </DropdownMenuItem>
             )}

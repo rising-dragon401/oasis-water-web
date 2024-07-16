@@ -20,6 +20,12 @@ const FAQ_LIST = [
       'We get our data from science-backed research papers, official water testing reports, non-profit research centers like EWG and from leading scientific experts.',
   },
   {
+    value: 'testing',
+    trigger: 'How can I test my water?',
+    content:
+      'We partner with Tapscore to provide testing kits and analyze toxins in water. You can learn more on the Lab testing page',
+  },
+  {
     value: 'affiliate-links',
     trigger: 'Do you use affilite links?',
     content:
@@ -29,22 +35,20 @@ const FAQ_LIST = [
 
 export default function FAQs() {
   return (
-    <div>
-      <div className="w-full mt-14">
-        <div className=" flex flex-row justify-between">
-          <Typography size="2xl" fontWeight="normal">
-            Frequently asked questions
-          </Typography>
-        </div>
-        <Accordion type="single" collapsible>
-          {FAQ_LIST.map((faq) => (
-            <AccordionItem key={faq.value} value={faq.value}>
-              <AccordionTrigger className="text-primary">{faq.trigger}</AccordionTrigger>
-              <AccordionContent className="text-secondary">{faq.content}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
+    <div className="w-full mt-14">
+      <div className=" flex flex-row justify-between">
+        <Typography size="2xl" fontWeight="normal">
+          Frequently asked questions
+        </Typography>
       </div>
+      <Accordion type="single" collapsible className="max-w-xl">
+        {FAQ_LIST.map((faq) => (
+          <AccordionItem key={faq.value} value={faq.value}>
+            <AccordionTrigger className="text-primary">{faq.trigger}</AccordionTrigger>
+            <AccordionContent className="text-secondary">{faq.content}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </div>
   )
 }

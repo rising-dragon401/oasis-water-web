@@ -111,13 +111,13 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
         />
 
         {file ? (
-          <div onClick={onButtonClick} className="cursor-pointer">
+          <div onClick={onButtonClick} className="cursor-pointer w-40 h-40">
             <Image
               src={file}
               alt="Uploaded"
               width={300}
               height={300}
-              className="rounded-full h-full w-full"
+              className="rounded-full w-40 h-40"
             />
           </div>
         ) : (
