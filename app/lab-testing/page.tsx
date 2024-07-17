@@ -1,5 +1,6 @@
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
+import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 
@@ -35,7 +36,8 @@ const TEST_KITS = [
     name: 'PFAS Water Test',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/PFAS_Water_Test_.webp',
-    description: 'Tests water for PFOS, PFOA, and other PFAS compounds.',
+    description:
+      'Tests water for PFOS, PFOA, and other PFAS compounds aka forever chemicals that are nearly impossible to breakdown.',
     price: 299,
     affiliateLink: 'https://shrsl.com/4lt0w',
   },
@@ -43,7 +45,8 @@ const TEST_KITS = [
     name: 'Microplastics Water Test',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Microplastics_Water_Test_.webp',
-    description: 'Checks for microplastics in your water.',
+    description:
+      'Checks for microplastics and nanoplastics in your water that are usually invisible to the naked eye.',
     price: 569,
     affiliateLink: 'https://shrsl.com/4lt0x',
   },
@@ -55,6 +58,33 @@ const TEST_KITS = [
       'Test for radium-226, radium-228, uranium, potassium, potassium-40, radon, cesium-137 and strontium-90, gross alpha particles and gross beta particles',
     price: 1089,
     affiliateLink: 'https://shrsl.com/4lt1o',
+  },
+  {
+    name: 'Advanced Bottled Water Test',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/advanced_bottle_water_test.webp',
+    description:
+      'Baseline for testing bottled water and includes testing for heavy metals, minerals and volatile organic compounds (VOCs)',
+    price: 285,
+    affiliateLink: 'https://shrsl.com/4m0iq',
+  },
+  {
+    name: 'Radiation Water Test',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Full_Radiation_Water_Test_.webp?t=2024-07-17T16%3A59%3A48.071Z',
+    description:
+      'Test for radioactivity in water. Includes analysis of Alpha Radiation and Beta Radiation from any source–including radium, uranium, cesium, and strontium, etc',
+    price: 135,
+    affiliateLink: 'https://shrsl.com/4mit',
+  },
+  {
+    name: 'Reverse Osmosis Treatment Water Test',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Reverse_Osmosis_Treatment_Water_Test_.webp',
+    description:
+      'Measure the effectiveness of your Reverse Osmosis water filter. Tests for 121 analytes and includes assistance in troubleshooting your filter. ',
+    price: 455,
+    affiliateLink: 'https://shrsl.com/4m0j0',
   },
 ]
 
@@ -72,9 +102,15 @@ export default function LabTestingPage() {
             className="mt-2 text-secondary text-center max-w-2xl"
           >
             We partner with TapScore to provide comprehensive and state of the art water testing and
-            analysis. Get a personal testing kit shipped to your home to test tap water, bottled
-            water and more.
+            analysis. Get a personal testing kit shipped to your home to test tap water and bottled
+            waters.
           </Typography>
+
+          <div className="flex flex-row gap-4 items-center mt-4 mb-6">
+            <a href="https://shrsl.com/4hhtf" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline">Shop all tests</Button>
+            </a>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -106,7 +142,12 @@ export default function LabTestingPage() {
                   {/* <Button variant="outline">Order now</Button> */}
 
                   <Typography size="xl" fontWeight="normal" className="text-secondary">
-                    ${testKit.price}
+                    {testKit.price.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    })}
                   </Typography>
                 </div>
               </div>
