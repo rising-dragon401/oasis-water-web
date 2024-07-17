@@ -107,7 +107,6 @@ export default function LabTestingPage() {
           </Typography>
 
           <div className="flex flex-row gap-4 items-center mt-4 mb-6">
-            <Button>Order now</Button>
             <a href="https://shrsl.com/4hhtf" target="_blank" rel="noopener noreferrer">
               <Button variant="outline">Shop all tests</Button>
             </a>
