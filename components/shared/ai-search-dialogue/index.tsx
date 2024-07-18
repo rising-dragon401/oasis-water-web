@@ -19,8 +19,7 @@ import { Lock, SendHorizontal, Sparkles, X } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { AssistantStream } from 'openai/lib/AssistantStream'
 import React, { useEffect, useRef } from 'react'
-import { toast } from 'sonner'
-import Typography from '../typography'
+import Typography from '../../typography'
 import ChatList from './chat-list'
 
 const STARTER_PROMPTS = [
@@ -31,6 +30,7 @@ const STARTER_PROMPTS = [
   'What are phthalates?',
   'What are PFAS?',
   'What foods have phthalates?',
+  'What chocolates contain lead?',
 ]
 
 export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
@@ -159,14 +159,9 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
 
   const handleSearchButtonClick = () => {
     // check if user is signed in
-    if (!user) {
-      toast('Sign in to use Oasis AI')
-      setRedirectUrl(pathname)
-      // return to auth
-      router.push(`/auth/signin?redirectUrl=${pathname}`)
-      return
-    } else if (!subscription) {
+    if (!user || !subscription) {
       openModal('SubscriptionModal')
+      return
     }
 
     setOpen(true)
@@ -309,7 +304,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const SearchInput = () => {
     return (
       <div className="flex flex-col w-full">
-        <div className="flex items-center relative justify-between">
+        <div className="flex items-center relative justify-between w-full">
           <Input
             ref={inputRef}
             placeholder="Message Oasis"
@@ -317,7 +312,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
             value={query}
             onKeyDown={handleKeyDown}
             onChange={(e) => setQuery(e.target.value)}
-            className="bg-muted w-full rounded-full h-12 pl-6"
+            className="bg-muted flex w-full rounded-full h-12 pl-6"
           />
 
           {/* @ts-ignore */}
@@ -357,11 +352,10 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
     <>
       <Button
         onClick={handleSearchButtonClick}
-        variant="ghost"
-        className="gap-2 rounded-full h-8 px-4"
+        variant="outline"
+        className="gap-2 rounded-full h-12 text-secondary-foreground"
       >
-        <Sparkles className="w-4 h-4 text-secondary" />
-        Assistant
+        <Sparkles className="w-4 h-4 text-secondary-foreground" />
       </Button>
 
       <Dialog
@@ -374,7 +368,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
           {messages.length > 1 || isLoading ? (
             <>
               <DialogHeader className="sticky flex flex-row items-center w-full justify-between px-4">
-                <DialogTitle className="text-left w-30">Chat with Oasis</DialogTitle>
+                <DialogTitle className="text-left w-30">Oasis health companion</DialogTitle>
 
                 <div className="flex flex-row gap-2">
                   <Button variant="ghost" className="h-8 p-0 mr-1" onClick={handleReset}>
@@ -413,8 +407,14 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
               </div>
             </>
           ) : (
-            <div className="flex flex-col gap-4">
-              <div className="gap-2 flex md:flex-row flex-col">
+            <div className="flex flex-col ">
+              <Typography size="2xl" fontWeight="normal">
+                Oasis health companion
+              </Typography>
+              <Typography size="base" fontWeight="normal" className="mb-4 text-secondary">
+                👋 Hey I am here to help you find the best products for your health. How can I help?
+              </Typography>
+              <div className="gap-2 flex md:flex-row flex-col mb-4">
                 {starterPrompts.map((prompt, index) => (
                   <Button
                     key={index}

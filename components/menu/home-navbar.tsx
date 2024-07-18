@@ -13,7 +13,6 @@ import { FlaskConical, Mail, Search } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
 import Typography from '../typography'
-
 interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
   logo?: React.ReactNode
   title: string
@@ -39,8 +38,13 @@ export default function HomeNavbar() {
             Explore
           </Link>
         </NavigationMenuItem>
-
-        {/* <AISearchDialog size="small" /> */}
+        {/* 
+        <NavigationMenuItem>
+          <Link href="/blog" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <ActivitySquare className="w-4 h-4 text-secondary mr-2" />
+            Research
+          </Link>
+        </NavigationMenuItem> */}
 
         {/* <NavigationMenuItem>
           <NavigationMenuTrigger>Explore</NavigationMenuTrigger>

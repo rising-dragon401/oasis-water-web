@@ -1,7 +1,7 @@
 'use client'
 
 import { getFilters } from '@/app/actions/filters'
-import { getItems, getMineralPackets } from '@/app/actions/items'
+import { getItems } from '@/app/actions/items'
 import { getLocations } from '@/app/actions/locations'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
@@ -19,9 +19,9 @@ import { ItemType } from '@/types/custom'
 import {
   ArrowUpDown,
   Check,
+  CupSoda,
   Droplet,
   Filter,
-  Flower,
   GlassWater,
   SlidersHorizontal,
   TrendingUp,
@@ -30,7 +30,7 @@ import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
 
-type TabKeys = 'bottled_water' | 'tap_water' | 'filter' | 'mineral_packets'
+type TabKeys = 'bottled_water' | 'flavored_water' | 'gallons' | 'tap_water' | 'filter'
 
 type CategoryType = {
   id: TabKeys
@@ -46,7 +46,14 @@ const CATEGORIES: CategoryType[] = [
     title: 'Bottled water',
     href: '/search/bottled-water',
     logo: <GlassWater className="text-slate-400 w-4 h-4" />,
-    tags: ['still', 'sparkling', 'flavored', 'gallon'],
+    tags: ['still', 'sparkling', 'gallon'],
+  },
+  {
+    id: 'flavored_water',
+    title: 'Flavored water',
+    href: '/search/flavored-water',
+    logo: <CupSoda className="text-slate-4000 w-4 h-4" />,
+    tags: ['still', 'sparkling'],
   },
   {
     id: 'filter',
@@ -59,11 +66,11 @@ const CATEGORIES: CategoryType[] = [
     title: 'Tap water',
     logo: <Droplet className="text-slate-400 w-4 h-4" />,
   },
-  {
-    id: 'mineral_packets',
-    title: 'Mineral packets',
-    logo: <Flower className="text-slate-400 w-4 h-4" />,
-  },
+  // {
+  //   id: 'mineral_packets',
+  //   title: 'Mineral packets',
+  //   logo: <Flower className="text-slate-400 w-4 h-4" />,
+  // },
 ]
 
 type SortMethod = 'name' | 'score'
@@ -77,15 +84,16 @@ export default function RankingList() {
 
   const [loading, setLoading] = useState({
     bottled_water: true,
+    flavored_water: true,
+    gallons: true,
     filter: true,
     tap_water: true,
-    mineral_packets: true,
   })
   const [tabValue, setTabValue] = useState<TabKeys>('bottled_water')
   const [allItems, setAllItems] = useState<any[]>([])
   const [filteredItems, setFilteredItems] = useState<any[]>([])
   const [bottledWater, setBottledWater] = useState<any[]>([])
-  const [mineralPackets, setMineralPackets] = useState<any[]>([])
+  const [flavoredWater, setFlavoredWater] = useState<any[]>([])
   const [tapWater, setTapWater] = useState<any[]>([])
   const [filters, setFilters] = useState<any[]>([])
   const [sortMethod, setSortMethod] = useState('name')
@@ -108,11 +116,22 @@ export default function RankingList() {
 
   useEffect(() => {
     const initialFetch = async () => {
-      const itemsPromise = getItems({ limit: 999, sortMethod: 'name' }).then((items) => {
-        setBottledWater(items)
-        setLoading((prev) => ({ ...prev, bottled_water: false }))
-        setAllItems(items)
-        setCompleteInit(true)
+      const itemsPromise = getItems({ limit: 999, sortMethod: 'name', type: 'bottled_water' }).then(
+        (items) => {
+          setBottledWater(items)
+          setLoading((prev) => ({ ...prev, bottled_water: false }))
+          setAllItems(items)
+          setCompleteInit(true)
+        }
+      )
+
+      const flavoredWaterPromise = getItems({
+        limit: 999,
+        sortMethod: 'name',
+        type: 'flavored_water',
+      }).then((items) => {
+        setFlavoredWater(items)
+        setLoading((prev) => ({ ...prev, flavored_water: false }))
       })
 
       const filtersPromise = getFilters({ limit: 999, sortMethod: 'name' }).then((filters) => {
@@ -127,14 +146,7 @@ export default function RankingList() {
         }
       )
 
-      const mineralPacketsPromise = getMineralPackets({ limit: 999, sortMethod: 'name' }).then(
-        (mineralPackets) => {
-          setMineralPackets(mineralPackets)
-          setLoading((prev) => ({ ...prev, mineral_packets: false }))
-        }
-      )
-
-      await Promise.all([itemsPromise, filtersPromise, locationsPromise, mineralPacketsPromise])
+      await Promise.all([itemsPromise, flavoredWaterPromise, filtersPromise, locationsPromise])
     }
 
     initialFetch()
@@ -179,10 +191,10 @@ export default function RankingList() {
       setAllItems(bottledWater)
     } else if (tabValue === 'tap_water') {
       setAllItems(tapWater)
+    } else if (tabValue === 'flavored_water') {
+      setAllItems(flavoredWater)
     } else if (tabValue === 'filter') {
       setAllItems(filters)
-    } else if (tabValue === 'mineral_packets') {
-      setAllItems(mineralPackets)
     }
 
     setTags(CATEGORIES.find((category) => category.id === tabValue)?.tags || [])
@@ -225,8 +237,8 @@ export default function RankingList() {
                 key={category.title}
                 value={category.id}
                 disabled={loading[category.id] && category.id !== 'bottled_water'}
-                className={`flex flex-row justify-center items-center gap-1 
-                bg-transparent border rounded-lg w-full px-3 max-w-56 h-8 hover:shadow-md 
+                className={`flex flex-row justify-left items-center gap-1 
+                bg-transparent border rounded-lg  px-3 max-w-56 h-8 hover:shadow-md 
                 hover:cursor-pointer ${tabValue === category.id ? 'border' : '!border-none'}`}
               >
                 {React.cloneElement(category.logo, {

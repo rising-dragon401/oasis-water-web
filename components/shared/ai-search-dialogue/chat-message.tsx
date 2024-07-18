@@ -2,7 +2,7 @@ import { MemoizedReactMarkdown } from '@/components/markdown'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
 import remarkGfm from 'remark-gfm'
-import { OasisButton } from '../custom-markdown'
+import { OasisButton } from '../../custom-markdown'
 
 const OasisAvatar =
   'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/logo/icon.png'
