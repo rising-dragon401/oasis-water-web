@@ -6,22 +6,13 @@ import Image from 'next/image'
 
 const TEST_KITS = [
   {
-    name: 'Comprehensive Water Test Kit',
+    name: 'Advanced Bottled Water Test',
     image:
-      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/comprehensive_water_test_kit.webp?t=2024-07-11T15%3A29%3A08.274Z',
+      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/advanced_bottle_water_test.webp',
     description:
-      'Tests for nearly all contaminants including heavy metals, bacteria, PFAS, radionuclides, glyphosate, pesticides, herbicides, haloacetic acids, trihalomethanes, and more.',
-    price: 2750,
-    affiliateLink: 'https://shrsl.com/4lt06',
-  },
-  {
-    name: 'Extended City Water Test',
-    image:
-      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Extended_City_Water_Test_.webp',
-    description:
-      'Tests for the core concerns impacting utility-provided tap water, plus checks for radioactive particles and additional disinfection byproducts.',
-    price: 780,
-    affiliateLink: 'https://shrsl.com/4lt0c',
+      'Baseline for testing bottled water and includes testing for heavy metals, minerals and volatile organic compounds (VOCs)',
+    price: 285,
+    affiliateLink: 'https://shrsl.com/4m0iq',
   },
   {
     name: 'Advanced City Water Test',
@@ -31,6 +22,15 @@ const TEST_KITS = [
       'Baseline for testing tap water, includes testing for heavy metals, minerals, and chlorine-related byproducts.',
     price: 290,
     affiliateLink: 'https://shrsl.com/4lt0i',
+  },
+  {
+    name: 'Reverse Osmosis Treatment Water Test',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Reverse_Osmosis_Treatment_Water_Test_.webp',
+    description:
+      'Measure the effectiveness of your Reverse Osmosis water filter. Tests for 121 analytes and includes assistance in troubleshooting your filter. ',
+    price: 455,
+    affiliateLink: 'https://shrsl.com/4m0j0',
   },
   {
     name: 'PFAS Water Test',
@@ -51,6 +51,24 @@ const TEST_KITS = [
     affiliateLink: 'https://shrsl.com/4lt0x',
   },
   {
+    name: 'Comprehensive Water Test Kit',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/comprehensive_water_test_kit.webp?t=2024-07-11T15%3A29%3A08.274Z',
+    description:
+      'Tests for nearly all contaminants including heavy metals, bacteria, PFAS, radionuclides, pesticides, herbicides, DBPs, and more.',
+    price: 2750,
+    affiliateLink: 'https://shrsl.com/4lt06',
+  },
+  {
+    name: 'Extended City Water Test',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Extended_City_Water_Test_.webp',
+    description:
+      'Tests for the core concerns impacting utility-provided tap water, plus checks for radioactive particles and additional disinfection byproducts.',
+    price: 780,
+    affiliateLink: 'https://shrsl.com/4lt0c',
+  },
+  {
     name: 'Extended Radiological Water Test',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Extended_Radiological_Water_Test_.webp',
@@ -60,15 +78,6 @@ const TEST_KITS = [
     affiliateLink: 'https://shrsl.com/4lt1o',
   },
   {
-    name: 'Advanced Bottled Water Test',
-    image:
-      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/advanced_bottle_water_test.webp',
-    description:
-      'Baseline for testing bottled water and includes testing for heavy metals, minerals and volatile organic compounds (VOCs)',
-    price: 285,
-    affiliateLink: 'https://shrsl.com/4m0iq',
-  },
-  {
     name: 'Radiation Water Test',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Full_Radiation_Water_Test_.webp?t=2024-07-17T16%3A59%3A48.071Z',
@@ -76,15 +85,6 @@ const TEST_KITS = [
       'Test for radioactivity in water. Includes analysis of Alpha Radiation and Beta Radiation from any source–including radium, uranium, cesium, and strontium, etc',
     price: 135,
     affiliateLink: 'https://shrsl.com/4mit',
-  },
-  {
-    name: 'Reverse Osmosis Treatment Water Test',
-    image:
-      'https://connect.live-oasis.com/storage/v1/object/public/website/lab-testing/Reverse_Osmosis_Treatment_Water_Test_.webp',
-    description:
-      'Measure the effectiveness of your Reverse Osmosis water filter. Tests for 121 analytes and includes assistance in troubleshooting your filter. ',
-    price: 455,
-    affiliateLink: 'https://shrsl.com/4m0j0',
   },
 ]
 
@@ -113,29 +113,29 @@ export default function LabTestingPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {TEST_KITS.map((testKit) => (
             <a
               key={testKit.name}
-              className="w-full bg-card px-8 py-2 rounded-2xl flex flex-col gap-4 hover:shadow-lg hover:cursor-pointer"
+              className="w-full bg-card md:px-8 px-2 py-2 rounded-2xl flex flex-col gap-4 hover:shadow-lg hover:cursor-pointer"
               href={testKit.affiliateLink}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <div className="flex w-full h-48 justify-center items-center">
+              <div className="flex md:w-48 md:h-48 h-36 justify-center items-center">
                 <Image
                   src={testKit.image}
                   alt={testKit.name}
                   width={700}
                   height={700}
-                  className="w-48 h-full"
+                  className="w-full h-full"
                 />
               </div>
               <div className="flex flex-col gap-2 pb-4">
                 <Typography size="xl" fontWeight="normal" className="">
                   {testKit.name}
                 </Typography>
-                <Typography size="sm" fontWeight="normal" className="text-secondary h-20">
+                <Typography size="sm" fontWeight="normal" className="text-secondary md:h-20 h-24">
                   {testKit.description}
                 </Typography>
                 <div className="flex flex-row justify-between items-center w-full">
@@ -155,7 +155,7 @@ export default function LabTestingPage() {
           ))}
 
           <a
-            className="w-full px-8 py-2 rounded-2xl flex flex-row gap-4 hover:shadow-lg hover:cursor-pointer h-40 justify-center items-center bg-muted border border-primary"
+            className="w-full px-8 py-2 rounded-2xl flex md:flex-row flex-col gap-4 hover:shadow-lg hover:cursor-pointer h-40 justify-center items-center bg-muted border border-primary"
             href="https://shrsl.com/4hhtf"
             target="_blank"
             rel="noopener noreferrer"
