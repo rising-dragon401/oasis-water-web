@@ -27,29 +27,33 @@ const FEATURES = [
     icon: '🔓',
   },
   {
-    label: 'Scientific research',
-    icon: '🧬',
+    label: 'View lab data',
+    icon: '🔍',
   },
   {
-    label: 'Personal AI health companion',
-    icon: '🧑‍⚕️',
+    label: 'Scientific research updates',
+    icon: '🧬',
   },
   {
     label: 'Supports lab testing',
     icon: '🔬',
   },
+  {
+    label: 'Personal AI health companion',
+    icon: '🧑‍⚕️',
+  },
   // {
   //   label: 'Personalized recommendations',
   //   icon: <Dna className="w-4 h-4" />,
   // },
-  // {
-  //   label: 'Private community',
-  //   icon: <Users className="w-4 h-4" />,
-  // },
+  {
+    label: 'Private community',
+    icon: '🌐',
+  },
 ]
 
 // annual
-const kSubscriptionPrice = 47
+const kSubscriptionPrice = 34.99
 const kSubscriptionPriceMonthly = 7.99
 
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
@@ -108,18 +112,18 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
     // offer 3 day trial
     const metadata = {
-      // trial_settings: {
-      //   end_behavior: {
-      //     missing_payment_method: 'cancel',
-      //   },
-      // },
-      // trial_period_days: 3,
+      trial_settings: {
+        end_behavior: {
+          missing_payment_method: 'cancel',
+        },
+      },
+      trial_period_days: 3,
     }
 
     try {
       const { sessionId } = await postData({
         url: '/api/create-checkout-session',
-        data: { price: proPrice, metadata: {}, referral: referral },
+        data: { price: proPrice, metadata: metadata, referral: referral },
       })
 
       const stripe = await getStripe()
@@ -141,37 +145,27 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     >
       <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh] ">
         <DialogHeader>
-          {/* <DialogTitle className="text-2xl text-center">Unlock the healthiest water</DialogTitle> */}
-          {/* <Image
-            src="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
-            blurDataURL="https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/images/arch%20palm%20tree.jpg"
-            alt="Unlock best water"
-            width={425}
-            height={200}
-            className="rounded-lg h-40 object-cover object-center"
-          /> */}
-
           <div className="flex flex-col justify-center items-center">
             <Logo className="w-20 h-20" />
             <Typography size="2xl" fontWeight="bold" className="text-center mt-2">
               Oasis Membership
             </Typography>
-            <Typography size="base" fontWeight="normal" className="text-center ">
+            {/* <Typography size="base" fontWeight="normal" className="text-center ">
               Know what you are drinking
+            </Typography> */}
+          </div>
+
+          <div className="flex flex-col">
+            <Typography size="base" fontWeight="bold" className="text-center text-secondary">
+              Free access for 3 days then
+            </Typography>
+            <Typography size="base" fontWeight="normal" className="text-secondary text-center mb-2">
+              ${Math.round(kSubscriptionPrice / 12)} /mo, billed annually (${kSubscriptionPrice})
             </Typography>
           </div>
-          <Typography size="base" fontWeight="normal" className="text-secondary text-center mb-2">
-            ${kSubscriptionPriceMonthly} per month
-          </Typography>
-          {/* <div className="flex w-full justify-center">
-            <DialogDescription className="text-center max-w-72">
-              Improve your health and longevity by accessing the most up to date research and
-              scientific data on health products recommended for you.
-            </DialogDescription>
-          </div> */}
         </DialogHeader>
 
-        <div className="flex flex-col gap-3 px-6 py-4 rounded-md bg-muted mx-8">
+        <div className="flex flex-col gap-3 px-6 py-4 rounded-md bg-muted mx-8 ">
           {FEATURES.map((feature) => (
             <SubscriptionItem key={feature.label} label={feature.label} icon={feature.icon} />
           ))}
@@ -181,11 +175,11 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           <div className="flex flex-col">
             <Button
               variant="default"
-              className="px-4 w-full !font-bold"
+              className="px-4 w-full !font-bold mb-2"
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Unlock Oasis membership
+              Start your 3-day free trial
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
