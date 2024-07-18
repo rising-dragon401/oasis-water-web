@@ -9,12 +9,12 @@ export default async function Home() {
       <div className="flex h-full flex-col pt-14">
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
           <div className="flex flex-col items-center text-center gap-2">
-            <Typography size="5xl" fontWeight="bold">
-              What&apos;s in your water?
+            <Typography size="5xl" fontWeight="bold" className="max-w-lg">
+              Find the healthiest products for you
             </Typography>
 
             <Typography size="lg" fontWeight="normal" className="max-w-lg">
-              90% of water contains toxins, microplastics and contaminants. Search what you drink 👇
+              Search bottled waters, filters, tap water, and more 👇
             </Typography>
           </div>
 

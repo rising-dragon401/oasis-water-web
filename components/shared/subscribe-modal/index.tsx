@@ -11,6 +11,7 @@ import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -30,7 +31,7 @@ const FEATURES = [
     icon: '🧬',
   },
   {
-    label: 'Personal AI nutritionist',
+    label: 'Personal AI health companion',
     icon: '🧑‍⚕️',
   },
   {
@@ -49,6 +50,7 @@ const FEATURES = [
 
 // annual
 const kSubscriptionPrice = 47
+const kSubscriptionPriceMonthly = 7.99
 
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
@@ -90,9 +92,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const redirectToPayment = async () => {
     if (!user) {
       setRedirectUrl(pathname)
-      toast('Please login first to subscribe and unlock ratings')
+      toast('Create an account first to subscribe')
       closeModal('SubscriptionModal')
-      router.push(`/auth/signin?redirectUrl=${pathname}&modal=SubscriptionModal`)
+      router.push(`/auth/signin?redirectUrl=${pathname}&modal=SubscriptionModal&view=sign_up`)
       return
     }
 
@@ -159,8 +161,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             </Typography>
           </div>
           <Typography size="base" fontWeight="normal" className="text-secondary text-center mb-2">
-            ${Math.round(kSubscriptionPrice)} annual (${Math.round(kSubscriptionPrice / 52)} per
-            week)
+            ${kSubscriptionPriceMonthly} per month
           </Typography>
           {/* <div className="flex w-full justify-center">
             <DialogDescription className="text-center max-w-72">
@@ -184,7 +185,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={redirectToPayment}
               loading={loadingCheckoutSession}
             >
-              Unlock membership
+              Unlock Oasis membership
               {/* Upgrade ${kSubscriptionPrice} /mo */}
             </Button>
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
@@ -194,6 +195,13 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               </a>
               {` `} Funds go to improving Oasis and further lab testing.
             </Typography>
+
+            <Link
+              href="/auth/signin"
+              className="text-center text-secondary mt-2 text-sm italic underline"
+            >
+              or sign in to existing Pro account
+            </Link>
           </div>
         </DialogFooter>
       </DialogContent>

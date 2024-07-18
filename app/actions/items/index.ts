@@ -6,34 +6,27 @@ import { createSupabaseServerClient } from '@/utils/supabase/server'
 export const getItems = async ({
   limit,
   sortMethod,
-}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
+  type,
+}: { limit?: number; sortMethod?: 'name' | 'score'; type?: ItemType } = {}) => {
   console.log('getItems')
 
   const supabase = await createSupabaseServerClient()
 
-  let items
   let orderBy = sortMethod || 'name'
 
-  console.log('lgetItems imit: ', limit)
-  console.log('orderBy: ', orderBy)
+  let query = supabase.from('items').select().order(orderBy, { ascending: true })
 
-  if (limit) {
-    const { data } = await supabase
-      .from('items')
-      .select()
-      .order(orderBy, { ascending: true })
-      .limit(limit)
-
-    items = data
-  } else {
-    const { data } = await supabase.from('items').select().order(orderBy, { ascending: true })
-
-    items = data
+  if (type) {
+    query = query.eq('type', type)
   }
 
-  if (!items) {
-    return []
+  if (limit !== undefined) {
+    query = query.limit(limit)
   }
+
+  const { data } = await query
+
+  let items = data || []
 
   items = items.filter((item) => !item.is_private)
 

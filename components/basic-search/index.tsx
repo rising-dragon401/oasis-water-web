@@ -1,5 +1,6 @@
 'use client'
 
+import { AISearchDialog } from '@/components/shared/ai-search-dialogue'
 import { FeedbackModal } from '@/components/shared/feedback-modal'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,20 @@ const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_APP_ID!,
   process.env.NEXT_PUBLIC_ALGOIA_SEARCH_KEY!
 )
+
+const PLACEHOLDER_PROMPTS = [
+  'Fiji',
+  'Los Angeles',
+  'Mountain valley',
+  'Brita',
+  'Berkey',
+  'Acqua Panna',
+  'Crystal Geyser',
+  'Sams Club',
+  'Clearly filter',
+  'Zero filter',
+  'Arrowhead',
+]
 
 export default function BasicSearch({
   showSearch,
@@ -38,6 +53,7 @@ export default function BasicSearch({
   const [queryCompleted, setQueryCompleted] = React.useState(false)
   const [openFeedbackModal, setOpenFeedbackModal] = React.useState(false)
   const [selectedFilters, setSelectedFilters] = React.useState<string[]>([])
+  const [openAISearchDialog, setOpenAISearchDialog] = React.useState(false)
 
   const debouncedQuery = useDebounce(query, 500)
 
@@ -193,29 +209,41 @@ export default function BasicSearch({
 
       {isShowSearch && (
         <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
-          <div className="relative mx-2">
-            <Input
-              ref={inputRef}
-              placeholder={
-                size !== 'large'
-                  ? 'Search water'
-                  : placeholder || 'Bottled water, filters, tap water...'
-              }
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onFocus={() => setInputFocused(true)}
-              icon={<Search className="w-4 h-4" />}
-              className={`md:text-base text-base flex gap-2 items-center pl-10 pr-6 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
-            />
+          <div className="flex flex-row items-center">
+            <div className="relative mx-2 w-full">
+              <Input
+                ref={inputRef}
+                placeholder={
+                  size !== 'large'
+                    ? 'Search water'
+                    : placeholder ||
+                      'i.e.' +
+                        ' ' +
+                        PLACEHOLDER_PROMPTS[Math.floor(Math.random() * PLACEHOLDER_PROMPTS.length)]
+                }
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => setInputFocused(true)}
+                icon={<Search className="w-4 h-4" />}
+                className={`md:text-base text-base flex gap-2 items-center pl-10 pr-6 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
+              />
 
-            <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
-              {/* <SearchDropdown item={selectedFilters} setItem={setSelectedFilters} /> */}
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
+                {/* <SearchDropdown item={selectedFilters} setItem={setSelectedFilters} /> */}
 
-              {isLoading && (
-                <Loader2 size={20} className="animate-spin text-secondary-foreground" />
-              )}
+                {isLoading && (
+                  <Loader2 size={20} className="animate-spin text-secondary-foreground" />
+                )}
+              </div>
             </div>
+
+            <AISearchDialog size="small" />
+
+            {/* <Button variant="outline" className="rounded-full">
+              <Sparkle size={20} className="text-secondary-foreground" />
+            </Button> */}
           </div>
+
           {query.length > 1 && inputFocused && queryCompleted && (
             <div
               className={`flex flex-col gap-2 bg-muted border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 px-1 ${getSearchTop()}`}
