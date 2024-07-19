@@ -44,20 +44,28 @@ export default async function Home() {
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="flex flex-col w-full mt-10 justify-start gap-y-4">
+        <div className="flex flex-col mt-10 gap-y-4 justify-start items-start md:w-full w-[88vw]">
           <Typography size="3xl" fontWeight="normal">
             Top rated
           </Typography>
-          <div className="flex flex-row grid-cols-3 gap-6  w-[95vw] overflow-x-scroll justify-start">
-            <div className="flex flex-row gap-6">
+          <div className="w-full overflow-hidden">
+            <div className="flex flex-row md:gap-6 gap-4 overflow-x-scroll">
               {CATEGORIES.map((category) => (
                 <Link
                   key={category.name}
                   href={`/top-rated?tab=${category.tab}`}
-                  className="flex flex-col gap-2 w-48 h-48 rounded-lg bg-card border justify-center items-center cursor-pointer hover:shadow-lg"
+                  className="flex flex-col gap-2 md:w-full md:h-48 w-56 h-28 rounded-lg bg-card border justify-center items-center cursor-pointer hover:shadow-lg"
                 >
-                  <Image src={category.image} alt={category.name} width={100} height={100} />
-                  <Typography size="xl" fontWeight="bold">
+                  <div className="flex flex-col gap-2 md:w-24 md:h-24 w-14 h-14">
+                    <Image
+                      src={category.image}
+                      alt={category.name}
+                      width={100}
+                      height={100}
+                      className="rounded-lg w-full h-full"
+                    />
+                  </div>
+                  <Typography size="lg" fontWeight="normal">
                     {category.name}
                   </Typography>
                 </Link>
