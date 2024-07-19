@@ -33,7 +33,7 @@ export default async function Home() {
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
           <div className="flex flex-col items-center text-center gap-2 ">
             <Typography size="5xl" fontWeight="bold" className="max-w-3xl">
-              Check if your water is really safe
+              Is your water healthy?
             </Typography>
 
             <Typography size="lg" fontWeight="normal" className="md:max-w-lg max-w-xs">

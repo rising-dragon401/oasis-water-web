@@ -71,6 +71,9 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const initUser = async (session: any) => {
     setUserId(session.user?.id)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('uid', session.user?.id || '')
+    }
     setProvider(session.user?.app_metadata?.provider)
   }
 

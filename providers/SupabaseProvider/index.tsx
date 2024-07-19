@@ -35,6 +35,10 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
         setActiveSession(session)
       }
 
+      if (session?.user?.id) {
+        localStorage.setItem('uid', session.user.id)
+      }
+
       setUser(session?.user)
 
       // TODO - handle redirect and open modal here based on searchparams
@@ -65,6 +69,7 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
       if (!session) {
         setUser(null)
         setActiveSession(null)
+        localStorage.removeItem('uid')
       }
     })
 

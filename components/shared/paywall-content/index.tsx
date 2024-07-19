@@ -3,7 +3,6 @@ import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import cn from 'classnames'
 import { Lock } from 'lucide-react'
-import { usePathname } from 'next/navigation'
 import React from 'react'
 
 type PaywallContentProps = {
@@ -19,9 +18,8 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
   hideButton = false,
   label,
 }) => {
-  const pathname = usePathname()
   const { openModal } = useModal()
-  const { subscription, userData } = useUserProvider()
+  const { subscription } = useUserProvider()
 
   const handleBlurClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -30,13 +28,6 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
       openModal('SubscriptionModal')
     }
   }
-
-  // Dont't want to show scores on non-listing pages
-  const isWithinFreeTier =
-    userData?.metadata?.items_viewed < 3 &&
-    (pathname.includes('/search/item') ||
-      pathname.includes('/search/location') ||
-      pathname.includes('/search/filter'))
 
   if (subscription) {
     return <>{children}</>

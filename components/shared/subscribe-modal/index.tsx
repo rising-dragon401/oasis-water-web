@@ -68,6 +68,21 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const { products } = useSubscription()
   const { closeModal } = useModal()
 
+  useEffect(() => {
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'openSubscribe' && event.newValue === 'true') {
+        setOpen(true)
+        localStorage.setItem('openSubscribe', 'false') // Reset the value
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [setOpen])
+
   const [selectedPlan, setSelectedPlan] = useState('annual')
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
   const [referral, setReferral] = useState(null)
