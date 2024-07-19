@@ -8,8 +8,6 @@ export const getItems = async ({
   sortMethod,
   type,
 }: { limit?: number; sortMethod?: 'name' | 'score'; type?: ItemType } = {}) => {
-  console.log('getItems')
-
   const supabase = await createSupabaseServerClient()
 
   let orderBy = sortMethod || 'name'
@@ -29,20 +27,6 @@ export const getItems = async ({
   let items = data || []
 
   items = items.filter((item) => !item.is_private)
-
-  // const itemsWithCompany = await Promise.all(
-  //   items.map(async (item) => {
-  //     const { data: company, error: companyError } = await supabase
-  //       .from('companies')
-  //       .select('name')
-  //       .eq('id', item.company)
-
-  //     return {
-  //       ...item,
-  //       company_name: company ? company[0].name : null,
-  //     }
-  //   })
-  // )
 
   return items
 }

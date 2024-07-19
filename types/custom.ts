@@ -16,6 +16,9 @@ export type ItemType =
   | 'filter'
   | 'flavored_water'
   | 'mineral_packets'
+  | 'water_gallon'
+  | 'shower_filter'
+
 export type WaterFilter = Database['public']['Tables']['water_filters']['Row'] & {
   company_name?: string | null
 }
