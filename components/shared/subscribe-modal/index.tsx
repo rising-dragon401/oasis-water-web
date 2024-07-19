@@ -105,8 +105,6 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }
   }, [])
 
-  console.log('products: ', products)
-
   const proProduct = products?.find(
     (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
   )
@@ -120,9 +118,6 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     proProduct?.prices.find(
       (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID_WEEKLY
     ) ?? null
-
-  console.log('proPriceAnnual: ', proPriceAnnual)
-  console.log('proPriceWeekly: ', proPriceWeekly)
 
   const redirectToPayment = async () => {
     if (!user) {

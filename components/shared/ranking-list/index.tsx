@@ -23,6 +23,8 @@ import {
   Droplet,
   Filter,
   GlassWater,
+  Milk,
+  ShowerHead,
   SlidersHorizontal,
   TrendingUp,
 } from 'lucide-react'
@@ -30,7 +32,13 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
 
-export type TabKeys = 'bottled_water' | 'flavored_water' | 'gallons' | 'tap_water' | 'filter'
+export type TabKeys =
+  | 'bottled_water'
+  | 'flavored_water'
+  | 'gallons'
+  | 'tap_water'
+  | 'filter'
+  | 'shower_filter'
 
 type CategoryType = {
   id: TabKeys
@@ -49,6 +57,12 @@ const CATEGORIES: CategoryType[] = [
     tags: ['still', 'sparkling', 'gallon'],
   },
   {
+    id: 'filter',
+    title: 'Tap filters',
+    logo: <Filter className="text-slate-4000 w-4 h-4" />,
+    tags: ['tap', 'shower', 'bottle', 'sink', 'counter', 'pitcher'],
+  },
+  {
     id: 'flavored_water',
     title: 'Flavored water',
     href: '/search/flavored-water',
@@ -56,10 +70,14 @@ const CATEGORIES: CategoryType[] = [
     tags: ['still', 'sparkling'],
   },
   {
-    id: 'filter',
-    title: 'Filters',
-    logo: <Filter className="text-slate-4000 w-4 h-4" />,
-    tags: ['tap', 'shower', 'bottle', 'sink', 'counter', 'pitcher'],
+    id: 'gallons',
+    title: 'Gallons',
+    logo: <Milk className="text-slate-400 w-4 h-4" />,
+  },
+  {
+    id: 'shower_filter',
+    title: 'Shower filters',
+    logo: <ShowerHead className="text-slate-400 w-4 h-4" />,
   },
   {
     id: 'tap_water',
@@ -91,12 +109,16 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
     gallons: true,
     filter: true,
     tap_water: true,
+    shower_filter: true,
+    water_gallon: true,
   })
   const [tabValue, setTabValue] = useState<TabKeys>(tab || 'bottled_water')
   const [allItems, setAllItems] = useState<any[]>([])
   const [filteredItems, setFilteredItems] = useState<any[]>([])
   const [bottledWater, setBottledWater] = useState<any[]>([])
   const [flavoredWater, setFlavoredWater] = useState<any[]>([])
+  const [gallons, setGallons] = useState<any[]>([])
+  const [showerFilters, setShowerFilters] = useState<any[]>([])
   const [tapWater, setTapWater] = useState<any[]>([])
   const [filters, setFilters] = useState<any[]>([])
   const [sortMethod, setSortMethod] = useState('name')
@@ -129,6 +151,19 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         }
       )
 
+      const gallonsPromise = getItems({
+        limit: 999,
+        sortMethod: 'name',
+        type: 'water_gallon',
+      }).then((items) => {
+        setGallons(items)
+        setLoading((prev) => ({ ...prev, gallons: false }))
+
+        if (tabValue === 'gallons') {
+          setAllItems(items)
+        }
+      })
+
       const flavoredWaterPromise = getItems({
         limit: 999,
         sortMethod: 'name',
@@ -142,10 +177,26 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         }
       })
 
-      const filtersPromise = getFilters({ limit: 999, sortMethod: 'name' }).then((filters) => {
+      const filtersPromise = getFilters({
+        limit: 999,
+        sortMethod: 'name',
+        type: 'filter',
+      }).then((filters) => {
         setFilters(filters)
         setLoading((prev) => ({ ...prev, filter: false }))
         if (tabValue === 'filter') {
+          setAllItems(filters)
+        }
+      })
+
+      const showerFiltersPromise = getFilters({
+        limit: 999,
+        sortMethod: 'name',
+        type: 'shower_filter',
+      }).then((filters) => {
+        setShowerFilters(filters)
+        setLoading((prev) => ({ ...prev, shower_filter: false }))
+        if (tabValue === 'shower_filter') {
           setAllItems(filters)
         }
       })
@@ -160,7 +211,14 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         }
       )
 
-      await Promise.all([itemsPromise, flavoredWaterPromise, filtersPromise, locationsPromise])
+      await Promise.all([
+        itemsPromise,
+        gallonsPromise,
+        flavoredWaterPromise,
+        filtersPromise,
+        showerFiltersPromise,
+        locationsPromise,
+      ])
 
       setCompleteInit(true)
     }
@@ -215,6 +273,10 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
       setAllItems(flavoredWater)
     } else if (tabValue === 'filter') {
       setAllItems(filters)
+    } else if (tabValue === 'shower_filter') {
+      setAllItems(showerFilters)
+    } else if (tabValue === 'gallons') {
+      setAllItems(gallons)
     }
 
     setTags(CATEGORIES.find((category) => category.id === tabValue)?.tags || [])
@@ -251,7 +313,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         }}
       >
         <div className="py-2 flex flex-row justify-between w-full">
-          <TabsList className="gap-2 bg-transparent flex justify-start md:w-2/3 w-5/6 overflow-x-scroll hide-scrollbar">
+          <TabsList className="gap-2 bg-transparent flex justify-start md:w-5/6 w-5/6 overflow-x-scroll hide-scrollbar">
             {CATEGORIES.map((category) => (
               <TabsTrigger
                 key={category.title}
@@ -269,7 +331,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
             ))}
           </TabsList>
 
-          <div className="flex flex-row justify-end items-center md:w-1/3 w-1/6">
+          <div className="flex flex-row justify-end items-center md:w-1/6 w-1/6">
             {tags.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">

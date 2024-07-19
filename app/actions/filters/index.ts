@@ -6,39 +6,34 @@ import { createSupabaseServerClient } from '@/utils/supabase/server'
 export const getFilters = async ({
   limit,
   sortMethod,
-}: { limit?: number; sortMethod?: 'name' | 'score' } = {}) => {
+  type = 'filter',
+}: {
+  limit?: number
+  sortMethod?: 'name' | 'score'
+  type?: 'filter' | 'shower_filter'
+} = {}) => {
   const supabase = await createSupabaseServerClient()
 
   let filters
   let orderBy = sortMethod || 'name'
 
-  if (limit) {
-    const { data } = await supabase.from('water_filters').select().order(orderBy).limit(limit)
+  let query = supabase.from('water_filters').select().order(orderBy)
 
-    filters = data
-  } else {
-    const { data } = await supabase.from('water_filters').select().order(orderBy)
-
-    filters = data
+  if (type) {
+    query = query.eq('type', type)
   }
+
+  if (limit) {
+    query = query.limit(limit)
+  }
+
+  const { data } = await query
+
+  filters = data
 
   if (!filters) {
     return []
   }
-
-  // const filtersWithCompany: any = await Promise.all(
-  //   filters.map(async (filter) => {
-  //     const { data: company, error: companyError } = await supabase
-  //       .from('companies')
-  //       .select('name')
-  //       .eq('id', filter.company)
-
-  //     return {
-  //       ...filter,
-  //       company_name: company ? company[0].name : null,
-  //     }
-  //   })
-  // )
 
   return filters
 }

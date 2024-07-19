@@ -1115,6 +1115,8 @@ export type Database = {
         | "filter"
         | "flavored_water"
         | "mineral_packets"
+        | "water_gallon"
+        | "shower_filter"
       packaging:
         | "plastic"
         | "glass"
