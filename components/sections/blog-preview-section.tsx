@@ -12,7 +12,7 @@ export default function BlogPreviewSection() {
 
   return (
     <div>
-      <div className="pt-4 pb-8 flex flex-row justify-between items-center">
+      <div className="pt-4 pb-2 flex flex-row justify-between items-center">
         <Typography size="3xl" fontWeight="normal">
           Scientific research
         </Typography>

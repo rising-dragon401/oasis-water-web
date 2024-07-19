@@ -26,7 +26,7 @@ import {
   SlidersHorizontal,
   TrendingUp,
 } from 'lucide-react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
 
@@ -79,6 +79,9 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
   const { subscription, uid } = useUserProvider()
   const { openModal } = useModal()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const tab = searchParams.get('tab') as TabKeys | null
 
   const lastPath = useCallback(() => pathname.split('/').pop() as ItemType, [pathname])
 
@@ -89,7 +92,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
     filter: true,
     tap_water: true,
   })
-  const [tabValue, setTabValue] = useState<TabKeys>('bottled_water')
+  const [tabValue, setTabValue] = useState<TabKeys>(tab || 'bottled_water')
   const [allItems, setAllItems] = useState<any[]>([])
   const [filteredItems, setFilteredItems] = useState<any[]>([])
   const [bottledWater, setBottledWater] = useState<any[]>([])
@@ -120,7 +123,9 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         (items) => {
           setBottledWater(items)
           setLoading((prev) => ({ ...prev, bottled_water: false }))
-          setAllItems(items)
+          if (tabValue === 'bottled_water') {
+            setAllItems(items)
+          }
         }
       )
 
@@ -131,17 +136,27 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
       }).then((items) => {
         setFlavoredWater(items)
         setLoading((prev) => ({ ...prev, flavored_water: false }))
+
+        if (tabValue === 'flavored_water') {
+          setAllItems(items)
+        }
       })
 
       const filtersPromise = getFilters({ limit: 999, sortMethod: 'name' }).then((filters) => {
         setFilters(filters)
         setLoading((prev) => ({ ...prev, filter: false }))
+        if (tabValue === 'filter') {
+          setAllItems(filters)
+        }
       })
 
       const locationsPromise = getLocations({ limit: 999, sortMethod: 'name' }).then(
         (locations) => {
           setTapWater(locations)
           setLoading((prev) => ({ ...prev, tap_water: false }))
+          if (tabValue === 'tap_water') {
+            setAllItems(locations)
+          }
         }
       )
 
@@ -151,11 +166,15 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
     }
 
     initialFetch()
-  }, [])
+  }, [tabValue])
 
   useEffect(() => {
     if (lastPath && typeof lastPath === 'string') setTabValue(lastPath)
   }, [lastPath])
+
+  useEffect(() => {
+    if (tab) setTabValue(tab)
+  }, [tab])
 
   useEffect(() => {
     if (tabValue) manageTab(tabValue)
