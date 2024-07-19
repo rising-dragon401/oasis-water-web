@@ -33,6 +33,10 @@ export const Post = defineDocumentType(() => ({
       type: 'date',
       required: true,
     },
+    is_research: {
+      type: 'boolean',
+      required: false,
+    },
     tags: {
       type: 'list',
       of: { type: 'string' },

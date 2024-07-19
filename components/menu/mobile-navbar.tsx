@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { FlaskConical, Heart, Menu, Search, User, Users, X } from 'lucide-react'
+import { ActivitySquare, FlaskConical, Heart, Menu, Search, Trophy, User, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import SignUpButton from '../shared/sign-up-button'
@@ -61,8 +61,13 @@ export default function MobileNavbar() {
             </DropdownMenuItem>
 
             <DropdownMenuItem className="flex flex-row gap-2 items-center">
-              <Users className="text-secondary w-4 h-4" />
-              <Link href="/users">Community</Link>
+              <Trophy className="text-secondary w-4 h-4" />
+              <Link href="/top-rated">Top Rated</Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="flex flex-row gap-2 items-center">
+              <ActivitySquare className="text-secondary w-4 h-4" />
+              <Link href="/blog">Research</Link>
             </DropdownMenuItem>
 
             {/* <DropdownMenuSeparator /> */}

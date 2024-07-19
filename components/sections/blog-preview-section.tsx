@@ -1,18 +1,20 @@
 import { allPosts } from '@/.contentlayer/generated'
-import Link from 'next/link'
 import Typography from '@/components/typography'
-import React, { useMemo } from 'react'
+import Link from 'next/link'
+import { useMemo } from 'react'
 
 export default function BlogPreviewSection() {
   const sortedPosts = useMemo(() => {
-    return allPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    return allPosts
+      .filter((post) => post.is_research !== false)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
   }, [])
 
   return (
     <div>
-      <div className="pt-4 pb-8 flex flex-row justify-between">
+      <div className="pt-4 pb-8 flex flex-row justify-between items-center">
         <Typography size="3xl" fontWeight="normal">
-          Learn more
+          Scientific research
         </Typography>
 
         <Link href="/blog">
@@ -22,7 +24,7 @@ export default function BlogPreviewSection() {
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-2 grid-cols-1 w-full gap-6">
+      <div className="grid md:grid-cols-3 grid-cols-1 w-full gap-6">
         {sortedPosts.slice(0, 3).map((post) => (
           <article key={post._id}>
             <Link href={post.slug}>
@@ -37,16 +39,16 @@ export default function BlogPreviewSection() {
                   <Typography
                     size="xl"
                     fontWeight="normal"
-                    className="text-stone-100 !no-underline"
+                    className="text-stone-100 !no-underline h-14"
                   >
                     {post.title}
                   </Typography>
 
-                  <div className="md:block hidden">
+                  {/* <div className="md:block hidden">
                     <Typography size="base" fontWeight="normal" className="text-stone-100 ">
                       {post.description}
                     </Typography>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Link>

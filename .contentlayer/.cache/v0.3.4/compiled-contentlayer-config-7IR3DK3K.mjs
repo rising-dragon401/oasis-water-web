@@ -31,6 +31,10 @@ var Post = defineDocumentType(() => ({
       type: "date",
       required: true
     },
+    is_research: {
+      type: "boolean",
+      required: false
+    },
     tags: {
       type: "list",
       of: { type: "string" },
@@ -50,4 +54,4 @@ export {
   Post,
   contentlayer_config_default as default
 };
-//# sourceMappingURL=compiled-contentlayer-config-L5QR5XA3.mjs.map
+//# sourceMappingURL=compiled-contentlayer-config-7IR3DK3K.mjs.map

@@ -119,8 +119,6 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     clearUserData()
   }, [supabase.auth])
 
-  console.log('subscription: ', subscription)
-
   const clearUserData = () => {
     console.log('clearUserData')
     setUserData(null)

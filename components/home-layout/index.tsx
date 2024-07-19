@@ -98,9 +98,9 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </Link>
 
           <div className="flex justify-end w-full">
-            {/* <div className="flex justify-end">
+            <div className="flex justify-end">
               <BasicSearch showSearch={false} size="small" />
-            </div> */}
+            </div>
             <MobileNavbar />
           </div>
         </div>

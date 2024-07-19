@@ -6,6 +6,7 @@ import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/lib/hooks/use-debounce'
+import useDevice from '@/lib/hooks/use-device'
 import algoliasearch from 'algoliasearch'
 import { Loader2, Search } from 'lucide-react'
 import React, { useEffect, useRef } from 'react'
@@ -53,9 +54,9 @@ export default function BasicSearch({
   const [queryCompleted, setQueryCompleted] = React.useState(false)
   const [openFeedbackModal, setOpenFeedbackModal] = React.useState(false)
   const [selectedFilters, setSelectedFilters] = React.useState<string[]>([])
-  const [openAISearchDialog, setOpenAISearchDialog] = React.useState(false)
 
   const debouncedQuery = useDebounce(query, 500)
+  const { isMobile } = useDevice()
 
   const searchContainerRef = useRef<HTMLDivElement>(null) // Create a ref for the search container
 
@@ -237,7 +238,7 @@ export default function BasicSearch({
               </div>
             </div>
 
-            <AISearchDialog size="small" />
+            {!isMobile && <AISearchDialog size="small" />}
 
             {/* <Button variant="outline" className="rounded-full">
               <Sparkle size={20} className="text-secondary-foreground" />
