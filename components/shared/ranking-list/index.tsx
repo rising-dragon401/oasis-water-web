@@ -30,7 +30,7 @@ import { usePathname } from 'next/navigation'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
 
-type TabKeys = 'bottled_water' | 'flavored_water' | 'gallons' | 'tap_water' | 'filter'
+export type TabKeys = 'bottled_water' | 'flavored_water' | 'gallons' | 'tap_water' | 'filter'
 
 type CategoryType = {
   id: TabKeys
@@ -75,7 +75,7 @@ const CATEGORIES: CategoryType[] = [
 
 type SortMethod = 'name' | 'score'
 
-export default function RankingList() {
+export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
   const { subscription, uid } = useUserProvider()
   const { openModal } = useModal()
   const pathname = usePathname()
@@ -121,7 +121,6 @@ export default function RankingList() {
           setBottledWater(items)
           setLoading((prev) => ({ ...prev, bottled_water: false }))
           setAllItems(items)
-          setCompleteInit(true)
         }
       )
 
@@ -147,6 +146,8 @@ export default function RankingList() {
       )
 
       await Promise.all([itemsPromise, flavoredWaterPromise, filtersPromise, locationsPromise])
+
+      setCompleteInit(true)
     }
 
     initialFetch()
@@ -212,7 +213,7 @@ export default function RankingList() {
     if (!subscription) {
       return (
         <Button variant="outline" className="flex flex-row gap-1" onClick={handleClickSortByScore}>
-          Unlock top rated
+          Unlock scores and ratings
           <TrendingUp className="w-4 h-4" />
         </Button>
       )
@@ -221,7 +222,7 @@ export default function RankingList() {
 
   return (
     <div className="pb-14 mt-4">
-      <div className="md:hidden flex w-full justify-center mb-3">{UnlockTopButton()}</div>
+      <div className="flex w-full justify-center mb-3">{UnlockTopButton()}</div>
 
       <Tabs
         defaultValue={tabValue}
@@ -306,7 +307,6 @@ export default function RankingList() {
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-            <div className="hidden md:flex">{UnlockTopButton()}</div>
           </div>
         </div>
 

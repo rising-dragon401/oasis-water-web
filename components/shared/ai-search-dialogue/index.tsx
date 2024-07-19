@@ -16,7 +16,6 @@ import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { useAtom } from 'jotai'
 import { Lock, SendHorizontal, Sparkles, X } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
 import { AssistantStream } from 'openai/lib/AssistantStream'
 import React, { useEffect, useRef } from 'react'
 import Typography from '../../typography'
@@ -33,13 +32,19 @@ const STARTER_PROMPTS = [
   'What chocolates contain lead?',
 ]
 
-export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' }) {
+export function AISearchDialog({
+  size,
+  variant = 'button',
+  placeholder = 'Message Oasis',
+}: {
+  size: 'small' | 'medium' | 'large'
+  variant?: 'button' | 'input'
+  placeholder?: string
+}) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { user, uid, userData, subscription } = useUserProvider()
-  const router = useRouter()
-  const pathname = usePathname()
   const { openModal } = useModal()
 
   const [open, setOpen] = React.useState(false)
@@ -175,6 +180,10 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
   const handleSubmit = async (e: any, query_: string) => {
     e.preventDefault()
 
+    if (!open) {
+      handleModalToggle()
+    }
+
     const question = query || query_
 
     try {
@@ -307,7 +316,7 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
         <div className="flex items-center relative justify-between w-full">
           <Input
             ref={inputRef}
-            placeholder="Message Oasis"
+            placeholder={placeholder}
             name="search"
             value={query}
             onKeyDown={handleKeyDown}
@@ -338,25 +347,36 @@ export function AISearchDialog({ size }: { size: 'small' | 'medium' | 'large' })
             </Button>
           )}
         </div>
-        <div className="p-1 pb-2">
-          <Typography size="xs" fontWeight="normal">
-            *Please note this feature is in early beta and is experimental. It may hallucinate and
-            provide inaccurate answers.
-          </Typography>
-        </div>
+        {open && (
+          <div className="p-1 pb-2">
+            <Typography size="xs" fontWeight="normal">
+              *Oasis AI his feature is in beta and may hallucinate / provide inaccurate answers.
+            </Typography>
+          </div>
+        )}
       </div>
     )
   }
 
+  const SearchButton = () => {
+    if (variant === 'button') {
+      return (
+        <Button
+          onClick={handleSearchButtonClick}
+          variant="outline"
+          className="gap-2 rounded-full h-12 text-secondary-foreground"
+        >
+          <Sparkles className="w-4 h-4 text-secondary-foreground" />
+        </Button>
+      )
+    } else {
+      return <div className="mt-2">{SearchInput()}</div>
+    }
+  }
+
   return (
     <>
-      <Button
-        onClick={handleSearchButtonClick}
-        variant="outline"
-        className="gap-2 rounded-full h-12 text-secondary-foreground"
-      >
-        <Sparkles className="w-4 h-4 text-secondary-foreground" />
-      </Button>
+      {SearchButton()}
 
       <Dialog
         open={open}

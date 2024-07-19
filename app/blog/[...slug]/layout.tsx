@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react'
 import SubpageLayout from '@/components/home-layout'
+import { PropsWithChildren } from 'react'
 
 export default function BlogLayout({ children }: PropsWithChildren) {
   return (

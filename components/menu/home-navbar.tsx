@@ -9,7 +9,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-import { FlaskConical, Mail, Search } from 'lucide-react'
+import { ActivitySquare, FlaskConical, Search, Trophy } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
 import Typography from '../typography'
@@ -36,6 +36,20 @@ export default function HomeNavbar() {
           <Link href="/" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <Search className="w-4 h-4 text-secondary mr-2" />
             Explore
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link href="/top-rated" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <Trophy className="w-4 h-4 text-secondary mr-2" />
+            Top Rated
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link href="/blog" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <ActivitySquare className="w-4 h-4 text-secondary mr-2" />
+            Research
           </Link>
         </NavigationMenuItem>
         {/* 
@@ -91,12 +105,12 @@ export default function HomeNavbar() {
           </Link>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Link href="/contact" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <Mail className="w-4 h-4 text-secondary mr-2" />
             Contact us
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   )

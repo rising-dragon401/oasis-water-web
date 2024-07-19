@@ -1,9 +1,9 @@
-import { notFound } from 'next/navigation'
+import { Mdx } from '@/components/mdx-components'
+import Typography from '@/components/typography'
+import { BLOG_IMAGE } from '@/lib/constants/images'
 import { allPosts } from 'contentlayer/generated'
 import { Metadata } from 'next'
-import { Mdx } from '@/components/mdx-components'
-import { BLOG_IMAGE } from '@/lib/constants/images'
-import Typography from '@/components/typography'
+import { notFound } from 'next/navigation'
 
 interface PostProps {
   params: {
@@ -82,7 +82,7 @@ export default async function PostPage({ params }: PostProps) {
           {post.description}
         </Typography>
       )}
-      {/* <hr className="my-4" /> */}
+
       <Mdx code={post.body.code} />
     </article>
   )
