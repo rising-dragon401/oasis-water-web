@@ -13,7 +13,7 @@ const CATEGORIES = [
     tab: 'bottled_water',
   },
   {
-    name: 'Filters',
+    name: 'Water filters',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/water%20filter%20illustration.png',
     tab: 'filter',
@@ -32,19 +32,20 @@ export default async function Home() {
       <div className="flex h-full flex-col pt-14">
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
           <div className="flex flex-col items-center text-center gap-2 ">
-            <Typography size="5xl" fontWeight="bold" className="max-w-2xl">
-              Find the healthiest products
+            <Typography size="5xl" fontWeight="bold" className="max-w-3xl">
+              Check if your water is really safe
             </Typography>
 
             <Typography size="lg" fontWeight="normal" className="md:max-w-lg max-w-xs">
-              Search science-backed rankings of bottled water, filters and more
+              Search science-backed rankings of bottled water, water filters and find healthier
+              alternatives
             </Typography>
           </div>
 
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="flex flex-col mt-10 gap-y-4 justify-start items-start md:w-full w-[88vw]">
+        <div className="flex flex-col mt-10 gap-y-2 justify-start items-start md:w-full w-[88vw]">
           <Typography size="3xl" fontWeight="normal">
             Top rated
           </Typography>
@@ -54,9 +55,9 @@ export default async function Home() {
                 <Link
                   key={category.name}
                   href={`/top-rated?tab=${category.tab}`}
-                  className="flex flex-col gap-2 md:w-full md:h-48 w-56 h-28 rounded-lg bg-card border justify-center items-center cursor-pointer hover:shadow-lg"
+                  className="flex flex-col gap-2 md:w-full md:h-40 w-56 h-28 rounded-lg bg-card border justify-center items-center cursor-pointer hover:shadow-lg"
                 >
-                  <div className="flex flex-col gap-2 md:w-24 md:h-24 w-14 h-14">
+                  <div className="flex flex-col gap-4 md:w-24 md:h-24 w-14 h-14">
                     <Image
                       src={category.image}
                       alt={category.name}
@@ -65,7 +66,7 @@ export default async function Home() {
                       className="rounded-lg w-full h-full"
                     />
                   </div>
-                  <Typography size="lg" fontWeight="normal">
+                  <Typography size="lg" fontWeight="bold">
                     {category.name}
                   </Typography>
                 </Link>
