@@ -29,6 +29,10 @@ const PLACEHOLDER_PROMPTS = [
   'Clearly filter',
   'Zero filter',
   'Arrowhead',
+  'Los Angeles',
+  'Primo',
+  'New York',
+  'Vichy Catalan',
 ]
 
 export default function BasicSearch({
@@ -218,15 +222,13 @@ export default function BasicSearch({
                   size !== 'large'
                     ? 'Search water'
                     : placeholder ||
-                      'i.e.' +
-                        ' ' +
-                        PLACEHOLDER_PROMPTS[Math.floor(Math.random() * PLACEHOLDER_PROMPTS.length)]
+                      PLACEHOLDER_PROMPTS[Math.floor(Math.random() * PLACEHOLDER_PROMPTS.length)]
                 }
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setInputFocused(true)}
-                icon={<Search className="w-4 h-4" />}
-                className={`md:text-base text-base flex gap-2 items-center pl-10 pr-6 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
+                icon={<Search className="w-4 h-4 ml-2" />}
+                className={`md:text-base text-base flex gap-2 items-center pl-12 pr-6 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
               />
 
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
@@ -239,10 +241,6 @@ export default function BasicSearch({
             </div>
 
             {!isMobile && <AISearchDialog size="small" />}
-
-            {/* <Button variant="outline" className="rounded-full">
-              <Sparkle size={20} className="text-secondary-foreground" />
-            </Button> */}
           </div>
 
           {query.length > 1 && inputFocused && queryCompleted && (
