@@ -1,6 +1,5 @@
 'use client'
 
-import { AISearchDialog } from '@/components/shared/ai-search-dialogue'
 import { FeedbackModal } from '@/components/shared/feedback-modal'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -29,6 +28,10 @@ const PLACEHOLDER_PROMPTS = [
   'Clearly filter',
   'Zero filter',
   'Arrowhead',
+  'Los Angeles',
+  'Primo',
+  'New York',
+  'Vichy Catalan',
 ]
 
 export default function BasicSearch({
@@ -37,12 +40,14 @@ export default function BasicSearch({
   indices,
   placeholder,
   numResults,
+  searchBoxStyle = 'bubble',
 }: {
   showSearch: boolean
   size: 'small' | 'medium' | 'large'
   indices?: string[]
   placeholder?: string
   numResults?: number
+  searchBoxStyle?: 'bubble' | 'line'
 }) {
   const inputRef = useRef<HTMLInputElement>(null) // Create a ref for the input element
 
@@ -204,12 +209,23 @@ export default function BasicSearch({
     }
   }
 
+  const getSearchStyle = () => {
+    switch (searchBoxStyle) {
+      case 'bubble':
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
+      case 'line':
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative border-b md:min-w-[300px] min-w-[200px]'
+      default:
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
+    }
+  }
+
   return (
     <>
       <FeedbackModal open={openFeedbackModal} setOpen={setOpenFeedbackModal} />
 
       {isShowSearch && (
-        <div className="flex flex-col gap-2 relative w-full max-w-xl" ref={searchContainerRef}>
+        <div className="flex flex-col gap-2 relative w-full max-w-lg" ref={searchContainerRef}>
           <div className="flex flex-row items-center">
             <div className="relative mx-2 w-full">
               <Input
@@ -218,15 +234,13 @@ export default function BasicSearch({
                   size !== 'large'
                     ? 'Search water'
                     : placeholder ||
-                      'i.e.' +
-                        ' ' +
-                        PLACEHOLDER_PROMPTS[Math.floor(Math.random() * PLACEHOLDER_PROMPTS.length)]
+                      PLACEHOLDER_PROMPTS[Math.floor(Math.random() * PLACEHOLDER_PROMPTS.length)]
                 }
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setInputFocused(true)}
-                icon={<Search className="w-4 h-4" />}
-                className={`md:text-base text-base flex gap-2 items-center pl-10 pr-6 ${getSearchPaddingY()} relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full`}
+                icon={<Search className="w-4 h-4 ml-2" />}
+                className={`${getSearchStyle()} ${getSearchPaddingY()}`}
               />
 
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
@@ -238,11 +252,7 @@ export default function BasicSearch({
               </div>
             </div>
 
-            {!isMobile && <AISearchDialog size="small" />}
-
-            {/* <Button variant="outline" className="rounded-full">
-              <Sparkle size={20} className="text-secondary-foreground" />
-            </Button> */}
+            {/* {!isMobile && <AISearchDialog size="small" />} */}
           </div>
 
           {query.length > 1 && inputFocused && queryCompleted && (

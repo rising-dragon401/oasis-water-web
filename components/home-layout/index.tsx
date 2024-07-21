@@ -3,7 +3,6 @@
 import { getIngredients } from '@/app/actions/ingredients'
 import BasicSearch from '@/components/basic-search'
 import HomeNavbar from '@/components/menu/home-navbar'
-import MobileNavbar from '@/components/menu/mobile-navbar'
 import Footer from '@/components/shared/footer'
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
@@ -14,6 +13,8 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { PropsWithChildren, Suspense, useEffect } from 'react'
 import useSWR from 'swr'
 import { AccountMenu } from '../menu/account-menu'
+import BottomNavbar from '../menu/bottom-bar'
+import { AISearchDialog } from '../shared/ai-search-dialogue'
 import SignUpButton from '../shared/sign-up-button'
 
 type Props = {
@@ -48,7 +49,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
   return (
     <div className="min-h-[100vh] flex justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-xl max-w-sm w-full">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div />}>
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
 
@@ -99,17 +100,22 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
 
           <div className="flex justify-end w-full">
             <div className="flex justify-end">
-              <BasicSearch showSearch={false} size="small" />
+              <AISearchDialog size="small" variant="icon" />
             </div>
-            <MobileNavbar />
           </div>
         </div>
 
-        <div className="py-3 min-h-[70vh] flex justify-center w-full overflow-y-scroll hide-scrollbar">
-          {children}
-        </div>
+        <div className="py-3 min-h-[70vh] flex justify-center w-full">{children}</div>
 
         <Footer />
+
+        <div className="fixed bottom-6 right-6 hidden md:flex">
+          <AISearchDialog size="small" variant="button" />
+        </div>
+
+        <div className="md:hidden">
+          <BottomNavbar />
+        </div>
       </div>
     </div>
   )

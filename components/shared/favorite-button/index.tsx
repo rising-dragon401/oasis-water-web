@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
-import { CheckCircle, PlusCircle } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
+import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import { toast } from 'sonner'
 
 type Props = {
@@ -42,7 +42,7 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
 
     // first check if user is logged in
     if (!uid) {
-      toast('Please sign in to add items to your Oasis')
+      toast('Please sign in to add items to your Favorites')
       setRedirectUrl(pathname)
       router.push(`/auth/signin?redirectUrl=${pathname}`)
       return
@@ -74,9 +74,9 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
   return (
     <Button variant="ghost" onClick={(e) => handleFavoriteClick(e)}>
       {isItemInFavorites ? (
-        <CheckCircle size={size} className="text-primary w-6 h-6 " />
+        <FaHeart size={size} className="text-primary w-6 h-6 " />
       ) : (
-        <PlusCircle size={size} className="text-primary w-6 h-6" />
+        <FaRegHeart size={size} className="text-primary w-6 h-6" />
       )}
     </Button>
   )

@@ -38,7 +38,7 @@ export function AISearchDialog({
   placeholder = 'Message Oasis',
 }: {
   size: 'small' | 'medium' | 'large'
-  variant?: 'button' | 'input'
+  variant?: 'button' | 'input' | 'icon'
   placeholder?: string
 }) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -349,8 +349,8 @@ export function AISearchDialog({
         </div>
         {open && (
           <div className="p-1 pb-2">
-            <Typography size="xs" fontWeight="normal">
-              *Oasis AI his feature is in beta and may hallucinate / provide inaccurate answers.
+            <Typography size="xs" fontWeight="normal" className="text-center">
+              Oasis AI may hallucinate / provide inaccurate answers.
             </Typography>
           </div>
         )}
@@ -363,8 +363,18 @@ export function AISearchDialog({
       return (
         <Button
           onClick={handleSearchButtonClick}
-          variant="outline"
-          className="gap-2 rounded-full h-12 text-secondary-foreground"
+          variant="ghost"
+          className="gap-2 rounded-full h-12 text-secondary-foreground border bg-muted"
+        >
+          <Sparkles className="w-4 h-4 text-secondary-foreground" />
+        </Button>
+      )
+    } else if (variant === 'icon') {
+      return (
+        <Button
+          onClick={handleSearchButtonClick}
+          variant="ghost"
+          className="gap-2 rounded-full h-12 text-secondary-foreground "
         >
           <Sparkles className="w-4 h-4 text-secondary-foreground" />
         </Button>
