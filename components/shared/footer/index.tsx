@@ -1,6 +1,6 @@
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
-import { kAffiliatePortal, kInstagram, kTikTok, kTwitter, kYouTube } from '@/lib/constants/socials'
+import { kInstagram, kTikTok, kTwitter, kYouTube } from '@/lib/constants/socials'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
@@ -66,53 +66,7 @@ export default function Footer() {
           </div>
 
           <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
-            <h6 className="text-sm text-secondary font-bold mb-2">Quick links</h6>
-            <ul className="text-sm space-y-2 list-none">
-              <li>
-                <Link
-                  href="/search/bottled-water"
-                  className="text-secondary transition duration-150 ease-in-out"
-                >
-                  Bottled water
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/tap-water"
-                  className="text-secondary transition duration-150 ease-in-out"
-                >
-                  Tap water
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/filters"
-                  className="text-secondary transition duration-150 ease-in-out"
-                >
-                  Filters
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/blog/how_we_score_water"
-                  className="text-secondary transition duration-150 ease-in-out"
-                >
-                  How Scoring Works
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/lab-testing"
-                  className="text-secondary transition duration-150 ease-in-out"
-                >
-                  Test your water
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
-            <h6 className="text-sm text-secondary font-bold mb-2">Information</h6>
+            <h6 className="text-sm text-secondary font-bold mb-2">Company</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link
@@ -123,10 +77,59 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-secondary  transition duration-150 ease-in-out">
-                  Blog
+                <Link
+                  href="/affiliates"
+                  className="text-secondary  transition duration-150 ease-in-out"
+                >
+                  Affiliates
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  Contact us
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
+            <h6 className="text-sm text-secondary font-bold mb-2">Information</h6>
+            <ul className="text-sm space-y-2 list-none">
+              <FeedbackModal open={openFeedback} setOpen={setOpenFeedback} />
+
+              <li>
+                <Link
+                  href="/lab-testing"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  Lab testing
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/blog/how_we_score_water"
+                  className="text-secondary transition duration-150 ease-in-out"
+                >
+                  How scoring works
+                </Link>
+              </li>
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  setOpenFeedback(true)
+                }}
+              >
+                Feedback
+              </div>
+            </ul>
+          </div>
+
+          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
+            <h6 className="text-sm text-secondary font-bold mb-2">Legal</h6>
+            <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link
                   href="/privacy-policy"
@@ -148,42 +151,6 @@ export default function Footer() {
                   Terms
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
-            <h6 className="text-sm text-secondary font-bold mb-2">Support</h6>
-            <ul className="text-sm space-y-2 list-none">
-              <FeedbackModal open={openFeedback} setOpen={setOpenFeedback} />
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  setOpenFeedback(true)
-                }}
-              >
-                Feedback
-              </div>
-              <li>
-                <Link
-                  href="/contact"
-                  className="text-secondary transition duration-150 ease-in-out"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/faqs" className="text-secondary transition duration-150 ease-in-out">
-                  FAQs
-                </Link>
-              </li>
-              <div
-                className="cursor-pointer"
-                onClick={() => {
-                  window.open(kAffiliatePortal, '_blank')
-                }}
-              >
-                Influencer program
-              </div>
             </ul>
           </div>
 

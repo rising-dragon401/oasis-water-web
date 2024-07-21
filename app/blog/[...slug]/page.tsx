@@ -99,7 +99,7 @@ export default async function PostPage({ params }: PostProps) {
         </Typography>
       )}
 
-      {subscription ? (
+      {subscription || !post.is_research ? (
         <Mdx code={post.body.code} />
       ) : (
         <div className="flex flex-col">
