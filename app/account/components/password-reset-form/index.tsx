@@ -1,13 +1,13 @@
 'use client'
 
-import { redirect } from 'next/navigation'
-import { useUserProvider } from '@/providers/UserProvider'
-import { Input } from '@/components/ui/input'
+import { resetPassword } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useUserProvider } from '@/providers/UserProvider'
+import { redirect } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { resetPassword } from '@/app/actions/user'
-import { Label } from '@/components/ui/label'
 
 export default function ResetPasswordForm() {
   const { provider, userData } = useUserProvider()
@@ -47,16 +47,23 @@ export default function ResetPasswordForm() {
           <Label htmlFor="password" className="text-sm">
             New Password
           </Label>
-          <Input
-            type="password"
-            placeholder="Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full"
-          />
-          <Button type="button" loading={loading} onClick={handleResetPassword} className="w-full">
-            Update Password
-          </Button>
+          <div className="flex flex-row">
+            <Input
+              type="password"
+              placeholder="Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full"
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              loading={loading}
+              onClick={handleResetPassword}
+            >
+              Update
+            </Button>
+          </div>
         </div>
       </div>
     </div>

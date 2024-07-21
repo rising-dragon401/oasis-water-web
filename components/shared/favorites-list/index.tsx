@@ -2,15 +2,12 @@
 
 import { getCurrentUserData, getUserFavorites } from '@/app/actions/user'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
-import Score from '@/components/shared/score'
 import Typography from '@/components/typography'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { PROFILE_AVATAR } from '@/lib/constants/images'
 import useSubscription from '@/lib/hooks/use-subscription'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
-import { Loader2, Share } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -108,33 +105,9 @@ export default function FavoritesList({ userId }: { userId: string }) {
 
   return (
     <div className="pb-8 w-full px-2">
-      <div className="py-4 gap-4 flex w-full flex-row justify-between items-start">
-        <div className="flex flex-col gap-2 w-full">
-          <div className="flex flex-row">
-            <Avatar className="h-24 w-24">
-              <AvatarImage src={oasisUser?.avatar_url || PROFILE_AVATAR} alt="oasis pfp" />
-            </Avatar>
-          </div>
-
-          <div className="flex flex-col gap-0 justify-start">
-            <Typography size="xl" fontWeight="normal">
-              {`${oasisUser?.full_name || oasisUser?.email || 'User'}'s Oasis`}
-            </Typography>
-            {oasisUser?.bio && (
-              <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
-                {oasisUser?.bio}
-              </Typography>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-row gap-0 max-h-24">
-          <Score score={oasisScore || 0} size="md" showScore={true} />
-          <Button variant="ghost" onClick={handleShare}>
-            <Share className="w-6 h-6" />
-          </Button>
-        </div>
-      </div>
+      <Typography size="3xl" fontWeight="normal" className="mb-4">
+        My Favorites
+      </Typography>
 
       {loadingFavorites ? (
         <div className="flex justify-center items-center w-full h-64">

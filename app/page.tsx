@@ -24,7 +24,7 @@ const CATEGORIES = [
     tab: 'flavored_water',
   },
   {
-    name: 'Gallons',
+    name: 'Water gallons',
     icon: <Milk className={ICON_CLASSNAME} />,
     tab: 'gallons',
   },
@@ -64,7 +64,7 @@ export default async function Home() {
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="flex flex-col mt-14 gap-y-4 md:mb-40 mb-20 w-full">
+        <div className="flex flex-col md:mt-20 mt-14 gap-y-4 md:mb-32 mb-20 w-full">
           <div className="flex flex-row items-center justify-between">
             <Typography size="3xl" fontWeight="normal">
               Top rated products
@@ -82,7 +82,7 @@ export default async function Home() {
                   <Link
                     key={category.name}
                     href={`/top-rated?tab=${category.tab}`}
-                    className="flex flex-col gap-2 w-[140px] md:w-[284px] md:py-6 py-4 rounded-lg bg-card border justify-center
+                    className="flex flex-col gap-2 w-[140px] md:w-[284px] md:pt-6 pt-4 pb-2 rounded-lg bg-card border justify-end
                    items-start cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
                   >
                     <div className="flex flex-col items-center justify-center">{category.icon}</div>
@@ -96,7 +96,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="my-14 w-full">
+        <div className="mt-10 mb-10 w-full">
           <BlogPreviewSection />
         </div>
       </div>

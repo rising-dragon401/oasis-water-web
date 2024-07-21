@@ -105,7 +105,7 @@ export default async function PostPage({ params }: PostProps) {
         <div className="flex flex-col">
           <Link href="/oasis-member" className="no-underline">
             <Button variant="outline" className="no-underline">
-              Become Oasis Member to continue reading
+              Become an Oasis Member to continue reading
             </Button>
           </Link>
           <div className="filter blur-md overflow-hidden ">

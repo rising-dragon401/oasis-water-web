@@ -24,9 +24,9 @@ export default function BlogPreviewSection() {
         </Link>
       </div>
 
-      <div className="relative w-full">
-        <div className="absolute left-0 right-0 overflow-x-auto hide-scrollbar">
-          <div className="flex flex-nowrap gap-2 pb-4">
+      <div className="relative w-full ">
+        <div className="left-0 right-0 overflow-x-auto hide-scrollbar ">
+          <div className="flex flex-nowrap gap-2 pb-4 ">
             {sortedPosts.slice(0, 3).map((post) => (
               <article key={post._id}>
                 <Link href={post.slug}>

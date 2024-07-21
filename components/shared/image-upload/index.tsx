@@ -61,8 +61,6 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
   }
 
   const handleUploadFile = async (file: File) => {
-    console.log('itemId: ', itemId)
-
     try {
       if (!itemId) {
         throw new Error('No item id')
@@ -95,7 +93,7 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
       </Label>
 
       <div
-        className={`grid max-w-sm items-center justify-center gap-1.5 border w-40 h-40 rounded-full border-dashed ${
+        className={`grid max-w-sm items-center justify-center gap-1.5 border w-28 h-28 rounded-full border-dashed ${
           drag ? 'dragging' : ''
         }`}
         onDragOver={onDragOver}
@@ -111,13 +109,13 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
         />
 
         {file ? (
-          <div onClick={onButtonClick} className="cursor-pointer w-40 h-40">
+          <div onClick={onButtonClick} className="cursor-pointer w-28 h-28">
             <Image
               src={file}
               alt="Uploaded"
               width={300}
               height={300}
-              className="rounded-full w-40 h-40"
+              className="rounded-full w-28 h-28"
             />
           </div>
         ) : (
