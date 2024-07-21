@@ -82,7 +82,7 @@ export default async function Home() {
                   <Link
                     key={category.name}
                     href={`/top-rated?tab=${category.tab}`}
-                    className="flex flex-col gap-2 w-[140px] md:w-[284px] md:pt-6 pt-4 pb-2 rounded-lg bg-card border justify-end
+                    className="flex flex-col gap-2 w-[140px] md:w-[284px] md:pt-6 pt-4 pb-2 rounded-lg bg-muted border justify-end
                    items-start cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
                   >
                     <div className="flex flex-col items-center justify-center">{category.icon}</div>

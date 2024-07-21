@@ -212,11 +212,11 @@ export default function BasicSearch({
   const getSearchStyle = () => {
     switch (searchBoxStyle) {
       case 'bubble':
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
       case 'line':
         return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative border-b md:min-w-[300px] min-w-[200px]'
       default:
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-muted transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
     }
   }
 
