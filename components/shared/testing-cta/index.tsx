@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function TestingCta() {
   return (
-    <div className="flex flex-col gap-2 px-4 py-6 rounded-lg mt-14 border bg-muted">
+    <div className="flex flex-col gap-2 px-4 py-6 rounded-lg border bg-muted">
       <Typography size="2xl" fontWeight="normal">
         Get your water tested
       </Typography>
