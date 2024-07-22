@@ -201,15 +201,14 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         }
       })
 
-      const locationsPromise = getLocations({ limit: 999, sortMethod: 'name' }).then(
-        (locations) => {
-          setTapWater(locations)
-          setLoading((prev) => ({ ...prev, tap_water: false }))
-          if (tabValue === 'tap_water') {
-            setAllItems(locations)
-          }
+      const locationsPromise = getLocations({ limit: 25, sortMethod: 'name' }).then((locations) => {
+        setTapWater(locations)
+        setLoading((prev) => ({ ...prev, tap_water: false }))
+
+        if (tabValue === 'tap_water') {
+          setAllItems(locations)
         }
-      )
+      })
 
       await Promise.all([
         itemsPromise,
@@ -302,7 +301,18 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
   }
 
   return (
-    <div className="pb-14 mt-4">
+    <div className="pb-14 mt-14">
+      <div className="flex flex-col w-full items-center justify-center gap-y-4">
+        <div className="flex flex-col items-center text-center gap-2">
+          <Typography size="5xl" fontWeight="bold" className="max-w-lg">
+            Top Rated Products
+          </Typography>
+          <Typography size="base" fontWeight="normal" className="max-w-lg">
+            Discover the healthiest water options based on science.
+          </Typography>
+        </div>
+      </div>
+
       <div className="flex w-full justify-center mb-3">{UnlockTopButton()}</div>
 
       <Tabs

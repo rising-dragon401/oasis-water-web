@@ -39,13 +39,13 @@ export default function BlurredLineItem({
 
   const content = (
     <div className="my-0 gap-y-1 flex justify-between w-full">
-      <Typography size="sm" fontWeight="normal">
+      <Typography size="base" fontWeight="normal">
         {label}:
       </Typography>{' '}
       {isPaywalled && !subscription ? (
         <PaywallContent label="🔒" hideButton>
           <Typography
-            size="sm"
+            size="base"
             fontWeight="semibold"
             className={cn(labelClassName, 'min-w-14 text-right')}
           >
@@ -54,7 +54,7 @@ export default function BlurredLineItem({
         </PaywallContent>
       ) : (
         <Typography
-          size="sm"
+          size="base"
           fontWeight="semibold"
           className={cn(labelClassName, 'min-w-14 text-right')}
         >

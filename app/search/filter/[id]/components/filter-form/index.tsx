@@ -141,34 +141,6 @@ export default function FilterForm({ id }: Props) {
                   </Typography>
                 </Link>
 
-                <div className=" flex-col border rounded-md p-2 mt-4 gap-y-4 w-full md:flex hidden">
-                  {filter.is_indexed === false && <UntestedTooltip />}
-
-                  <BlurredLineItem
-                    label="Common contaminants removed"
-                    value={percentCommonFiltered ? `${percentCommonFiltered}%` : 'Unknown'}
-                    tooltipContent="Learn more"
-                    tooltipLink="/blog/how_we_score_water"
-                    isPaywalled={true}
-                  />
-
-                  <BlurredLineItem
-                    label="Uncommon ones"
-                    value={percentUncommonFiltered ? `${percentUncommonFiltered}%` : 'Unknown'}
-                    tooltipContent="Learn more"
-                    tooltipLink="/blog/how_we_score_water"
-                    isPaywalled={true}
-                  />
-
-                  <BlurredLineItem
-                    label="Certifications"
-                    value={filter.certifications?.join(', ') || 'None'}
-                    tooltipContent="Learn more"
-                    tooltipLink="/blog/how_we_score_water"
-                    isPaywalled={true}
-                  />
-                </div>
-
                 {filter.affiliate_url && filter.score > 70 && (
                   <Button
                     variant={filter.score > 70 ? 'default' : 'outline'}
@@ -189,24 +161,8 @@ export default function FilterForm({ id }: Props) {
           </div>
         </div>
 
-        <div className=" flex-col border rounded-md px-2 mt-4 w-full md:hidden flex">
+        <div className="flex-col gap-2 mt-6 w-36">
           {filter.is_indexed === false && <UntestedTooltip />}
-
-          <BlurredLineItem
-            label="Common contaminants removed"
-            value={`${percentCommonFiltered}%` || '0'}
-            tooltipContent="Learn more"
-            tooltipLink="/blog/how_we_score_water"
-            isPaywalled={true}
-          />
-
-          <BlurredLineItem
-            label="Uncommon contaminants removed"
-            value={`${percentUncommonFiltered}%` || '0'}
-            tooltipContent="Learn more"
-            tooltipLink="/blog/how_we_score_water"
-            isPaywalled={true}
-          />
 
           <BlurredLineItem
             label="Certifications"
