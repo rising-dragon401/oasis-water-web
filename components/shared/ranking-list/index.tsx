@@ -17,7 +17,7 @@ import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { ItemType } from '@/types/custom'
 import {
-  ArrowUpDown,
+  Beaker,
   Check,
   CupSoda,
   Droplet,
@@ -39,6 +39,7 @@ export type TabKeys =
   | 'tap_water'
   | 'filter'
   | 'shower_filter'
+  | 'bottle_filter'
 
 type CategoryType = {
   id: TabKeys
@@ -58,9 +59,9 @@ const CATEGORIES: CategoryType[] = [
   },
   {
     id: 'filter',
-    title: 'Filters',
+    title: 'Water filters',
     logo: <Filter className="text-slate-4000 w-4 h-4" />,
-    tags: ['bottle', 'sink', 'counter', 'pitcher'],
+    tags: ['sink', 'counter', 'pitcher'],
   },
   {
     id: 'flavored_water',
@@ -78,6 +79,11 @@ const CATEGORIES: CategoryType[] = [
     id: 'shower_filter',
     title: 'Shower filters',
     logo: <ShowerHead className="text-slate-400 w-4 h-4" />,
+  },
+  {
+    id: 'bottle_filter',
+    title: 'Bottle filters',
+    logo: <Beaker className="text-slate-4000 w-4 h-4" />,
   },
   {
     id: 'tap_water',
@@ -111,17 +117,17 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
     tap_water: true,
     shower_filter: true,
     water_gallon: true,
+    bottle_filter: true,
   })
   const [tabValue, setTabValue] = useState<TabKeys>(tab || 'bottled_water')
   const [allItems, setAllItems] = useState<any[]>([])
-  const [filteredItems, setFilteredItems] = useState<any[]>([])
   const [bottledWater, setBottledWater] = useState<any[]>([])
   const [flavoredWater, setFlavoredWater] = useState<any[]>([])
   const [gallons, setGallons] = useState<any[]>([])
   const [showerFilters, setShowerFilters] = useState<any[]>([])
+  const [bottledFilters, setBottledFilters] = useState<any[]>([])
   const [tapWater, setTapWater] = useState<any[]>([])
   const [filters, setFilters] = useState<any[]>([])
-  const [sortMethod, setSortMethod] = useState('name')
   const [completeInit, setCompleteInit] = useState(false)
   const [page, setPage] = useState(1)
   const [tags, setTags] = useState<string[]>([])
@@ -140,90 +146,93 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
   }, [])
 
   useEffect(() => {
+    console.log('allItems', allItems)
+  }, [allItems])
+  useEffect(() => {
+    const fetchAndSetData = async (
+      key: string,
+      fetchFunction: () => Promise<any>,
+      setState: React.Dispatch<React.SetStateAction<any[]>>,
+      tabKey: TabKeys
+    ) => {
+      // const cachedData = localStorage.getItem(key)
+      // if (cachedData && cachedData.length > 5) {
+      //   const parsedData = JSON.parse(cachedData)
+      //   setState(parsedData)
+      //   if (tabValue === tabKey) {
+      //     console.log(' setAllItems cachedData', parsedData)
+      //     setAllItems(parsedData)
+      //   }
+      //   setLoading((prev) => ({ ...prev, [key]: false }))
+      // } else {
+      //   const data = await fetchFunction()
+      //   setState(data)
+      //   localStorage.setItem(key, JSON.stringify(data))
+      //   setLoading((prev) => ({ ...prev, [key]: false }))
+      //   if (tabValue === tabKey) {
+      //     setAllItems(data)
+      //   }
+      // }
+      const data = await fetchFunction()
+      setState(data)
+      localStorage.setItem(key, JSON.stringify(data))
+      setLoading((prev) => ({ ...prev, [key]: false }))
+      if (tabValue === tabKey) {
+        setAllItems(data)
+      }
+    }
+
     const initialFetch = async () => {
-      const itemsPromise = getItems({ limit: 999, sortMethod: 'name', type: 'bottled_water' }).then(
-        (items) => {
-          setBottledWater(items)
-          setLoading((prev) => ({ ...prev, bottled_water: false }))
-          if (tabValue === 'bottled_water') {
-            setAllItems(items)
-          }
-        }
-      )
-
-      const gallonsPromise = getItems({
-        limit: 999,
-        sortMethod: 'name',
-        type: 'water_gallon',
-      }).then((items) => {
-        setGallons(items)
-        setLoading((prev) => ({ ...prev, gallons: false }))
-
-        if (tabValue === 'gallons') {
-          setAllItems(items)
-        }
-      })
-
-      const flavoredWaterPromise = getItems({
-        limit: 999,
-        sortMethod: 'name',
-        type: 'flavored_water',
-      }).then((items) => {
-        setFlavoredWater(items)
-        setLoading((prev) => ({ ...prev, flavored_water: false }))
-
-        if (tabValue === 'flavored_water') {
-          setAllItems(items)
-        }
-      })
-
-      const filtersPromise = getFilters({
-        limit: 999,
-        sortMethod: 'name',
-        type: 'filter',
-      }).then((filters) => {
-        setFilters(filters)
-        setLoading((prev) => ({ ...prev, filter: false }))
-        if (tabValue === 'filter') {
-          setAllItems(filters)
-        }
-      })
-
-      const showerFiltersPromise = getFilters({
-        limit: 999,
-        sortMethod: 'name',
-        type: 'shower_filter',
-      }).then((filters) => {
-        setShowerFilters(filters)
-        setLoading((prev) => ({ ...prev, shower_filter: false }))
-        if (tabValue === 'shower_filter') {
-          setAllItems(filters)
-        }
-      })
-
-      const locationsPromise = getLocations({ limit: 25, sortMethod: 'name' }).then((locations) => {
-        setTapWater(locations)
-        setLoading((prev) => ({ ...prev, tap_water: false }))
-
-        if (tabValue === 'tap_water') {
-          setAllItems(locations)
-        }
-      })
-
       await Promise.all([
-        itemsPromise,
-        gallonsPromise,
-        flavoredWaterPromise,
-        filtersPromise,
-        showerFiltersPromise,
-        locationsPromise,
+        fetchAndSetData(
+          'bottled_water',
+          () => getItems({ limit: 199, sortMethod: 'name', type: 'bottled_water' }),
+          setBottledWater,
+          'bottled_water'
+        ),
+        fetchAndSetData(
+          'shower_filter',
+          () => getFilters({ limit: 25, sortMethod: 'name', type: 'shower_filter' }),
+          setShowerFilters,
+          'shower_filter'
+        ),
+        fetchAndSetData(
+          'flavored_water',
+          () => getItems({ limit: 25, sortMethod: 'name', type: 'flavored_water' }),
+          setFlavoredWater,
+          'flavored_water'
+        ),
+        fetchAndSetData(
+          'gallons',
+          () => getItems({ limit: 25, sortMethod: 'name', type: 'water_gallon' }),
+          setGallons,
+          'gallons'
+        ),
+        fetchAndSetData(
+          'bottle_filter',
+          () => getFilters({ limit: 25, sortMethod: 'name', type: 'bottle_filter' }),
+          setBottledFilters,
+          'bottle_filter'
+        ),
+        fetchAndSetData(
+          'tap_water',
+          () => getLocations({ limit: 199, sortMethod: 'name' }),
+          setTapWater,
+          'tap_water'
+        ),
+        fetchAndSetData(
+          'filter',
+          () => getFilters({ limit: 50, sortMethod: 'name', type: 'filter' }),
+          setFilters,
+          'filter'
+        ),
       ])
 
       setCompleteInit(true)
     }
 
     initialFetch()
-  }, [tabValue])
+  }, [])
 
   useEffect(() => {
     if (lastPath && typeof lastPath === 'string') setTabValue(lastPath)
@@ -239,27 +248,12 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
   }, [tabValue])
 
   useEffect(() => {
-    if (!allItems) return
-
-    let sortedItems = [...allItems]
-    if (sortMethod === 'score') {
-      sortedItems.sort((a, b) => (b.score || 0) - (a.score || 0))
-    } else {
-      sortedItems.sort((a, b) => a.name.localeCompare(b.name))
+    if (subscription && uid) {
+      setAllItems((prevItems) => {
+        return [...prevItems].sort((a, b) => b.score - a.score)
+      })
     }
-
-    if (selectedTags.length > 0) {
-      sortedItems = sortedItems.filter((item) =>
-        selectedTags.every((tag) => item?.tags?.includes(tag))
-      )
-    }
-
-    setFilteredItems(sortedItems)
-  }, [sortMethod, allItems, selectedTags])
-
-  useEffect(() => {
-    setSortMethod(subscription && uid ? 'score' : 'name')
-  }, [subscription, uid])
+  }, [subscription, uid, tabValue])
 
   const manageTab = (tabValue: TabKeys) => {
     setSelectedTags([])
@@ -274,6 +268,8 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
       setAllItems(filters)
     } else if (tabValue === 'shower_filter') {
       setAllItems(showerFilters)
+    } else if (tabValue === 'bottle_filter') {
+      setAllItems(bottledFilters)
     } else if (tabValue === 'gallons') {
       setAllItems(gallons)
     }
@@ -281,18 +277,16 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
     setTags(CATEGORIES.find((category) => category.id === tabValue)?.tags || [])
   }
 
-  const handleClickSortByScore = () => {
-    if (subscription) {
-      setSortMethod('score')
-    } else {
-      openModal('SubscriptionModal')
-    }
-  }
-
   const UnlockTopButton = () => {
     if (!subscription) {
       return (
-        <Button variant="outline" className="flex flex-row gap-1" onClick={handleClickSortByScore}>
+        <Button
+          variant="outline"
+          className="flex flex-row gap-1"
+          onClick={() => {
+            openModal('SubscriptionModal')
+          }}
+        >
           Unlock scores and ratings
           <TrendingUp className="w-4 h-4" />
         </Button>
@@ -323,7 +317,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         }}
       >
         <div className="py-2 flex flex-row justify-between w-full">
-          <TabsList className="gap-2 bg-transparent flex justify-start md:w-5/6 w-5/6 overflow-x-scroll hide-scrollbar">
+          <TabsList className="gap-2 bg-transparent flex justify-start w-7/8 overflow-x-scroll hide-scrollbar">
             {CATEGORIES.map((category) => (
               <TabsTrigger
                 key={category.title}
@@ -341,7 +335,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
             ))}
           </TabsList>
 
-          <div className="flex flex-row justify-end items-center md:w-1/6 w-1/6">
+          <div className="flex flex-row justify-end items-center w-1/8">
             {tags.length > 0 && (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
@@ -369,7 +363,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
               </DropdownMenu>
             )}
 
-            {subscription && (
+            {/* {subscription && (
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
                   <ArrowUpDown className="w-4 h-4" />
@@ -397,19 +391,23 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            )}
+            )} */}
           </div>
         </div>
 
         <TabsContent value={tabValue} className="w-full">
           <div className="grid md:grid-cols-3 grid-cols-2 gap-6 w-full min-w-full max-w-[95vw] ">
-            {filteredItems &&
-              filteredItems
+            {allItems &&
+              allItems
                 .filter((item) => item.score !== null && !item.is_draft)
+                .filter((item) => {
+                  if (selectedTags.length === 0) return true
+                  return selectedTags.every((tag) => item.tags.includes(tag))
+                })
                 .slice(0, 20 * page)
                 .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
 
-            {(loading[tabValue] || !completeInit || !filteredItems) &&
+            {(loading[tabValue] || !completeInit || !allItems) &&
               Array(10)
                 .fill(0)
                 .map((_, index) => <ItemSkeleton key={index} />)}

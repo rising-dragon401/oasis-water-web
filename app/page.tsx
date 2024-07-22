@@ -2,7 +2,7 @@ import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
 import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import Typography from '@/components/typography'
-import { CupSoda, Droplet, Filter, GlassWater, Milk, ShowerHead } from 'lucide-react'
+import { Beaker, CupSoda, Droplet, Filter, GlassWater, Milk, ShowerHead } from 'lucide-react'
 import Link from 'next/link'
 
 const ICON_CLASSNAME = 'text-secondary md:w-8 md:h-8 w-6 h-6'
@@ -32,6 +32,11 @@ const CATEGORIES = [
     name: 'Shower filters',
     icon: <ShowerHead className={ICON_CLASSNAME} />,
     tab: 'shower_filter',
+  },
+  {
+    name: 'Bottle filters',
+    icon: <Beaker className={ICON_CLASSNAME} />,
+    tab: 'bottle_filter',
   },
   {
     name: 'Tap water',

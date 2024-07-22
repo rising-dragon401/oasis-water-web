@@ -10,7 +10,7 @@ export const getFilters = async ({
 }: {
   limit?: number
   sortMethod?: 'name' | 'score'
-  type?: 'filter' | 'shower_filter'
+  type?: 'filter' | 'shower_filter' | 'bottle_filter'
 } = {}) => {
   const supabase = await createSupabaseServerClient()
 
