@@ -68,7 +68,11 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
   const determineLink = () => {
     if (item.type === 'tap_water') {
       return `/search/location/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
-    } else if (item.type === 'filter') {
+    } else if (
+      item.type === 'filter' ||
+      item.type === 'bottle_filter' ||
+      item.type === 'shower_filter'
+    ) {
       return `/search/filter/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
     } else {
       return `/search/item/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
