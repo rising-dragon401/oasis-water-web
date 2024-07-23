@@ -21,24 +21,14 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
   const { openModal } = useModal()
 
   const renderScore = () => {
-    const score = item?.score || 0
+    const score = item?.score
     const color = 'text-blue-800'
 
     return (
       <div className="flex flex-col items-end w-full text-right">
-        {subscription ? (
-          <Typography
-            size="2xl"
-            fontWeight="normal"
-            className={`!no-underline ${color} text-right`}
-          >
-            {score}
-          </Typography>
-        ) : (
-          <button onClick={() => openModal('SubscriptionModal')}>
-            <Lock size={16} />
-          </button>
-        )}
+        <Typography size="2xl" fontWeight="normal" className={`!no-underline ${color} text-right`}>
+          {score}
+        </Typography>
 
         <Typography
           size="xs"
@@ -108,10 +98,22 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
         </div>
 
         <div className="flex w-1/6 justify-end">
-          {/* Position renderScore relative to the image */}
-          {item.score && <div>{renderScore()}</div>}
-          {/* Position the warning symbol relative to the image */}
-          {!item.score && <div>{renderWarning()}</div>}
+          {!subscription ? (
+            <div className="flex flex-col items-end w-full text-right">
+              <button onClick={() => openModal('SubscriptionModal')}>
+                <Lock size={16} />
+              </button>
+              <Typography
+                size="xs"
+                fontWeight="normal"
+                className="!no-underline text-secondary text-right"
+              >
+                /100
+              </Typography>
+            </div>
+          ) : (
+            <>{item.score ? <div>{renderScore()}</div> : <div>{renderWarning()}</div>}</>
+          )}
         </div>
       </div>
     </Link>
