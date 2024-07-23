@@ -4,6 +4,7 @@ import Typography from '@/components/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
+import { determineLink } from '@/utils/helpers'
 import { AlertTriangle, Lock } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -65,23 +66,9 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
     )
   }
 
-  const determineLink = () => {
-    if (item.type === 'tap_water') {
-      return `/search/location/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
-    } else if (
-      item.type === 'filter' ||
-      item.type === 'bottle_filter' ||
-      item.type === 'shower_filter'
-    ) {
-      return `/search/filter/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
-    } else {
-      return `/search/item/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
-    }
-  }
-
   return (
     <Link
-      href={determineLink()}
+      href={determineLink(item)}
       className="flex flex-col hover:opacity-80 relative lg:w-72 md:w-72 w-44 border rounded-md fade-in"
     >
       <div className="relative flex w-full">
