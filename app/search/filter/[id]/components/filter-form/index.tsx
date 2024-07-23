@@ -141,6 +141,8 @@ export default function FilterForm({ id }: Props) {
                   </Typography>
                 </Link>
 
+                <div className="mt-4">{filter.is_indexed === false && <UntestedTooltip />}</div>
+
                 {filter.affiliate_url && filter.score > 70 && (
                   <Button
                     variant={filter.score > 70 ? 'default' : 'outline'}
@@ -155,15 +157,16 @@ export default function FilterForm({ id }: Props) {
               </div>
 
               <div className="flex w-1/2 justify-end">
-                <Score score={filter.score} size={isMobile ? 'md' : 'lg'} />
+                <Score
+                  score={filter.is_indexed === false ? null : filter.score}
+                  size={isMobile ? 'md' : 'lg'}
+                />
               </div>
             </div>
           </div>
         </div>
 
         <div className="flex-col gap-2 mt-6 w-36">
-          {filter.is_indexed === false && <UntestedTooltip />}
-
           <BlurredLineItem
             label="Certifications"
             value={filter.certifications?.join(', ') || 'None'}
