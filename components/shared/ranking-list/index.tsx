@@ -146,9 +146,6 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
   }, [])
 
   useEffect(() => {
-    console.log('allItems', allItems)
-  }, [allItems])
-  useEffect(() => {
     const fetchAndSetData = async (
       key: string,
       fetchFunction: () => Promise<any>,
