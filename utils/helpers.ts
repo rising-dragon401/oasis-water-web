@@ -34,7 +34,11 @@ export const toDateTime = (secs: number) => {
 export const determineLink = (item: any) => {
   if (item.type === 'tap_water') {
     return `/search/location/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
-  } else if (item.type === 'filter') {
+  } else if (
+    item.type === 'filter' ||
+    item.type === 'bottle_filter' ||
+    item.type === 'shower_filter'
+  ) {
     return `/search/filter/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
   } else if (item.type === 'ingredient') {
     return `/search/ingredient/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
