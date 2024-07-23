@@ -6,7 +6,7 @@ export default function TestingCta() {
   return (
     <div className="flex flex-col gap-2 px-4 py-6 rounded-lg border bg-muted">
       <Typography size="2xl" fontWeight="normal">
-        Get your water tested
+        Test your water
       </Typography>
       <Typography size="base" fontWeight="normal">
         Order your own test kit to analyze the contaminants in your bottled or tap water.

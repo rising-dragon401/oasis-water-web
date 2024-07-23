@@ -2,21 +2,21 @@
 
 import { getCurrentUserData, getUserFavorites } from '@/app/actions/user'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
+import Score from '@/components/shared/score'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import useSubscription from '@/lib/hooks/use-subscription'
+import useDevice from '@/lib/hooks/use-device'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
 import { mutate, default as useSWR } from 'swr'
 // import FollowButton from '@/components/shared/follow-button'
 
 export default function FavoritesList({ userId }: { userId: string }) {
   const { uid, userData, loadingUser } = useUserProvider()
-  const { subscription } = useSubscription()
+  const { isMobile } = useDevice()
   const router = useRouter()
 
   const [oasisScore, setOasisScore] = useState<number | null>(null)
@@ -78,22 +78,22 @@ export default function FavoritesList({ userId }: { userId: string }) {
     setOasisScore(finalScore)
   }
 
-  const handleShare = () => {
-    if (!navigator.clipboard) {
-      console.error('Clipboard functionality is not available.')
-      return
-    }
+  // const handleShare = () => {
+  //   if (!navigator.clipboard) {
+  //     console.error('Clipboard functionality is not available.')
+  //     return
+  //   }
 
-    const urlToShare = `${process.env.NEXT_PUBLIC_BASE_URL}${userId}`
-    navigator.clipboard
-      .writeText(urlToShare)
-      .then(() => {
-        toast('Oasis URL copied to clipboard')
-      })
-      .catch((err) => {
-        console.error('Failed to copy URL to clipboard:', err)
-      })
-  }
+  //   const urlToShare = `${process.env.NEXT_PUBLIC_BASE_URL}${userId}`
+  //   navigator.clipboard
+  //     .writeText(urlToShare)
+  //     .then(() => {
+  //       toast('Oasis URL copied to clipboard')
+  //     })
+  //     .catch((err) => {
+  //       console.error('Failed to copy URL to clipboard:', err)
+  //     })
+  // }
 
   if (loadingUser) {
     return (
@@ -105,9 +105,12 @@ export default function FavoritesList({ userId }: { userId: string }) {
 
   return (
     <div className="pb-8 w-full px-2">
-      <Typography size="3xl" fontWeight="normal" className="mb-4">
-        My Favorites
-      </Typography>
+      <div className="flex flex-col justify-between mb-2">
+        <Typography size="3xl" fontWeight="normal" className="mb-4 md:mt-8 mt-2">
+          My products
+        </Typography>
+        <Score score={oasisScore ?? null} size="md" />
+      </div>
 
       {loadingFavorites ? (
         <div className="flex justify-center items-center w-full h-64">
