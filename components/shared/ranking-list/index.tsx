@@ -183,7 +183,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
       await Promise.all([
         fetchAndSetData(
           'bottled_water',
-          () => getItems({ limit: 199, sortMethod: 'name', type: 'bottled_water' }),
+          () => getItems({ limit: 500, sortMethod: 'name', type: 'bottled_water' }),
           setBottledWater,
           'bottled_water'
         ),
@@ -250,7 +250,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         return [...prevItems].sort((a, b) => b.score - a.score)
       })
     }
-  }, [subscription, uid, tabValue])
+  }, [subscription, uid, tabValue, loading])
 
   const manageTab = (tabValue: TabKeys) => {
     setSelectedTags([])
@@ -396,7 +396,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
           <div className="grid md:grid-cols-3 grid-cols-2 gap-6 w-full min-w-full max-w-[95vw] ">
             {allItems &&
               allItems
-                .filter((item) => item.score !== null && !item.is_draft)
+                .filter((item) => !item.is_draft)
                 .filter((item) => {
                   if (selectedTags.length === 0) return true
                   return selectedTags.every((tag) => item.tags.includes(tag))
