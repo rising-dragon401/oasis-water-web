@@ -5,7 +5,6 @@ import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useDebounce } from '@/lib/hooks/use-debounce'
-import useDevice from '@/lib/hooks/use-device'
 import algoliasearch from 'algoliasearch'
 import { Loader2, Search } from 'lucide-react'
 import React, { useEffect, useRef } from 'react'
@@ -61,7 +60,6 @@ export default function BasicSearch({
   const [selectedFilters, setSelectedFilters] = React.useState<string[]>([])
 
   const debouncedQuery = useDebounce(query, 500)
-  const { isMobile } = useDevice()
 
   const searchContainerRef = useRef<HTMLDivElement>(null) // Create a ref for the search container
 
@@ -105,8 +103,6 @@ export default function BasicSearch({
 
   const handleSearch = async (query: string) => {
     setIsLoading(true)
-
-    const restrictToNameField = { restrictSearchableAttributes: ['name'] }
 
     let queries: any[] = []
     if (indices && indices.length > 0) {
@@ -175,7 +171,6 @@ export default function BasicSearch({
 
     await client.multipleQueries(queries).then(({ results }) => {
       const hits = results.map((result: any) => result.hits)
-      console.log('hits: ', hits)
       setResults(hits.flat())
     })
 
@@ -199,24 +194,36 @@ export default function BasicSearch({
   const getSearchTop = () => {
     switch (size) {
       case 'small':
-        return 'top-12'
+        return 'top-10'
       case 'medium':
         return 'top-12'
       case 'large':
-        return 'top-14'
-      default:
         return 'top-12'
+      default:
+        return 'top-6'
     }
   }
 
   const getSearchStyle = () => {
     switch (searchBoxStyle) {
       case 'bubble':
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border '
       case 'line':
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative border-b md:min-w-[300px] min-w-[200px]'
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative border-b'
       default:
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border md:min-w-[300px] min-w-[200px] rounded-full'
+        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border'
+    }
+  }
+
+  const showResults = () => {
+    return query.length > 1 && inputFocused && queryCompleted
+  }
+
+  const getSearchRounded = () => {
+    if (showResults()) {
+      return 'rounded-md border-b-none rounded-b-none'
+    } else {
+      return 'rounded-full'
     }
   }
 
@@ -227,7 +234,7 @@ export default function BasicSearch({
       {isShowSearch && (
         <div className="flex flex-col gap-2 relative w-full max-w-lg" ref={searchContainerRef}>
           <div className="flex flex-row items-center">
-            <div className="relative mx-2 w-full">
+            <div className="relative w-full">
               <Input
                 ref={inputRef}
                 placeholder={
@@ -240,50 +247,47 @@ export default function BasicSearch({
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setInputFocused(true)}
                 icon={<Search className="w-4 h-4 ml-2" />}
-                className={`${getSearchStyle()} ${getSearchPaddingY()}`}
+                className={`${getSearchRounded()} ${getSearchStyle()} ${getSearchPaddingY()} !shadow-none`}
               />
 
               <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
                 {/* <SearchDropdown item={selectedFilters} setItem={setSelectedFilters} /> */}
-
                 {isLoading && (
                   <Loader2 size={20} className="animate-spin text-secondary-foreground" />
                 )}
               </div>
             </div>
 
-            {/* {!isMobile && <AISearchDialog size="small" />} */}
-          </div>
+            {showResults() && (
+              <div
+                className={`flex flex-col gap-2 bg-card border-b border-x rounded-b-md absolute w-full  z-10 overflow-y-scroll max-h-64  ${getSearchTop()}`}
+              >
+                {results.length > 0 && (
+                  <div className="flex-grow">
+                    {results.map((result) => (
+                      <ResultsRow key={result.id} itemResult={result} />
+                    ))}
+                  </div>
+                )}
 
-          {query.length > 1 && inputFocused && queryCompleted && (
-            <div
-              className={`flex flex-col gap-2 bg-muted border rounded-xl absolute w-full z-10 overflow-y-scroll max-h-64 px-1 ${getSearchTop()}`}
-            >
-              {results.length > 0 && (
-                <div className="flex-grow ">
-                  {results.map((result) => (
-                    <ResultsRow key={result.id} itemResult={result} />
-                  ))}
-                </div>
-              )}
-
-              {!isLoading && (
-                <div className="flex items-center flex-wrap justify-between bg-muted p-2">
-                  <div className="flex flex-col gap-2 items-center justify-center">
-                    <div
-                      onClick={() => {
-                        setOpenFeedbackModal(true)
-                      }}
-                    >
-                      <Typography size="base" fontWeight="normal" className="italic">
-                        Not seeing what you are looking for?
-                      </Typography>
+                {!isLoading && (
+                  <div className="flex items-center flex-wrap justify-between p-2">
+                    <div className="flex flex-col gap-2 items-center justify-center">
+                      <div
+                        onClick={() => {
+                          setOpenFeedbackModal(true)
+                        }}
+                      >
+                        <Typography size="base" fontWeight="normal" className="italic">
+                          Not seeing what you are looking for?
+                        </Typography>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
-          )}
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

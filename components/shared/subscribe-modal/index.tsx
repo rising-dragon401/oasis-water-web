@@ -12,7 +12,6 @@ import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
 import { CheckCircle, Circle } from 'lucide-react'
-import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -60,6 +59,7 @@ const FEATURES = [
 // annual
 const kAnnualPrice = 39.99
 const kWeeklyPrice = 5.99
+const kMonthlyPrice = 7.99
 
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
@@ -83,7 +83,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }
   }, [setOpen])
 
-  const [selectedPlan, setSelectedPlan] = useState('annual')
+  const [selectedPlan, setSelectedPlan] = useState('monthly')
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
   const [referral, setReferral] = useState(null)
 
@@ -114,9 +114,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
       (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID_ANNUAL
     ) ?? null
 
-  const proPriceWeekly =
+  const proPriceMonthly =
     proProduct?.prices.find(
-      (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID_WEEKLY
+      (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID_MONTHLY
     ) ?? null
 
   const redirectToPayment = async () => {
@@ -128,7 +128,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
       return
     }
 
-    const thisPrice = selectedPlan === 'annual' ? proPriceAnnual : proPriceWeekly
+    const thisPrice = selectedPlan === 'annual' ? proPriceAnnual : proPriceMonthly
 
     if (!thisPrice) {
       toast('Unable to create checkout link')
@@ -139,17 +139,19 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(true)
 
     // offer 3 day trial if annual plan
-    const metadata =
-      selectedPlan === 'annual'
-        ? {
-            trial_settings: {
-              end_behavior: {
-                missing_payment_method: 'cancel',
-              },
-            },
-            trial_period_days: 3,
-          }
-        : {}
+    // const metadata =
+    //   selectedPlan === 'annual'
+    //     ? {
+    //         trial_settings: {
+    //           end_behavior: {
+    //             missing_payment_method: 'cancel',
+    //           },
+    //         },
+    //         trial_period_days: 3,
+    //       }
+    //     : {}
+    // no free trial anymore
+    const metadata = {}
 
     try {
       const { sessionId } = await postData({
@@ -165,6 +167,11 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }
 
     setLoadingCheckoutSession(false)
+  }
+
+  const redirectToSignIn = () => {
+    router.push('/auth/signin')
+    setOpen(false)
   }
 
   return (
@@ -214,10 +221,10 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
                 <div className="flex flex-col items-start ">
                   <Typography size="base" fontWeight="bold">
-                    Yearly access (free trial)
+                    Yearly access
                   </Typography>
                   <Typography size="xs" fontWeight="normal">
-                    Just ${kAnnualPrice} /year
+                    ${kAnnualPrice} /year
                   </Typography>
                 </div>
               </div>
@@ -235,12 +242,12 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             <Button
               variant="outline"
               className={`px-4 w-full !font-bold mb-2 flex h-12 flex-row justify-between 
-                ${selectedPlan === 'weekly' ? 'border-primary' : 'border'}
+                ${selectedPlan === 'monthly' ? 'border-primary' : 'border'}
               `}
-              onClick={() => setSelectedPlan('weekly')}
+              onClick={() => setSelectedPlan('monthly')}
             >
               <div className="flex flex-row gap-3 items-center">
-                {selectedPlan === 'weekly' ? (
+                {selectedPlan === 'monthly' ? (
                   <CheckCircle className="w-4 h-4" />
                 ) : (
                   <Circle className="w-4 h-4" />
@@ -248,18 +255,23 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
                 <div className="flex flex-col items-start ">
                   <Typography size="base" fontWeight="bold">
-                    Weekly access
+                    Monthly access
+                  </Typography>
+                  <Typography size="xs" fontWeight="normal">
+                    ${kMonthlyPrice} /month
                   </Typography>
                 </div>
               </div>
 
               <div className="flex flex-col items-start">
-                <Typography size="xs" fontWeight="normal">
-                  ${kWeeklyPrice}
-                </Typography>
-                <Typography size="xs" fontWeight="normal">
-                  per week
-                </Typography>
+                <div className="flex flex-col items-start">
+                  <Typography size="xs" fontWeight="normal">
+                    ${(kMonthlyPrice / 5).toFixed(2)}
+                  </Typography>
+                  <Typography size="xs" fontWeight="normal">
+                    per week
+                  </Typography>
+                </div>
               </div>
             </Button>
 
@@ -271,6 +283,14 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             >
               Continue
             </Button>
+
+            <div
+              onClick={redirectToSignIn}
+              className="text-center text-secondary mb-2 text-sm underline hover:cursor-pointer"
+            >
+              or sign in to existing Member account
+            </div>
+
             <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
               We do not offer refunds as stated in our
               <a href="/refund-policy" className="text-blue-500 underline">
@@ -278,13 +298,6 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               </a>
               {` `} Funds go to improving Oasis and further lab testing.
             </Typography>
-
-            <Link
-              href="/auth/signin"
-              className="text-center text-secondary mt-2 text-sm italic underline"
-            >
-              or sign in to existing Member account
-            </Link>
           </div>
         </DialogFooter>
       </DialogContent>

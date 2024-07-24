@@ -1,7 +1,6 @@
-import React from 'react'
-import Link from 'next/link'
 import Logo from '@/components/shared/logo'
-import AuthMenu from '@/app/auth/signin/auth-menu'
+import Link from 'next/link'
+import React from 'react'
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,7 +12,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </Link>
         </div>
 
-        <AuthMenu />
+        {/* <AuthMenu /> */}
       </div>
 
       {children}
