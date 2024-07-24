@@ -8,11 +8,13 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
+import { kTelegramJoinLink } from '@/lib/constants/socials'
 import { cn } from '@/lib/utils'
-import { ActivitySquare, FlaskConical, Search, Trophy } from 'lucide-react'
+import { ActivitySquare, FlaskConical, Search, Trophy, Users } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
 import Typography from '../typography'
+
 interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
   logo?: React.ReactNode
   title: string
@@ -79,13 +81,6 @@ export default function HomeNavbar() {
         </NavigationMenuItem> */}
 
         {/* <NavigationMenuItem>
-          <Link href="/users" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <Users className="w-4 h-4 text-secondary mr-2" />
-            Community
-          </Link>
-        </NavigationMenuItem> */}
-
-        {/* <NavigationMenuItem>
           <NavigationMenuTrigger>About</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
@@ -102,6 +97,18 @@ export default function HomeNavbar() {
           <Link href="/lab-testing" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <FlaskConical className="w-4 h-4 text-secondary mr-2" />
             Lab testing
+          </Link>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <Link
+            href={kTelegramJoinLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
+          >
+            <Users className="w-4 h-4 text-secondary mr-2" />
+            Community
           </Link>
         </NavigationMenuItem>
 
