@@ -42,7 +42,11 @@ export const determineLink = (item: any) => {
     return `/search/filter/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
   } else if (item.type === 'ingredient') {
     return `/search/ingredient/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
-  } else if (item.type === 'item') {
+  } else if (
+    item.type === 'item' ||
+    item.type === 'bottled_water' ||
+    item.type === 'water_gallon'
+  ) {
     return `/search/item/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
   } else if (item.type === 'user') {
     return `/${item.id}`
