@@ -83,7 +83,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }
   }, [setOpen])
 
-  const [selectedPlan, setSelectedPlan] = useState('annual')
+  const [selectedPlan, setSelectedPlan] = useState('monthly')
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
   const [referral, setReferral] = useState(null)
 
@@ -242,12 +242,12 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             <Button
               variant="outline"
               className={`px-4 w-full !font-bold mb-2 flex h-12 flex-row justify-between 
-                ${selectedPlan === 'weekly' ? 'border-primary' : 'border'}
+                ${selectedPlan === 'monthly' ? 'border-primary' : 'border'}
               `}
-              onClick={() => setSelectedPlan('weekly')}
+              onClick={() => setSelectedPlan('monthly')}
             >
               <div className="flex flex-row gap-3 items-center">
-                {selectedPlan === 'weekly' ? (
+                {selectedPlan === 'monthly' ? (
                   <CheckCircle className="w-4 h-4" />
                 ) : (
                   <Circle className="w-4 h-4" />
