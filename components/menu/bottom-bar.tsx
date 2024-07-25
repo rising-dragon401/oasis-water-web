@@ -36,7 +36,7 @@ const MENU_ITEMS = [
 
 const BottomNavbar = () => {
   const pathname = usePathname()
-  const { userData, uid } = useUserProvider()
+  const { userData } = useUserProvider()
   const activeIndex = MENU_ITEMS.findIndex((item) => item.href === pathname)
 
   return (
@@ -46,7 +46,7 @@ const BottomNavbar = () => {
         const isActiveClass = isActive ? 'text-primary' : '!text-gray-400'
 
         return (
-          <Link href={item.href} key={item.label} className="flex-1">
+          <Link href={item.href} key={item.label} className={`flex-1 focus:opacity-75`}>
             <div className="flex flex-col items-center justify-center gap-1">
               {item.label === 'Account' && userData?.avatar_url ? (
                 <Image

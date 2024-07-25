@@ -15,7 +15,6 @@ import TestingCta from '@/components/shared/testing-cta'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import useDevice from '@/lib/hooks/use-device'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { ArrowUpRight } from 'lucide-react'
@@ -30,9 +29,8 @@ type Props = {
 }
 
 export default function ItemForm({ id }: Props) {
-  const { isMobile } = useDevice()
   const { openModal } = useModal()
-  const { uid } = useUserProvider()
+  const { uid, userData } = useUserProvider()
 
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
@@ -52,6 +50,8 @@ export default function ItemForm({ id }: Props) {
   useEffect(() => {
     if (!uid) {
       openModal('AuthWallModal')
+    } else {
+      incrementItemsViewed()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uid])
@@ -60,6 +60,9 @@ export default function ItemForm({ id }: Props) {
     fetchItem(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
+
+  // all users get three free views
+  const showPaywall = userData?.metadata?.items_viewed >= 3
 
   const contaminants = item?.contaminants || []
 
@@ -70,12 +73,16 @@ export default function ItemForm({ id }: Props) {
   const fluorideContaminant = item.contaminants?.find(
     (contaminant: { name: string }) => contaminant.name.toLowerCase() === 'fluoride'
   )
-  const fluorideValue = fluorideContaminant ? `${fluorideContaminant.amount} ppm` : 'Not Detected'
+  const fluorideValue = fluorideContaminant ? `${fluorideContaminant.amount} ppm` : 'ND'
 
   const sortedContaminants = contaminants.sort(
     (a: { exceedingLimit: number }, b: { exceedingLimit: number }) => {
       return b.exceedingLimit - a.exceedingLimit
     }
+  )
+
+  const harmfulIngredients = item.ingredients?.filter(
+    (ingredient: any) => ingredient.severity_score > 0
   )
 
   const nanoPlasticsValue =
@@ -91,11 +98,15 @@ export default function ItemForm({ id }: Props) {
     return <ItemSkeleton />
   }
 
+  // only bottled water drinks are required to have a water quality report
+  const itemScore =
+    item.type === 'flavored_water' ? item.score : item.is_indexed ? item.score : null
+
   return (
     <div className="flex-col flex w-full gap-y-8">
       <div className="md:pt-10 pt-2 md:px-0 px-4">
         <div className="flex md:flex-row flex-col gap-6">
-          <div className="flex justify-center w-full md:w-2/5">
+          <div className="flex justify-center md:w-4/5 w-full">
             {item.affiliate_url ? (
               <Link href={item.affiliate_url} target="_blank" rel="noopener noreferrer">
                 <ItemImage src={item.image} alt={item.name} item={item} />
@@ -105,100 +116,122 @@ export default function ItemForm({ id }: Props) {
             )}
           </div>
 
-          <div className="flex flex-row gap-2 md:w-3/5 justify-between">
-            <div className="flex flex-col md:gap-2 md:w-3/5">
-              <Typography size="3xl" fontWeight="normal">
-                {item.name}
-              </Typography>
-              <Link href={`/search/company/${item.company?.name}`}>
-                <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
-                  {item.company?.name}
+          <div className="flex flex-col w-full justify-betwen h-full">
+            <div className="flex md:flex-col flex-row justify-between w-full items-start md:gap-2">
+              <div className="flex flex-col w-full">
+                <Typography size="3xl" fontWeight="normal">
+                  {item.name}
                 </Typography>
-              </Link>
+                <Link href={`/search/company/${item.company?.name}`}>
+                  <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
+                    {item.company?.name}
+                  </Typography>
+                </Link>
 
-              <>
-                {item.is_indexed === false && <UntestedTooltip />}
-
-                <div className="flex flex-col gap-y-1 md:w-72 w-50 border rounded-md p-2 mt-1">
-                  {item.is_indexed === true && (
-                    <>
-                      <BlurredLineItem
-                        label="Contaminants found"
-                        value={contaminants.length}
-                        labelClassName="text-red-500"
-                      />
-
-                      <BlurredLineItem
-                        label="Above guidelines"
-                        value={contaminantsAboveLimit.length}
-                        labelClassName="text-red-500"
-                      />
-                    </>
+                <div className="w-64 mt-2">
+                  {item.is_indexed === false && (
+                    <UntestedTooltip description="This drink has not been tested in the lab yet, so we cannot verify what contaminants are present. Untested drink are docked 35 points by default to account for unknown contaminants. We are in the process of independently testing everything ourselves." />
                   )}
+                </div>
+              </div>
 
-                  {item.type === 'bottled_water' && (
-                    <>
-                      <BlurredLineItem
-                        label="Microplastics"
-                        value={nanoPlasticsValue}
-                        isPaywalled={true}
-                      />
+              <div className="flex md:flex-row justify-start md:gap-10 items-start w-40">
+                <Score score={itemScore} size="md" showScore={!showPaywall} />
+              </div>
+            </div>
 
-                      <BlurredLineItem label="Fluoride" value={fluorideValue} isPaywalled={true} />
+            <div>
+              <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full md:mt-2 mt-4">
+                {item.is_indexed && (
+                  <div className="flex flex-col gap-y-1 ">
+                    <BlurredLineItem
+                      label="Contaminants"
+                      value={contaminants.length}
+                      isPaywalled={false}
+                      score={contaminants.length > 0 ? 'bad' : 'good'}
+                    />
 
-                      <BlurredLineItem
-                        label="pH"
-                        value={
-                          item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
-                            ? 'Unknown'
-                            : item.metadata.ph_level
-                        }
-                        isPaywalled={true}
-                      />
+                    <BlurredLineItem
+                      label="Above guidelines"
+                      value={contaminantsAboveLimit.length}
+                      isPaywalled={false}
+                      score={contaminantsAboveLimit.length > 0 ? 'bad' : 'good'}
+                    />
 
-                      <BlurredLineItem
-                        label="TDS"
-                        value={
-                          item.metadata?.tds === 0 || item.metadata?.tds == null
-                            ? 'N/A'
-                            : item.metadata.tds
-                        }
-                        isPaywalled={true}
-                      />
+                    <BlurredLineItem
+                      label="pH"
+                      value={
+                        item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
+                          ? 'Unknown'
+                          : item.metadata.ph_level
+                      }
+                      isPaywalled={false}
+                      score={parseFloat(item.metadata?.ph_level) > 7 ? 'good' : 'neutral'}
+                    />
 
-                      <BlurredLineItem
-                        label="PFAS"
-                        value={item.metadata?.pfas || 'N/A'}
-                        isPaywalled={true}
-                      />
-                    </>
-                  )}
+                    <BlurredLineItem
+                      label="TDS"
+                      value={item.metadata?.tds || 'N/A'}
+                      isPaywalled={false}
+                      score="neutral"
+                    />
+
+                    <BlurredLineItem
+                      label="PFAS"
+                      value={item.metadata?.pfas || 'N/A'}
+                      isPaywalled={false}
+                      score={item.metadata?.pfas === 'Yes' ? 'bad' : 'good'}
+                    />
+
+                    <BlurredLineItem
+                      label="Fluoride"
+                      value={fluorideValue}
+                      isPaywalled={false}
+                      score={parseFloat(fluorideValue) > 0 ? 'bad' : 'good'}
+                    />
+                  </div>
+                )}
+
+                <div className="flex flex-col gap-y-1">
+                  <BlurredLineItem
+                    label="Harmful ingredients"
+                    value={harmfulIngredients?.length}
+                    isPaywalled={false}
+                    score={harmfulIngredients?.length > 0 ? 'bad' : 'good'}
+                  />
+
+                  <BlurredLineItem
+                    label="Microplastics"
+                    value={nanoPlasticsValue}
+                    isPaywalled={false}
+                    score={nanoPlasticsValue === 'Yes' ? 'bad' : 'good'}
+                  />
 
                   <BlurredLineItem
                     label="Packaging"
-                    value={item?.packaging || 'Unknown'}
-                    isPaywalled={true}
+                    value={
+                      item?.packaging
+                        ? item.packaging.charAt(0).toUpperCase() + item.packaging.slice(1)
+                        : 'Unknown'
+                    }
+                    isPaywalled={false}
+                    score={item.packaging === 'glass' ? 'good' : 'bad'}
                   />
                 </div>
+              </div>
 
-                <div className="flex flex-col md:w-40 w-full md:mt-6 mt-2 gap-2">
-                  {item.affiliate_url && item.score > 70 && (
-                    <Button
-                      variant={item.score > 70 ? 'outline' : 'outline'}
-                      onClick={() => {
-                        window.open(item.affiliate_url, '_blank')
-                      }}
-                    >
-                      Buy Now
-                      <ArrowUpRight size={16} className="ml-2" />
-                    </Button>
-                  )}
-                </div>
-              </>
-            </div>
-
-            <div className="flex md:flex-row md:justify-start md:gap-10 md:items-start flex-col-reverse justify-end items-end">
-              <Score score={item.score} size={isMobile ? 'md' : 'lg'} />{' '}
+              {item.affiliate_url && item.score > 70 && (
+                <Button
+                  variant={item.score > 70 ? 'outline' : 'outline'}
+                  onClick={() => {
+                    window.open(item.affiliate_url, '_blank')
+                  }}
+                  className="mt-4"
+                >
+                  Shop now
+                  <ArrowUpRight size={16} className="ml-2" />
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -220,7 +253,7 @@ export default function ItemForm({ id }: Props) {
             </Typography>
             {sortedContaminants && sortedContaminants.length > 0 ? (
               <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                <PaywallContent label="Unlock contaminant amounts">
+                <PaywallContent label="Unlock contaminant amounts" showPaywall={false}>
                   {sortedContaminants.map((contaminant: any, index: number) => (
                     <ContaminantCard key={contaminant.id || index} data={contaminant} />
                   ))}
@@ -234,7 +267,11 @@ export default function ItemForm({ id }: Props) {
                   </Typography>
                 ) : (
                   <Typography size="base" fontWeight="normal" className="text-secondary">
-                    Unable to verify the safety of this product or the contaminants it contains.
+                    Unable to verify contaminants in this product. Please see{' '}
+                    <Link href="/blog/oasis_scoring" className="underline">
+                      How we score
+                    </Link>{' '}
+                    to learn more.
                   </Typography>
                 )}
               </>
@@ -261,7 +298,7 @@ export default function ItemForm({ id }: Props) {
             </Typography>
             {item?.ingredients?.length > 0 ? (
               <div className="flex flex-col gap-4 mt-1">
-                <PaywallContent label="Unlock nutrients">
+                <PaywallContent label="Unlock nutrients" showPaywall={false}>
                   <IngredientsCard ingredients={item.ingredients} />
                 </PaywallContent>
               </div>

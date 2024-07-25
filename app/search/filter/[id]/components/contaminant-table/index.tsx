@@ -80,12 +80,12 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
   return (
     <div>
       <Typography size="xl" fontWeight="normal" className="text-secondary">
-        Contaminants filtered
+        Contaminants categories
       </Typography>
-      <PaywallContent label="Unlock contaminants this filter removes">
+      <PaywallContent label="Unlock contaminants this filter removes" showPaywall={false}>
         <Typography size="xs" fontWeight="normal" className="text-secondary">
-          *Note some filters only list categories and % filtered so individual contaminants may or
-          may not be filtered. This is our best guess based on the information provided.
+          Category %s based on lab report. Individual contaminant filtration levlels may vary. Check
+          the lab report for exact measurements
         </Typography>
 
         {contaminantsByCategory.map((item) => (
