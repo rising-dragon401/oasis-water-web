@@ -10,8 +10,9 @@ is_research: false
 
 - [Overview](#overview)
 - [How we score bottled water](#how-we-score-bottled-water)
-- [How we score tap water](#how-we-score-tap-water)
 - [How we score filters](#how-we-score-filters)
+- [How we score tap water](#how-we-score-tap-water)
+- [How we score flavored water and energy drinks](#how-we-score-flavored-water-and-energy-drinks)
 
 ## Overview
 
@@ -148,6 +149,27 @@ Contaminant categories commonly found in water:
 We analyze the testing report of the filter to determine the percentage of each contaminant category removed. We sometimes use individual contaminants as surrogates for general category effectiveness.
 For example if a filter tests for lead, cadmium and mercury but not arsenic we will use the percentage of lead, cadmium and mercury removed as a surrogate for the percentage of total heavy metals removed.
 
-If a lab report does not included contaminants from a category we mark the entire cateogry as 0% or null.
+If a lab report does not included contaminants from a category we mark the entire cateogry as unknown
 
 We then take an average of the percentage of each contaminant category removed to determine the overall quality of the filter.
+
+# How we score flavored water and energy drinks
+
+Becuase the vast majorite flavored waters and energy drinks don't publicize their water quality reports we came
+up with a scoring system that enacts a very significant penalty for not having a water quality report.
+
+Penalties:
+
+- No report: 35
+
+Because these drinks have many ingredients (unlike bottled water) we also penalize them for any harmful ingredients detected
+based on the amount and severity level of the ingredient.
+
+Beyond this, energy and flavored drinks are penalized the same as bottled water:
+
+- Source
+- Contaminant amount and levels
+- PFAS
+- Packaging/material
+- Filtration method
+- PH

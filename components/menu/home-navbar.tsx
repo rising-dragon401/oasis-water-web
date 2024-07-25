@@ -8,9 +8,8 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
-import { kTelegramJoinLink } from '@/lib/constants/socials'
 import { cn } from '@/lib/utils'
-import { ActivitySquare, FlaskConical, Search, Trophy, Users } from 'lucide-react'
+import { ActivitySquare, FlaskConical, Search, Trophy } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
 import Typography from '../typography'
@@ -100,7 +99,7 @@ export default function HomeNavbar() {
           </Link>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Link
             href={kTelegramJoinLink}
             target="_blank"
@@ -110,7 +109,7 @@ export default function HomeNavbar() {
             <Users className="w-4 h-4 text-secondary mr-2" />
             Community
           </Link>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         {/* <NavigationMenuItem>
           <Link href="/contact" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>

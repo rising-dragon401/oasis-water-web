@@ -1,6 +1,6 @@
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
-import { kInstagram, kTelegramJoinLink, kTikTok, kTwitter, kYouTube } from '@/lib/constants/socials'
+import { kInstagram, kTikTok, kTwitter, kYouTube } from '@/lib/constants/socials'
 import Link from 'next/link'
 import { useState } from 'react'
 import { FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
@@ -68,7 +68,7 @@ export default function Footer() {
           <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
             <h6 className="text-sm text-secondary font-bold mb-2">Company</h6>
             <ul className="text-sm space-y-2 list-none">
-              <li>
+              {/* <li>
                 <Link
                   href={kTelegramJoinLink}
                   target="_blank"
@@ -77,7 +77,7 @@ export default function Footer() {
                 >
                   Telegram community
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   href="/mission"
