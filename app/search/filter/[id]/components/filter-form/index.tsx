@@ -14,6 +14,8 @@ import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import useDevice from '@/lib/hooks/use-device'
+import { useModal } from '@/providers/ModalProvider'
+import { useUserProvider } from '@/providers/UserProvider'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -27,6 +29,8 @@ type Props = {
 
 export default function FilterForm({ id }: Props) {
   const { isMobile } = useDevice()
+  const { uid } = useUserProvider()
+  const { openModal } = useModal()
 
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<any>({})
@@ -47,19 +51,12 @@ export default function FilterForm({ id }: Props) {
     return filter
   }
 
-  // along with the percentage of common and uncommon contaminants filtered
-  const categoryPercentages =
-    filter?.filtered_contaminant_categories?.map((category: any) => category.percentage) || []
-  const averagePercentage =
-    categoryPercentages.length > 0
-      ? categoryPercentages.reduce((acc: any, percentage: number) => acc + percentage, 0) /
-        categoryPercentages.length
-      : 0
-
-  // along with the percentage of common and uncommon contaminants filtered
-  const percentCommonFiltered = filter?.percent_common_filtered
-
-  const percentUncommonFiltered = filter?.percent_uncommon_filtered
+  useEffect(() => {
+    if (!uid) {
+      openModal('AuthWallModal')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid])
 
   useEffect(() => {
     fetchFilter(id)

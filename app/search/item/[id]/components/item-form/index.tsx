@@ -53,6 +53,7 @@ export default function ItemForm({ id }: Props) {
     if (!uid) {
       openModal('AuthWallModal')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uid])
 
   useEffect(() => {
