@@ -275,16 +275,31 @@ export async function getSubscription(uid: string | null) {
       return null
     }
 
-    const activePlan = subscription?.prices?.products?.name
-
     let planPlan = 'Free'
-    if (!activePlan) {
-      planPlan = 'Free'
-    } else if (
-      activePlan?.toLowerCase() === 'pro (test)' ||
-      activePlan?.toLowerCase() === 'pro (beta)'
-    ) {
-      planPlan = 'Pro'
+
+    // @ts-ignore
+    const provider = subscription?.metadata?.provider || 'stripe'
+
+    if (provider === 'stripe') {
+      const activePlan = subscription?.prices?.products?.name
+
+      if (!activePlan) {
+        planPlan = 'Free'
+      } else if (
+        activePlan?.toLowerCase() === 'pro (test)' ||
+        activePlan?.toLowerCase() === 'pro (beta)' ||
+        activePlan?.toLowerCase() === 'pro (dev)'
+      ) {
+        planPlan = 'Member'
+      }
+    } else if (provider === 'revenue_cat') {
+      const isActive = subscription?.prices?.active
+
+      console.log('isActive: ', isActive)
+
+      if (isActive) {
+        planPlan = 'Member'
+      }
     }
 
     return {
