@@ -2,7 +2,7 @@ import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
 import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import Typography from '@/components/typography'
-import { Beaker, CupSoda, Droplet, Filter, GlassWater, Milk, ShowerHead } from 'lucide-react'
+import { Beaker, CupSoda, Filter, GlassWater, Milk, ShowerHead } from 'lucide-react'
 import Link from 'next/link'
 
 const ICON_CLASSNAME = 'text-secondary md:w-8 md:h-8 w-6 h-6'
@@ -38,11 +38,11 @@ const CATEGORIES = [
     icon: <Beaker className={ICON_CLASSNAME} />,
     tab: 'bottle_filter',
   },
-  {
-    name: 'Tap water',
-    icon: <Droplet className={ICON_CLASSNAME} />,
-    tab: 'tap_water',
-  },
+  // {
+  //   name: 'Tap water',
+  //   icon: <Droplet className={ICON_CLASSNAME} />,
+  //   tab: 'tap_water',
+  // },
   // {
   //   name: 'Bottle filters',
   //   image:
@@ -82,12 +82,12 @@ export default async function Home() {
           </div>
           <div className="relative w-full">
             <div className="absolute left-0 right-0 overflow-x-auto hide-scrollbar">
-              <div className="flex flex-nowrap gap-2 pb-4 w-max">
+              <div className="flex flex-nowrap gap-x-4 pb-4 w-max">
                 {CATEGORIES.map((category) => (
                   <Link
                     key={category.name}
                     href={`/top-rated?tab=${category.tab}`}
-                    className="flex flex-col gap-2 w-[140px] md:w-[284px] md:pt-6 pt-4 pb-2 rounded-lg bg-muted border justify-end
+                    className="flex flex-col gap-2 w-[140px] md:w-[200px] md:pt-6 pt-4 pb-2 rounded-lg bg-muted border justify-end
                    items-start cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
                   >
                     <div className="flex flex-col items-center justify-center">{category.icon}</div>

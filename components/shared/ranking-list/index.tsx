@@ -2,7 +2,6 @@
 
 import { getFilters } from '@/app/actions/filters'
 import { getItems } from '@/app/actions/items'
-import { getLocations } from '@/app/actions/locations'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -20,7 +19,6 @@ import {
   Beaker,
   Check,
   CupSoda,
-  Droplet,
   Filter,
   GlassWater,
   Milk,
@@ -85,11 +83,11 @@ const CATEGORIES: CategoryType[] = [
     title: 'Bottle filters',
     logo: <Beaker className="text-slate-4000 w-4 h-4" />,
   },
-  {
-    id: 'tap_water',
-    title: 'Tap water',
-    logo: <Droplet className="text-slate-400 w-4 h-4" />,
-  },
+  // {
+  //   id: 'tap_water',
+  //   title: 'Tap water',
+  //   logo: <Droplet className="text-slate-400 w-4 h-4" />,
+  // },
   // {
   //   id: 'mineral_packets',
   //   title: 'Mineral packets',
@@ -211,12 +209,12 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
           setBottledFilters,
           'bottle_filter'
         ),
-        fetchAndSetData(
-          'tap_water',
-          () => getLocations({ limit: 199, sortMethod: 'name' }),
-          setTapWater,
-          'tap_water'
-        ),
+        // fetchAndSetData(
+        //   'tap_water',
+        //   () => getLocations({ limit: 199, sortMethod: 'name' }),
+        //   setTapWater,
+        //   'tap_water'
+        // ),
         fetchAndSetData(
           'filter',
           () => getFilters({ limit: 50, sortMethod: 'name', type: 'filter' }),

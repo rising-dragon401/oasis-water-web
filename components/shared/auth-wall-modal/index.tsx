@@ -4,6 +4,7 @@ import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog'
+import { useUserProvider } from '@/providers/UserProvider'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -15,10 +16,17 @@ type AuthWallModalProps = {
 export default function AuthWallModal({ open, setOpen }: AuthWallModalProps) {
   const router = useRouter()
   const pathName = usePathname()
+  const { user } = useUserProvider()
+
+  useEffect(() => {
+    if (user) {
+      setOpen(false)
+    }
+  }, [user])
 
   useEffect(() => {
     if (pathName && !pathName.includes('/search')) {
-      setOpen(!false)
+      setOpen(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathName])
