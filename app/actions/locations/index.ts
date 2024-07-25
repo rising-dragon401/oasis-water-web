@@ -32,19 +32,19 @@ export const getLocations = async ({
       return []
     }
 
-    // const filteredAndScoredLocations =
-    //   locations &&
-    //   locations
-    //     .filter((location: any) => location.name && location.image)
-    //     .map((location: any) => {
-    //       return {
-    //         ...location,
-    //         // @ts-ignore
-    //         score: location?.utilities?.length > 0 ? location?.utilities[0].score : 0,
-    //       }
-    //     })
+    const filteredAndScoredLocations =
+      locations &&
+      locations
+        .filter((location: any) => location.name && location.image)
+        .map((location: any) => {
+          return {
+            ...location,
+            // @ts-ignore
+            score: location?.utilities?.length > 0 ? location?.utilities[0].score : 0,
+          }
+        })
 
-    return locations
+    return filteredAndScoredLocations
   } catch (error) {
     console.error('Error fetching locations:', error)
     return []
