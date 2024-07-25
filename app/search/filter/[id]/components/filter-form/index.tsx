@@ -50,9 +50,7 @@ export default function FilterForm({ id }: Props) {
   }
 
   useEffect(() => {
-    if (!uid) {
-      openModal('AuthWallModal')
-    } else {
+    if (uid) {
       incrementItemsViewed()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
