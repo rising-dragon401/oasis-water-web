@@ -53,44 +53,6 @@ export default function HomeNavbar() {
             Research
           </Link>
         </NavigationMenuItem>
-        {/* 
-        <NavigationMenuItem>
-          <Link href="/blog" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <ActivitySquare className="w-4 h-4 text-secondary mr-2" />
-            Research
-          </Link>
-        </NavigationMenuItem> */}
-
-        {/* <NavigationMenuItem>
-          <NavigationMenuTrigger>Explore</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {components.map((component) => (
-                <ListItem
-                  key={component.title}
-                  title={component.title}
-                  href={component.href}
-                  logo={component.logo}
-                >
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem> */}
-
-        {/* <NavigationMenuItem>
-          <NavigationMenuTrigger>About</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-              {aboutComponents.map((component) => (
-                <ListItem key={component.title} title={component.title} href={component.href}>
-                  {component.description}
-                </ListItem>
-              ))}
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem> */}
 
         <NavigationMenuItem>
           <Link href="/lab-testing" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
@@ -98,25 +60,6 @@ export default function HomeNavbar() {
             Lab testing
           </Link>
         </NavigationMenuItem>
-
-        {/* <NavigationMenuItem>
-          <Link
-            href={kTelegramJoinLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
-          >
-            <Users className="w-4 h-4 text-secondary mr-2" />
-            Community
-          </Link>
-        </NavigationMenuItem> */}
-
-        {/* <NavigationMenuItem>
-          <Link href="/contact" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <Mail className="w-4 h-4 text-secondary mr-2" />
-            Contact us
-          </Link>
-        </NavigationMenuItem> */}
       </NavigationMenuList>
     </NavigationMenu>
   )

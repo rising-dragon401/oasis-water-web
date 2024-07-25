@@ -207,11 +207,11 @@ export default function BasicSearch({
   const getSearchStyle = () => {
     switch (searchBoxStyle) {
       case 'bubble':
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border '
+        return 'md:text-base text-base flex gap-2 items-center md:pl-12 pl-10 pr-6 relative bg-card transition-colors border border-border '
       case 'line':
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative border-b'
+        return 'md:text-base text-base flex gap-2 items-center md:pl-12 pl-10 pr-6 relative border-b'
       default:
-        return 'md:text-base text-base flex gap-2 items-center pl-12 pr-6 relative bg-card transition-colors border border-border'
+        return 'md:text-base text-base flex gap-2 items-center md:pl-12 pl-10 pr-6 relative bg-card transition-colors border border-border'
     }
   }
 
@@ -246,7 +246,7 @@ export default function BasicSearch({
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setInputFocused(true)}
-                icon={<Search className="w-4 h-4 ml-2" />}
+                icon={<Search className="w-4 h-4 md:ml-2 ml-0" />}
                 className={`${getSearchRounded()} ${getSearchStyle()} ${getSearchPaddingY()} !shadow-none`}
               />
 
@@ -279,7 +279,7 @@ export default function BasicSearch({
                         }}
                       >
                         <Typography size="base" fontWeight="normal" className="italic">
-                          Not seeing what you are looking for?
+                          Missing something?
                         </Typography>
                       </div>
                     </div>

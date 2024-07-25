@@ -13,7 +13,6 @@ import TestingCta from '@/components/shared/testing-cta'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import useDevice from '@/lib/hooks/use-device'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { ArrowUpRight } from 'lucide-react'
@@ -28,7 +27,6 @@ type Props = {
 }
 
 export default function FilterForm({ id }: Props) {
-  const { isMobile } = useDevice()
   const { uid } = useUserProvider()
   const { openModal } = useModal()
 
@@ -54,6 +52,8 @@ export default function FilterForm({ id }: Props) {
   useEffect(() => {
     if (!uid) {
       openModal('AuthWallModal')
+    } else {
+      incrementItemsViewed()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uid])
@@ -112,11 +112,18 @@ export default function FilterForm({ id }: Props) {
     )
   }
 
+  const contaminantCategories = Object.fromEntries(
+    filter?.filtered_contaminant_categories.map((category: any) => [
+      category.category,
+      category.percentage,
+    ])
+  )
+
   return (
     <div className="flex-col flex w-full md:px-0 px-2 gap-y-8">
       <div className="md:pt-10 pt-6">
         <div className="flex md:flex-row flex-col gap-6">
-          <div className="flex justify-center md:w-2/5 w-full">
+          <div className="flex justify-center md:w-3/5 w-full">
             {filter.affiliate_url ? (
               <Link href={filter.affiliate_url} target="_blank" rel="noopener noreferrer">
                 <ItemImage src={filter.image} alt={filter.name} item={filter} />
@@ -126,56 +133,158 @@ export default function FilterForm({ id }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col justify-start md:w-3/5">
-            <div className="flex flex-row justify-between gap-2">
-              <div className="flex flex-col  w-2/3">
+          <div className="flex flex-col w-full justify-betwen h-full">
+            <div className="flex md:flex-col flex-row justify-between w-full items-start gap-2">
+              <div className="flex flex-col w-full">
                 <Typography size="3xl" fontWeight="normal">
                   {filter.name}
                 </Typography>
                 <Link href={`/search/company/${filter.company?.name}`}>
                   <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
-                    {filter.brand?.name} - {filter.company?.name}
+                    {filter.company?.name}
                   </Typography>
                 </Link>
 
-                <div className="mt-4">{filter.is_indexed === false && <UntestedTooltip />}</div>
-
-                {filter.affiliate_url && filter.score > 70 && (
-                  <Button
-                    variant={filter.score > 70 ? 'default' : 'outline'}
-                    onClick={() => {
-                      window.open(filter.affiliate_url, '_blank')
-                    }}
-                    className="w-40 mt-4"
-                  >
-                    Learn more <ArrowUpRight size={16} />
-                  </Button>
-                )}
+                <div className="w-64 mt-2">
+                  {filter.is_indexed === false && (
+                    <UntestedTooltip description="This filter has not been tested in the lab yet, so we cannot verify what contaminants it filters. Oasis does not score filters without lab report." />
+                  )}
+                </div>
               </div>
-
-              <div className="flex w-1/2 justify-end">
-                <Score
-                  score={filter.is_indexed === false ? null : filter.score}
-                  size={isMobile ? 'md' : 'lg'}
-                />
+              <div className="flex md:flex-row justify-start md:gap-10 items-start w-40">
+                <Score score={filter.is_indexed ? filter.score : null} size="md" />{' '}
               </div>
             </div>
+
+            <div>
+              {/* {item.is_indexed === false && <UntestedTooltip />} */}
+
+              <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full md:mt-2 mt-4">
+                <div className="flex flex-col gap-y-1 ">
+                  <BlurredLineItem
+                    label="Heavy metals"
+                    value={contaminantCategories['Heavy Metals'] > 70 ? 'Yes' : 'No'}
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Heavy Metals'] > 70
+                        ? 'good'
+                        : contaminantCategories['Heavy Metals'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+
+                  <BlurredLineItem
+                    label="Fluoride"
+                    value={contaminantCategories['Fluoride'] > 70 ? 'Yes' : 'No'}
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Fluoride'] > 70
+                        ? 'good'
+                        : contaminantCategories['Fluoride'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+
+                  <BlurredLineItem
+                    label="Microplastics"
+                    value={contaminantCategories['Microplastics'] > 70 ? 'Yes' : 'No'}
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Microplastics'] > 70
+                        ? 'good'
+                        : contaminantCategories['Microplastics'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+
+                  <BlurredLineItem
+                    label="Perfluorinated Chemicals (PFAS)"
+                    value={
+                      contaminantCategories['Perfluorinated Chemicals (PFAS)'] > 70 ? 'Yes' : 'No'
+                    }
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Perfluorinated Chemicals (PFAS)'] > 70
+                        ? 'good'
+                        : contaminantCategories['Perfluorinated Chemicals (PFAS)'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+                </div>
+
+                <div className="flex flex-col gap-y-1">
+                  <BlurredLineItem
+                    label="Trihalomethanes"
+                    value={contaminantCategories['Trihalomethanes'] > 70 ? 'Yes' : 'No'}
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Trihalomethanes'] > 70
+                        ? 'good'
+                        : contaminantCategories['Trihalomethanes'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+
+                  <BlurredLineItem
+                    label="Haloacetic Acids"
+                    value={contaminantCategories['Haloacetic Acids'] > 70 ? 'Yes' : 'No'}
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Haloacetic Acids'] > 70
+                        ? 'good'
+                        : contaminantCategories['Haloacetic Acids'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+
+                  <BlurredLineItem
+                    label="Chemical Disinfectants"
+                    value={contaminantCategories['Chemical Disinfectants'] > 70 ? 'Yes' : 'No'}
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Chemical Disinfectants'] > 70
+                        ? 'good'
+                        : contaminantCategories['Chemical Disinfectants'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+
+                  <BlurredLineItem
+                    label="Radiological Elements"
+                    value={contaminantCategories['Radiological Elements'] > 70 ? 'Yes' : 'No'}
+                    isPaywalled={false}
+                    score={
+                      contaminantCategories['Radiological Elements'] > 70
+                        ? 'good'
+                        : contaminantCategories['Radiological Elements'] > 30
+                          ? 'neutral'
+                          : 'bad'
+                    }
+                  />
+                </div>
+              </div>
+
+              {filter.affiliate_url && filter.score > 70 && (
+                <Button
+                  variant={filter.score > 70 ? 'outline' : 'outline'}
+                  onClick={() => {
+                    window.open(filter.affiliate_url, '_blank')
+                  }}
+                  className="mt-4"
+                >
+                  Shop now
+                  <ArrowUpRight size={16} className="ml-2" />
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
-
-        <div className="flex-col gap-2 mt-6 w-36">
-          <BlurredLineItem
-            label="Certifications"
-            value={filter.certifications?.join(', ') || 'None'}
-            tooltipContent="Learn more"
-            tooltipLink="/blog/how_we_score_water"
-          />
-        </div>
-
-        <div className="flex flex-row gap-2 mt-4">
-          <Typography size="base" fontWeight="normal" className="text-seoncdary-foreground">
-            {filter.description}
-          </Typography>
         </div>
 
         {filter.is_indexed !== false && <OasisDisclaimer />}

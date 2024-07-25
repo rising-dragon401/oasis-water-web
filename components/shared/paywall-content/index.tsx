@@ -10,6 +10,7 @@ type PaywallContentProps = {
   className?: string
   hideButton?: boolean
   label: string
+  showPaywall?: boolean
 }
 
 const PaywallContent: React.FC<PaywallContentProps> = ({
@@ -17,6 +18,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
   className,
   hideButton = false,
   label,
+  showPaywall = true,
 }) => {
   const { openModal } = useModal()
   const { subscription } = useUserProvider()
@@ -29,14 +31,14 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
     }
   }
 
-  if (subscription) {
+  if (subscription || !showPaywall) {
     return <>{children}</>
   }
 
   return (
     <>
       <div
-        className={cn('relative rounded-lg  hover:cursor-pointer', className)}
+        className={cn('relative rounded-lg hover:cursor-pointer', className)}
         onClick={handleBlurClick}
       >
         {/* Overlay container */}

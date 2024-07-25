@@ -17,7 +17,7 @@ export default function ItemImage({ src, alt, item }: ItemImageProps) {
         height={1000}
         blurDataURL={src || ''}
         placeholder="blur"
-        className="rounded-lg md:w-[600px] md:h-full w-72 h-72 object-cover"
+        className="rounded-lg md:w-[600px] md:h-full w-64 h-64 object-cover"
       />
       <div className="absolute top-1 right-1">
         <FavoriteButton item={item} />

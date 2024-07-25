@@ -4,11 +4,11 @@ import { ArrowUpRight } from 'lucide-react'
 
 export default function Sources({ data }: any) {
   return (
-    <div className="flex flex-col gap-2 my-10">
+    <div className="flex flex-col gap-2 my-6">
       <Typography size="2xl" fontWeight="normal">
         Sources
       </Typography>
-      <PaywallContent label="🔒" hideButton>
+      <PaywallContent label="🔒" hideButton showPaywall={false}>
         <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
           {data?.map((source: any) => (
             <div key={source.url} className="flex flex-row items-center gap-1">

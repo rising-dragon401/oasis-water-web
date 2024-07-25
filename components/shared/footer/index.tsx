@@ -120,7 +120,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/blog/how_we_score_water"
+                  href="/blog/oasis_scoring"
                   className="text-secondary transition duration-150 ease-in-out"
                 >
                   How scoring works

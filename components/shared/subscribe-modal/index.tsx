@@ -30,22 +30,22 @@ const FEATURES = [
     label: ' Top products per category',
     icon: '🏆',
   },
+  // {
+  //   label: 'View lab data',
+  //   icon: '🔍',
+  // },
   {
-    label: 'View lab data',
-    icon: '🔍',
+    label: 'Research articles',
+    icon: '🧬',
   },
   {
-    label: 'Scientific research updates',
-    icon: '🧬',
+    label: 'Personal AI health companion',
+    icon: '🧑‍⚕️',
   },
   {
     label: 'Support lab testing',
     icon: '🔬',
   },
-  // {
-  //   label: 'Personal AI health companion',
-  //   icon: '🧑‍⚕️',
-  // },
   // {
   //   label: 'Personalized recommendations',
   //   icon: <Dna className="w-4 h-4" />,

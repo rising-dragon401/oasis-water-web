@@ -56,6 +56,9 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
     )
   }
 
+  const isFilter =
+    item.type === 'shower_filter' || item.type === 'bottle_filter' || item.type === 'filter'
+
   return (
     <Link
       href={determineLink(item)}
@@ -99,21 +102,27 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
 
         <div className="flex w-1/6 justify-end">
           {/* @ts-ignore */}
-          {!subscription && item.type !== 'tap_water' && item?.is_indexed ? (
-            <div className="flex flex-col items-end w-full text-right">
-              <button onClick={() => openModal('SubscriptionModal')}>
-                <Lock size={16} />
-              </button>
-              <Typography
-                size="xs"
-                fontWeight="normal"
-                className="!no-underline text-secondary text-right"
-              >
-                /100
-              </Typography>
-            </div>
+          {isFilter && !item?.is_indexed ? (
+            <div>{renderWarning()}</div>
           ) : (
-            <>{item.score ? <div>{renderScore()}</div> : <div>{renderWarning()}</div>}</>
+            <>
+              {!subscription && item.type !== 'tap_water' ? (
+                <div className="flex flex-col items-end w-full text-right">
+                  <button onClick={() => openModal('SubscriptionModal')}>
+                    <Lock size={16} />
+                  </button>
+                  <Typography
+                    size="xs"
+                    fontWeight="normal"
+                    className="!no-underline text-secondary text-right"
+                  >
+                    /100
+                  </Typography>
+                </div>
+              ) : (
+                <>{item.score ? <div>{renderScore()}</div> : <div>{renderWarning()}</div>}</>
+              )}
+            </>
           )}
         </div>
       </div>

@@ -39,9 +39,11 @@ const SearchParamsComponent = ({ openModal, isOpen }: Props) => {
 }
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
-  const { user } = useUserProvider()
+  const { user, userData } = useUserProvider()
   const pathname = usePathname()
   const { openModal, isOpen } = useModal()
+
+  const itemsViewed = userData?.metadata?.items_viewed
 
   // load for future use
   const { data: allIngredients } = useSWR('ingredients', getIngredients)
@@ -98,7 +100,11 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
             </Typography>
           </Link>
 
-          <div className="flex justify-end w-full">
+          <div className="flex flex-row items-center justify-end w-full">
+            <div className="max-w-[50vw]">
+              <BasicSearch showSearch={false} size="small" />
+            </div>
+
             <div className="flex justify-end">
               <AISearchDialog size="small" variant="icon" />
             </div>
