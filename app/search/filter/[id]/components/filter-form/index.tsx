@@ -13,7 +13,6 @@ import TestingCta from '@/components/shared/testing-cta'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
@@ -28,7 +27,6 @@ type Props = {
 
 export default function FilterForm({ id }: Props) {
   const { uid } = useUserProvider()
-  const { openModal } = useModal()
 
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<any>({})
