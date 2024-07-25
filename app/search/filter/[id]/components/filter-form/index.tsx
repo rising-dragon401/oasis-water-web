@@ -70,7 +70,7 @@ export default function FilterForm({ id }: Props) {
     return <ItemSkeleton />
   }
 
-  if (filter.is_draft) {
+  if (filter?.is_draft) {
     return (
       <div className="flex-col flex w-full md:px-0 px-2 gap-y-8">
         <div className="md:pt-10 pt-6">

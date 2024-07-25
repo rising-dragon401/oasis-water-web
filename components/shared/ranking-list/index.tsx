@@ -304,7 +304,7 @@ export default function RankingList({ defaultTab }: { defaultTab?: TabKeys }) {
         </div>
       </div>
 
-      <div className="flex w-full justify-center mb-3">{UnlockTopButton()}</div>
+      <div className="flex w-full justify-center my-3">{UnlockTopButton()}</div>
 
       <Tabs
         defaultValue={tabValue}

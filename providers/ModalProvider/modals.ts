@@ -4,4 +4,8 @@ const SubscriptionModal = dynamic(() => import('@/components/shared/subscribe-mo
   ssr: false,
 })
 
-export const kModalMap = { SubscriptionModal }
+const AuthWallModal = dynamic(() => import('@/components/shared/auth-wall-modal'), {
+  ssr: false,
+})
+
+export const kModalMap = { SubscriptionModal, AuthWallModal }
