@@ -15,7 +15,6 @@ import TestingCta from '@/components/shared/testing-cta'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
@@ -29,7 +28,6 @@ type Props = {
 }
 
 export default function ItemForm({ id }: Props) {
-  const { openModal } = useModal()
   const { uid, userData } = useUserProvider()
 
   const [item, setItem] = useState<any>({})
@@ -58,9 +56,6 @@ export default function ItemForm({ id }: Props) {
     fetchItem(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id])
-
-  // all users get three free views
-  const showPaywall = userData?.metadata?.items_viewed >= 3
 
   const contaminants = item?.contaminants || []
 
@@ -138,7 +133,7 @@ export default function ItemForm({ id }: Props) {
               </div>
 
               <div className="flex md:flex-row justify-start md:gap-10 items-start w-40">
-                <Score score={itemScore} size="md" showScore={!showPaywall} />
+                <Score score={itemScore} size="md" />
               </div>
             </div>
 
