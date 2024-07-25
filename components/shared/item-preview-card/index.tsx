@@ -98,7 +98,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
         </div>
 
         <div className="flex w-1/6 justify-end">
-          {!subscription ? (
+          {!subscription && item.type !== 'tap_water' ? (
             <div className="flex flex-col items-end w-full text-right">
               <button onClick={() => openModal('SubscriptionModal')}>
                 <Lock size={16} />

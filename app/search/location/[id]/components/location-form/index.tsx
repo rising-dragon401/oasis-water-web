@@ -7,7 +7,6 @@ import ContaminantCard from '@/components/contamintant-card'
 import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
-import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
 import Typography from '@/components/typography'
@@ -93,6 +92,7 @@ export default function LocationForm({ id }: Props) {
               <Score
                 score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
                 size="lg"
+                showScore
               />
             </div>
           </div>
@@ -115,21 +115,17 @@ export default function LocationForm({ id }: Props) {
                     <div className="flex justify-end w-full md:mr-10 mr-4">
                       <Typography size="base" fontWeight="normal" className="flex flex-row gap-4">
                         Score:
-                        <PaywallContent label="" hideButton={true}>
-                          {` `}
-                          {utility.score}
-                        </PaywallContent>
+                        {` `}
+                        {utility.score}
                       </Typography>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <PaywallContent className="mt-8" label="View contaminants">
-                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                        {utility.contaminants.map((contaminant: any) => (
-                          <ContaminantCard key={contaminant.id} data={contaminant} />
-                        ))}
-                      </div>
-                    </PaywallContent>
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                      {utility.contaminants.map((contaminant: any) => (
+                        <ContaminantCard key={contaminant.id} data={contaminant} />
+                      ))}
+                    </div>
                   </AccordionContent>
                 </AccordionItem>
               ))}

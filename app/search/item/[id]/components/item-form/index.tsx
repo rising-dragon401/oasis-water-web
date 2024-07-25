@@ -16,6 +16,8 @@ import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import useDevice from '@/lib/hooks/use-device'
+import { useModal } from '@/providers/ModalProvider'
+import { useUserProvider } from '@/providers/UserProvider'
 import { ArrowUpRight } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -29,6 +31,8 @@ type Props = {
 
 export default function ItemForm({ id }: Props) {
   const { isMobile } = useDevice()
+  const { openModal } = useModal()
+  const { uid } = useUserProvider()
 
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
@@ -44,6 +48,13 @@ export default function ItemForm({ id }: Props) {
     incrementItemsViewed()
     return item
   }
+
+  useEffect(() => {
+    if (!uid) {
+      openModal('AuthWallModal')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid])
 
   useEffect(() => {
     fetchItem(id)
