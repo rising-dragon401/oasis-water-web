@@ -48,9 +48,7 @@ export default function ItemForm({ id }: Props) {
   }
 
   useEffect(() => {
-    if (!uid) {
-      openModal('AuthWallModal')
-    } else {
+    if (uid) {
       incrementItemsViewed()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,7 +121,11 @@ export default function ItemForm({ id }: Props) {
                   {item.name}
                 </Typography>
                 <Link href={`/search/company/${item.company?.name}`}>
-                  <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
+                  <Typography
+                    size="base"
+                    fontWeight="normal"
+                    className="text-sechoondary-foreground"
+                  >
                     {item.company?.name}
                   </Typography>
                 </Link>
