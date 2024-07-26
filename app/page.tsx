@@ -85,8 +85,8 @@ export default async function Home() {
               <div className="flex flex-nowrap gap-x-4 pb-4 w-max">
                 {CATEGORIES.map((category) => (
                   <Link
-                    key={category.name}
-                    href={`/top-rated?tab=${category.tab}`}
+                    key={'category.name'}
+                    href={`/top-rated/${category.tab}`}
                     className="flex flex-col gap-2 w-[140px] md:w-[200px] md:pt-6 pt-4 pb-2 rounded-lg bg-muted border justify-end
                    items-start cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
                   >

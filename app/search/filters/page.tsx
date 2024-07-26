@@ -6,7 +6,7 @@ export default async function FiltersPage() {
   return (
     <SubpageLayout>
       <Suspense fallback={<div>Loading...</div>}>
-        <RankingList />
+        <RankingList categoryId="filter" />
       </Suspense>
     </SubpageLayout>
   )

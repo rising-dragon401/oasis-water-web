@@ -1,13 +1,11 @@
 import { getSubscription } from '@/app/actions/user'
 import { Mdx } from '@/components/mdx-components'
 import Typography from '@/components/typography'
-import { Button } from '@/components/ui/button'
 import { BLOG_IMAGE } from '@/lib/constants/images'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 import { allPosts } from 'contentlayer/generated'
 import { Metadata } from 'next'
 import Image from 'next/image'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 interface PostProps {
@@ -99,20 +97,7 @@ export default async function PostPage({ params }: PostProps) {
         </Typography>
       )}
 
-      {subscription || !post.is_research ? (
-        <Mdx code={post.body.code} />
-      ) : (
-        <div className="flex flex-col">
-          <Link href="/oasis-member" className="no-underline">
-            <Button variant="outline" className="no-underline">
-              Become an Oasis Member to continue reading
-            </Button>
-          </Link>
-          <div className="filter blur-md overflow-hidden ">
-            <Mdx code={post.body.code} />
-          </div>
-        </div>
-      )}
+      <Mdx code={post.body.code} />
     </article>
   )
 }
