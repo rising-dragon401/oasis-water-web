@@ -6,7 +6,7 @@ export default async function BottledWaterPage() {
   return (
     <SubpageLayout>
       <Suspense fallback={<div>Loading...</div>}>
-        <RankingList />
+        <RankingList categoryId="bottled_water" />
       </Suspense>
     </SubpageLayout>
   )
