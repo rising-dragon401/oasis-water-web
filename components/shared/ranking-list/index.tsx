@@ -138,14 +138,14 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
         <Button
           variant="ghost"
           onClick={() => {
-            router.back()
+            router.push('/top-rated')
           }}
           className="p-0 mb-0"
         >
           <ArrowLeft className="w-4 h-4" />
           See all categories
         </Button>
-        <div className="flex md:flex-row flex-col justify-between w-full">
+        <div className="flex md:flex-row md:gap-0 gap-2 flex-col justify-between w-full">
           <Typography size="4xl" fontWeight="bold" className="max-w-lg">
             Top rated {category?.title.toLowerCase()}
           </Typography>
