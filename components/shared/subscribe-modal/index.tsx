@@ -1,14 +1,15 @@
 'use client'
 
+import { getActiveProductsWithPrices } from '@/app/actions/user'
 import Logo from '@/components/shared/logo'
 import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
-import useSubscription from '@/lib/hooks/use-subscription'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
+import { ProductWithPrices } from '@/types/custom'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
 import * as Sentry from '@sentry/browser'
@@ -66,8 +67,13 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
   const pathname = usePathname()
   const { user } = useUserProvider()
-  const { products } = useSubscription()
   const { closeModal } = useModal()
+
+  const [products, setProducts] = useState<ProductWithPrices[]>([])
+
+  useEffect(() => {
+    getActiveProductsWithPrices().then((products: ProductWithPrices[]) => setProducts(products))
+  }, [])
 
   useEffect(() => {
     const handleStorageChange = (event: StorageEvent) => {
