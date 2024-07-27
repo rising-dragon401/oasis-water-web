@@ -11,6 +11,7 @@ import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
+import * as Sentry from '@sentry/browser'
 import { CheckCircle, Circle } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -163,6 +164,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
       stripe?.redirectToCheckout({ sessionId })
     } catch (e) {
       console.error('Error: ', e)
+      Sentry.captureException(e)
       toast('Unable to create checkout link')
     }
 
