@@ -285,6 +285,14 @@ export default function FilterForm({ id }: Props) {
 
         {filter.is_indexed !== false && <OasisDisclaimer />}
 
+        {filter.description && (
+          <div className="flex flex-row gap-2 mt-4">
+            <Typography size="base" fontWeight="normal" className="text-seoncdary-foreground">
+              {filter.description}
+            </Typography>
+          </div>
+        )}
+
         <>
           <div className="flex flex-col gap-6 mt-6">
             <ContaminantTable

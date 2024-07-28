@@ -53,15 +53,11 @@ export default function Score({ score, size, showScore = false }: Props) {
   if (!subscription && !showScore) {
     return (
       <>
-        {/* <div className="flex flex-row gap-2 w-56 h-4 rounded-md bg-red-500"></div> */}
         <button onClick={() => openModal('SubscriptionModal')}>
           <div
             className="flex flex-col justify-center items-center bg-muted border rounded-lg p-2"
             style={{ width: '100%', height: '100%' }}
           >
-            {/* <Typography size="lg" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-          Score:
-        </Typography> */}
             <div className="flex flex-row justify-center items-center gap-2">
               <Lock className="text-primary w-4 h-4" />
               <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary">

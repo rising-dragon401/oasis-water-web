@@ -52,7 +52,7 @@ export default function CompanyForm({ name }: Props) {
   return (
     <>
       <div className="md:py-10 py-6 md:px-4 w-full">
-        <div className="flex flex-col items-center w-full gap-6">
+        <div className="flex flex-col items-center justify-center w-full gap-6">
           <div className="flex flex-col gap-6 ">
             <Typography size="3xl" fontWeight="normal">
               {company.name}
@@ -72,7 +72,7 @@ export default function CompanyForm({ name }: Props) {
           <Typography size="xl" fontWeight="normal">
             Products
           </Typography>
-          <div className="flex flex-wrap justify-start flex-row gap-6">
+          <div className="flex-wrap justify-start flex-row gap-6 grid md:grid-cols-3 grid-cols-1">
             {items && items.map((item: any) => <ItemPreviewCard key={item.id} item={item} />)}
           </div>
         </div>

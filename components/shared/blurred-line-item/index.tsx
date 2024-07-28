@@ -44,10 +44,10 @@ export default function BlurredLineItem({
 
   const content = (
     <div className="my-0 gap-y-1 flex justify-between w-full">
-      <Typography size="base" fontWeight="normal" className="text-secondary">
+      <Typography size="base" fontWeight="normal" className="text-secondary flex-wrap max-w-30">
         {label}
       </Typography>{' '}
-      <div className="flex flex-row gap-2 items-center min-w-14">
+      <div className="flex flex-row gap-2 items-center min-w-18">
         {showPaywall ? (
           <div onClick={handleOpenPaywall} className="cursor-pointer">
             <Lock className="w-4 h-4" />
@@ -62,7 +62,7 @@ export default function BlurredLineItem({
           </Typography>
         )}
 
-        <div className={`w-8 h-4 rounded-full ${colorMark}`} />
+        <div className={`min-w-8 h-4 rounded-full ${colorMark}`} />
       </div>
     </div>
   )
