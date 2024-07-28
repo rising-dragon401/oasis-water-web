@@ -4,6 +4,7 @@ import Typography from '@/components/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import cn from 'classnames'
+import { Lock } from 'lucide-react'
 
 type BlurredLineItemProps = {
   label: string
@@ -46,14 +47,20 @@ export default function BlurredLineItem({
       <Typography size="base" fontWeight="normal" className="text-secondary">
         {label}
       </Typography>{' '}
-      <div className="flex flex-row gap-2 items-center">
-        <Typography
-          size="base"
-          fontWeight="semibold"
-          className={cn(labelClassName, 'min-w-14 text-right text-secondary')}
-        >
-          {value}
-        </Typography>
+      <div className="flex flex-row gap-2 items-center min-w-14">
+        {showPaywall ? (
+          <div onClick={handleOpenPaywall} className="cursor-pointer">
+            <Lock className="w-4 h-4" />
+          </div>
+        ) : (
+          <Typography
+            size="base"
+            fontWeight="semibold"
+            className={cn(labelClassName, 'min-w-14 text-right text-secondary')}
+          >
+            {value}
+          </Typography>
+        )}
 
         <div className={`w-8 h-4 rounded-full ${colorMark}`} />
       </div>

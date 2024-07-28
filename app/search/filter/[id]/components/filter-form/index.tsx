@@ -26,7 +26,7 @@ type Props = {
 }
 
 export default function FilterForm({ id }: Props) {
-  const { uid } = useUserProvider()
+  const { uid, subscription } = useUserProvider()
 
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<any>({})
@@ -117,7 +117,7 @@ export default function FilterForm({ id }: Props) {
 
   return (
     <div className="flex-col flex w-full md:px-0 px-2 gap-y-8">
-      <div className="md:pt-10 pt-6">
+      <div className="md:pt-10 pt-2">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="flex justify-center md:w-3/5 w-full">
             {filter.affiliate_url ? (
@@ -147,7 +147,7 @@ export default function FilterForm({ id }: Props) {
                   )}
                 </div>
               </div>
-              <div className="flex md:flex-row justify-start md:gap-10 items-start w-40">
+              <div className="flex md:flex-row md:justify-start justify-end md:gap-10 items-start w-40">
                 <Score score={filter.is_indexed ? filter.score : null} size="md" />{' '}
               </div>
             </div>
@@ -156,7 +156,7 @@ export default function FilterForm({ id }: Props) {
               {/* {item.is_indexed === false && <UntestedTooltip />} */}
 
               <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full md:mt-2 mt-4">
-                <div className="flex flex-col gap-y-1 ">
+                <div className="flex flex-col gap-y-1 w-full">
                   <BlurredLineItem
                     label="Heavy metals"
                     value={contaminantCategories['Heavy Metals'] > 70 ? 'Yes' : 'No'}
@@ -212,7 +212,7 @@ export default function FilterForm({ id }: Props) {
                   />
                 </div>
 
-                <div className="flex flex-col gap-y-1">
+                <div className="flex flex-col gap-y-1 w-full">
                   <BlurredLineItem
                     label="Trihalomethanes"
                     value={contaminantCategories['Trihalomethanes'] > 70 ? 'Yes' : 'No'}
@@ -290,6 +290,7 @@ export default function FilterForm({ id }: Props) {
             <ContaminantTable
               filteredContaminants={filter.contaminants_filtered}
               categories={filter.filtered_contaminant_categories}
+              showPaywall={!subscription}
             />
           </div>
 
