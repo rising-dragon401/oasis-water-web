@@ -1,3 +1,4 @@
+import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
@@ -9,16 +10,20 @@ type PaywallContentProps = {
   children: React.ReactNode
   className?: string
   hideButton?: boolean
+  buttonVariant?: 'default' | 'secondary' | 'ghost'
   label: string
   showPaywall?: boolean
+  items?: string[]
 }
 
 const PaywallContent: React.FC<PaywallContentProps> = ({
   children,
   className,
   hideButton = false,
+  buttonVariant = 'default',
   label,
   showPaywall = true,
+  items,
 }) => {
   const { openModal } = useModal()
   const { subscription } = useUserProvider()
@@ -43,13 +48,29 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
       >
         {/* Overlay container */}
         {!hideButton && (
-          <div className="absolute inset-0 flex justify-center items-center">
-            <Button variant="default" onClick={handleBlurClick} className="z-10">
+          <div className="absolute inset-0 flex flex-col justify-center items-center gap-y-6">
+            <Button variant={buttonVariant} onClick={handleBlurClick} className="z-10">
               {label}
               <Lock size={16} className="ml-2" />
             </Button>
+
+            {items && (
+              <div className="flex flex-col gap-4 text-center z-50 mt-">
+                {items.map((item, index) => (
+                  <Typography
+                    key={index}
+                    size="base"
+                    fontWeight="normal"
+                    className="text-primary text-center"
+                  >
+                    {item}
+                  </Typography>
+                ))}
+              </div>
+            )}
           </div>
         )}
+
         {/* Blurred children content */}
         <div className="filter blur-md overflow-hidden max-h-96">{children}</div>
       </div>

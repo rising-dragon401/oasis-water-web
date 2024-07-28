@@ -132,15 +132,15 @@ export default function ItemForm({ id }: Props) {
                 </div>
               </div>
 
-              <div className="flex md:flex-row justify-start md:gap-10 items-start w-40">
+              <div className="flex md:flex-row md:justify-start justify-end md:gap-10 w-40">
                 <Score score={itemScore} size="md" />
               </div>
             </div>
 
             <div>
-              <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full md:mt-2 mt-4">
+              <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full mt-2 ">
                 {item.is_indexed && (
-                  <div className="flex flex-col gap-y-1 ">
+                  <div className="flex flex-col gap-y-1 w-full">
                     <BlurredLineItem
                       label="Contaminants"
                       value={contaminants.length}
@@ -189,7 +189,7 @@ export default function ItemForm({ id }: Props) {
                   </div>
                 )}
 
-                <div className="flex flex-col gap-y-1">
+                <div className="flex flex-col gap-y-1 w-full">
                   <BlurredLineItem
                     label="Harmful ingredients"
                     value={harmfulIngredients?.length}
@@ -249,13 +249,21 @@ export default function ItemForm({ id }: Props) {
               Contaminants ☠️
             </Typography>
             {sortedContaminants && sortedContaminants.length > 0 ? (
-              <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                <PaywallContent label="Unlock contaminant amounts" showPaywall={false}>
+              <PaywallContent
+                label="Unlock contaminants"
+                items={[
+                  'Rating and scores 🌟',
+                  'Research reports and data 🔬',
+                  'Latest lab results 💧',
+                  'Request new products 🌿',
+                ]}
+              >
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
                   {sortedContaminants.map((contaminant: any, index: number) => (
                     <ContaminantCard key={contaminant.id || index} data={contaminant} />
                   ))}
-                </PaywallContent>
-              </div>
+                </div>
+              </PaywallContent>
             ) : (
               <>
                 {item.is_indexed !== false ? (

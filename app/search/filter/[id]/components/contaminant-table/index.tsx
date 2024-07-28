@@ -19,9 +19,10 @@ import useSWR from 'swr'
 type Props = {
   filteredContaminants: Contaminant[]
   categories?: any[]
+  showPaywall?: boolean
 }
 
-export default function ContaminantTable({ filteredContaminants, categories }: Props) {
+export default function ContaminantTable({ filteredContaminants, categories, showPaywall }: Props) {
   const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
 
   // Some filters only list the categories
@@ -103,24 +104,38 @@ export default function ContaminantTable({ filteredContaminants, categories }: P
                   </Typography>
                 </div>
                 <div className="flex justify-end w-full md:mr-10 mr-4">
-                  <Typography size="lg" fontWeight="normal" className="text-secondary justify-end">
-                    {item.percentageFiltered ? `${item.percentageFiltered}%` : 'Unknown'}
-                  </Typography>
+                  {showPaywall ? (
+                    <PaywallContent label="" buttonVariant="ghost">
+                      <Typography
+                        size="lg"
+                        fontWeight="normal"
+                        className="text-secondary justify-end"
+                      >
+                        {'Locked'}
+                      </Typography>
+                    </PaywallContent>
+                  ) : (
+                    <Typography
+                      size="lg"
+                      fontWeight="normal"
+                      className="text-secondary justify-end"
+                    >
+                      {item.percentageFiltered ? `${item.percentageFiltered}%` : 'Unknown'}
+                    </Typography>
+                  )}
                 </div>
               </AccordionTrigger>
               <AccordionContent>
-                <div className="flex flex-col gap-y-4 ml-4">
-                  {item.contaminants?.map((contaminant) => (
+                <div className="flex gap-1 flex-wrap">
+                  {item.contaminants?.map((contaminant, index) => (
                     <Link
                       href={determineLink(contaminant)}
                       className="flex flex-row gap-6 justify-between items-center"
                       key={contaminant.name}
                     >
-                      {/* <div className="w-96" key={contaminant.name}>
-                      {contaminant.name} {contaminant?.is_common ? '(c)' : ''}
-                    </div> */}
                       <Typography size="sm" fontWeight="normal" className="text-secondary">
                         {contaminant.name}
+                        {index < item.contaminants.length - 1 ? ', ' : ''}
                       </Typography>
                     </Link>
                   ))}

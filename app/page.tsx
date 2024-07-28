@@ -54,10 +54,10 @@ const CATEGORIES = [
 export default async function Home() {
   return (
     <SubpageLayout>
-      <div className="flex h-full flex-col pt-14 w-full">
+      <div className="flex h-full flex-col pt-14 w-full md:px-0 px-4">
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
-          <div className="flex flex-col items-center text-center gap-2 ">
-            <Typography size="5xl" fontWeight="bold" className="max-w-3xl">
+          <div className="flex flex-col items-center text-center gap-2">
+            <Typography size="4xl" fontWeight="bold" className="max-w-3xl">
               What are you drinking?
             </Typography>
 
