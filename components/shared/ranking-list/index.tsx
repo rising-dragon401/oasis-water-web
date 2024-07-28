@@ -119,13 +119,13 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
     if (!subscription) {
       return (
         <Button
-          variant="outline"
+          variant="default"
           className="flex flex-row gap-1"
           onClick={() => {
             openModal('SubscriptionModal')
           }}
         >
-          Unlock scores
+          Unlock top rated
           <Lock className="w-4 h-4" />
         </Button>
       )
@@ -133,7 +133,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
   }
 
   return (
-    <div className="pb-14 mt-4 w-full">
+    <div className="pb-14 md:mt-4 mt-0 w-full">
       <div className="flex flex-col items-start gap-2 mb-6 w-full">
         <Button
           variant="ghost"
@@ -147,7 +147,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
         </Button>
         <div className="flex md:flex-row md:gap-0 gap-2 flex-col justify-between w-full">
           <Typography size="4xl" fontWeight="bold" className="max-w-lg">
-            Top rated {category?.title.toLowerCase()}
+            {subscription ? 'Top rated' : 'All'} {category?.title.toLowerCase()}
           </Typography>
 
           <div className="">{UnlockTopButton()}</div>
@@ -181,7 +181,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
         </DropdownMenu>
       )}
 
-      <div className="grid md:grid-cols-3 grid-cols-2 gap-6 w-full">
+      <div className="grid md:grid-cols-3 grid-cols-2 md:gap-6 gap-2 w-full">
         {allItems &&
           allItems
             .filter((item) => !item.is_draft)
