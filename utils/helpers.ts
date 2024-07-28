@@ -51,6 +51,8 @@ export const determineLink = (item: any) => {
     return `/search/item/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
   } else if (item.type === 'user') {
     return `/${item.id}`
+  } else if (item.type === 'company') {
+    return `/search/company/${item.name}`
   } else {
     return '/'
   }
