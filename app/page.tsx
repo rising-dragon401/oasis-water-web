@@ -72,7 +72,7 @@ export default async function Home() {
         <div className="flex flex-col md:mt-20 mt-14 gap-y-4 md:mb-32 mb-20 w-full">
           <div className="flex flex-row items-center justify-between">
             <Typography size="3xl" fontWeight="normal">
-              Top rated products
+              Product categories
             </Typography>
             <Link href="/top-rated">
               <Typography size="base" fontWeight="normal" className="underline">

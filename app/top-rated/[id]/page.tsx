@@ -6,7 +6,9 @@ export default async function TopRatedItems({ params }: { params: any }) {
 
   return (
     <SubpageLayout>
-      <RankingList categoryId={id} />
+      <div className="md:px-0 px-2 ">
+        <RankingList categoryId={id} />
+      </div>
     </SubpageLayout>
   )
 }
