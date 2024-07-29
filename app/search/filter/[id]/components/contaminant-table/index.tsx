@@ -85,8 +85,8 @@ export default function ContaminantTable({ filteredContaminants, categories, sho
       </Typography>
       <PaywallContent label="Unlock contaminants this filter removes" showPaywall={false}>
         <Typography size="xs" fontWeight="normal" className="text-secondary">
-          Category %s based on lab report. Individual contaminant filtration levlels may vary. Check
-          the lab report for exact measurements
+          Individual contaminant filtration levels may vary. Check the lab report for exact
+          measurements
         </Typography>
 
         {contaminantsByCategory.map((item) => (

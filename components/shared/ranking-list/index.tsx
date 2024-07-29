@@ -110,7 +110,16 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
   useEffect(() => {
     if (subscription && uid) {
       setAllItems((prevItems) => {
-        return [...prevItems].sort((a, b) => b.score - a.score)
+        return [...prevItems]
+          .map((item) => ({
+            ...item,
+            score: item.is_indexed === false ? null : item.score,
+          }))
+          .sort((a, b) => {
+            if (a.is_indexed === false) return 1
+            if (b.is_indexed === false) return -1
+            return b.score - a.score
+          })
       })
     }
   }, [subscription, uid, loading])

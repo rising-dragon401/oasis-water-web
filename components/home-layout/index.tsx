@@ -52,7 +52,6 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
     <div className="min-h-[100vh] flex justify-center">
       <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-xl max-w-sm w-full">
         <Suspense fallback={<div />}>
-          .
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
 

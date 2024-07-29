@@ -18,7 +18,7 @@ export default async function TopRatedPage() {
               Discover the healthiest water and hydration options based on science.
             </Typography>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 w-full ">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
             {CATEGORIES.map((category) => (
               <Link
                 href={`/top-rated/${category.id}`}

@@ -28,6 +28,12 @@ export const getItems = async ({
 
   items = items.filter((item) => !item.is_private)
 
+  items = items.sort((a, b) => {
+    if (a.is_indexed === false) return 1
+    if (b.is_indexed === false) return -1
+    return 0
+  })
+
   return items
 }
 
