@@ -11,7 +11,7 @@ type CategoryType = {
   id: TabKeys
   title: string
   href?: string
-  image?: string
+  image: string
   tags?: string[]
 }
 
