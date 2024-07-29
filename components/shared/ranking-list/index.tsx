@@ -107,19 +107,16 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
     }
   }, [categoryId])
 
+  // handle sorting by score
   useEffect(() => {
     if (subscription && uid) {
       setAllItems((prevItems) => {
-        return [...prevItems]
-          .map((item) => ({
-            ...item,
-            score: item.is_indexed === false ? null : item.score,
-          }))
-          .sort((a, b) => {
-            if (a.is_indexed === false) return 1
-            if (b.is_indexed === false) return -1
-            return b.score - a.score
-          })
+        const indexedItems = prevItems.filter((item) => item.is_indexed !== false)
+        const nonIndexedItems = prevItems.filter((item) => item.is_indexed === false)
+
+        indexedItems.sort((a, b) => b.score - a.score)
+
+        return [...indexedItems, ...nonIndexedItems]
       })
     }
   }, [subscription, uid, loading])

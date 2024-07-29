@@ -103,7 +103,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
         <div className="flex w-1/6 justify-end">
           {/* @ts-ignore */}
           {isFilter && !item?.is_indexed ? (
-            <div>{renderWarning()}</div>
+            <div>{renderWarning()}asdfasdfasdf</div>
           ) : (
             <>
               {!subscription && item.type !== 'tap_water' ? (
