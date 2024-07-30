@@ -9,7 +9,7 @@ import Link from 'next/link'
 export default async function Home() {
   return (
     <SubpageLayout>
-      <div className="flex h-full flex-col pt-14 w-full md:px-0 px-4">
+      <div className="flex h-full flex-col pt-14 w-full md:px-0 px-2">
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
           <div className="flex flex-col items-center text-center gap-2">
             <Typography size="4xl" fontWeight="bold" className="max-w-3xl">
@@ -24,7 +24,7 @@ export default async function Home() {
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="flex flex-col md:mt-14 mt-14 gap-y-4 md:mb-32 mb-20 w-full">
+        <div className="flex flex-col md:mt-14 md:mb-24 mt-10 mb-20 gap-y-4 w-full">
           <div className="flex flex-row items-center justify-between">
             <Typography size="3xl" fontWeight="normal">
               Product categories
@@ -42,12 +42,18 @@ export default async function Home() {
                   <Link
                     key={'category.name'}
                     href={`/top-rated/${category.id}`}
-                    className="flex flex-col gap-2 w-[140px] md:w-[200px] md:pt-6 pt-4 pb-2 rounded-lg bg-muted border justify-end cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
+                    className="flex flex-col gap-2 w-[140px] h-24 md:w-[200px] md:h-full md:pt-6 pt-4 pb-2 rounded-lg bg-muted border justify-end cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
                   >
-                    <div className="flex flex-col items-center justify-center">
-                      <Image src={category.image} alt={category.title} width={100} height={100} />
+                    <div className="flex flex-col items-center justify-center ">
+                      <Image
+                        src={category.image}
+                        alt={category.title}
+                        width={100}
+                        height={100}
+                        className="md:w-24 md:h-16 w-16 h-12"
+                      />
                     </div>
-                    <Typography size="lg" fontWeight="normal" className="text-center">
+                    <Typography size="base" fontWeight="normal" className="text-center">
                       {category.title}
                     </Typography>
                   </Link>
@@ -57,7 +63,7 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="md:my-14 mt-10 mb-10 w-full">
+        <div className="md:mt-24 mt-14 mb-10 w-full">
           <BlogPreviewSection />
         </div>
       </div>

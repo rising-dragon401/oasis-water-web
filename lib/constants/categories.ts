@@ -45,13 +45,13 @@ export const CATEGORIES: CategoryType[] = [
   },
   {
     id: 'shower_filter',
-    title: 'Shower & bath filters',
+    title: 'Shower filters',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/shower%20filter%20category%20cover.png',
   },
   {
     id: 'bottle_filter',
-    title: 'Water bottle filters',
+    title: 'Bottle filters',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/bottle%20filter%20category%20coverpng.png',
   },

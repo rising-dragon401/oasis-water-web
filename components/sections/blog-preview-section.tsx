@@ -11,8 +11,8 @@ export default function BlogPreviewSection() {
   }, [])
 
   return (
-    <div>
-      <div className="py-4 flex flex-row justify-between items-center">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-row justify-between items-center">
         <Typography size="3xl" fontWeight="normal">
           Latest research
         </Typography>
@@ -24,7 +24,7 @@ export default function BlogPreviewSection() {
         </Link>
       </div>
 
-      <div className="relative w-full ">
+      <div className="w-full">
         <div className="left-0 right-0 overflow-x-auto hide-scrollbar ">
           <div className="flex flex-nowrap gap-2 pb-4 ">
             {sortedPosts.slice(0, 3).map((post) => (
