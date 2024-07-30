@@ -95,6 +95,27 @@ export default function ItemForm({ id }: Props) {
   const itemScore =
     item.type === 'flavored_water' ? item.score : item.is_indexed ? item.score : null
 
+  const waterSource = (() => {
+    switch (item.water_source) {
+      case 'municipal_supply':
+        return 'Tap water'
+      case 'mountain_spring':
+        return 'Mountain Spring'
+      case 'aquifer':
+        return 'Aquifer'
+      case 'iceberg':
+        return 'Iceberg'
+      case 'spring':
+        return 'Spring'
+      case 'well':
+        return 'Well'
+      case 'rain':
+        return 'Rain'
+      default:
+        return 'Unknown'
+    }
+  })()
+
   return (
     <div className="flex-col flex w-full gap-y-8">
       <div className="md:pt-10 pt-2 md:px-0 px-4">
@@ -213,6 +234,19 @@ export default function ItemForm({ id }: Props) {
                     }
                     isPaywalled={false}
                     score={item.packaging === 'glass' ? 'good' : 'bad'}
+                  />
+
+                  <BlurredLineItem
+                    label="Source"
+                    value={waterSource ? waterSource : 'Unknown'}
+                    isPaywalled={false}
+                    score={
+                      item.water_source === 'spring' ||
+                      item.water_source === 'aquifer' ||
+                      item.water_source === 'mountain_spring'
+                        ? 'good'
+                        : 'bad'
+                    }
                   />
                 </div>
               </div>
