@@ -90,7 +90,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }
   }, [setOpen])
 
-  const [selectedPlan, setSelectedPlan] = useState('monthly')
+  const [selectedPlan, setSelectedPlan] = useState('annual')
   const [loadingCheckoutSession, setLoadingCheckoutSession] = useState(false)
   const [referral, setReferral] = useState(null)
 
@@ -247,7 +247,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               </div>
             </Button>
 
-            <Button
+            {/* <Button
               variant="outline"
               className={`px-4 w-full !font-bold mb-2 flex h-12 flex-row justify-between 
                 ${selectedPlan === 'monthly' ? 'border-primary' : 'border'}
@@ -281,7 +281,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
                   </Typography>
                 </div>
               </div>
-            </Button>
+            </Button> */}
 
             <Button
               variant="default"
@@ -289,7 +289,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={() => redirectToPayment()}
               loading={loadingCheckoutSession}
             >
-              Continue
+              Unlock Membership
             </Button>
 
             <div

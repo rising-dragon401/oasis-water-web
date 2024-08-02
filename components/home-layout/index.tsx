@@ -14,7 +14,6 @@ import { PropsWithChildren, Suspense, useEffect } from 'react'
 import useSWR from 'swr'
 import { AccountMenu } from '../menu/account-menu'
 import BottomNavbar from '../menu/bottom-bar'
-import { AISearchDialog } from '../shared/ai-search-dialogue'
 import SignUpButton from '../shared/sign-up-button'
 
 type Props = {
@@ -39,7 +38,7 @@ const SearchParamsComponent = ({ openModal, isOpen }: Props) => {
 }
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
-  const { user, userData } = useUserProvider()
+  const { user, userData, subscription } = useUserProvider()
   const pathname = usePathname()
   const { openModal, isOpen } = useModal()
 
@@ -57,7 +56,12 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
 
         <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
           <Typography size="sm" fontWeight="normal">
-            iOS app is live 🎉 {` `}
+            {!subscription ? (
+              <>Start a free trial on our iOS app 🎉 {` `}</>
+            ) : (
+              <>iOS app is live 🎉 {` `}</>
+            )}
+
             <a
               href="https://apps.apple.com/us/app/oasis-water-health-ratings/id6499478532"
               target="_blank"
@@ -105,9 +109,9 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
               <BasicSearch showSearch={false} size="small" />
             </div>
 
-            <div className="flex justify-end">
+            {/* <div className="flex justify-end">
               <AISearchDialog size="small" variant="icon" />
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -115,9 +119,9 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
 
         <Footer />
 
-        <div className="fixed bottom-6 right-6 hidden md:flex">
+        {/* <div className="fixed bottom-6 right-6 hidden md:flex">
           <AISearchDialog size="small" variant="button" />
-        </div>
+        </div> */}
 
         <div className="md:hidden">
           <BottomNavbar />

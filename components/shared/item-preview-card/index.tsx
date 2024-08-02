@@ -67,7 +67,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
       <div className="relative flex w-full">
         <Image
           src={item.image || ''}
-          className="lg:w-full lg:h-72 md:w-full md:h-64 w-full4 h-44 rounded-md object-cover hover:cursor-pointer"
+          className="lg:w-full lg:h-72 md:w-full md:h-64 w-full h-44 rounded-md object-cover hover:cursor-pointer"
           width={300}
           height={300}
           quality={70}
