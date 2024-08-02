@@ -2,7 +2,6 @@
 
 import { getFilters } from '@/app/actions/filters'
 import { getItems } from '@/app/actions/items'
-import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import {
@@ -188,7 +187,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
       )}
 
       <div className="grid md:grid-cols-3 grid-cols-2 md:gap-6 gap-2 w-full">
-        {allItems &&
+        {/* {allItems &&
           allItems
             .filter((item) => !item.is_draft)
             // .filter((item) => {
@@ -196,12 +195,18 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
             //   return selectedTags.every((tag) => item.tags.includes(tag))
             // })
             .slice(0, 20 * page)
-            .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
+            .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)} */}
 
-        {(loading || !allItems) &&
+        {/* {(loading || !allItems) &&
           Array(10)
             .fill(0)
-            .map((_, index) => <ItemSkeleton key={index} />)}
+            .map((_, index) => <ItemSkeleton key={index} />)} */}
+
+        {Array(10)
+          .fill(0)
+          .map((_, index) => (
+            <ItemSkeleton key={index} />
+          ))}
 
         <div ref={lastItemRef} />
       </div>

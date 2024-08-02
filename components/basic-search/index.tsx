@@ -8,6 +8,7 @@ import { useDebounce } from '@/lib/hooks/use-debounce'
 import algoliasearch from 'algoliasearch'
 import { Loader2, Search } from 'lucide-react'
 import React, { useEffect, useRef } from 'react'
+import { AISearchDialog } from '../shared/ai-search-dialogue'
 import ResultsRow from './results-row'
 
 const client = algoliasearch(
@@ -256,6 +257,10 @@ export default function BasicSearch({
                   <Loader2 size={20} className="animate-spin text-secondary-foreground" />
                 )}
               </div>
+            </div>
+
+            <div className="flex justify-end">
+              <AISearchDialog size="small" variant="icon" />
             </div>
 
             {showResults() && (

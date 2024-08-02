@@ -164,10 +164,10 @@ export function AISearchDialog({
 
   const handleSearchButtonClick = () => {
     // check if user is signed in
-    if (!user || !subscription) {
-      openModal('SubscriptionModal')
-      return
-    }
+    // if (!user || !subscription) {
+    //   openModal('SubscriptionModal')
+    //   return
+    // }
 
     setOpen(true)
   }
@@ -179,6 +179,11 @@ export function AISearchDialog({
 
   const handleSubmit = async (e: any, query_: string) => {
     e.preventDefault()
+
+    if (!user || !subscription) {
+      openModal('SubscriptionModal')
+      return
+    }
 
     if (!open) {
       handleModalToggle()
@@ -331,7 +336,7 @@ export function AISearchDialog({
               variant="default"
               className="absolute right-2 h-10 rounded-full"
               style={{ top: '50%', transform: 'translateY(-50%)' }}
-              onClick={handleOpenSubscription}
+              onClick={(e) => handleSubmit(e, query)}
             >
               Ask <Lock className="w-4 h-4 text-background ml-2" />
             </Button>
@@ -452,7 +457,7 @@ export function AISearchDialog({
                     className="text-left h-8"
                     onClick={(e) => {
                       setQuery(prompt)
-                      handleSubmit(e, prompt)
+                      // handleSubmit(e, prompt)
                     }}
                   >
                     {prompt}
