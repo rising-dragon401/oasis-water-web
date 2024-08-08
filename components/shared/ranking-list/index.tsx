@@ -2,18 +2,13 @@
 
 import { getFilters } from '@/app/actions/filters'
 import { getItems } from '@/app/actions/items'
+import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { CATEGORIES } from '@/lib/constants/categories'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
-import { ArrowLeft, Check, Lock, SlidersHorizontal } from 'lucide-react'
+import { ArrowLeft, Lock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-skeleton'
@@ -159,35 +154,8 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
         </div>
       </div>
 
-      {tags.length > 0 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger className="flex flex-row justify-center items-center gap-1 bg-transparent rounded-lg w-10 h-8 hover:cursor-pointer">
-            <SlidersHorizontal className="w-4 h-4" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Typography size="sm" fontWeight="bold" className="pl-1 py-1">
-              Tags
-            </Typography>
-            {tags.map((tag) => (
-              <DropdownMenuItem
-                onClick={() => {
-                  setSelectedTags((prevTags) =>
-                    prevTags.includes(tag) ? prevTags.filter((t) => t !== tag) : [tag]
-                  )
-                }}
-                className="hover:cursor-pointer flex justify-between"
-                key={tag}
-              >
-                {tag}
-                {selectedTags.includes(tag) && <Check className="w-3 h-3" />}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
-
       <div className="grid md:grid-cols-3 grid-cols-2 md:gap-6 gap-2 w-full">
-        {/* {allItems &&
+        {allItems &&
           allItems
             .filter((item) => !item.is_draft)
             // .filter((item) => {
@@ -195,18 +163,12 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
             //   return selectedTags.every((tag) => item.tags.includes(tag))
             // })
             .slice(0, 20 * page)
-            .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)} */}
+            .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
 
-        {/* {(loading || !allItems) &&
+        {(loading || !allItems) &&
           Array(10)
             .fill(0)
-            .map((_, index) => <ItemSkeleton key={index} />)} */}
-
-        {Array(10)
-          .fill(0)
-          .map((_, index) => (
-            <ItemSkeleton key={index} />
-          ))}
+            .map((_, index) => <ItemSkeleton key={index} />)}
 
         <div ref={lastItemRef} />
       </div>
