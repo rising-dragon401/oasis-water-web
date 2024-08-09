@@ -35,7 +35,7 @@ const STARTER_PROMPTS = [
 export function AISearchDialog({
   size,
   variant = 'button',
-  placeholder = 'Message Oasis',
+  placeholder = 'Ask Oasis AI',
 }: {
   size: 'small' | 'medium' | 'large'
   variant?: 'button' | 'input' | 'icon'
@@ -311,10 +311,6 @@ export function AISearchDialog({
     setIsLoading(false)
   }
 
-  const handleOpenSubscription = () => {
-    openModal('SubscriptionModal')
-  }
-
   const SearchInput = () => {
     return (
       <div className="flex flex-col w-full">
@@ -369,7 +365,7 @@ export function AISearchDialog({
         <Button
           onClick={handleSearchButtonClick}
           variant="ghost"
-          className="gap-2 rounded-full h-12 text-secondary-foreground border bg-muted"
+          className="rounded-full h-12 text-secondary-foreground border bg-muted"
         >
           <Sparkles className="w-4 h-4 text-secondary-foreground" />
         </Button>
@@ -379,7 +375,7 @@ export function AISearchDialog({
         <Button
           onClick={handleSearchButtonClick}
           variant="ghost"
-          className="gap-2 rounded-full h-12 text-secondary-foreground "
+          className="rounded-full h-12 text-secondary-foreground "
         >
           <Sparkles className="w-4 h-4 text-secondary-foreground" />
         </Button>
@@ -444,7 +440,7 @@ export function AISearchDialog({
           ) : (
             <div className="flex flex-col ">
               <Typography size="2xl" fontWeight="normal">
-                Oasis health companion
+                Oasis AI
               </Typography>
               <Typography size="base" fontWeight="normal" className="mb-4 text-secondary">
                 👋 Hey I am here to help you find the best products for your health. How can I help?

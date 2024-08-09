@@ -239,10 +239,7 @@ export default function BasicSearch({
               <Input
                 ref={inputRef}
                 placeholder={
-                  size !== 'large'
-                    ? 'Search water'
-                    : placeholder ||
-                      PLACEHOLDER_PROMPTS[Math.floor(Math.random() * PLACEHOLDER_PROMPTS.length)]
+                  size !== 'large' ? 'Search water' : placeholder || PLACEHOLDER_PROMPTS[0]
                 }
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -251,47 +248,44 @@ export default function BasicSearch({
                 className={`${getSearchRounded()} ${getSearchStyle()} ${getSearchPaddingY()} !shadow-none`}
               />
 
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row gap-2 items-center">
-                {/* <SearchDropdown item={selectedFilters} setItem={setSelectedFilters} /> */}
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-50 flex flex-row items-center">
                 {isLoading && (
                   <Loader2 size={20} className="animate-spin text-secondary-foreground" />
                 )}
+
+                <AISearchDialog size="small" variant="icon" />
               </div>
-            </div>
 
-            <div className="flex justify-end">
-              <AISearchDialog size="small" variant="icon" />
-            </div>
+              {showResults() && (
+                <div
+                  className={`flex flex-col gap-2 bg-card border-b border-x rounded-b-md absolute w-full  z-10 overflow-y-scroll max-h-64  ${getSearchTop()}`}
+                >
+                  {results.length > 0 && (
+                    <div className="flex-grow">
+                      {results.map((result) => (
+                        <ResultsRow key={result.id} itemResult={result} />
+                      ))}
+                    </div>
+                  )}
 
-            {showResults() && (
-              <div
-                className={`flex flex-col gap-2 bg-card border-b border-x rounded-b-md absolute w-full  z-10 overflow-y-scroll max-h-64  ${getSearchTop()}`}
-              >
-                {results.length > 0 && (
-                  <div className="flex-grow">
-                    {results.map((result) => (
-                      <ResultsRow key={result.id} itemResult={result} />
-                    ))}
-                  </div>
-                )}
-
-                {!isLoading && (
-                  <div className="flex items-center flex-wrap justify-between p-2">
-                    <div className="flex flex-col gap-2 items-center justify-center">
-                      <div
-                        onClick={() => {
-                          setOpenFeedbackModal(true)
-                        }}
-                      >
-                        <Typography size="base" fontWeight="normal" className="italic">
-                          Missing something?
-                        </Typography>
+                  {!isLoading && (
+                    <div className="flex items-center flex-wrap justify-between px-2 py-1 bg-muted">
+                      <div className="flex flex-col gap-2 items-center justify-center">
+                        <div
+                          onClick={() => {
+                            setOpenFeedbackModal(true)
+                          }}
+                        >
+                          <Typography size="base" fontWeight="normal" className="italic">
+                            Are we missing something?
+                          </Typography>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </div>
-            )}
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
