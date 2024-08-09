@@ -67,7 +67,7 @@ export default function LocationForm({ id }: Props) {
             <ItemImage src={location.image} alt={location.name} item={location} />
           </div>
 
-          <div className="flex flex-row w-full justify-between">
+          <div className="flex flex-row w-full justify-between gap-2">
             <div className="flex flex-col gap-y-2">
               <Typography size="3xl" fontWeight="normal" className="w-2/3">
                 {location.name} Tap Water
@@ -107,12 +107,12 @@ export default function LocationForm({ id }: Props) {
               {location.utilities.map((utility: any, index: number) => (
                 <AccordionItem key={index} value={index.toString()}>
                   <AccordionTrigger className="w-full flex flex-row justify-start">
-                    <div className="w-full">
+                    <div className="w-3/4">
                       <Typography size="lg" fontWeight="normal" className="text-left">
                         {utility.name}
                       </Typography>
                     </div>
-                    <div className="flex justify-end w-full md:mr-10 mr-4">
+                    <div className="flex justify-end w-1/4 md:mr-10 mr-4">
                       <Typography size="base" fontWeight="normal" className="flex flex-row gap-4">
                         Score:
                         {` `}

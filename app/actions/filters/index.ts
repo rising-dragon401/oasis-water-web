@@ -187,15 +187,17 @@ export const getRecommendedFilter = async (contaminants: any[]) => {
   let highestScoringFilter: { [key: string]: any } | null = null
   let highestScore = 0
 
+  console.log('contaminants: ', contaminants)
+
   await filters.map((filter: any) => {
     const filteredContaminantsCount = contaminants.reduce((acc, contaminant) => {
-      if (!filter.contaminants_filtered) {
-        return null
-      }
+      const categories = filter.filtered_contaminant_categories || []
 
-      if (filter.contaminants_filtered.includes(contaminant.id)) {
+      const category = categories?.find((cat: any) => cat.category === contaminant.category)
+      if (category && category.percentage > 50) {
         return acc + 1
       }
+
       return acc
     }, 0)
 

@@ -92,7 +92,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </div>
         </div>
 
-        <div className="md:hidden flex flex-row justify-between items-center pt-1">
+        <div className="md:hidden flex flex-row justify-between items-center pt-1 gap-4">
           <Link
             href="/"
             className="flex  flex-row items-center justify-center hover:cursor-pointer"
@@ -105,13 +105,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </Link>
 
           <div className="flex flex-row items-center justify-end w-full">
-            <div className="max-w-[50vw]">
-              <BasicSearch showSearch={false} size="small" />
-            </div>
-
-            {/* <div className="flex justify-end">
-              <AISearchDialog size="small" variant="icon" />
-            </div> */}
+            <BasicSearch showSearch={false} size="medium" />
           </div>
         </div>
 
