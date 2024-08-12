@@ -93,7 +93,11 @@ export default function ItemForm({ id }: Props) {
 
   // only bottled water drinks are required to have a water quality report
   const itemScore =
-    item.type === 'flavored_water' ? item.score : item.is_indexed ? item.score : null
+    item.type === 'flavored_water' || item.type === 'energy_drink'
+      ? item.score
+      : item.is_indexed
+        ? item.score
+        : null
 
   const waterSource = (() => {
     switch (item.water_source) {
