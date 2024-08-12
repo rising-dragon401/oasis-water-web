@@ -1077,7 +1077,7 @@ export type Database = {
         | "well"
         | "rain"
         | "unknown"
-      certifications: "NSF" | "IAPMO" | "WQA" | "SGS" | "ANAB"
+      certifications: "NSF" | "IAPMO" | "WQA" | "SGS" | "ANAB" | "ISO"
       email_subscriptions: "newsletter"
       ingredient_category:
         | "Chemical Disinfectants"
@@ -1118,6 +1118,7 @@ export type Database = {
         | "water_gallon"
         | "shower_filter"
         | "bottle_filter"
+        | "energy_drink"
       packaging:
         | "plastic"
         | "glass"

@@ -19,13 +19,18 @@ export default async function TopRatedPage() {
             </Typography>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full ">
-            {CATEGORIES.map((category) => (
+            {CATEGORIES.sort((a, b) => (b.is_new ? 1 : 0) - (a.is_new ? 1 : 0)).map((category) => (
               <Link
                 href={`/top-rated/${category.id}`}
                 key={category.id}
-                className="flex flex-col justify-center items-center w-full md:h-56 h-40 bg-card border rounded-lg hover:shadow-md cursor-pointer"
+                className="relative flex flex-col justify-center items-center w-full md:h-56 h-40 bg-card border rounded-lg hover:shadow-md cursor-pointer"
               >
-                <div className="md:w-48 w-28 h-18 flex justify-center items-center object-contain">
+                {category.is_new && (
+                  <span className="absolute z-50 top-2 right-2 bg-secondary text-white text-xs px-2 py-1 rounded-full">
+                    New
+                  </span>
+                )}
+                <div className="md:w-48 w-42 h-18 flex justify-center items-center object-contain">
                   <Image
                     src={category.image || ''}
                     alt={category.title}
@@ -35,8 +40,7 @@ export default async function TopRatedPage() {
                   />
                 </div>
 
-                {/* <div className="card-logo">{category.logo}</div> */}
-                <Typography size="xl" fontWeight="bold" className="text-center">
+                <Typography size="xl" fontWeight="normal" className="text-center mt-2">
                   {category.title}
                 </Typography>
               </Link>

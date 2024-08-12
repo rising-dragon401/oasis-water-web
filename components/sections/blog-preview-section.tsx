@@ -14,7 +14,7 @@ export default function BlogPreviewSection() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-row justify-between items-center">
         <Typography size="3xl" fontWeight="normal">
-          Latest research
+          New research
         </Typography>
 
         <Link href="/blog">
