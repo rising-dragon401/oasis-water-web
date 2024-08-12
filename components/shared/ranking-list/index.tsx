@@ -40,28 +40,25 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
   }, [])
 
   const fetchAndSetData = async (key: string, fetchFunction: () => Promise<any>) => {
-    // const cachedData = localStorage.getItem(key)
-    // if (cachedData && cachedData.length > 5) {
-    //   const parsedData = JSON.parse(cachedData)
-    //   setState(parsedData)
-    //   if (tabValue === tabKey) {
-    //     console.log(' setAllItems cachedData', parsedData)
-    //     setAllItems(parsedData)
-    //   }
-    //   setLoading((prev) => ({ ...prev, [key]: false }))
-    // } else {
-    //   const data = await fetchFunction()
-    //   setState(data)
-    //   localStorage.setItem(key, JSON.stringify(data))
-    //   setLoading((prev) => ({ ...prev, [key]: false }))
-    //   if (tabValue === tabKey) {
-    //     setAllItems(data)
-    //   }
-    // }
     const data = await fetchFunction()
     localStorage.setItem(key, JSON.stringify(data))
+
+    // Sort the data if the user has a subscription
+    if (subscription && uid) {
+      console.log('sorting')
+      const indexedItems = data.filter((item: any) => item.is_indexed !== false)
+      const nonIndexedItems = data.filter((item: any) => item.is_indexed === false)
+
+      console.log('indexedItems:', indexedItems)
+      indexedItems.sort((a: any, b: any) => b.score - a.score)
+      nonIndexedItems.sort((a: any, b: any) => b.score - a.score)
+
+      setAllItems([...indexedItems, ...nonIndexedItems])
+    } else {
+      setAllItems(data)
+    }
+
     setLoading(false)
-    setAllItems(data)
   }
 
   useEffect(() => {
@@ -104,21 +101,22 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
       default:
         break
     }
-  }, [categoryId])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryId, subscription, uid])
 
-  // handle sorting by score
-  useEffect(() => {
-    if (subscription && uid) {
-      setAllItems((prevItems) => {
-        const indexedItems = prevItems.filter((item) => item.is_indexed !== false)
-        const nonIndexedItems = prevItems.filter((item) => item.is_indexed === false)
+  // // handle sorting by score
+  // useEffect(() => {
+  //   if (subscription && uid) {
+  //     setAllItems((prevItems) => {
+  //       const indexedItems = prevItems.filter((item) => item.is_indexed !== false)
+  //       const nonIndexedItems = prevItems.filter((item) => item.is_indexed === false)
 
-        indexedItems.sort((a, b) => b.score - a.score)
+  //       indexedItems.sort((a, b) => b.score - a.score)
 
-        return [...indexedItems, ...nonIndexedItems]
-      })
-    }
-  }, [subscription, uid, loading])
+  //       return [...indexedItems, ...nonIndexedItems]
+  //     })
+  //   }
+  // }, [subscription, uid, loading])
 
   const UnlockTopButton = () => {
     if (!subscription) {
