@@ -36,7 +36,7 @@ export default async function TopRatedPage() {
                     alt={category.title}
                     width={200}
                     height={200}
-                    className="w-full h-full"
+                    className="w-full md:h-40 h-24 object-contain"
                   />
                 </div>
 
