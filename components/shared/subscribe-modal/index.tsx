@@ -59,7 +59,7 @@ const FEATURES = [
 ]
 
 // annual
-const kAnnualPrice = 39.99
+const kAnnualPrice = 47
 const kWeeklyPrice = 5.99
 const kMonthlyPrice = 7.99
 
