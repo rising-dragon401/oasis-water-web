@@ -1,5 +1,6 @@
 import Typography from '@/components/typography'
 import { ThumbsDown, ThumbsUp } from 'lucide-react'
+import Link from 'next/link'
 import { useMemo } from 'react'
 
 type Props = {
@@ -32,7 +33,11 @@ export default function IngredientsCard({ ingredients }: Props) {
           return a.bonus_score - b.bonus_score // Then lowest bonus score first (highest last)
         })
         .map((ingredient, index) => (
-          <div key={index} className="rounded-md border">
+          <Link
+            key={index}
+            href={`/search/ingredient/${ingredient.id}`}
+            className="rounded-md border"
+          >
             <div
               className={`flex flex-row justify-between items-center w-full ${getBgColor(
                 ingredient.severity_score,
@@ -73,7 +78,7 @@ export default function IngredientsCard({ ingredients }: Props) {
                 </Typography>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
     </>
   )

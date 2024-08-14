@@ -311,8 +311,8 @@ export default function ItemForm({ id }: Props) {
                 ) : (
                   <Typography size="base" fontWeight="normal" className="text-secondary">
                     Unable to verify contaminants in this product. Please see{' '}
-                    <Link href="/blog/oasis_scoring" className="underline">
-                      How we score
+                    <Link href="/blog/oasis_scoring" className="underline italic">
+                      how we score
                     </Link>{' '}
                     to learn more.
                   </Typography>
