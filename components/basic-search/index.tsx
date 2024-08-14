@@ -258,7 +258,7 @@ export default function BasicSearch({
 
               {showResults() && (
                 <div
-                  className={`flex flex-col gap-2 bg-card border-b border-x rounded-b-md absolute w-full  z-10 overflow-y-scroll max-h-64  ${getSearchTop()}`}
+                  className={`flex flex-col gap-2 bg-card border-b border-x rounded-b-md absolute w-full z-20 overflow-y-scroll max-h-64  ${getSearchTop()}`}
                 >
                   {results.length > 0 && (
                     <div className="flex-grow">

@@ -46,7 +46,7 @@ export default async function Home() {
                       className="relative flex flex-col gap-2 w-[140px] h-24 md:w-[200px] md:h-full md:pt-4 pt-2 pb-2 rounded-lg bg-card border justify-end cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
                     >
                       {category.is_new && (
-                        <span className="absolute z-50 top-2 right-2 bg-secondary text-white text-xs px-2 py-1 rounded-full">
+                        <span className="absolute z-10 top-2 right-2 bg-secondary text-white text-xs px-2 py-1 rounded-full">
                           New
                         </span>
                       )}
