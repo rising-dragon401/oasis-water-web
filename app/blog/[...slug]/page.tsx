@@ -1,11 +1,13 @@
 import { getSubscription } from '@/app/actions/user'
 import { Mdx } from '@/components/mdx-components'
 import Typography from '@/components/typography'
+import { Button } from '@/components/ui/button'
 import { BLOG_IMAGE } from '@/lib/constants/images'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 import { allPosts } from 'contentlayer/generated'
 import { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 interface PostProps {
@@ -85,11 +87,17 @@ export default async function PostPage({ params }: PostProps) {
 
   return (
     <article className="pt-6 prose pb-20">
-      <Typography size="4xl" fontWeight="normal" className="mb-2">
+      <Typography size="4xl" fontWeight="normal" className="mb-0">
         {post.title}
       </Typography>
-      <div className="rounded-lg">
-        <Image src={post.image} alt={post.title} width={500} height={500} className="rounded-lg" />
+      <div className="rounded-lg overflow-hidden w-full max-w-3xl mx-auto aspect-[16/9]">
+        <Image
+          src={post.image}
+          alt={post.title}
+          width={800}
+          height={450}
+          className="rounded-lg object-cover w-full h-full"
+        />
       </div>
       {post.description && (
         <Typography size="base" fontWeight="normal" className="mb-2 text-secondary">
@@ -97,7 +105,20 @@ export default async function PostPage({ params }: PostProps) {
         </Typography>
       )}
 
-      <Mdx code={post.body.code} />
+      {subscription || !post.is_research ? (
+        <Mdx code={post.body.code} />
+      ) : (
+        <div className="flex flex-col">
+          <Link href="/oasis-member" className="no-underline">
+            <Button variant="outline" className="no-underline">
+              Become an Oasis Member to continue reading
+            </Button>
+          </Link>
+          <Link href="/oasis-member" className="filter blur-md overflow-hidden">
+            <Mdx code={post.body.code} />
+          </Link>
+        </div>
+      )}
     </article>
   )
 }

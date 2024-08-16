@@ -2,6 +2,7 @@ import { allPosts } from '@/.contentlayer/generated'
 import SubpageLayout from '@/components/home-layout'
 import { AISearchDialog } from '@/components/shared/ai-search-dialogue'
 import Typography from '@/components/typography'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function ResearchPage() {
@@ -16,38 +17,34 @@ export default function ResearchPage() {
             Stay up to date on the latest scientific research regarding product health
           </Typography>
 
-          <div className="md:w-[40vw]">
+          <div className="md:w-[40vw] mt-2">
             <AISearchDialog size="medium" variant="input" placeholder="Ask Oasis AI" />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 w-full">
+        <div className="grid md:grid-cols-3 grid-cols-2 md:gap-8 gap-4 w-full md:mt-4 mt-2">
           {allPosts
             .filter((post) => post?.is_research)
             .map((post) => (
               <article key={post._id}>
-                <Link href={post.slug}>
-                  <div
-                    className="relative w-full h-40 bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2"
-                    style={{
-                      backgroundImage: `url(${post.image})`,
-                    }}
+                <Link
+                  href={post.slug}
+                  className="relative w-full md:h-64 h-40 items-end bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:opacity-70"
+                >
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    width={500}
+                    height={384}
+                    className="w-full md:h-64 h-40 object-cover rounded-lg"
+                  />
+                  <Typography
+                    size="lg"
+                    fontWeight="normal"
+                    className="text-stone-800 !no-underline h-14 mt-1"
                   >
-                    <div className="absolute inset-0 bg-black opacity-30"></div>
-                    <div className="relative p-5">
-                      <Typography
-                        size="xl"
-                        fontWeight="normal"
-                        className="text-stone-100 !no-underline h-14"
-                      >
-                        {post.title}
-                      </Typography>
-
-                      <Typography size="base" fontWeight="normal" className="text-stone-100 h-14">
-                        {post.description}
-                      </Typography>
-                    </div>
-                  </div>
+                    {post.title}
+                  </Typography>
                 </Link>
               </article>
             ))}
