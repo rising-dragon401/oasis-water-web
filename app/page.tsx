@@ -30,7 +30,7 @@ export default async function Home() {
               Product ratings
             </Typography>
             <Link href="/top-rated">
-              <Typography size="base" fontWeight="normal" className="underline">
+              <Typography size="base" fontWeight="normal" className="italic">
                 see all
               </Typography>
             </Link>

@@ -1,5 +1,6 @@
 import { allPosts } from '@/.contentlayer/generated'
 import Typography from '@/components/typography'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo } from 'react'
 
@@ -18,7 +19,7 @@ export default function BlogPreviewSection() {
         </Typography>
 
         <Link href="/blog">
-          <Typography size="base" fontWeight="normal" className="underline">
+          <Typography size="base" fontWeight="normal" className="italic">
             read more
           </Typography>
         </Link>
@@ -26,29 +27,27 @@ export default function BlogPreviewSection() {
 
       <div className="w-full">
         <div className="left-0 right-0 overflow-x-auto hide-scrollbar ">
-          <div className="flex flex-nowrap gap-2 pb-4 ">
-            {sortedPosts.slice(0, 3).map((post) => (
+          <div className="flex flex-nowrap gap-6 pb-4">
+            {sortedPosts.slice(0, 4).map((post) => (
               <article key={post._id}>
-                <Link href={post.slug}>
-                  <div
-                    className="relative w-[200px] md:w-[360px] h-full md:h-[284px] bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:shadow-md flex flex-col justify-end hover:cursor-pointer"
-                    style={{
-                      backgroundImage: `url(${post.image})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }}
+                <Link
+                  href={post.slug}
+                  className="relative md:w-72 w-48 md:h-64 h-full items-end bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:opacity-70 flex flex-col"
+                >
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    width={500}
+                    height={384}
+                    className="w-full md:h-48 h-32 object-cover rounded-t-lg"
+                  />
+                  <Typography
+                    size="lg"
+                    fontWeight="normal"
+                    className="text-stone-800 !no-underline h-16 flex items-center"
                   >
-                    <div className="absolute inset-0 bg-black opacity-40 rounded-lg"></div>
-                    <div className="relative px-4 py-2">
-                      <Typography
-                        size="lg"
-                        fontWeight="normal"
-                        className="text-stone-100 !no-underline md:h-14"
-                      >
-                        {post.title}
-                      </Typography>
-                    </div>
-                  </div>
+                    {post.title}
+                  </Typography>
                 </Link>
               </article>
             ))}
