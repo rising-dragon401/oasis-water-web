@@ -25,6 +25,7 @@ export default function ResearchPage() {
         <div className="grid md:grid-cols-3 grid-cols-2 md:gap-8 gap-4 w-full md:mt-4 mt-2">
           {allPosts
             .filter((post) => post?.is_research)
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
             .map((post) => (
               <article key={post._id}>
                 <Link
