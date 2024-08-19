@@ -262,6 +262,8 @@ export async function getSubscription(uid: string | null) {
   }
 
   const supabase = await createSupabaseServerClient()
+  let planPlan = 'Free'
+  let isAdmin = false
 
   try {
     const { data: subscription } = await supabase
@@ -271,11 +273,22 @@ export async function getSubscription(uid: string | null) {
       .eq('user_id', uid)
       .single()
 
-    if (!subscription) {
-      return null
+    // check for admin privileges
+    const userData = await getCurrentUserData(uid)
+    const perm = userData?.permissions
+
+    if (perm?.includes('admin')) {
+      isAdmin = true
     }
 
-    let planPlan = 'Free'
+    if (!subscription && !isAdmin) {
+      return null
+    } else if (!subscription && isAdmin) {
+      return {
+        provider: 'admin',
+        plan: 'Admin',
+      }
+    }
 
     // @ts-ignore
     const provider = subscription?.metadata?.provider || 'stripe'
