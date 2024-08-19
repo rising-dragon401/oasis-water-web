@@ -5,7 +5,7 @@ import { ProductWithPrices, SubscriptionWithProduct } from '@/types/custom'
 import useSWR from 'swr'
 
 export default function useSubscription() {
-  const { data: subscription } = useSWR<SubscriptionWithProduct | null>(
+  const { data: subscription } = useSWR<SubscriptionWithProduct | null | any>(
     'subscription',
     getSubscription
   )

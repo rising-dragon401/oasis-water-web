@@ -96,7 +96,11 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const fetchSubscription = async (uid: string | null) => {
     const data = await getSubscription(uid)
-    setSubscription(data)
+
+    console.log('sub data: ', data)
+
+    setSubscription(data as SubscriptionWithProduct | null)
+
     return data
   }
 
