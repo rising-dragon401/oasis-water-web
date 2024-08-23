@@ -27,7 +27,7 @@ export default function HomeNavbar() {
           <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
             <Logo />
 
-            <Typography size="2xl" fontWeight="normal">
+            <Typography size="2xl" fontWeight="normal" className="!text-accent">
               Oasis
             </Typography>
           </Link>
@@ -35,21 +35,21 @@ export default function HomeNavbar() {
 
         <NavigationMenuItem>
           <Link href="/" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <Search className="w-4 h-4 text-secondary mr-2" />
+            <Search className="w-4 h-4 mr-2" />
             Explore
           </Link>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
           <Link href="/top-rated" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <Trophy className="w-4 h-4 text-secondary mr-2" />
+            <Trophy className="w-4 h-4 mr-2" />
             Top Rated
           </Link>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
           <Link href="/blog" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <ActivitySquare className="w-4 h-4 text-secondary mr-2" />
+            <ActivitySquare className="w-4 h-4 mr-2" />
             Research
           </Link>
         </NavigationMenuItem>
@@ -74,7 +74,7 @@ const ListItem = React.forwardRef<React.ElementRef<'a'>, ListItemProps>(
           <Link
             href={href}
             className={cn(
-              'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+              'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
               className
             )}
             {...props}

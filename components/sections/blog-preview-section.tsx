@@ -14,7 +14,7 @@ export default function BlogPreviewSection() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-row justify-between items-center">
-        <Typography size="3xl" fontWeight="normal">
+        <Typography size="2xl" fontWeight="normal">
           New research
         </Typography>
 
@@ -32,19 +32,19 @@ export default function BlogPreviewSection() {
               <article key={post._id}>
                 <Link
                   href={post.slug}
-                  className="relative md:w-72 w-48 md:h-64 h-full items-end bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:opacity-70 flex flex-col"
+                  className="relative md:w-72 w-48 md:h-64 h-full bg-cover bg-center rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:opacity-70 flex flex-col items-start justify-start"
                 >
                   <Image
                     src={post.image}
                     alt={post.title}
                     width={500}
                     height={384}
-                    className="w-full md:h-48 h-32 object-cover rounded-t-lg"
+                    className="w-full md:h-48 h-32 object-cover rounded-lg"
                   />
                   <Typography
-                    size="lg"
+                    size="base"
                     fontWeight="normal"
-                    className="text-stone-800 !no-underline h-16 flex items-center"
+                    className="text-stone-800 !no-underline flex"
                   >
                     {post.title}
                   </Typography>
