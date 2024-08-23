@@ -51,23 +51,23 @@ export default function ContaminantCard({ data }: Props) {
         </CardDescription>
         <CardContent className="pl-0">
           <div className="h-14 overflow-hidden">
-            <Typography size="base" fontWeight="medium" className="text-secondary ">
-              ⚠️ Risks
+            <Typography size="base" fontWeight="medium">
+              Risks
             </Typography>
-            <Typography size="xs" fontWeight="normal" className="text-secondary ">
+            <Typography size="xs" fontWeight="normal" className="text-secondary">
               {data?.risks}
             </Typography>
           </div>
           {data.amount && (
             <div className="flex flex-col w-full mt-4">
-              <Typography size="base" fontWeight="medium" className="text-secondary">
+              <Typography size="base" fontWeight="medium">
                 Amounts
               </Typography>
               <div className="flex flex-row w-full justify-between">
                 <Typography size="xs" fontWeight="normal" className="text-secondary">
                   Contains:
                 </Typography>
-                <Typography size="sm" fontWeight="medium" className="text-secondary">
+                <Typography size="sm" fontWeight="medium">
                   {data?.amount} {data?.unit} {data?.measure}
                 </Typography>
               </div>
@@ -75,7 +75,7 @@ export default function ContaminantCard({ data }: Props) {
                 <Typography size="xs" fontWeight="normal" className="text-secondary">
                   Health Guideline:
                 </Typography>
-                <Typography size="sm" fontWeight="medium" className="text-secondary">
+                <Typography size="sm" fontWeight="medium">
                   {data?.health_guideline ? `${data.health_guideline} ${data.measure}` : 'None'}{' '}
                 </Typography>
               </div>
@@ -83,7 +83,7 @@ export default function ContaminantCard({ data }: Props) {
                 <Typography size="xs" fontWeight="normal" className="text-secondary">
                   Legal Limit:
                 </Typography>
-                <Typography size="sm" fontWeight="medium" className="text-secondary">
+                <Typography size="sm" fontWeight="medium">
                   {data?.legal_limit ? `${data.legal_limit} ${data.measure}` : 'None'}
                 </Typography>
               </div>
