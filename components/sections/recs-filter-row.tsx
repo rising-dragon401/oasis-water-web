@@ -30,7 +30,12 @@ export default function RecommendedFiltersRow() {
       </div>
 
       <div className="flex flex-row gap-8 hide-scrollbar overflow-x-scroll">
-        {ranked && ranked.map((item: any) => <ItemPreviewCard key={item.id} item={item} />)}
+        {ranked &&
+          ranked.map((item: any) => (
+            <div key={item.id} className="w-64 flex-shrink-0">
+              <ItemPreviewCard item={item} />
+            </div>
+          ))}
       </div>
     </div>
   )

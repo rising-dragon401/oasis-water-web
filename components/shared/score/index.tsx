@@ -60,7 +60,7 @@ export default function Score({ score, size, showScore = false }: Props) {
           >
             <div className="flex flex-row justify-center items-center gap-2">
               <Lock className="text-primary w-4 h-4" />
-              <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary">
+              <Typography size="xl" fontWeight="normal" className="flex gap-2">
                 / 100
               </Typography>
             </div>
@@ -76,19 +76,19 @@ export default function Score({ score, size, showScore = false }: Props) {
       style={{ width: '100%', height: '100%' }}
     >
       {score ? (
-        <Typography size="xl" fontWeight="semibold" className="flex gap-2 text-secondary mb-0">
+        <Typography size="xl" fontWeight="semibold" className="flex gap-2 mb-0">
           {score} / 100
         </Typography>
       ) : (
         <div className="flex flex-row gap-1">
           <AlertTriangle className="text-red-500" />
-          <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+          <Typography size="xl" fontWeight="normal" className="flex gap-2mb-0">
             / 100
           </Typography>
         </div>
       )}
 
-      <span className="text-secondary py-0" style={{ fontSize: fontSize }}>
+      <span className="py-0" style={{ fontSize: fontSize }}>
         {grade()}
       </span>
     </div>

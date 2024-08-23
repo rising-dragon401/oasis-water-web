@@ -44,7 +44,7 @@ export default function BlurredLineItem({
 
   const content = (
     <div className="my-0 gap-y-1 flex justify-between w-full">
-      <Typography size="base" fontWeight="normal" className="text-secondary flex-wrap max-w-30">
+      <Typography size="base" fontWeight="normal" className="flex-wrap max-w-30">
         {label}
       </Typography>{' '}
       <div className="flex flex-row gap-2 items-center min-w-18">
@@ -56,7 +56,7 @@ export default function BlurredLineItem({
           <Typography
             size="base"
             fontWeight="semibold"
-            className={cn(labelClassName, 'min-w-14 text-right text-secondary')}
+            className={cn(labelClassName, 'min-w-14 text-right')}
           >
             {value}
           </Typography>

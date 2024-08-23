@@ -80,7 +80,7 @@ export default function ContaminantTable({ filteredContaminants, categories, sho
 
   return (
     <div>
-      <Typography size="xl" fontWeight="normal" className="text-secondary">
+      <Typography size="xl" fontWeight="normal">
         Contaminants categories
       </Typography>
       <PaywallContent label="Unlock contaminants this filter removes" showPaywall={false}>
@@ -99,7 +99,7 @@ export default function ContaminantTable({ filteredContaminants, categories, sho
             <AccordionItem value="item-1">
               <AccordionTrigger className="w-full flex flex-row justify-start rounded-md">
                 <div className="w-full justify-start flex">
-                  <Typography size="lg" fontWeight="normal" className="text-secondary text-left">
+                  <Typography size="lg" fontWeight="normal" className="text-left">
                     {item.category}
                   </Typography>
                 </div>
@@ -115,11 +115,7 @@ export default function ContaminantTable({ filteredContaminants, categories, sho
                       </Typography>
                     </PaywallContent>
                   ) : (
-                    <Typography
-                      size="lg"
-                      fontWeight="normal"
-                      className="text-secondary justify-end"
-                    >
+                    <Typography size="lg" fontWeight="normal" className="justify-end">
                       {item.percentageFiltered ? `${item.percentageFiltered}%` : 'Unknown'}
                     </Typography>
                   )}

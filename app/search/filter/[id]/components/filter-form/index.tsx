@@ -181,8 +181,6 @@ export default function FilterForm({ id }: Props) {
     )
   }
 
-  console.log('filteredContaminants: ', filteredContaminants)
-
   return (
     <div className="flex-col flex w-full md:px-0 px-2 gap-y-8">
       <div className="md:pt-10 pt-2">

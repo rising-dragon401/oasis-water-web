@@ -309,7 +309,7 @@ export default function ItemForm({ id }: Props) {
                     No contaminants found
                   </Typography>
                 ) : (
-                  <Typography size="base" fontWeight="normal" className="text-secondary">
+                  <Typography size="base" fontWeight="normal">
                     Unable to verify contaminants in this product. Please see{' '}
                     <Link href="/blog/oasis_scoring" className="underline italic">
                       how we score
