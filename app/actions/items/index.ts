@@ -184,6 +184,20 @@ export const getWorstItems = async () => {
   return items || []
 }
 
+export const getMostRecentItems = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const [{ data: items }, { data: filters }] = await Promise.all([
+    supabase.from('items').select().order('created_at', { ascending: false }).range(0, 5),
+    supabase.from('water_filters').select().order('created_at', { ascending: false }).range(0, 5),
+  ])
+  const combinedItems = [...(items || []), ...(filters || [])].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  )
+
+  return combinedItems.slice(0, 5)
+}
+
 export const getRecommendedItems = async () => {
   const supabase = await createSupabaseServerClient()
 

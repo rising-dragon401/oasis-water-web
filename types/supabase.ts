@@ -1109,6 +1109,8 @@ export type Database = {
         | "Trihalomethanes"
         | "Synthetics"
         | "Inorganic ingredients"
+        | "Vitamins"
+        | "Amino Acids"
       item_type:
         | "bottled_water"
         | "tap_water"
@@ -1119,6 +1121,7 @@ export type Database = {
         | "shower_filter"
         | "bottle_filter"
         | "energy_drink"
+        | "sports_drink"
       packaging:
         | "plastic"
         | "glass"

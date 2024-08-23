@@ -7,6 +7,7 @@ export type TabKeys =
   | 'shower_filter'
   | 'bottle_filter'
   | 'energy_drink'
+  | 'sports_drink'
 
 type CategoryType = {
   id: TabKeys
@@ -31,6 +32,12 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/water%20filter%20category%20cover.png?t=2024-07-26T17%3A26%3A46.995Z',
     tags: ['sink', 'counter', 'pitcher'],
+  },
+  {
+    id: 'energy_drink',
+    title: 'Energy drinks',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/energy%20drink%20cover.png?t=2024-08-12T21%3A43%3A47.242Z',
   },
   {
     id: 'flavored_water',
@@ -58,10 +65,10 @@ export const CATEGORIES: CategoryType[] = [
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/bottle%20filter%20category%20coverpng.png',
   },
   {
-    id: 'energy_drink',
-    title: 'Energy drinks',
+    id: 'sports_drink',
+    title: 'Sports drinks',
     image:
-      'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/energy%20drink%20cover.png?t=2024-08-12T21%3A43%3A47.242Z',
+      'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/sport%20drink%20cover.png?t=2024-08-23T15%3A34%3A47.714Z',
     is_new: true,
   },
 ]

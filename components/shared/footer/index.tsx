@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
 
           <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
-            <h6 className="text-sm text-secondary font-bold mb-2">Company</h6>
+            <h6 className="text-sm text-primary font-bold mb-2">Company</h6>
             <ul className="text-sm space-y-2 list-none">
               {/* <li>
                 <Link
@@ -106,7 +106,7 @@ export default function Footer() {
           </div>
 
           <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
-            <h6 className="text-sm text-secondary font-bold mb-2">Information</h6>
+            <h6 className="text-sm text-primary font-bold mb-2">Information</h6>
             <ul className="text-sm space-y-2 list-none">
               <FeedbackModal open={openFeedback} setOpen={setOpenFeedback} />
 
@@ -127,7 +127,7 @@ export default function Footer() {
                 </Link>
               </li>
               <div
-                className="cursor-pointer"
+                className="cursor-pointer text-secondary"
                 onClick={() => {
                   setOpenFeedback(true)
                 }}
@@ -138,7 +138,7 @@ export default function Footer() {
           </div>
 
           <div className="sm:col-span-1 md:col-span-3 lg:col-span-2 md:text-left md:items-start flex flex-col justify-center items-center text-center">
-            <h6 className="text-sm text-secondary font-bold mb-2">Legal</h6>
+            <h6 className="text-sm text-primary font-bold mb-2">Legal</h6>
             <ul className="text-sm space-y-2 list-none">
               <li>
                 <Link

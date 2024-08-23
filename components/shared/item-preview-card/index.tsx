@@ -14,9 +14,10 @@ type Props = {
   item: Item | WaterFilter | TapWaterLocation
   showWarning?: boolean
   showFavoriteButton?: boolean
+  size?: 'small' | 'medium' | 'large'
 }
 
-export default function ItemPreviewCard({ item, showWarning, showFavoriteButton }: Props) {
+export default function ItemPreviewCard({ item, showWarning, showFavoriteButton, size }: Props) {
   const { subscription } = useUserProvider()
   const { openModal } = useModal()
 
@@ -26,7 +27,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
 
     return (
       <div className="flex flex-col items-end w-full text-right">
-        <Typography size="2xl" fontWeight="normal" className={`!no-underline ${color} text-right`}>
+        <Typography size="base" fontWeight="normal" className={`!no-underline ${color} text-right`}>
           {score}
         </Typography>
 
@@ -44,7 +45,7 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
   const renderWarning = () => {
     return (
       <div className="flex flex-col items-end gap-1">
-        <AlertTriangle className="text-red-500" />
+        <AlertTriangle className=" w-4 h-4" />
         <Typography
           size="xs"
           fontWeight="normal"
@@ -59,15 +60,28 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
   const isFilter =
     item.type === 'shower_filter' || item.type === 'bottle_filter' || item.type === 'filter'
 
+  const getHeightClass = () => {
+    switch (size) {
+      case 'small':
+        return 'h-32 md:h-48 lg:h-56'
+      case 'medium':
+        return 'h-48 md:h-56 lg:h-64'
+      case 'large':
+        return 'h-64 md:h-72 lg:h-80'
+      default:
+        return 'h-48 md:h-56 lg:h-64' // Default to medium if size is not specified
+    }
+  }
+
   return (
     <Link
       href={determineLink(item)}
-      className="flex flex-col hover:opacity-80 relative w-full border rounded-md fade-in"
+      className="flex flex-col hover:opacity-80 relative max-w-sm rounded-md fade-in"
     >
-      <div className="relative flex w-full">
+      <div className="relative flex w-full bg-card">
         <Image
           src={item.image || ''}
-          className="lg:w-full lg:h-72 md:w-full md:h-64 w-full h-44 rounded-md object-cover hover:cursor-pointer"
+          className={`w-full ${getHeightClass()} rounded-md object-cover hover:cursor-pointer`}
           width={300}
           height={300}
           quality={70}
@@ -80,10 +94,10 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton 
           </div>
         )}
       </div>
-      <div className="flex flex-row justify-between p-1 px-2 md:gap-2 items-start lg:w-full md:w-full w-full">
+      <div className="flex flex-row justify-between p-1 px-2 md:gap-2 items-start w-full">
         <div className="flex flex-col w-5/6 justify-start">
           <Typography
-            size="base"
+            size="sm"
             fontWeight="bold"
             className="!no-underline text-primary flex-wrap overflow-hidden md:max-h-12 max-h-10"
           >
