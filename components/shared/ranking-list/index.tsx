@@ -123,23 +123,6 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
   //   }
   // }, [subscription, uid, loading])
 
-  const UnlockTopButton = () => {
-    if (!subscription) {
-      return (
-        <Button
-          variant="default"
-          className="flex flex-row gap-1"
-          onClick={() => {
-            openModal('SubscriptionModal')
-          }}
-        >
-          Unlock top rated
-          <Lock className="w-4 h-4" />
-        </Button>
-      )
-    }
-  }
-
   return (
     <div className="pb-14 md:mt-4 mt-0 w-full">
       <div className="flex flex-col items-start gap-2 mb-6 w-full">
@@ -154,11 +137,35 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
           See all categories
         </Button>
         <div className="flex md:flex-row md:gap-0 gap-2 flex-col justify-between w-full">
-          <Typography size="4xl" fontWeight="bold" className="max-w-lg">
-            {subscription ? 'Top rated' : 'All'} {category?.title.toLowerCase()}
-          </Typography>
-
-          <div className="">{UnlockTopButton()}</div>
+          {subscription ? (
+            <div className="flex flex-col gap-2">
+              <Typography size="4xl" fontWeight="bold" className="max-w-lg">
+                Top rated {category?.title.toLowerCase()}
+              </Typography>
+              <Typography size="base" fontWeight="normal" className="max-w-lg">
+                Best {category?.title.toLowerCase()} based on science sorted by score
+              </Typography>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2">
+              <Typography size="4xl" fontWeight="bold" className="max-w-lg">
+                All {category?.title.toLowerCase()}
+              </Typography>
+              <Typography size="base" fontWeight="normal" className="max-w-lg">
+                Want to know the best {category?.title.toLowerCase()} based on science?
+              </Typography>
+              <Button
+                variant="default"
+                className="flex flex-row gap-1"
+                onClick={() => {
+                  openModal('SubscriptionModal')
+                }}
+              >
+                Show me the ratings
+                <Lock className="w-4 h-4" />
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
