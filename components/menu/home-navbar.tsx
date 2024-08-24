@@ -24,10 +24,10 @@ export default function HomeNavbar() {
     <NavigationMenu className="flex w-full justify-between py-2">
       <NavigationMenuList>
         <NavigationMenuItem className="mr-4">
-          <Link href="/" className="flex  flex-row  items-center hover:cursor-pointer">
+          <Link href="/" className="flex  flex-row items-center hover:cursor-pointer">
             <Logo />
 
-            <Typography size="2xl" fontWeight="normal" className="!text-accent">
+            <Typography size="2xl" fontWeight="normal" className="text-accent">
               Oasis
             </Typography>
           </Link>

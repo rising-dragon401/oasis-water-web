@@ -10,7 +10,7 @@ import Link from 'next/link'
 export default async function Home() {
   return (
     <SubpageLayout>
-      <div className="flex h-full flex-col pt-10 w-full md:px-0 px-2">
+      <div className="flex h-full flex-col md:pt-10 pt-6 w-full md:px-0 px-2">
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
           <div className="flex flex-col items-center text-center gap-1">
             <Typography size="4xl" fontWeight="bold" className="max-w-3xl">
@@ -20,7 +20,7 @@ export default async function Home() {
             <Typography
               size="lg"
               fontWeight="normal"
-              className="md:max-w-lg max-w-xs text-secondary"
+              className="md:max-w-xl max-w-xs text-secondary"
             >
               Discover the best water, filters and other products based on science.
             </Typography>
