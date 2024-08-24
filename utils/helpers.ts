@@ -47,7 +47,8 @@ export const determineLink = (item: any) => {
     item.type === 'bottled_water' ||
     item.type === 'water_gallon' ||
     item.type === 'flavored_water' ||
-    item.type === 'energy_drink'
+    item.type === 'energy_drink' ||
+    item.type === 'sports_drink'
   ) {
     return `/search/item/${item.id}?name=${item?.name?.toLowerCase().replace(/ /g, '-')}`
   } else if (item.type === 'user') {

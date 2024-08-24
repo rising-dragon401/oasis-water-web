@@ -3,7 +3,7 @@ import Typography from '@/components/typography'
 import { kInstagram, kTikTok, kTwitter, kYouTube } from '@/lib/constants/socials'
 import Link from 'next/link'
 import { useState } from 'react'
-import { FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
+import { FaDiscord, FaInstagram, FaTiktok, FaXTwitter, FaYoutube } from 'react-icons/fa6'
 import EmailSubscribe from '../email-subscribe'
 import { FeedbackModal } from '../feedback-modal'
 
@@ -57,11 +57,11 @@ export default function Footer() {
                   <FaYoutube className="text-primary" />
                 </a>
               </li>
-              {/* <li className="ml-2">
+              <li className="ml-2">
                 <a href="https://discord.gg/AhapvnXxAy" target="_blank" rel="noopener noreferrer">
                   <FaDiscord className="text-primary" />
                 </a>
-              </li> */}
+              </li>
             </ul>
           </div>
 
