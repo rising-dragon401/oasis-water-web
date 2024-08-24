@@ -13,7 +13,7 @@ export default async function MostRecentSection() {
           Recently added
         </Typography>
 
-        <Link href="/search/top-rated" className="italic text-primary">
+        <Link href="/top-rated" className="italic text-primary">
           see all
         </Link>
       </div>
