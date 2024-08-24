@@ -10,38 +10,32 @@ import { CSPostHogProvider } from './providers'
 
 import '@/styles/globals.css'
 
-const meta = {
+export const metadata = {
   title: 'Oasis',
   description: 'Science-backed water ratings',
-  cardImage:
-    'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
   robots: 'follow, index',
-  favicon: '/favicon.ico',
-  url: 'https://oasiswater.app',
-  type: 'website',
-}
-
-export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasiswater.app'),
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
   openGraph: {
-    title: meta.title,
-    description: meta.description,
-    url: meta.url,
-    siteName: meta.title,
+    title: 'Oasis',
+    description: 'Science-backed water ratings',
+    url: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasiswater.app'),
+    siteName: 'Oasis',
     images: [
       {
-        url: meta.cardImage,
+        url: 'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
         width: 800,
         height: 600,
       },
       {
-        url: meta.cardImage,
+        url: 'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
         width: 1800,
         height: 1600,
         alt: 'water ratings',
       },
     ],
-
     locale: 'en_US',
     type: 'website',
   },
