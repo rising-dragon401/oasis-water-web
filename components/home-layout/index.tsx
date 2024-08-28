@@ -99,7 +99,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           >
             <Logo />
 
-            <Typography size="2xl" fontWeight="normal" className="text-accent">
+            <Typography size="2xl" fontWeight="normal" className="!text-accent">
               Oasis
             </Typography>
           </Link>

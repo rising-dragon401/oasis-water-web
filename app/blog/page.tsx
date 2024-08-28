@@ -11,18 +11,18 @@ export default function ResearchPage() {
       <div className="flex flex-col w-full md:px-0 px-4">
         <div className="pt-4 pb-8">
           <Typography size="3xl" fontWeight="normal">
-            Scientific studies
+            Latest research
           </Typography>
           <Typography size="lg" fontWeight="normal" className="text-secondary">
             Stay up to date on the latest scientific research regarding product health
           </Typography>
 
-          <div className="md:w-[40vw] mt-2">
+          <div className="md:w-[40vw] mt-4">
             <AISearchDialog size="medium" variant="input" placeholder="Ask Oasis AI" />
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 grid-cols-2 md:gap-8 gap-4 w-full md:mt-4 mt-2">
+        <div className="grid md:grid-cols-3 grid-cols-2 md:gap-8 gap-4 w-full">
           {allPosts
             .filter((post) => post?.is_research)
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())

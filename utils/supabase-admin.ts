@@ -1,8 +1,8 @@
-import { toDateTime } from './helpers'
-import { stripe } from './stripe'
+import { Database } from '@/types/supabase'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
-import { Database } from '@/types/supabase'
+import { toDateTime } from './helpers'
+import { stripe } from './stripe'
 
 type Product = Database['public']['Tables']['products']['Row']
 type Price = Database['public']['Tables']['prices']['Row']
@@ -158,8 +158,8 @@ const manageSubscriptionStatusChange = async (
 }
 
 export {
-  upsertProductRecord,
-  upsertPriceRecord,
   createOrRetrieveCustomer,
   manageSubscriptionStatusChange,
+  upsertPriceRecord,
+  upsertProductRecord,
 }
