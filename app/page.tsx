@@ -29,7 +29,7 @@ export default async function Home() {
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="md:mt-14 mt-10 md:mb-8 w-full">
+        <div className="md:mt-14 mt-10 w-full">
           <MostRecentSection />
         </div>
 

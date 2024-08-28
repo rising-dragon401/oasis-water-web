@@ -52,6 +52,7 @@ export function AISearchDialog({
   const [isLoading, setIsLoading] = React.useState(false)
   const [starterPrompts, setStarterPrompts] = React.useState<string[]>([])
   const [abortController, setAbortController] = React.useState<AbortController>()
+  const [image, setImage] = React.useState<string | null>(null)
 
   const [assistantId, setAssistantId] = useAtom(assistantIdAtom)
   const [messages, setMessages] = useAtom(messagesAtom)
@@ -247,6 +248,7 @@ export function AISearchDialog({
           assistant_id: assistant,
           thread_id: thread,
           is_stream: true,
+          image_url: image,
         }),
         signal,
       })
@@ -399,7 +401,7 @@ export function AISearchDialog({
           {messages.length > 1 || isLoading ? (
             <>
               <DialogHeader className="sticky flex flex-row items-center w-full justify-between px-4">
-                <DialogTitle className="text-left w-30">Oasis health companion</DialogTitle>
+                <DialogTitle className="text-left w-30">Oasis AI</DialogTitle>
 
                 <div className="flex flex-row gap-2">
                   <Button variant="ghost" className="h-8 p-0 mr-1" onClick={handleReset}>

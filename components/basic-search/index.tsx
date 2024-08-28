@@ -8,7 +8,6 @@ import { useDebounce } from '@/lib/hooks/use-debounce'
 import algoliasearch from 'algoliasearch'
 import { Loader2, Search } from 'lucide-react'
 import React, { useEffect, useRef } from 'react'
-import { AISearchDialog } from '../shared/ai-search-dialogue'
 import ResultsRow from './results-row'
 
 const client = algoliasearch(
@@ -50,7 +49,6 @@ export default function BasicSearch({
   searchBoxStyle?: 'bubble' | 'line'
 }) {
   const inputRef = useRef<HTMLInputElement>(null) // Create a ref for the input element
-
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
   const [query, setQuery] = React.useState<string>('')
   const [results, setResults] = React.useState<any[]>([])
@@ -59,6 +57,7 @@ export default function BasicSearch({
   const [queryCompleted, setQueryCompleted] = React.useState(false)
   const [openFeedbackModal, setOpenFeedbackModal] = React.useState(false)
   const [selectedFilters, setSelectedFilters] = React.useState<string[]>([])
+  const [image, setImage] = React.useState<string | null>(null)
 
   const debouncedQuery = useDebounce(query, 500)
 
@@ -238,9 +237,7 @@ export default function BasicSearch({
             <div className="relative w-full">
               <Input
                 ref={inputRef}
-                placeholder={
-                  size !== 'large' ? 'Search water' : placeholder || PLACEHOLDER_PROMPTS[0]
-                }
+                placeholder="Search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setInputFocused(true)}
@@ -253,7 +250,7 @@ export default function BasicSearch({
                   <Loader2 size={20} className="animate-spin text-secondary-foreground" />
                 )}
 
-                <AISearchDialog size="small" variant="icon" />
+                {/* <AISearchDialog size="small" variant="icon" /> */}
               </div>
 
               {showResults() && (

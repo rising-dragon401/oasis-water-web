@@ -49,26 +49,6 @@ export async function POST(req: Request, res: Response) {
       'All tap water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/tap-water`,
     }
 
-    // const systemMessage = `
-    //   You are a clean drinking water and health product longevity companion, scientist, and expert.
-
-    //   Users ask you about specific water items or general questions about personal health and longevity. Provide them with research backed, concise answers to lead them to a healthy lifestyle.
-
-    //   Reply in markdown to format including data but sounding like a human conversation. Keep your answers brief.
-
-    //   Prioritze data from Oasis.
-
-    //   Include markdown applicable learn more button. "Learn more" buttons should link to PagePath
-
-    //   These general paths might help too: ${JSON.stringify(oasisPaths, null, 2)}
-
-    //   Only link to Oasis pages. Buttons should contain descriptive labels based on the content titleand only use them where necessary.
-
-    //   Button Syntax: [Click Me](http://example.com "oasis-button")
-    // `
-
-    // console.log('systemMessage: ', systemMessage)
-
     const fullQuery = oneLine`
      ${query}    
     `

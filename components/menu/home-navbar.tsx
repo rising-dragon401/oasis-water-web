@@ -27,7 +27,7 @@ export default function HomeNavbar() {
           <Link href="/" className="flex  flex-row items-center hover:cursor-pointer">
             <Logo />
 
-            <Typography size="2xl" fontWeight="normal" className="text-accent">
+            <Typography size="2xl" fontWeight="normal" className="!text-accent">
               Oasis
             </Typography>
           </Link>
