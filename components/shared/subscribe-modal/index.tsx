@@ -177,9 +177,13 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(false)
   }
 
-  const redirectToSignIn = () => {
-    router.push('/auth/signin')
+  const redirectToSignIn = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
     setOpen(false)
+    setTimeout(() => {
+      router.push('/auth/signin')
+    }, 0)
   }
 
   return (
