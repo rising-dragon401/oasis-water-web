@@ -21,6 +21,7 @@ export type ItemType =
   | 'bottle_filter'
   | 'energy_drink'
   | 'sports_drink'
+  | 'coconut_water'
 
 export type WaterFilter = Database['public']['Tables']['water_filters']['Row'] & {
   company_name?: string | null

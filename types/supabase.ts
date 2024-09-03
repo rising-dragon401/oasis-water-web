@@ -1122,6 +1122,7 @@ export type Database = {
         | "bottle_filter"
         | "energy_drink"
         | "sports_drink"
+        | "coconut_water"
       packaging:
         | "plastic"
         | "glass"

@@ -98,6 +98,11 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
           getItems({ limit: 25, sortMethod: 'name', type: 'water_gallon' })
         )
         break
+      case 'coconut_water':
+        fetchAndSetData('coconut_water', () =>
+          getItems({ limit: 25, sortMethod: 'name', type: 'coconut_water' })
+        )
+        break
       case 'bottle_filter':
         fetchAndSetData('bottle_filter', () =>
           getFilters({ limit: 25, sortMethod: 'name', type: 'bottle_filter' })
