@@ -4,6 +4,7 @@ import { getAllContaminants, getFilterDetails } from '@/app/actions/filters'
 import { getIngredients } from '@/app/actions/ingredients'
 import { incrementItemsViewed } from '@/app/actions/user'
 import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
+import FilterSkeleton from '@/components/shared/filter-skeleton'
 import ItemImage from '@/components/shared/item-image'
 import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
 import Score from '@/components/shared/score'
@@ -19,7 +20,6 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import ContaminantTable from '../contaminant-table'
-import ItemSkeleton from '../item-skeleton'
 import ShowerFilterMetadata from '../shower-filter-metadata'
 import WaterFilterMetadata from '../water-filter-metadata'
 
@@ -133,7 +133,7 @@ export default function FilterForm({ id }: Props) {
   )
 
   if (isLoading) {
-    return <ItemSkeleton />
+    return <FilterSkeleton />
   }
 
   if (filter?.is_draft) {

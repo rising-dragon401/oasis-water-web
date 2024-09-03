@@ -10,3 +10,6 @@ export const AUTH_IMAGES = [
 
 export const PROFILE_AVATAR =
   'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/auth/user-profile-icon.png?t=2023-12-29T18%3A13%3A21.171Z'
+
+export const PLACEHOLDER_IMAGE =
+  'https://connect.live-oasis.com/storage/v1/object/public/website/images/placeholder_image.png'

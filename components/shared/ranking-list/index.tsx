@@ -11,7 +11,7 @@ import { useUserProvider } from '@/providers/UserProvider'
 import { ArrowLeft, Lock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import ItemSkeleton from './item-skeleton'
+import ItemSkeleton from './item-card-skeleton'
 
 export default function RankingList({ categoryId }: { categoryId: string }) {
   const { subscription, uid } = useUserProvider()
@@ -45,11 +45,9 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
 
     // Sort the data if the user has a subscription
     if (subscription && uid) {
-      console.log('sorting')
       const indexedItems = data.filter((item: any) => item.is_indexed !== false)
       const nonIndexedItems = data.filter((item: any) => item.is_indexed === false)
 
-      console.log('indexedItems:', indexedItems)
       indexedItems.sort((a: any, b: any) => b.score - a.score)
       nonIndexedItems.sort((a: any, b: any) => b.score - a.score)
 

@@ -1,3 +1,4 @@
+import { PLACEHOLDER_IMAGE } from '@/lib/constants/images'
 import Image from 'next/image'
 import FavoriteButton from '../favorite-button'
 
@@ -15,7 +16,7 @@ export default function ItemImage({ src, alt, item }: ItemImageProps) {
         alt={alt}
         width={1000}
         height={1000}
-        blurDataURL={src || ''}
+        blurDataURL={src || PLACEHOLDER_IMAGE}
         placeholder="blur"
         className="rounded-lg md:w-[600px] md:h-full w-64 h-64 object-cover"
       />
