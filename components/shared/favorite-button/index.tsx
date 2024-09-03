@@ -3,6 +3,7 @@
 import { addFavorite, calculateUserScore, removeFavorite } from '@/app/actions/user'
 import { Button } from '@/components/ui/button'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
+import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { usePathname, useRouter } from 'next/navigation'
@@ -16,10 +17,10 @@ type Props = {
 }
 
 export default function FavoriteButton({ item, size = 18 }: Props) {
-  const { userFavorites, uid, fetchUserFavorites } = useUserProvider()
+  const { userFavorites, uid, subscription, fetchUserFavorites } = useUserProvider()
   const router = useRouter()
   const pathname = usePathname()
-
+  const { openModal } = useModal()
   const [loadingFavorite, setLoadingFavorite] = React.useState(false)
   const [isItemInFavorites, setItemInFavorites] = React.useState(false)
   const [, setRedirectUrl] = useLocalStorage('redirectUrl', '')
@@ -45,6 +46,12 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
       toast('Please sign in to add items to your Favorites')
       setRedirectUrl(pathname)
       router.push(`/auth/signin?redirectUrl=${pathname}`)
+      return
+    }
+
+    if (!subscription) {
+      toast('Please subscribe to add items to your Favorites')
+      openModal('SubscriptionModal')
       return
     }
 

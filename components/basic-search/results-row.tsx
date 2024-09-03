@@ -34,6 +34,11 @@ export default function ResultsRow({ itemResult }: Props) {
     }
   }
 
+  //  @ts-ignore
+  if (itemResult.type === 'user' && !itemResult?.username) {
+    return null
+  }
+
   return (
     <Link
       className="flex flex-row gap-2 px-2 py-1 justify-between items-center hover:bg-muted rounded-md"

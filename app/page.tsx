@@ -1,7 +1,7 @@
 import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
 import BlogPreviewSection from '@/components/sections/blog-preview-section'
-import MostRecentSection from '@/components/sections/recent-section'
+import PeopleSection from '@/components/sections/people-section'
 import Typography from '@/components/typography'
 import { CATEGORIES } from '@/lib/constants/categories'
 import Image from 'next/image'
@@ -29,9 +29,9 @@ export default async function Home() {
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="md:mt-14 mt-10 w-full">
+        {/* <div className="md:mt-14 mt-10 w-full">
           <MostRecentSection />
-        </div>
+        </div> */}
 
         <div className="flex flex-col md:mt-14 md:mb-24 mt-10 mb-20 gap-y-4 w-full">
           <div className="flex flex-row items-center justify-between">
@@ -52,23 +52,23 @@ export default async function Home() {
                     <Link
                       key={category.id}
                       href={`/top-rated/${category.id}`}
-                      className="relative flex flex-col gap-2 w-[180px] h-24 md:w-[240px] md:h-full md:pt-4 pt-2 pb-2 rounded-lg bg-card border justify-end cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
+                      className="relative flex flex-col gap-2 w-[180px] h-full md:w-[240px] md:h-full  pt-2 pb-2 rounded-lg bg-card border justify-end cursor-pointer hover:shadow-lg flex-shrink-0 px-4"
                     >
                       {category.is_new && (
                         <span className="absolute z-10 top-2 right-2 bg-secondary text-white text-xs px-2 py-1 rounded-full">
                           New
                         </span>
                       )}
-                      <div className="flex flex-col items-center justify-center ">
+                      <div className="flex flex-col items-center justify-center">
                         <Image
                           src={category.image}
                           alt={category.title}
                           width={100}
                           height={200}
-                          className="md:w-24 md:h-full w-16 h-full"
+                          className="md:w-24 md:h-full w-20 h-full"
                         />
                       </div>
-                      <Typography size="base" fontWeight="normal" className="text-center">
+                      <Typography size="sm" fontWeight="normal" className="text-center">
                         {category.title}
                       </Typography>
                     </Link>
@@ -79,8 +79,12 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="md:mt-28 mt-14 md:mb-8 w-full">
+        <div className="md:mt-24 mt-20 w-full">
           <BlogPreviewSection />
+        </div>
+
+        <div className="md:mt-0 mt-8 w-full">
+          <PeopleSection />
         </div>
       </div>
     </SubpageLayout>

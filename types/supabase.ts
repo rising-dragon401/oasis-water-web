@@ -718,6 +718,7 @@ export type Database = {
           permissions: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code: string | null
           score: number | null
+          username: string | null
         }
         Insert: {
           assistant_id?: string | null
@@ -739,6 +740,7 @@ export type Database = {
           permissions?: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code?: string | null
           score?: number | null
+          username?: string | null
         }
         Update: {
           assistant_id?: string | null
@@ -760,6 +762,7 @@ export type Database = {
           permissions?: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code?: string | null
           score?: number | null
+          username?: string | null
         }
         Relationships: [
           {
