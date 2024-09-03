@@ -146,19 +146,19 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(true)
 
     // offer 3 day trial if annual plan
-    // const metadata =
-    //   selectedPlan === 'annual'
-    //     ? {
-    //         trial_settings: {
-    //           end_behavior: {
-    //             missing_payment_method: 'cancel',
-    //           },
-    //         },
-    //         trial_period_days: 3,
-    //       }
-    //     : {}
+    const metadata =
+      selectedPlan === 'annual'
+        ? {
+            trial_settings: {
+              end_behavior: {
+                missing_payment_method: 'cancel',
+              },
+            },
+            trial_period_days: 3,
+          }
+        : {}
     // no free trial anymore
-    const metadata = {}
+    // const metadata = {}
 
     try {
       const { sessionId } = await postData({
@@ -293,7 +293,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               onClick={() => redirectToPayment()}
               loading={loadingCheckoutSession}
             >
-              Unlock Membership
+              Start free trial
             </Button>
 
             <div
