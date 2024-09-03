@@ -13,8 +13,10 @@ export default async function PeopleSection() {
           People
         </Typography>
 
-        <Link href="/users" className="underline italic text-primary">
-          see all
+        <Link href="/users">
+          <Typography size="base" fontWeight="normal" className="italic">
+            see all
+          </Typography>
         </Link>
       </div>
 

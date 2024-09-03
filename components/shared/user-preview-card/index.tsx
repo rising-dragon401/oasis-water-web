@@ -45,7 +45,7 @@ export default function UserPreviewCard({ user }: Props) {
 
     return (
       <div>
-        <Typography size="2xl" fontWeight="normal" className={`!no-underline ${color} text-right`}>
+        <Typography size="sm" fontWeight="normal" className={`!no-underline ${color} text-right`}>
           {score}
         </Typography>
         <Typography
@@ -60,8 +60,8 @@ export default function UserPreviewCard({ user }: Props) {
   }
 
   return (
-    <Link href={`/${user.id}`} className="flex flex-col hover:opacity-80 mt-4 relative">
-      <div className="relative md:w-56 md:h-56 w-40 h-40">
+    <Link href={`/${user.username}`} className="flex flex-col hover:opacity-80 mt-4 relative">
+      <div className="relative md:w-36 md:h-36 w-24 h-24">
         {/* Make this div relative */}
         <Image
           src={user.avatar_url || ''}
@@ -73,10 +73,10 @@ export default function UserPreviewCard({ user }: Props) {
           alt={user.full_name || 'oasis user image'}
         />
       </div>
-      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-56 w-40">
+      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-36 w-24">
         <div className="flex flex-col">
           <Typography
-            size="base"
+            size="xs"
             fontWeight="bold"
             className="!no-underline text-primary md:overflow-hidden md:max-w-56 flex-wrap md:max-h-14 max-h-24 md:whitespace-nowrap overflow-ellipsis"
           >

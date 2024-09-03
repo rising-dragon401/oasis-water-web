@@ -63,7 +63,7 @@ export function AccountMenu() {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className="hover:cursor-pointer" asChild>
-          <Link href={`/${user.id}`} className="flex flex-row items-center">
+          <Link href={`/${userData?.username}`} className="flex flex-row items-center">
             <Heart className="mr-2 h-4 w-4" />
             My products
           </Link>

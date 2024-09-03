@@ -56,7 +56,7 @@ export default function ContaminantTable({ filteredContaminants, categories, sho
             id: contaminant.id,
             name: contaminant.name,
             is_common: contaminant.is_common,
-            isFiltered: filteredContaminants.some((fc) => fc.id === contaminant.id),
+            isFiltered: filteredContaminants?.some((fc) => fc.id === contaminant.id),
           }
         })
 

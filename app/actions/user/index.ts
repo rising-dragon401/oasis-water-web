@@ -65,6 +65,14 @@ export async function getCurrentUserData(uid?: string | null) {
   return dataWithFields
 }
 
+export async function getUserData(uid: string) {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase.from('users').select('*').eq('id', uid).single()
+
+  return data
+}
+
 export async function getCurrentUserEmail() {
   const session = await getSession()
 
@@ -537,4 +545,65 @@ export const unFollowUser = async (uid: string, followId: string) => {
   // }
 
   // return data
+}
+
+const checkUsernameExists = async (username: string) => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase.from('users').select('*').eq('username', username).single()
+
+  return data
+}
+
+export const createUsername = async (uid: string): Promise<string | false> => {
+  const supabase = await createSupabaseServerClient()
+
+  try {
+    const randomString = Math.random().toString(36).substring(2, 15)
+    const username = `oasis-${randomString}`
+
+    // check if username already exists
+    const existingUsername = await checkUsernameExists(username)
+
+    if (existingUsername) {
+      return await createUsername(uid)
+    }
+
+    const { data, error } = await supabase
+      .from('users')
+      .update({ username: username })
+      .eq('id', uid)
+      .select()
+
+    return username
+  } catch (error) {
+    console.error('Error creating username:', error)
+    return false
+  }
+}
+
+export const updateUsername = async (uid: string, username: string) => {
+  const supabase = await createSupabaseServerClient()
+
+  const existingUsername = await checkUsernameExists(username)
+
+  if (existingUsername && existingUsername.id !== uid) {
+    return false
+  }
+
+  const { data, error } = await supabase
+    .from('users')
+    .update({ username: username })
+    .eq('id', uid)
+    .select()
+
+  return data
+}
+
+export const getUserByUsername = async (username: string) => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase.from('users').select('*').eq('username', username).single()
+
+  return data
 }

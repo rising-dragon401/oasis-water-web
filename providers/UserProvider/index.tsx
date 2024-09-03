@@ -1,6 +1,7 @@
 'use client'
 
 import {
+  createUsername,
   getCurrentUserData,
   getEmailSubscriptions,
   getSubscription,
@@ -29,6 +30,7 @@ interface UserContextType {
   subscription: SubscriptionWithProduct | null | undefined
   loadingUser: boolean
   refreshUserData: () => void
+  fetchUserData: (uid: string) => void
   fetchUserFavorites: (uid: string) => void
   logout: () => void
 }
@@ -49,7 +51,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const [loading, setLoading] = useState<boolean>(true)
   const [activeSession, setActiveSession] = useState<any>(null)
-  const [userId, setUserId] = useState<string | null | undefined>(null)
+  const [userId, setUserId] = useState<string | null>(null)
   const [provider, setProvider] = useState<any>(null)
   const [subscription, setSubscription] = useState<SubscriptionWithProduct | null | undefined>(null)
   const [userData, setUserData] = useState<any>(null)
@@ -74,12 +76,21 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('uid', session.user?.id || '')
     }
+
     setProvider(session.user?.app_metadata?.provider)
   }
 
   const fetchUserData = async (uid?: string | null) => {
     const data = await getCurrentUserData(uid)
     setUserData(data)
+
+    // check for username
+    if (!data?.username && uid) {
+      const username = await createUsername(uid)
+      if (username) {
+        setUserData({ ...data, username })
+      }
+    }
   }
 
   const fetchUserFavorites = async (uid: string | null) => {
@@ -97,8 +108,6 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const fetchSubscription = async (uid: string | null) => {
     const data = await getSubscription(uid)
 
-    console.log('sub data: ', data)
-
     setSubscription(data as SubscriptionWithProduct | null)
 
     return data
@@ -106,13 +115,15 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const refreshUserData = useCallback(
     async (uid?: string | null) => {
-      let userId = uid ?? null
+      console.log('refreshUserData', uid)
+
+      let userId_ = uid ?? null
 
       await Promise.all([
-        fetchSubscription(userId),
-        fetchUserData(userId),
-        fetchUserFavorites(userId),
-        fetchEmailSubscriptions(user?.id),
+        fetchSubscription(userId_),
+        fetchUserData(userId_),
+        fetchUserFavorites(userId_),
+        fetchEmailSubscriptions(userId_),
       ])
 
       setLoading(false)
@@ -144,6 +155,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       emailSubscriptions,
       loadingUser: loading,
       refreshUserData,
+      fetchUserData,
       fetchUserFavorites,
       logout,
     }),
@@ -157,6 +169,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       emailSubscriptions,
       loading,
       refreshUserData,
+      fetchUserData,
       fetchUserFavorites,
       logout,
     ]

@@ -5,18 +5,18 @@ import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Score from '@/components/shared/score'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import useDevice from '@/lib/hooks/use-device'
+import { PLACEHOLDER_IMAGE } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { Loader2 } from 'lucide-react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { mutate, default as useSWR } from 'swr'
 // import FollowButton from '@/components/shared/follow-button'
 
-export default function FavoritesList({ userId }: { userId: string }) {
+export default function FavoritesList({ userId }: { userId: string | null | undefined }) {
   const { uid, userData, loadingUser } = useUserProvider()
-  const { isMobile } = useDevice()
   const router = useRouter()
 
   const [oasisScore, setOasisScore] = useState<number | null>(null)
@@ -95,6 +95,16 @@ export default function FavoritesList({ userId }: { userId: string }) {
   //     })
   // }
 
+  if (!userId) {
+    return (
+      <div className="flex justify-center items-center w-full h-64">
+        <Typography size="xl" fontWeight="normal">
+          No user found
+        </Typography>
+      </div>
+    )
+  }
+
   if (loadingUser) {
     return (
       <div className="flex justify-center items-center w-full h-64">
@@ -105,69 +115,94 @@ export default function FavoritesList({ userId }: { userId: string }) {
 
   return (
     <div className="pb-8 w-full px-2">
-      <div className="flex flex-col justify-between mb-2">
-        <Typography size="3xl" fontWeight="normal" className="mb-4 md:mt-8 mt-2">
-          My products
-        </Typography>
-        <Score score={oasisScore ?? null} size="md" />
+      <div className="flex flex-row justify-between mb-2 md:py-4 py-2 w-full">
+        <div className="flex flex-row items-start md:gap-4 gap-2 w-full">
+          <Image
+            src={oasisUser?.avatar_url || PLACEHOLDER_IMAGE}
+            alt="Oasis user avatar"
+            width={200}
+            height={200}
+            className="rounded-full md:w-36 md:h-36 w-20 h-20"
+          />
+          <div className="flex flex-col justify-start gap-0">
+            <Typography size="xl" fontWeight="normal" className="pb-0 mb-0">
+              {oasisUser?.full_name || 'Unknown'}
+            </Typography>
+            <Typography size="base" fontWeight="normal" className="text-secondary mt-0 pt-0">
+              @{oasisUser?.username}
+            </Typography>
+
+            <Typography size="xs" fontWeight="normal" className="text-primary mt-2">
+              {oasisUser?.bio}
+            </Typography>
+          </div>
+        </div>
+        <div className="md:w-40 w-36">
+          <Score score={oasisScore ?? null} size="md" showScore={true} />
+        </div>
       </div>
 
-      {loadingFavorites ? (
-        <div className="flex justify-center items-center w-full h-64">
-          <Loader2 size={20} className="animate-spin text-secondary-foreground" />
-        </div>
-      ) : (
-        <>
-          {favorites && favorites.length > 0 ? (
-            <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
-              {favorites.map((fav: any) => (
-                <ItemPreviewCard key={fav.id} item={fav} showFavoriteButton />
-              ))}
-            </div>
-          ) : (
-            <div className="flex w-full justify-center flex-col items-center mt-10">
-              <Typography size="xl" fontWeight="normal">
-                No items in this Oasis
-              </Typography>
-              {isAuthUser && (
-                <>
-                  {userData ? (
-                    <div className="w-full flex flex-col justify-center items-center">
-                      <Typography size="base" fontWeight="normal">
-                        Start adding your favorite items to your Oasis
-                      </Typography>
-                      <Button
-                        variant="outline"
-                        className="mt-4"
-                        onClick={() => {
-                          router.push('/')
-                        }}
-                      >
-                        Explore
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col">
-                      <Typography size="base" fontWeight="normal">
-                        Sign in and subscribe to start adding items to your Oasis
-                      </Typography>
-                      <Button
-                        variant="secondary"
-                        className="mt-4"
-                        onClick={() => {
-                          router.push('/auth/signin')
-                        }}
-                      >
-                        Sign in
-                      </Button>
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-        </>
-      )}
+      <div>
+        <Typography size="lg" fontWeight="normal" className="mb-2">
+          Products
+        </Typography>
+        {loadingFavorites ? (
+          <div className="flex justify-center items-center w-full h-64">
+            <Loader2 size={20} className="animate-spin text-secondary-foreground" />
+          </div>
+        ) : (
+          <>
+            {favorites && favorites.length > 0 ? (
+              <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
+                {favorites.map((fav: any) => (
+                  <ItemPreviewCard key={fav.id} item={fav} showFavoriteButton />
+                ))}
+              </div>
+            ) : (
+              <div className="flex w-full justify-center flex-col items-center mt-10">
+                <Typography size="xl" fontWeight="normal">
+                  No items in this profile
+                </Typography>
+                {isAuthUser && (
+                  <>
+                    {userData ? (
+                      <div className="w-full flex flex-col justify-center items-center">
+                        <Typography size="base" fontWeight="normal">
+                          Start adding your favorite items to your Oasis
+                        </Typography>
+                        <Button
+                          variant="outline"
+                          className="mt-4"
+                          onClick={() => {
+                            router.push('/')
+                          }}
+                        >
+                          Explore
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col">
+                        <Typography size="base" fontWeight="normal">
+                          Sign in and subscribe to start adding items to your Oasis
+                        </Typography>
+                        <Button
+                          variant="secondary"
+                          className="mt-4"
+                          onClick={() => {
+                            router.push('/auth/signin')
+                          }}
+                        >
+                          Sign in
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }
