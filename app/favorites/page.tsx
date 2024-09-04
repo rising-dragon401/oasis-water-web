@@ -9,14 +9,14 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 export default function FavoritesPage() {
-  const { uid } = useUserProvider()
+  const { uid, userData } = useUserProvider()
   const router = useRouter()
 
   return (
     <SubpageLayout>
       {uid ? (
         <div className="py-4">
-          <FavoriteList userId={uid || ''} />
+          <FavoriteList userName={userData?.userName || ''} />
         </div>
       ) : (
         <div className="flex flex-col w-full justify-center items-center my-4 px-4 mb-14 gap-y-4">
