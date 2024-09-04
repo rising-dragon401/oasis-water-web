@@ -63,13 +63,13 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton,
   const getHeightClass = () => {
     switch (size) {
       case 'small':
-        return 'h-32 md:h-48 lg:h-56'
+        return 'h-32 md:h-48 lg:h-full'
       case 'medium':
-        return 'h-48 md:h-56 lg:h-64'
+        return 'h-48 md:h-56 lg:h-full'
       case 'large':
-        return 'h-64 md:h-72 lg:h-80'
+        return 'h-64 md:h-72 lg:h-full'
       default:
-        return 'h-48 md:h-56 lg:h-64' // Default to medium if size is not specified
+        return 'h-48 md:h-56 lg:h-full' // Default to medium if size is not specified
     }
   }
 

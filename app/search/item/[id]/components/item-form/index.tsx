@@ -92,12 +92,7 @@ export default function ItemForm({ id }: Props) {
   }
 
   // only bottled water drinks are required to have a water quality report
-  const itemScore =
-    item.type === 'flavored_water' || item.type === 'energy_drink'
-      ? item.score
-      : item.is_indexed
-        ? item.score
-        : null
+  const itemScore = item.type !== 'bottled_water' ? item.score : item.is_indexed ? item.score : null
 
   const waterSource = (() => {
     switch (item.water_source) {
@@ -122,7 +117,7 @@ export default function ItemForm({ id }: Props) {
 
   return (
     <div className="flex-col flex w-full gap-y-8">
-      <div className="md:pt-10 pt-2 md:px-0 px-4">
+      <div className="md:pt-4 pt-2 md:px-0 px-4">
         <div className="flex md:flex-row flex-col gap-6">
           <div className="flex justify-center md:w-4/5 w-full">
             {item.affiliate_url ? (

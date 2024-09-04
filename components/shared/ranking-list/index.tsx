@@ -68,42 +68,42 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
         break
       case 'filter':
         fetchAndSetData('filter', () =>
-          getFilters({ limit: 50, sortMethod: 'name', type: 'filter' })
+          getFilters({ limit: 100, sortMethod: 'name', type: 'filter' })
         )
         break
       case 'shower_filter':
         fetchAndSetData('shower_filter', () =>
-          getFilters({ limit: 25, sortMethod: 'name', type: 'shower_filter' })
+          getFilters({ limit: 50, sortMethod: 'name', type: 'shower_filter' })
         )
         break
       case 'flavored_water':
         fetchAndSetData('flavored_water', () =>
-          getItems({ limit: 25, sortMethod: 'name', type: 'flavored_water' })
+          getItems({ limit: 50, sortMethod: 'name', type: 'flavored_water' })
         )
         break
       case 'energy_drink':
         fetchAndSetData('energy_drink', () =>
-          getItems({ limit: 25, sortMethod: 'name', type: 'energy_drink' })
+          getItems({ limit: 50, sortMethod: 'name', type: 'energy_drink' })
         )
         break
       case 'sports_drink':
         fetchAndSetData('sports_drink', () =>
-          getItems({ limit: 25, sortMethod: 'name', type: 'sports_drink' })
+          getItems({ limit: 50, sortMethod: 'name', type: 'sports_drink' })
         )
         break
       case 'gallons':
         fetchAndSetData('gallons', () =>
-          getItems({ limit: 25, sortMethod: 'name', type: 'water_gallon' })
+          getItems({ limit: 50, sortMethod: 'name', type: 'water_gallon' })
         )
         break
       case 'coconut_water':
         fetchAndSetData('coconut_water', () =>
-          getItems({ limit: 25, sortMethod: 'name', type: 'coconut_water' })
+          getItems({ limit: 50, sortMethod: 'name', type: 'coconut_water' })
         )
         break
       case 'bottle_filter':
         fetchAndSetData('bottle_filter', () =>
-          getFilters({ limit: 25, sortMethod: 'name', type: 'bottle_filter' })
+          getFilters({ limit: 50, sortMethod: 'name', type: 'bottle_filter' })
         )
         break
       default:
@@ -127,7 +127,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
   // }, [subscription, uid, loading])
 
   return (
-    <div className="pb-14 md:mt-4 mt-0 w-full">
+    <div className="pb-14 mt-0 w-full">
       <div className="flex flex-col items-start gap-2 mb-6 w-full">
         <Button
           variant="ghost"

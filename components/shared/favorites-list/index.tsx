@@ -1,13 +1,13 @@
 'use client'
 
-import { getCurrentUserData, getUserFavorites } from '@/app/actions/user'
+import { getUserByUsername, getUserFavorites } from '@/app/actions/user'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
+import ProfileSkeleton from '@/components/shared/profile-skeleton'
 import Score from '@/components/shared/score'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { PLACEHOLDER_IMAGE } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -15,68 +15,55 @@ import { useEffect, useState } from 'react'
 import { mutate, default as useSWR } from 'swr'
 // import FollowButton from '@/components/shared/follow-button'
 
-export default function FavoritesList({ userId }: { userId: string | null | undefined }) {
+export default function FavoritesList({ userName }: { userName: string | null | undefined }) {
   const { uid, userData, loadingUser } = useUserProvider()
   const router = useRouter()
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [oasisScore, setOasisScore] = useState<number | null>(null)
   const [oasisUser, setOasisUser] = useState<any>(null)
+  const [oasisUserId, setOasisUserId] = useState<string | null>(null)
   const [loadingFavorites, setLoadingFavorites] = useState<boolean>(true)
 
   useEffect(() => {
-    if (userId) {
+    if (userName) {
       fetchOasisUser()
-      mutate(`userFavorites-${userId}`)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId])
+  }, [userName])
 
   const fetchOasisUser = async () => {
-    if (!userId) {
+    if (!userName) {
       return
     }
 
-    const res = await getCurrentUserData(userId)
-    if (res) {
-      setOasisUser(res)
+    const userData = await getUserByUsername(userName)
+
+    if (userData) {
+      setOasisUser(userData)
+      setOasisUserId(userData.id)
+      setOasisScore(userData.score)
+      setIsLoading(false)
+      mutate(`userFavorites-${userData.id}`)
     } else {
       setLoadingFavorites(false)
+      setIsLoading(false)
     }
   }
 
   const fetchUserFavorites = async () => {
-    if (!userId) {
+    if (!oasisUserId) {
       return
     }
 
-    const favorites = await getUserFavorites(userId)
+    const favorites = await getUserFavorites(oasisUserId)
     setLoadingFavorites(false)
     return favorites
   }
 
-  const { data: favorites } = useSWR(`userFavorites-${userId}`, fetchUserFavorites)
+  const { data: favorites } = useSWR(`userFavorites-${oasisUserId}`, fetchUserFavorites)
 
-  const isAuthUser = uid === userId
-
-  // calculate oasis score
-  useEffect(() => {
-    if (favorites) {
-      calculateScore(favorites)
-    }
-  }, [favorites])
-
-  const calculateScore = async (favorites: any[]) => {
-    let totalCount = 0
-    let totalScore = 0
-
-    await favorites.map((fav: Item | TapWaterLocation | WaterFilter) => {
-      totalScore += fav.score || 0
-      totalCount += 1
-    })
-
-    const finalScore = Math.round(totalScore / totalCount)
-    setOasisScore(finalScore)
-  }
+  const isAuthUser = uid === oasisUserId
 
   // const handleShare = () => {
   //   if (!navigator.clipboard) {
@@ -95,7 +82,7 @@ export default function FavoritesList({ userId }: { userId: string | null | unde
   //     })
   // }
 
-  if (!userId) {
+  if (!userName) {
     return (
       <div className="flex justify-center items-center w-full h-64">
         <Typography size="xl" fontWeight="normal">
@@ -105,12 +92,8 @@ export default function FavoritesList({ userId }: { userId: string | null | unde
     )
   }
 
-  if (loadingUser) {
-    return (
-      <div className="flex justify-center items-center w-full h-64">
-        <Loader2 size={20} className="animate-spin text-secondary-foreground" />
-      </div>
-    )
+  if (userName && isLoading) {
+    return <ProfileSkeleton />
   }
 
   return (
@@ -137,6 +120,7 @@ export default function FavoritesList({ userId }: { userId: string | null | unde
             </Typography>
           </div>
         </div>
+
         <div className="md:w-40 w-36">
           <Score score={oasisScore ?? null} size="md" showScore={true} />
         </div>
