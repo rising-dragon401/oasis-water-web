@@ -1,10 +1,9 @@
-import { MetadataRoute } from 'next'
-import { TapWaterLocation, WaterFilter, Item, Ingredient } from '@/types/custom'
-import { allPosts } from 'contentlayer/generated'
-import { getLocations } from '@/app/actions/locations'
-import { getItems } from '@/app/actions/items'
 import { getFilters } from '@/app/actions/filters'
 import { getIngredients } from '@/app/actions/ingredients'
+import { getItems } from '@/app/actions/items'
+import { getLocations } from '@/app/actions/locations'
+import { Ingredient, Item, TapWaterLocation, WaterFilter } from '@/types/custom'
+import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const items = await getItems()
@@ -50,8 +49,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         )
     : []
 
-  const blogPaths = allPosts.map((post) => `${post.slug}`)
-
   return [
     ...itemsPaths.map((path: string) => ({
       url: `https://www.oasiswaters.co${path}`,
@@ -87,8 +84,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `https://www.oasiswaters.co/blog`,
     },
-    ...blogPaths.map((path: string) => ({
-      url: `https://www.oasiswaters.co${path}`,
-    })),
   ]
 }
