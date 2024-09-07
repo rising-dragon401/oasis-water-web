@@ -1,5 +1,3 @@
-const { withContentlayer } = require('next-contentlayer')
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -22,16 +20,20 @@ const nextConfig = {
         hostname: 'connect.live-oasis.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'favorable-chickens-2e4f30c189.media.strapiapp.com',
+        port: '',
+      },
     ],
   },
 }
 
-module.exports = withContentlayer(nextConfig)
-
+module.exports = nextConfig
 
 // Injected content via Sentry wizard below
 
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs')
 
 module.exports = withSentryConfig(
   module.exports,
@@ -41,8 +43,8 @@ module.exports = withSentryConfig(
 
     // Suppresses source map uploading logs during build
     silent: true,
-    org: "liveoasis",
-    project: "oasis-web",
+    org: 'liveoasis',
+    project: 'oasis-web',
   },
   {
     // For all available options, see:
@@ -72,4 +74,4 @@ module.exports = withSentryConfig(
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
   }
-);
+)
