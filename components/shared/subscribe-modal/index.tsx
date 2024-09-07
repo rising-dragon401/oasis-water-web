@@ -58,10 +58,7 @@ const FEATURES = [
   },
 ]
 
-// annual
 const kAnnualPrice = 47
-const kWeeklyPrice = 5.99
-const kMonthlyPrice = 7.99
 
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
