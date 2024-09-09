@@ -80,6 +80,12 @@ const createOrRetrieveCustomer = async ({ email, uuid }: { email: string; uuid: 
   return data.stripe_customer_id
 }
 
+const getUserByUUID = async (uuid: string) => {
+  const { data, error } = await supabaseAdmin.from('users').select('*').eq('id', uuid).single()
+  if (error) throw error
+  return data
+}
+
 /**
  * Copies the billing details from the payment method to the customer object.
  */
@@ -100,6 +106,56 @@ const copyBillingDetailsToCustomer = async (uuid: string, payment_method: Stripe
   if (error) throw error
 }
 
+const handleReferral = async (subscription: Stripe.Subscription, uuid: string) => {
+  try {
+    // Attribute referral code to the user
+    const userData = await getUserByUUID(uuid)
+
+    // referral codes are simply the other user's username
+    const referralCode = userData.referred_by
+
+    if (!referralCode) return
+
+    // Check if a referral record already exists for this subscription
+    const { data: existingReferral, error: fetchError } = await supabaseAdmin
+      .from('referrals')
+      .select('*')
+      .eq('subscription_id', subscription.id)
+      .single()
+
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      throw fetchError
+    }
+
+    const referralData = {
+      referring_user_id: referralCode,
+      user_id: uuid,
+      subscription_id: subscription.id,
+      price_id: subscription.items.data[0].price.id,
+      amount: subscription.items.data[0].price.unit_amount,
+      currency: subscription.items.data[0].price.currency,
+      subscription_status: subscription.status,
+      status: 'unpaid',
+    }
+
+    if (existingReferral) {
+      // Update existing referral record
+      const { error } = await supabaseAdmin
+        .from('referrals')
+        .update(referralData)
+        .eq('id', existingReferral.id)
+
+      throw error
+    } else {
+      // Insert new referral record
+      const { error } = await supabaseAdmin.from('referrals').insert([referralData])
+      throw error
+    }
+  } catch (error) {
+    console.error('Error handling referral: ', error)
+  }
+}
+
 const manageSubscriptionStatusChange = async (
   subscriptionId: string,
   customerId: string,
@@ -111,13 +167,15 @@ const manageSubscriptionStatusChange = async (
     .select('id')
     .eq('stripe_customer_id', customerId)
     .single()
+
   if (noCustomerError) throw noCustomerError
 
-  const { id: uuid } = customerData!
+  const { id: uuid } = customerData
 
   const subscription = await stripe.subscriptions.retrieve(subscriptionId, {
     expand: ['default_payment_method'],
   })
+
   // Upsert the latest status of the subscription object.
   const subscriptionData: Database['public']['Tables']['subscriptions']['Insert'] = {
     id: subscription.id,
@@ -155,6 +213,9 @@ const manageSubscriptionStatusChange = async (
       uuid,
       subscription.default_payment_method as Stripe.PaymentMethod
     )
+
+  // Handle referral
+  await handleReferral(subscription, uuid)
 }
 
 export {
