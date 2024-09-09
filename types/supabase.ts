@@ -717,6 +717,7 @@ export type Database = {
           payment_method: Json | null
           permissions: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code: string | null
+          referred_by: string | null
           score: number | null
           username: string | null
         }
@@ -739,6 +740,7 @@ export type Database = {
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code?: string | null
+          referred_by?: string | null
           score?: number | null
           username?: string | null
         }
@@ -761,6 +763,7 @@ export type Database = {
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code?: string | null
+          referred_by?: string | null
           score?: number | null
           username?: string | null
         }
@@ -777,6 +780,13 @@ export type Database = {
             columns: ["redeemed_invite_code"]
             isOneToOne: false
             referencedRelation: "invite_codes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_referred_by_fkey"
+            columns: ["referred_by"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -1080,6 +1090,9 @@ export type Database = {
         | "well"
         | "rain"
         | "unknown"
+        | "young_coconut"
+        | "mature_coconut"
+        | "coconut_water"
       certifications: "NSF" | "IAPMO" | "WQA" | "SGS" | "ANAB" | "ISO"
       email_subscriptions: "newsletter"
       ingredient_category:

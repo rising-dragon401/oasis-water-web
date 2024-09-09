@@ -14,9 +14,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { mutate, default as useSWR } from 'swr'
 // import FollowButton from '@/components/shared/follow-button'
+import useSessionStorage from '@/lib/hooks/use-session-storage'
 
 export default function FavoritesList({ userName }: { userName: string | null | undefined }) {
-  const { uid, userData, loadingUser } = useUserProvider()
+  const { uid, userData } = useUserProvider()
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -24,13 +25,18 @@ export default function FavoritesList({ userName }: { userName: string | null | 
   const [oasisUser, setOasisUser] = useState<any>(null)
   const [oasisUserId, setOasisUserId] = useState<string | null>(null)
   const [loadingFavorites, setLoadingFavorites] = useState<boolean>(true)
+  const [referralCode, setReferralCode] = useSessionStorage('referralCode', null)
 
   useEffect(() => {
     if (userName) {
       fetchOasisUser()
+
+      if (userData?.username !== userName && !userData.referred_by) {
+        localStorage.setItem('referralCode', userName)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userName])
+  }, [userName, userData])
 
   const fetchOasisUser = async () => {
     if (!userName) {

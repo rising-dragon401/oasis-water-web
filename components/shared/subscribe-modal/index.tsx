@@ -2,6 +2,7 @@
 
 import { getActiveProductsWithPrices } from '@/app/actions/user'
 import Logo from '@/components/shared/logo'
+import { ReferralCodeInput } from '@/components/shared/referral-code-input'
 import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -293,9 +294,11 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               Start free trial
             </Button>
 
+            <ReferralCodeInput />
+
             <div
               onClick={redirectToSignIn}
-              className="text-center text-secondary mb-2 text-sm underline hover:cursor-pointer"
+              className="text-center text-secondary my-2 text-sm underline hover:cursor-pointer"
             >
               or sign in to existing Member account
             </div>

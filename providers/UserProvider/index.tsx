@@ -5,7 +5,9 @@ import {
   getCurrentUserData,
   getEmailSubscriptions,
   getSubscription,
+  getUserByUsername,
   getUserFavorites,
+  updateUserData,
 } from '@/app/actions/user'
 import { SubscriptionWithProduct } from '@/types/custom'
 import { createClient } from '@/utils/supabase/client'
@@ -57,6 +59,25 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [userData, setUserData] = useState<any>(null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
   const [emailSubscriptions, setEmailSubscriptions] = useState<any[] | null | undefined>(null)
+
+  // set referral code from local storage if applicable
+  // TODO - move this to a SIGN_UP event, wildly inefficient
+  useEffect(() => {
+    const fetchReferralCode = async () => {
+      const referralCode = localStorage.getItem('referralCode')
+      if (referralCode && userData && !userData.referred_by) {
+        const user = await getUserByUsername(referralCode)
+        if (!user) {
+          return
+        }
+
+        const referredByUserId = user.id
+
+        await updateUserData('referred_by', referredByUserId)
+      }
+    }
+    fetchReferralCode()
+  }, [userData])
 
   useEffect(() => {
     setActiveSession(session)
