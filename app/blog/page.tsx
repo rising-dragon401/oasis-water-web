@@ -12,8 +12,6 @@ export default async function ResearchPage() {
   const blogs = await getBlogs()
   const studies = await getResearch()
 
-  console.log('blogs: ', blogs)
-
   return (
     <SubpageLayout>
       <div className="flex flex-col w-full md:px-0 px-4">
@@ -42,7 +40,7 @@ export default async function ResearchPage() {
               {blogs.map((post) => (
                 <article key={post.id} className="flex flex-col h-full">
                   <Link
-                    href={post.slug}
+                    href={`/blog/${post.attributes.slug}`}
                     className="relative w-full md:h-64 h-40 rounded-lg overflow-hidden transform transition-transform duration-500 ease-in-out hover:-translate-y-2 hover:opacity-70"
                   >
                     <Image
@@ -65,7 +63,7 @@ export default async function ResearchPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="studies" className="grid md:grid-cols-3 grid-cols-2 gap-4 w-full">
+          <TabsContent value="studies" className="grid grid-cols-1 gap-4 w-full">
             {studies.map((study) => (
               <a
                 href={study.file_url ?? '#'}
@@ -76,6 +74,13 @@ export default async function ResearchPage() {
               >
                 <Typography size="base" fontWeight="normal" className="pr-6 line-clamp-5">
                   {study.title}
+                </Typography>
+                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                  {new Date(study.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
                 </Typography>
                 <ArrowUpRight className="w-4 h-4 text-secondary absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>

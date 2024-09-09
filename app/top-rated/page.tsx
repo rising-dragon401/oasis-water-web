@@ -9,7 +9,7 @@ export default async function TopRatedPage() {
   return (
     <SubpageLayout>
       <Suspense fallback={<div />}>
-        <div className="flex flex-col md:pt-14 pt-10 md:px-0 px-2 w-full">
+        <div className="flex flex-col pt-10 md:px-0 px-2 w-full">
           <div className="flex flex-col items-center text-center gap-2 md:pb-14 pb-8">
             <Typography size="4xl" fontWeight="bold" className="max-w-lg">
               Top Rated Products

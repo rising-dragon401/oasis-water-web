@@ -17,10 +17,39 @@ export const getFeaturedUsers = async () => {
   return usersWithType
 }
 
+export const getOasisUsers = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data: featuredUsers, error: featuredError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('is_featured', true)
+    .gt('favorites', 1)
+    .not('username', 'is', null)
+
+  const { data: nonFeaturedUsers, error: nonFeaturedError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('is_featured', false)
+    .gt('favorites', 1)
+    .not('username', 'is', null)
+
+  if (featuredError || nonFeaturedError) {
+    console.error('error', featuredError || nonFeaturedError)
+    return []
+  }
+
+  const allUsers = [...(featuredUsers || []), ...(nonFeaturedUsers || [])]
+  return allUsers
+}
+
 export const getResearch = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { data, error } = await supabase.from('research').select('*')
+  const { data, error } = await supabase
+    .from('research')
+    .select('*')
+    .order('created_at', { ascending: false })
 
   if (error) {
     console.error('error', error)

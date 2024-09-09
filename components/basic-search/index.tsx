@@ -245,7 +245,7 @@ export default function BasicSearch({
                 className={`${getSearchRounded()} ${getSearchStyle()} ${getSearchPaddingY()} !shadow-none`}
               />
 
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-50 flex flex-row items-center">
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50 flex flex-row items-center">
                 {isLoading && (
                   <Loader2 size={20} className="animate-spin text-secondary-foreground" />
                 )}

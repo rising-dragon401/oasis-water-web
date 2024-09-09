@@ -9,6 +9,7 @@ import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { useModal } from '@/providers/ModalProvider'
 import { useSupabase } from '@/providers/SupabaseProvider'
 import { useUserProvider } from '@/providers/UserProvider'
@@ -198,14 +199,18 @@ export default function AccountSettings() {
                     </div>
                   </div>
 
-                  {/* <div className="flex flex-col w-96 space-y-2">
-                  <Label htmlFor="password" className="text-sm">
-                    Bio
-                  </Label>
-                  <div className="flex flex-row w-full space-x-2">
-                    <Textarea value={newBio} onChange={(e) => setNewBio(e.target.value)} />
+                  <div className="flex flex-col max-w-96 space-y-2 ">
+                    <Label htmlFor="password" className="text-sm">
+                      Bio
+                    </Label>
+                    <div className="flex flex-row w-full space-x-2">
+                      <Textarea
+                        value={newBio}
+                        onChange={(e) => setNewBio(e.target.value)}
+                        className="bg-transparent border w-full border-slate-300"
+                      />
+                    </div>
                   </div>
-                </div> */}
                 </div>
 
                 <div className="mt-4">
@@ -231,35 +236,37 @@ export default function AccountSettings() {
             <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
               Membership
             </Typography>
-            <div className="flex flex-row justify-between w-full bg-muted border border-border p-4 rounded-xl">
-              <Typography size="base" fontWeight="normal" className="py-1 bg-muted rounded-lg">
-                {subscription ? (
-                  <div className="flex flex-row items-center">
-                    <BadgeCheck className="w-4 h-4 mr-1" />
-                    Oasis Member
-                  </div>
-                ) : (
-                  'Free account'
+            <div className="flex flex-col justify-between w-full bg-muted border border-border p-4 rounded-xl">
+              <div className="flex flex-row justify-between w-full">
+                <Typography size="base" fontWeight="normal" className="py-1 bg-muted rounded-lg">
+                  {subscription ? (
+                    <div className="flex flex-row items-center">
+                      <BadgeCheck className="w-4 h-4 mr-1" />
+                      Oasis Member
+                    </div>
+                  ) : (
+                    'Free account'
+                  )}
+                </Typography>
+
+                {/* @ts-ignore */}
+                {subscription && subProvider !== 'revenue_cat' && (
+                  <Button
+                    variant="outline"
+                    onClick={handleManageSubscription}
+                    className="w-60"
+                    loading={loadingSubscription}
+                  >
+                    Manage
+                  </Button>
                 )}
-              </Typography>
 
-              {/* @ts-ignore */}
-              {subscription && subProvider !== 'revenue_cat' && (
-                <Button
-                  variant="outline"
-                  onClick={handleManageSubscription}
-                  className="w-60"
-                  loading={loadingSubscription}
-                >
-                  Manage
-                </Button>
-              )}
-
-              {!subscription && (
-                <Button variant="default" onClick={handleUpgrade} className="w-40">
-                  Upgrade
-                </Button>
-              )}
+                {!subscription && (
+                  <Button variant="default" onClick={handleUpgrade} className="w-40">
+                    Upgrade
+                  </Button>
+                )}
+              </div>
 
               {subProvider === 'revenue_cat' && (
                 <Typography size="xs" fontWeight="normal" className="text-muted-foreground">

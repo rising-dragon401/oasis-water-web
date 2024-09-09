@@ -16,7 +16,7 @@ export default function FavoritesPage() {
     <SubpageLayout>
       {uid ? (
         <div className="py-4">
-          <FavoriteList userName={userData?.userName || ''} />
+          <FavoriteList userName={userData?.username} />
         </div>
       ) : (
         <div className="flex flex-col w-full justify-center items-center my-4 px-4 mb-14 gap-y-4">

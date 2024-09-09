@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { mutate, default as useSWR } from 'swr'
 // import FollowButton from '@/components/shared/follow-button'
-import useSessionStorage from '@/lib/hooks/use-session-storage'
+import { toast } from 'sonner'
 
 export default function FavoritesList({ userName }: { userName: string | null | undefined }) {
   const { uid, userData } = useUserProvider()
@@ -25,13 +25,12 @@ export default function FavoritesList({ userName }: { userName: string | null | 
   const [oasisUser, setOasisUser] = useState<any>(null)
   const [oasisUserId, setOasisUserId] = useState<string | null>(null)
   const [loadingFavorites, setLoadingFavorites] = useState<boolean>(true)
-  const [referralCode, setReferralCode] = useSessionStorage('referralCode', null)
 
   useEffect(() => {
     if (userName) {
       fetchOasisUser()
 
-      if (userData?.username !== userName && !userData.referred_by) {
+      if (userData?.username !== userName && !userData?.referred_by) {
         localStorage.setItem('referralCode', userName)
       }
     }
@@ -71,22 +70,22 @@ export default function FavoritesList({ userName }: { userName: string | null | 
 
   const isAuthUser = uid === oasisUserId
 
-  // const handleShare = () => {
-  //   if (!navigator.clipboard) {
-  //     console.error('Clipboard functionality is not available.')
-  //     return
-  //   }
+  const handleShare = () => {
+    if (!navigator.clipboard) {
+      console.error('Clipboard functionality is not available.')
+      return
+    }
 
-  //   const urlToShare = `${process.env.NEXT_PUBLIC_BASE_URL}${userId}`
-  //   navigator.clipboard
-  //     .writeText(urlToShare)
-  //     .then(() => {
-  //       toast('Oasis URL copied to clipboard')
-  //     })
-  //     .catch((err) => {
-  //       console.error('Failed to copy URL to clipboard:', err)
-  //     })
-  // }
+    const urlToShare = `${process.env.NEXT_PUBLIC_BASE_URL}/${userName}`
+    navigator.clipboard
+      .writeText(urlToShare)
+      .then(() => {
+        toast('Oasis URL copied to clipboard')
+      })
+      .catch((err) => {
+        console.error('Failed to copy URL to clipboard:', err)
+      })
+  }
 
   if (!userName) {
     return (
@@ -103,8 +102,8 @@ export default function FavoritesList({ userName }: { userName: string | null | 
   }
 
   return (
-    <div className="pb-8 w-full px-2">
-      <div className="flex flex-row justify-between mb-2 md:py-4 py-2 w-full">
+    <div className="w-full px-2">
+      <div className="flex flex-row justify-between mb-2 w-full">
         <div className="flex flex-row items-start md:gap-4 gap-2 w-full">
           <Image
             src={oasisUser?.avatar_url || PLACEHOLDER_IMAGE}
@@ -127,13 +126,17 @@ export default function FavoritesList({ userName }: { userName: string | null | 
           </div>
         </div>
 
-        <div className="md:w-40 w-36">
+        <div className="md:w-40 w-36 h-16">
           <Score score={oasisScore ?? null} size="md" showScore={true} />
         </div>
+
+        {/* <Button variant="ghost" className="mt-4" onClick={handleShare}>
+          <Share className="w-6 h-6" />
+        </Button> */}
       </div>
 
-      <div>
-        <Typography size="lg" fontWeight="normal" className="mb-2">
+      <div className="mt-4">
+        <Typography size="base" fontWeight="normal" className="mb-2 text-muted-foreground">
           Products
         </Typography>
         {loadingFavorites ? (

@@ -3,7 +3,6 @@ import SubpageLayout from '@/components/home-layout'
 import UserPreviewCard from '@/components/shared/user-preview-card'
 import Typography from '@/components/typography'
 import { getFeaturedUsers } from '../actions/admin'
-
 export default async function UsersPage() {
   const people = await getFeaturedUsers()
 
@@ -29,8 +28,8 @@ export default async function UsersPage() {
         </div>
 
         {people && people?.length > 0 ? (
-          <div className="flex flex-col gap-2">
-            <Typography size="lg" fontWeight="bold">
+          <div className="flex flex-col">
+            <Typography size="lg" fontWeight="normal" className="text-muted-foreground">
               Featured users
             </Typography>
             <div className="grid md:grid-cols-4 grid-cols-2 w-full gap-6">

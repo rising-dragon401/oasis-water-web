@@ -113,7 +113,7 @@ const handleReferral = async (subscription: Stripe.Subscription, uuid: string) =
     const userData = await getUserByUUID(uuid)
 
     // referral codes are simply the other user's username
-    const referralCode = userData.referred_by
+    const referralCode = userData?.referred_by
 
     if (!referralCode) return
 
