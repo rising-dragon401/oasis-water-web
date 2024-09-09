@@ -9,6 +9,7 @@ import {
   getUserFavorites,
   updateUserData,
 } from '@/app/actions/user'
+import useSessionStorage from '@/lib/hooks/use-session-storage'
 import { SubscriptionWithProduct } from '@/types/custom'
 import { createClient } from '@/utils/supabase/client'
 import React, {
@@ -56,7 +57,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [userId, setUserId] = useState<string | null>(null)
   const [provider, setProvider] = useState<any>(null)
   const [subscription, setSubscription] = useState<SubscriptionWithProduct | null | undefined>(null)
-  const [userData, setUserData] = useState<any>(null)
+  const [userData, setUserData] = useSessionStorage<any>('userData', null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
   const [emailSubscriptions, setEmailSubscriptions] = useState<any[] | null | undefined>(null)
 
@@ -97,6 +98,8 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('uid', session.user?.id || '')
     }
+
+    console.log('session.user: ', session.user)
 
     setProvider(session.user?.app_metadata?.provider)
   }

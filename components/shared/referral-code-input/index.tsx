@@ -57,7 +57,7 @@ export const ReferralCodeInput = () => {
               <Input
                 value={referralCode}
                 onChange={(e) => setReferralCode(e.target.value)}
-                placeholder="Enter referral code"
+                placeholder="Enter referral code (username)"
                 className="w-full rounded-full pr-12"
                 disabled={isSubmitted}
               />

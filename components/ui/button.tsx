@@ -5,13 +5,13 @@ import { Loader2 } from 'lucide-react'
 import * as React from 'react'
 
 const buttonVariants = cva(
-  'inline-flex items-center !overflow-hidden flex flex-row justify-center rounded-lg text-sm !font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 !outline-none outline-opacity-0',
+  'inline-flex items-center !overflow-hidden flex flex-row justify-center rounded-lg text-sm !font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 !outline-none outline-opacity-0 cursor-pointer',
   {
     variants: {
       variant: {
         default: 'bg-primary text-background dark:text-secondary hover:bg-primary/90',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-        outline: 'border border-input bg-background hover:text-accent hover:border-accent',
+        outline: 'border border bg-transparent hover:text-accent hover:border-accent',
         secondary:
           'dark:bg-secondary dark:text-secondary hover:bg-secondary/80 bg-secondary text-primary',
         ghost: 'hover:opacity-80',
