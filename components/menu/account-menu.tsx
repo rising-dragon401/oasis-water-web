@@ -1,6 +1,5 @@
 'use client'
 
-import SubscribeButton from '@/components/shared/subscribe-button'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -18,7 +17,7 @@ import { useState } from 'react'
 import SignOutButton from './log-out-button'
 
 export function AccountMenu() {
-  const { userData, user, subscription } = useUserProvider()
+  const { userData } = useUserProvider()
   const [open, setOpen] = useState(false)
 
   return (
@@ -46,18 +45,6 @@ export function AccountMenu() {
               Free reports left: {2 - (userData?.metadata?.items_viewed || 0)}
             </Typography> */}
           </DropdownMenuLabel>
-        )}
-
-        {subscription && (
-          <p className="text-xs leading-none text-muted-foreground px-2">
-            Subscription: {subscription.plan}
-          </p>
-        )}
-
-        {user && !subscription && (
-          <div className="p-2">
-            <SubscribeButton />
-          </div>
         )}
 
         <DropdownMenuSeparator />

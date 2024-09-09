@@ -1,6 +1,7 @@
 'use client'
 
 import useLocalStorage from '@/lib/hooks/use-local-storage'
+import useSessionStorage from '@/lib/hooks/use-session-storage'
 import { createClient } from '@/utils/supabase/client'
 import { usePathname, useRouter } from 'next/navigation'
 import { createContext, useContext, useEffect, useState } from 'react'
@@ -16,7 +17,7 @@ const Context = createContext<SupabaseContext | undefined>(undefined)
 
 export default function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [activeSession, setActiveSession] = useState<any>(null)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useSessionStorage<any>('user', null)
   const [redirectUrl, setRedirectUrl] = useLocalStorage('redirectUrl', '/')
   const [modalToOpen, setModalToOpen] = useLocalStorage('modalToOpen', '')
 

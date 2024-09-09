@@ -12,9 +12,10 @@ type ImageUploadProps = {
   label: string
   file?: string | null
   setFile?: (value: string) => void
+  height?: string
 }
 
-export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) {
+export function ImageUpload({ itemId, label, file, setFile, height }: ImageUploadProps) {
   const [drag, setDrag] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -86,6 +87,8 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
     }
   }
 
+  const heightAndWidth = height ? `w-${height} h-${height}` : 'w-28 h-28'
+
   return (
     <>
       <Label htmlFor="picture" className="mb-1">
@@ -93,9 +96,9 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
       </Label>
 
       <div
-        className={`grid max-w-sm items-center justify-center gap-1.5 border w-28 h-28 rounded-full border-dashed ${
+        className={`${heightAndWidth} grid max-w-sm items-center justify-center gap-1.5 border rounded-full border-dashed ${
           drag ? 'dragging' : ''
-        }`}
+        } `}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
@@ -109,13 +112,13 @@ export function ImageUpload({ itemId, label, file, setFile }: ImageUploadProps) 
         />
 
         {file ? (
-          <div onClick={onButtonClick} className="cursor-pointer w-28 h-28">
+          <div onClick={onButtonClick} className={`cursor-pointer ${heightAndWidth}`}>
             <Image
               src={file}
               alt="Uploaded"
               width={300}
               height={300}
-              className="rounded-full w-28 h-28"
+              className={`rounded-full ${heightAndWidth}`}
             />
           </div>
         ) : (

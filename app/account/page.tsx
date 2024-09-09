@@ -3,29 +3,41 @@
 import { addUserToAlgolia } from '@/app/actions/algolia'
 import { updateUserData, updateUsername } from '@/app/actions/user'
 import SubpageLayout from '@/components/home-layout'
+import AccountSkeleton from '@/components/shared/account-skeleton'
 import { ImageUpload } from '@/components/shared/image-upload'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useModal } from '@/providers/ModalProvider'
+import { useSupabase } from '@/providers/SupabaseProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
-import Image from 'next/image'
+import { BadgeCheck, Copy } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { getUserReferralStats } from '../actions/admin'
 import PasswordResetForm from './components/password-reset-form'
 
 export default function AccountSettings() {
-  const { provider, userData, subscription, fetchUserData, logout } = useUserProvider()
+  const { provider, user, userData, subscription, fetchUserData, logout } = useUserProvider()
+  const { session } = useSupabase()
   const router = useRouter()
+  const { openModal } = useModal()
 
   const [loading, setLoading] = useState(false)
+  const [loadingSubscription, setLoadingSubscription] = useState(false)
 
   const [newName, setNewName] = useState('')
   const [newUsername, setNewUsername] = useState('')
   const [newBio, setNewBio] = useState('')
   const [newAvatar, setNewAvatar] = useState('')
+  const [referralStats, setReferralStats] = useState({
+    total_earnings: 0,
+    total_paid_referrals: 0,
+    total_trials: 0,
+  })
 
   useEffect(() => {
     if (userData) {
@@ -33,11 +45,18 @@ export default function AccountSettings() {
       setNewUsername(userData.username || '')
       setNewBio(userData.bio || '')
       setNewAvatar(userData.avatar_url || '')
+      getReferralStats()
     }
   }, [userData])
 
+  const getReferralStats = async () => {
+    const stats = await getUserReferralStats(userData.id)
+    console.log('stats', stats)
+    setReferralStats(stats)
+  }
+
   const handleManageSubscription = async () => {
-    setLoading(true)
+    setLoadingSubscription(true)
 
     try {
       const { url } = await postData({
@@ -54,7 +73,7 @@ export default function AccountSettings() {
       console.log('error', error)
     }
 
-    setLoading(false)
+    setLoadingSubscription(false)
   }
 
   const handleUpdate = async () => {
@@ -106,82 +125,80 @@ export default function AccountSettings() {
     router.push('/')
   }
 
+  const handleUpgrade = async () => {
+    openModal('SubscriptionModal')
+  }
+
+  // @ts-ignore
+  const subProvider = subscription?.metadata?.provider === 'revenue_cat' ? 'revenue_cat' : 'stripe'
+
+  if (session && !userData) {
+    return (
+      <SubpageLayout>
+        <AccountSkeleton />
+      </SubpageLayout>
+    )
+  }
+
   return (
     <SubpageLayout>
       {userData ? (
-        <div className="flex flex-col w-full items-center my-4 px-4 mb-14">
-          <ImageUpload itemId={userData?.id} label="" file={newAvatar} setFile={setNewAvatar} />
+        <div className="flex flex-col w-full items-center my-4 px-4">
+          <ImageUpload
+            itemId={userData?.id}
+            label=""
+            file={newAvatar}
+            setFile={setNewAvatar}
+            height="20"
+          />
 
           <div className="flex flex-col items-center mt-2">
-            <Typography size="lg" fontWeight="normal" className="mb">
+            <Typography size="2xl" fontWeight="medium" className="pb-0">
               {userData.full_name}
             </Typography>
             <Typography size="base" fontWeight="normal" className="text-secondary">
               @{userData.username}
             </Typography>
-
-            <Typography size="xs" fontWeight="normal" className="my-2">
-              Logged in as <span className="font-bold">{userData?.email}</span> using {provider}
-            </Typography>
           </div>
 
-          <Typography
-            size="base"
-            fontWeight="normal"
-            className="my-2 mt-1 px-4 py-1 bg-muted rounded-lg"
-          >
-            Plan: {subscription ? 'Oasis Member' : 'Free'}
-          </Typography>
-
-          {/* @ts-ignore */}
-          {subscription && subscription?.metadata?.provider !== 'revenue_cat' && (
-            <Button
-              variant="outline"
-              onClick={handleManageSubscription}
-              className="w-60"
-              loading={loading}
-            >
-              Manage Subscription
-            </Button>
-          )}
-
-          <div className="flex flex-col space-y-6 mt-8 w-full">
-            <div className="flex flex-col mt-2">
-              <Typography size="base" fontWeight="bold" className="mb-2">
-                Edit Profile
-              </Typography>
-              <div className="mx-auto flex w-full flex-col space-y-2">
-                <div className="flex flex-col w-96 space-y-2">
-                  <Label htmlFor="password" className="text-sm">
-                    Name
-                  </Label>
-                  <div className="flex flex-row w-full space-x-2">
-                    <Input
-                      type="name"
-                      placeholder="Name"
-                      value={newName}
-                      onChange={(e) => setNewName(e.target.value)}
-                      className="w-full"
-                    />
+          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+              Edit Profile
+            </Typography>
+            <div className="flex flex-col space-y-6 w-full bg-muted border border-border p-4 rounded-xl">
+              <div className="flex flex-col mt-2">
+                <div className="mx-auto flex w-full flex-col space-y-4">
+                  <div className="flex flex-col max-w-96 space-y-2">
+                    <Label htmlFor="password" className="text-sm">
+                      Name
+                    </Label>
+                    <div className="flex flex-row w-full space-x-2">
+                      <Input
+                        type="name"
+                        placeholder="Name"
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex flex-col w-96 space-y-2">
-                  <Label htmlFor="username" className="text-sm">
-                    Username
-                  </Label>
-                  <div className="flex flex-row w-full space-x-2">
-                    <Input
-                      type="text"
-                      placeholder="Username"
-                      value={newUsername}
-                      onChange={(e) => setNewUsername(e.target.value)}
-                      className="w-full"
-                    />
+                  <div className="flex flex-col max-w-96 space-y-2">
+                    <Label htmlFor="username" className="text-sm">
+                      Username
+                    </Label>
+                    <div className="flex flex-row w-full space-x-2">
+                      <Input
+                        type="text"
+                        placeholder="Username"
+                        value={newUsername}
+                        onChange={(e) => setNewUsername(e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* <div className="flex flex-col w-96 space-y-2">
+                  {/* <div className="flex flex-col w-96 space-y-2">
                   <Label htmlFor="password" className="text-sm">
                     Bio
                   </Label>
@@ -189,45 +206,144 @@ export default function AccountSettings() {
                     <Textarea value={newBio} onChange={(e) => setNewBio(e.target.value)} />
                   </div>
                 </div> */}
+                </div>
+
+                <div className="mt-4">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="w-40"
+                    loading={loading}
+                    onClick={handleUpdate}
+                  >
+                    Update
+                  </Button>
+                </div>
               </div>
 
-              <div className="mt-4">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  className="w-40"
-                  loading={loading}
-                  onClick={handleUpdate}
-                >
-                  Update
-                </Button>
-              </div>
-            </div>
-
-            <PasswordResetForm />
-
-            {/* <div className="mt-6">
+              {/* <div className="mt-6">
             <OasisSwitch userData={userData} />
           </div> */}
+            </div>
           </div>
 
-          <div className="md:hidden flex mt-14">
-            <Button variant="ghost" onClick={handleSignOut}>
-              Logout
-            </Button>
+          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+              Membership
+            </Typography>
+            <div className="flex flex-row justify-between w-full bg-muted border border-border p-4 rounded-xl">
+              <Typography size="base" fontWeight="normal" className="py-1 bg-muted rounded-lg">
+                {subscription ? (
+                  <div className="flex flex-row items-center">
+                    <BadgeCheck className="w-4 h-4 mr-1" />
+                    Oasis Member
+                  </div>
+                ) : (
+                  'Free account'
+                )}
+              </Typography>
+
+              {/* @ts-ignore */}
+              {subscription && subProvider !== 'revenue_cat' && (
+                <Button
+                  variant="outline"
+                  onClick={handleManageSubscription}
+                  className="w-60"
+                  loading={loadingSubscription}
+                >
+                  Manage
+                </Button>
+              )}
+
+              {!subscription && (
+                <Button variant="default" onClick={handleUpgrade} className="w-40">
+                  Upgrade
+                </Button>
+              )}
+
+              {subProvider === 'revenue_cat' && (
+                <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+                  Manage your membership in your phone settings
+                </Typography>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+              Referrals and Earnings
+            </Typography>
+            <div className="flex flex-col justify-between w-full bg-muted border border-border p-4 rounded-xl">
+              <div className="flex md:flex-row flex-col justify-between gap-2">
+                <Typography size="xs" fontWeight="normal" className="py-1 bg-muted rounded-lg">
+                  Earn 20% each time someone becomes an Oasis member using your username as the
+                  referral code.
+                </Typography>
+
+                <div
+                  className="flex bg-card w-full max-w-96 gap-2 items-center justify-center rounded-lg cursor-pointer"
+                  onClick={() => {
+                    navigator.clipboard.writeText(userData.username)
+                    toast.success('Copied referral code!')
+                  }}
+                >
+                  <Typography size="xs" fontWeight="normal" className="py-1 rounded-lg">
+                    {userData.username}
+                  </Typography>
+                  <Copy className="w-3 h-3" />
+                </div>
+              </div>
+
+              <div className="flex flex-row justify-between mt-4 gap-4">
+                <div className="w-40 h-20 rounded-lg flex flex-col items-center justify-center border">
+                  <Typography size="base" fontWeight="normal">
+                    ${referralStats.total_earnings}
+                  </Typography>
+                  <Typography size="xs" fontWeight="normal" className="py-1 bg-muted rounded-lg">
+                    Earnings
+                  </Typography>
+                </div>
+                <div className="w-40 h-20 rounded-lg flex flex-col items-center justify-center border">
+                  <Typography size="lg" fontWeight="normal">
+                    {referralStats.total_paid_referrals}
+                  </Typography>
+                  <Typography size="xs" fontWeight="normal" className="py-1 bg-muted rounded-lg">
+                    Paid referrals
+                  </Typography>
+                </div>
+                <div className="w-40 h-20 rounded-lg flex flex-col items-center justify-center border">
+                  <Typography size="lg" fontWeight="normal">
+                    {referralStats.total_trials}
+                  </Typography>
+                  <Typography size="xs" fontWeight="normal" className="py-1 bg-muted rounded-lg">
+                    Trial referrals
+                  </Typography>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+              Account
+            </Typography>
+            <div className="flex flex-col items-start space-y-4 w-full bg-muted border border-border p-4 rounded-xl">
+              <Typography size="xs" fontWeight="normal" className="">
+                Logged in as <span className="font-bold">{userData?.email}</span> using {provider}
+              </Typography>
+
+              <PasswordResetForm />
+
+              <Button variant="outline" onClick={handleSignOut}>
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       ) : (
         <div className="flex flex-col w-full justify-center items-center my-4 px-4 mb-14 gap-y-4">
-          <Image
-            src="https://connect.live-oasis.com/storage/v1/object/public/website/images/sad%20water%20illustration.png?t=2024-07-20T23%3A13%3A15.703Z"
-            alt="Oasis Logo"
-            width={100}
-            height={100}
-          />
-
           <Typography size="lg" fontWeight="normal">
-            You are not logged in.
+            No account found.
           </Typography>
           <Button variant="outline" onClick={() => router.push('/auth/signin')}>
             Login / Sign Up

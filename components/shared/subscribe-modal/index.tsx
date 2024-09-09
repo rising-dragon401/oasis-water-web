@@ -41,10 +41,10 @@ const FEATURES = [
     label: 'Research articles',
     icon: '🧬',
   },
-  {
-    label: 'Personal AI health companion',
-    icon: '🧑‍⚕️',
-  },
+  // {
+  //   label: 'Personal AI health companion',
+  //   icon: '🧑‍⚕️',
+  // },
   {
     label: 'Support lab testing',
     icon: '🔬',
