@@ -66,7 +66,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const fetchReferralCode = async () => {
       const referralCode = localStorage.getItem('referralCode')
-      if (referralCode && userData && !userData.referred_by) {
+      if (referralCode && userData && !userData?.referred_by) {
         const user = await getUserByUsername(referralCode)
         if (!user) {
           return
@@ -98,8 +98,6 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('uid', session.user?.id || '')
     }
-
-    console.log('session.user: ', session.user)
 
     setProvider(session.user?.app_metadata?.provider)
   }
