@@ -132,7 +132,6 @@ const handleReferral = async (subscription: Stripe.Subscription, uuid: string) =
       amount: subscription.items.data[0].price.unit_amount,
       currency: subscription.items.data[0].price.currency,
       subscription_status: subscription.status,
-      status: 'unpaid',
     }
 
     if (existingReferral) {

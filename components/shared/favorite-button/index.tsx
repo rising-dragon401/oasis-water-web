@@ -49,11 +49,11 @@ export default function FavoriteButton({ item, size = 18 }: Props) {
       return
     }
 
-    if (!subscription) {
-      toast('Please subscribe to add items to your Favorites')
-      openModal('SubscriptionModal')
-      return
-    }
+    // if (!subscription) {
+    //   toast('Please subscribe to add items to your Favorites')
+    //   openModal('SubscriptionModal')
+    //   return
+    // }
 
     if (userFavorites && userFavorites.length === 0) {
       console.log('add item to favorites')

@@ -3,6 +3,7 @@ import SubpageLayout from '@/components/home-layout'
 import UserPreviewCard from '@/components/shared/user-preview-card'
 import Typography from '@/components/typography'
 import { getFeaturedUsers } from '../actions/admin'
+
 export default async function UsersPage() {
   const people = await getFeaturedUsers()
 
