@@ -57,19 +57,50 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
         <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
           <Typography size="sm" fontWeight="normal">
             {!subscription ? (
-              <>Start a free trial on our iOS app 🎉 {` `}</>
+              <>
+                Start a free trial on our{' '}
+                <a
+                  href="https://apps.apple.com/us/app/oasis-water-health-ratings/id6499478532"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline font-bold"
+                >
+                  iOS app
+                </a>{' '}
+                or{' '}
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.liveoasis.oasis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline font-bold"
+                >
+                  Android app
+                </a>{' '}
+                🎉
+              </>
             ) : (
-              <>iOS app is live 🎉 {` `}</>
+              <>
+                Our {``}
+                <a
+                  href="https://apps.apple.com/us/app/oasis-water-health-ratings/id6499478532"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline font-bold"
+                >
+                  iOS
+                </a>{' '}
+                and{' '}
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.liveoasis.oasis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline font-bold"
+                >
+                  Android
+                </a>{' '}
+                apps are live 🎉
+              </>
             )}
-
-            <a
-              href="https://apps.apple.com/us/app/oasis-water-health-ratings/id6499478532"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline font-bold"
-            >
-              Download Now
-            </a>
           </Typography>
         </div>
 
