@@ -5,7 +5,6 @@ import Typography from '@/components/typography'
 import { User } from '@/types/custom'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useMemo } from 'react'
 import useSWR from 'swr'
 
 type Props = {
@@ -24,67 +23,37 @@ export default function UserPreviewCard({ user }: Props) {
 
   const { data: favorites } = useSWR(`userFavorites-${user.id}`, fetchUserFavorites)
 
-  const userScore = useMemo(async () => {
-    let totalCount = 0
-    let totalScore = 0
-
-    await favorites?.map((fav: any) => {
-      totalScore += fav.score || 0
-      totalCount += 1
-    })
-
-    const finalScore = Math.round(totalScore / totalCount)
-    return finalScore
-  }, [favorites])
-
-  const renderScore = () => {
-    const score = user?.score || 0
-
-    // const color = score >= 70 ? 'text-green-500' : score >= 40 ? 'text-yellow-500' : 'text-red-500'
-    const color = 'text-blue-800'
-
-    return (
-      <div>
-        <Typography size="sm" fontWeight="normal" className={`!no-underline ${color} text-right`}>
-          {score}
-        </Typography>
-        <Typography
-          size="xs"
-          fontWeight="normal"
-          className="!no-underline text-secondary text-right"
-        >
-          /100
-        </Typography>
-      </div>
-    )
-  }
-
   return (
-    <Link href={`/${user.username}`} className="flex flex-col hover:opacity-80 mt-4 relative">
-      <div className="relative md:w-36 md:h-36 w-24 h-24">
-        {/* Make this div relative */}
+    <Link
+      href={`/${user.username}`}
+      className="flex w-full items-center border-border mt-4 relative bg-card rounded-full hover:shadow-md p-2 pr-4 md:p-3 md:pr-6"
+    >
+      <div className="relative flex-shrink-0 w-12 h-12 mr-3 md:w-14 md:h-14 md:mr-4">
         <Image
           src={user.avatar_url || ''}
           className="w-full h-full rounded-full object-cover hover:cursor-pointer"
-          width={300}
-          height={300}
+          width={56}
+          height={56}
           quality={100}
           blurDataURL={user.avatar_url || ''}
           alt={user.full_name || 'oasis user image'}
         />
       </div>
-      <div className="flex flex-row justify-between pt-1 md:gap-2 items-start md:w-36 w-24">
-        <div className="flex flex-col">
-          <Typography
-            size="xs"
-            fontWeight="bold"
-            className="!no-underline text-primary md:overflow-hidden md:max-w-56 flex-wrap md:max-h-14 max-h-24 md:whitespace-nowrap overflow-ellipsis"
-          >
-            {user.full_name}
-          </Typography>
-        </div>
-        {/* Position renderScore relative to the image */}
-        {user.score && <div>{renderScore()}</div>}
+      <div className="flex flex-col min-w-0">
+        <Typography
+          size="sm"
+          fontWeight="bold"
+          className="!no-underline text-primary md:text-base truncate"
+        >
+          {user.full_name}
+        </Typography>
+        <Typography
+          size="xs"
+          fontWeight="normal"
+          className="!no-underline text-secondary md:text-sm"
+        >
+          {favorites?.length || 0} products
+        </Typography>
       </div>
     </Link>
   )

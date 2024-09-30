@@ -86,14 +86,14 @@ export default function Footer() {
                   Mission
                 </Link>
               </li>
-              {/* <li>
+              <li>
                 <Link
                   href="/affiliates"
                   className="text-secondary  transition duration-150 ease-in-out"
                 >
                   Affiliates
                 </Link>
-              </li> */}
+              </li>
               <li>
                 <Link
                   href="/contact"

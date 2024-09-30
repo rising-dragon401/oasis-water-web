@@ -29,6 +29,8 @@ export default function Score({ score, size, showScore = false }: Props) {
   const bgColor =
     validScore >= 70 ? 'bg-green-200' : validScore >= 40 ? 'bg-yellow-200' : 'bg-red-200'
 
+  const color = 'stroke-blue-800'
+
   const grade = () => {
     if (score === null) {
       return 'WARNING'
@@ -53,44 +55,87 @@ export default function Score({ score, size, showScore = false }: Props) {
   if (!subscription && !showScore) {
     return (
       <>
-        <button onClick={() => openModal('SubscriptionModal')}>
+        <div
+          onClick={() => openModal('SubscriptionModal')}
+          className="relative flex justify-center items-center cursor-pointer "
+          style={{ width: svgSize, height: svgSize }}
+        >
+          <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
+            <circle
+              className={`stroke-gray-400 `}
+              strokeWidth={strokeWidth}
+              fill="transparent"
+              r={radius}
+              cx={svgSize / 2} // Center circle
+              cy={svgSize / 2} // Center circle
+            />
+          </svg>
           <div
-            className="flex flex-col justify-center items-center bg-muted border rounded-lg p-2"
+            className="absolute flex flex-col justify-center items-center"
             style={{ width: '100%', height: '100%' }}
           >
-            <div className="flex flex-row justify-center items-center gap-2">
-              <Lock className="text-primary w-4 h-4" />
-              <Typography size="xl" fontWeight="normal" className="flex gap-2">
-                / 100
-              </Typography>
-            </div>
+            <Typography size="lg" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+              Score:
+            </Typography>
+            <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+              <button onClick={() => openModal('SubscriptionModal')}>
+                <Lock className="text-primary w-4 h-4" />
+              </button>
+              / 100
+            </Typography>
           </div>
-        </button>
+        </div>
       </>
     )
   }
 
   return (
     <div
-      className={`flex flex-col justify-center items-center ${bgColor} rounded-lg p-2 px-2`}
-      style={{ width: '100%', height: '100%' }}
+      className="relative flex justify-center items-center cursor-pointer"
+      style={{ width: svgSize, height: svgSize }}
     >
-      {score ? (
-        <Typography size="xl" fontWeight="semibold" className="flex gap-2 mb-0">
-          {score} / 100
-        </Typography>
-      ) : (
-        <div className="flex flex-row gap-1">
-          <AlertTriangle className="text-red-500" />
-          <Typography size="xl" fontWeight="normal" className="flex gap-2mb-0">
-            / 100
+      <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
+        <circle
+          className={`${color} opacity-30`}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          r={radius}
+          cx={svgSize / 2} // Center circle
+          cy={svgSize / 2} // Center circle
+        />
+        <circle
+          className={color}
+          strokeWidth={strokeWidth}
+          strokeDasharray={`${circumference} ${circumference}`}
+          strokeDashoffset={offset}
+          strokeLinecap="round"
+          fill="transparent"
+          r={radius}
+          cx={svgSize / 2} // Center circle
+          cy={svgSize / 2} // Center circle
+        />
+      </svg>
+      <div
+        className="absolute flex flex-col justify-center items-center"
+        style={{ width: '100%', height: '100%' }}
+      >
+        {score ? (
+          <Typography size="xl" fontWeight="normal" className="flex gap-2 mb-0">
+            {score} / 100
           </Typography>
-        </div>
-      )}
+        ) : (
+          <div className="flex flex-row gap-1">
+            <AlertTriangle className="text-red-500" />
+            <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+              / 100
+            </Typography>
+          </div>
+        )}
 
-      <span className="py-0" style={{ fontSize: fontSize }}>
-        {grade()}
-      </span>
+        <span className="text-secondary" style={{ fontSize: fontSize }}>
+          {grade()}
+        </span>
+      </div>
     </div>
   )
 }

@@ -40,7 +40,7 @@ export default async function Home() {
             </Typography>
             <Link href="/top-rated">
               <Typography size="base" fontWeight="normal" className="italic">
-                see all
+                explore
               </Typography>
             </Link>
           </div>
@@ -80,11 +80,11 @@ export default async function Home() {
         </div>
 
         <div className="md:mt-24 mt-20 w-full">
-          <BlogPreviewSection />
+          <PeopleSection />
         </div>
 
-        <div className="md:mt-0 mt-8 w-full">
-          <PeopleSection />
+        <div className="md:mt-10 mt-6 w-full">
+          <BlogPreviewSection />
         </div>
       </div>
     </SubpageLayout>
