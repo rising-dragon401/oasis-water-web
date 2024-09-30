@@ -571,6 +571,60 @@ export type Database = {
         }
         Relationships: []
       }
+      referrals: {
+        Row: {
+          amount: number | null
+          created_at: string
+          currency: string | null
+          id: number
+          price_id: string | null
+          referring_user_id: string | null
+          status: string | null
+          subscription_id: string | null
+          subscription_status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          id?: number
+          price_id?: string | null
+          referring_user_id?: string | null
+          status?: string | null
+          subscription_id?: string | null
+          subscription_status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string
+          currency?: string | null
+          id?: number
+          price_id?: string | null
+          referring_user_id?: string | null
+          status?: string | null
+          subscription_id?: string | null
+          subscription_status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "referrals_price_id_fkey"
+            columns: ["price_id"]
+            isOneToOne: false
+            referencedRelation: "prices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "referrals_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       research: {
         Row: {
           created_at: string
@@ -594,6 +648,7 @@ export type Database = {
       }
       subscriptions: {
         Row: {
+          amount: number | null
           cancel_at: string | null
           cancel_at_period_end: boolean | null
           canceled_at: string | null
@@ -611,6 +666,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          amount?: number | null
           cancel_at?: string | null
           cancel_at_period_end?: boolean | null
           canceled_at?: string | null
@@ -628,6 +684,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          amount?: number | null
           cancel_at?: string | null
           cancel_at_period_end?: boolean | null
           canceled_at?: string | null
@@ -998,6 +1055,22 @@ export type Database = {
           state: string | null
           type: Database["public"]["Enums"]["item_type"]
           utilities: Json[] | null
+        }[]
+      }
+      get_users_with_favorites: {
+        Args: {
+          page_number?: number
+          page_size?: number
+        }
+        Returns: {
+          id: string
+          full_name: string
+          username: string
+          is_featured: boolean
+          avatar_url: string
+          score: number
+          total_count: number
+          most_recent_favorite: string
         }[]
       }
       hnswhandler: {

@@ -2,10 +2,11 @@ import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
 import UserPreviewCard from '@/components/shared/user-preview-card'
 import Typography from '@/components/typography'
-import { getFeaturedUsers } from '../actions/admin'
+import { getFeaturedUsers, getOasisUsers } from '../actions/admin'
 
 export default async function UsersPage() {
-  const people = await getFeaturedUsers()
+  const featured = await getFeaturedUsers()
+  const people = await getOasisUsers()
 
   return (
     <SubpageLayout>
@@ -28,15 +29,37 @@ export default async function UsersPage() {
           />
         </div>
 
+        <div className="flex flex-col mb-14">
+          <Typography size="lg" fontWeight="normal" className="text-muted-foreground">
+            Featured
+          </Typography>
+          <div className="grid md:grid-cols-4 grid-cols-2 w-full gap-6">
+            {featured.map((user: any) => (
+              <>{user.score && <UserPreviewCard key={user.id} user={user} />}</>
+            ))}
+          </div>
+        </div>
+
         {people && people?.length > 0 ? (
           <div className="flex flex-col">
             <Typography size="lg" fontWeight="normal" className="text-muted-foreground">
-              Featured users
+              Recently active
             </Typography>
-            <div className="grid md:grid-cols-4 grid-cols-2 w-full gap-6">
-              {people.map((user: any) => (
-                <>{user.score && <UserPreviewCard key={user.id} user={user} />}</>
-              ))}
+            <div className="relative w-full">
+              <div className="absolute left-0 right-0 overflow-x-auto hide-scrollbar">
+                <div className="flex flex-col gap-y-2">
+                  <div className="flex flex-nowrap gap-x-6 pb-2 w-max">
+                    {people.slice(0, Math.ceil(people.length / 2)).map((user: any) => (
+                      <>{user.score && <UserPreviewCard key={user.id} user={user} />}</>
+                    ))}
+                  </div>
+                  <div className="flex flex-nowrap gap-x-6 pb-4 w-max">
+                    {people.slice(Math.ceil(people.length / 2)).map((user: any) => (
+                      <>{user.score && <UserPreviewCard key={user.id} user={user} />}</>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ) : (

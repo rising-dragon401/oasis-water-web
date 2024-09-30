@@ -13,34 +13,20 @@ export const getFeaturedUsers = async () => {
     return []
   }
 
-  const usersWithType = data.map((user) => ({ ...user, type: 'user' }))
-  return usersWithType
+  console.log('usersss: ', data)
+
+  return data
 }
 
 export const getOasisUsers = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: featuredUsers, error: featuredError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('is_featured', true)
-    .gt('favorites', 1)
-    .not('username', 'is', null)
+  const { data, error } = (await supabase.rpc('get_users_with_favorites', {
+    page_number: 1,
+    page_size: 40,
+  })) as { data: Array<{ total_count: number } & Record<string, any>>; error: any }
 
-  const { data: nonFeaturedUsers, error: nonFeaturedError } = await supabase
-    .from('users')
-    .select('*')
-    .eq('is_featured', false)
-    .gt('favorites', 1)
-    .not('username', 'is', null)
-
-  if (featuredError || nonFeaturedError) {
-    console.error('error', featuredError || nonFeaturedError)
-    return []
-  }
-
-  const allUsers = [...(featuredUsers || []), ...(nonFeaturedUsers || [])]
-  return allUsers
+  return data
 }
 
 export const getResearch = async () => {
@@ -77,10 +63,12 @@ export const getUserReferralStats = async (userId: string) => {
   if (data) {
     // TODO - needs to be tracked by differnt parameter
     // i.e. if user cancels after paying they still count as a paid referral
-    const totalEarnings = data.reduce(
-      (acc, referral) => (referral.subscription_status === 'active' ? acc + referral.amount : acc),
-      0
-    )
+    const totalEarnings =
+      data.reduce(
+        (acc, referral) =>
+          referral.subscription_status === 'active' ? acc + (referral.amount ?? 0) : acc,
+        0
+      ) * 0.2
 
     const totalPaidReferrals = data.reduce(
       (acc, referral) => (referral.subscription_status === 'paid' ? acc + 1 : acc),

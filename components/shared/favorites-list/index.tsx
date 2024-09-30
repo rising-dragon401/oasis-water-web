@@ -6,7 +6,9 @@ import ProfileSkeleton from '@/components/shared/profile-skeleton'
 import Score from '@/components/shared/score'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
+import { Large } from '@/components/ui/typography'
 import { PLACEHOLDER_IMAGE } from '@/lib/constants/images'
+import useDevice from '@/lib/hooks/use-device'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
@@ -19,6 +21,7 @@ import { toast } from 'sonner'
 export default function FavoritesList({ userName }: { userName: string | null | undefined }) {
   const { uid, userData } = useUserProvider()
   const router = useRouter()
+  const { isMobile } = useDevice()
 
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [oasisScore, setOasisScore] = useState<number | null>(null)
@@ -127,7 +130,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
         </div>
 
         <div className="md:w-40 w-36 h-16">
-          <Score score={oasisScore ?? null} size="md" showScore={true} />
+          <Score score={oasisScore ?? null} size={isMobile ? 'sm' : 'md'} showScore={true} />
         </div>
 
         {/* <Button variant="ghost" className="mt-4" onClick={handleShare}>
@@ -136,9 +139,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
       </div>
 
       <div className="mt-4">
-        <Typography size="base" fontWeight="normal" className="mb-2 text-muted-foreground">
-          Products
-        </Typography>
+        <Large className="mt-4">Products</Large>
         {loadingFavorites ? (
           <div className="flex justify-center items-center w-full h-64">
             <Loader2 size={20} className="animate-spin text-secondary-foreground" />

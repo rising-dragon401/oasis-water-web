@@ -161,7 +161,7 @@ export default function BasicSearch({
           indexName: 'users',
           query: query,
           params: {
-            restrictSearchableAttributes: ['name'],
+            restrictSearchableAttributes: ['name', 'username'],
 
             hitsPerPage: numResults || 3,
           },
@@ -171,6 +171,9 @@ export default function BasicSearch({
 
     await client.multipleQueries(queries).then(({ results }) => {
       const hits = results.map((result: any) => result.hits)
+
+      console.log('hits: ', hits)
+
       setResults(hits.flat())
     })
 
