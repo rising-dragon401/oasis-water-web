@@ -12,6 +12,7 @@ import useDevice from '@/lib/hooks/use-device'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { mutate, default as useSWR } from 'swr'
@@ -105,7 +106,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
   }
 
   return (
-    <div className="w-full px-2">
+    <div className="w-full px-2 py-4">
       <div className="flex flex-row justify-between mb-2 w-full">
         <div className="flex flex-row items-start md:gap-4 gap-2 w-full">
           <Image
@@ -197,6 +198,16 @@ export default function FavoritesList({ userName }: { userName: string | null | 
           </>
         )}
       </div>
+
+      {!isAuthUser && (
+        <div className="flex justify-center items-center w-full mt-10">
+          <Link href="https://www.oasiswater.app/affiliates" className="">
+            <Button variant="secondary" className="rounded-full  !shadow-md">
+              Save what you drink to see your score and earn {` `}💸
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   )
 }
