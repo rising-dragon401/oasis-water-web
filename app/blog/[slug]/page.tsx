@@ -1,64 +1,40 @@
 import { getEntryBySlug } from '@/app/actions/blogs'
-import { getSubscription } from '@/app/actions/user'
 import { Mdx } from '@/components/mdx-components'
-import PaywallBlock from '@/components/shared/paywall-block'
 import Typography from '@/components/typography'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 import Image from 'next/image'
 
-// async function getPostFromParams(params: PostProps['params']) {
-//   const slug = params?.slug?.join('/')
-//   const post = allPosts.find((post) => post.slugAsParams === slug)
+export async function generateMetadata({ params }: any): Promise<any> {
+  const slug = params.slug
 
-//   if (!post) {
-//     null
-//   }
+  const post = await getEntryBySlug(slug)
 
-//   return post
-// }
+  if (!post) {
+    return {}
+  }
 
-// export async function generateMetadata({ params }: PostProps): Promise<Metadata> {
-//   const post = await getPostFromParams(params)
-
-//   if (!post) {
-//     return {}
-//   }
-
-//   return {
-//     title: post.title,
-//     description: post.description,
-//     openGraph: {
-//       title: post.title,
-//       description: post.description,
-//       type: 'article',
-//       images: [
-//         {
-//           url: post.image || BLOG_IMAGE,
-//           width: 800,
-//           height: 600,
-//         },
-//         {
-//           url: post.image || BLOG_IMAGE,
-//           width: 1800,
-//           height: 1600,
-//         },
-//       ],
-//     },
-//     twitter: {
-//       card: 'summary_large_image',
-//       title: post.title,
-//       description: post.description,
-//       creator: '@tellmaia_to',
-//       images: [post.image || BLOG_IMAGE],
-//     },
-//   }
-// }
-
-// export async function generateStaticParams(): Promise<PostProps['params'][]> {
-//   return allPosts.map((post) => ({
-//     slug: post.slugAsParams.split('/'),
-//   }))
-// }
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      type: 'article',
+      images: [
+        {
+          url: post.cover,
+          width: 800,
+          height: 600,
+        },
+        {
+          url: post.cover,
+          width: 1800,
+          height: 1600,
+        },
+      ],
+    },
+  }
+}
 
 export default async function PostPage({ params }: { params: any }) {
   const slug = params.slug
@@ -71,7 +47,7 @@ export default async function PostPage({ params }: { params: any }) {
 
   const uid = data?.user?.id
 
-  const subscription = await getSubscription(uid || null)
+  // const subscription = await getSubscription(uid || null)
 
   if (!post) return null
 
@@ -98,15 +74,15 @@ export default async function PostPage({ params }: { params: any }) {
           return content
         }
 
-        if (index > 0 && !subscription) {
-          return (
-            <div key={index} className="relative">
-              <PaywallBlock />
-              <div className="blur-md pointer-events-none">{content}</div>
-              <PaywallBlock />
-            </div>
-          )
-        }
+        // if (index > 0 && !subscription) {
+        //   return (
+        //     <div key={index} className="relative">
+        //       <PaywallBlock />
+        //       <div className="blur-md pointer-events-none">{content}</div>
+        //       <PaywallBlock />
+        //     </div>
+        //   )
+        // }
 
         return content
       })}
