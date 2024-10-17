@@ -4,6 +4,7 @@ import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import PeopleSection from '@/components/sections/people-section'
 import Typography from '@/components/typography'
 import { CATEGORIES } from '@/lib/constants/categories'
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -36,12 +37,13 @@ export default async function Home() {
         <div className="flex flex-col md:mt-14 md:mb-24 mt-10 mb-20 gap-y-4 w-full">
           <div className="flex flex-row items-center justify-between">
             <Typography size="2xl" fontWeight="normal">
-              Product categories
+              Top waters and filters
             </Typography>
-            <Link href="/top-rated">
-              <Typography size="base" fontWeight="normal" className="italic">
-                explore
+            <Link href="/top-rated" className="flex flex-row items-center gap-x-2">
+              <Typography size="base" fontWeight="normal" className="italic text-secondary">
+                see all
               </Typography>
+              <ArrowRight className="w-4 h-4 text-secondary" />
             </Link>
           </div>
           <div className="relative w-full">

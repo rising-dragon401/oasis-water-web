@@ -23,7 +23,7 @@ export default async function MostRecentSection() {
           {items &&
             items?.slice(0, 10).map((item: any) => (
               <div key={item.id} className="flex-shrink-0 md:w-64 w-36">
-                <ItemPreviewCard item={item} size="small" />
+                <ItemPreviewCard item={item} size="small" alwaysShow />
               </div>
             ))}
         </div>

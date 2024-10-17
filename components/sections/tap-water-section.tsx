@@ -20,7 +20,9 @@ export default async function TapWaterSection() {
 
       <div className="flex overflow-x-auto gap-8 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {featured &&
-          featured.map((location) => <ItemPreviewCard key={location.name} item={location} />)}
+          featured.map((location) => (
+            <ItemPreviewCard key={location.name} item={location} alwaysShow />
+          ))}
       </div>
     </div>
   )

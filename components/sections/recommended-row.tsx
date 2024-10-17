@@ -43,7 +43,7 @@ export default function RecommendedRow({ category }: Props) {
         {ranked &&
           ranked.map((item: any) => (
             <div key={item.id} className="flex-shrink-0" style={{ minWidth: '20%' }}>
-              <ItemPreviewCard item={item} />
+              <ItemPreviewCard item={item} alwaysShow />
             </div>
           ))}
       </div>

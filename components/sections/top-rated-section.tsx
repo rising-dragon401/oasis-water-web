@@ -23,7 +23,9 @@ export default async function TopRatedSection() {
         style={{ animation: 'fadeIn 1s' }}
       >
         {topItems &&
-          topItems?.slice(0, 5).map((item: any) => <ItemPreviewCard key={item.id} item={item} />)}
+          topItems
+            ?.slice(0, 5)
+            .map((item: any) => <ItemPreviewCard key={item.id} item={item} alwaysShow />)}
       </div>
     </div>
   )

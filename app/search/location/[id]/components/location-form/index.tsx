@@ -69,7 +69,7 @@ export default function LocationForm({ id }: Props) {
 
           <div className="flex flex-row w-full justify-between gap-2">
             <div className="flex flex-col gap-y-2">
-              <Typography size="3xl" fontWeight="normal" className="w-2/3">
+              <Typography size="xl" fontWeight="normal" className="w-2/3">
                 {location.name} Tap Water
               </Typography>
 
@@ -88,10 +88,10 @@ export default function LocationForm({ id }: Props) {
               </div>
             </div>
 
-            <div className="w-1/2">
+            <div className="w-1/3">
               <Score
                 score={location.utilities?.length > 0 ? location?.utilities[0]?.score : 0}
-                size="lg"
+                size="md"
                 showScore
               />
             </div>
@@ -101,7 +101,7 @@ export default function LocationForm({ id }: Props) {
         {location?.utilities && (
           <div className="flex flex-col mt-4">
             <Typography size="2xl" fontWeight="normal">
-              Water Utilities
+              Contaminants found
             </Typography>
             <Accordion type="single" collapsible value={openUtility} onValueChange={setOpenUtility}>
               {location.utilities.map((utility: any, index: number) => (
@@ -109,7 +109,7 @@ export default function LocationForm({ id }: Props) {
                   <AccordionTrigger className="w-full flex flex-row justify-start">
                     <div className="w-3/4">
                       <Typography size="lg" fontWeight="normal" className="text-left">
-                        {utility.name}
+                        {utility.name} {`utility`}
                       </Typography>
                     </div>
                     <div className="flex justify-end w-1/4 md:mr-10 mr-4">

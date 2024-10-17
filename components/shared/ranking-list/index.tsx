@@ -181,7 +181,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
             //   return selectedTags.every((tag) => item.tags.includes(tag))
             // })
             .slice(0, 20 * page)
-            .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} />)}
+            .map((item, index, array) => <ItemPreviewCard key={item.id} item={item} alwaysShow />)}
 
         {(loading || !allItems) &&
           Array(10)

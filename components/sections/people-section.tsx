@@ -11,7 +11,7 @@ export default async function PeopleSection() {
     <div>
       <div className="flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Featured people
+          See what others are drinking
         </Typography>
       </div>
 

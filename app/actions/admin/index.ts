@@ -5,19 +5,45 @@ import { createSupabaseServerClient } from '@/utils/supabase/server'
 export const getFeaturedUsers = async () => {
   const supabase = await createSupabaseServerClient()
 
-  const { data, error } = await supabase.from('users').select('*').eq('is_featured', true)
+  const { data: featuredUsers, error: featuredError } = await supabase
+    .from('users')
+    .select('*')
+    .eq('is_featured', true)
+    .order('created_at', { ascending: false })
 
-  if (error) {
-    console.error('error', error)
-
+  if (featuredError) {
+    console.error('Error fetching featured users:', featuredError)
     return []
   }
 
-  console.log('usersss: ', data)
+  const { data: favorites, error: favoritesError } = await supabase
+    .from('favorites')
+    .select('*')
+    .in(
+      'uid',
+      featuredUsers.map((user) => user.id)
+    )
 
-  return data
+  if (favoritesError) {
+    console.error('Error fetching user favorites:', favoritesError)
+    return []
+  }
+
+  const usersWithFavorites = featuredUsers.map((user) => ({
+    ...user,
+    type: 'user',
+    favorites: favorites.filter((fav) => fav.uid === user.id),
+  }))
+
+  // sort by most recent favorite
+  usersWithFavorites.sort((a, b) => {
+    const maxFavoriteA = Math.max(...a.favorites.map((fav: any) => fav.id))
+    const maxFavoriteB = Math.max(...b.favorites.map((fav: any) => fav.id))
+    return maxFavoriteB - maxFavoriteA
+  })
+
+  return usersWithFavorites
 }
-
 export const getOasisUsers = async () => {
   const supabase = await createSupabaseServerClient()
 

@@ -15,11 +15,24 @@ type Props = {
   showWarning?: boolean
   showFavoriteButton?: boolean
   size?: 'small' | 'medium' | 'large'
+  isAuthUser?: boolean
+  alwaysShow?: boolean
 }
 
-export default function ItemPreviewCard({ item, showWarning, showFavoriteButton, size }: Props) {
+export default function ItemPreviewCard({
+  item,
+  showWarning,
+  showFavoriteButton,
+  size,
+  isAuthUser,
+  alwaysShow = false,
+}: Props) {
   const { subscription } = useUserProvider()
   const { openModal } = useModal()
+
+  // show if listed in top-rate or preview list but not on favorites page
+  // unless subscribed or is the auth user
+  const showData = subscription || isAuthUser || alwaysShow
 
   const renderScore = () => {
     const score = item?.score
@@ -73,22 +86,36 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton,
     }
   }
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (!showData) {
+      e.preventDefault()
+      openModal('SubscriptionModal')
+    }
+  }
+
+  const renderImage = () => {
+    return (
+      <Image
+        src={item.image || ''}
+        className={`w-full ${getHeightClass()} rounded-lg object-cover hover:cursor-pointer ${!showData ? 'blur-2xl rounded-lg' : ''}`}
+        width={300}
+        height={300}
+        quality={70}
+        blurDataURL={item.image || ''}
+        alt={item.name}
+      />
+    )
+  }
+
   return (
     <Link
       href={determineLink(item)}
+      onClick={handleClick}
       className="flex flex-col hover:opacity-80 relative max-w-sm rounded-md fade-in"
     >
-      <div className="relative flex w-full bg-card">
-        <Image
-          src={item.image || ''}
-          className={`w-full ${getHeightClass()} rounded-md object-cover hover:cursor-pointer`}
-          width={300}
-          height={300}
-          quality={70}
-          blurDataURL={item.image || ''}
-          alt={item.name}
-        />
-        {showFavoriteButton && (
+      <div className="relative flex w-full rounded-lg bg-card">
+        {renderImage()}
+        {showFavoriteButton && showData && (
           <div className="absolute top-0 right-0">
             <FavoriteButton item={item} />
           </div>
@@ -99,19 +126,10 @@ export default function ItemPreviewCard({ item, showWarning, showFavoriteButton,
           <Typography
             size="sm"
             fontWeight="bold"
-            className="!no-underline text-primary flex-wrap overflow-hidden md:max-h-12 max-h-10"
+            className={`!no-underline text-primary flex-wrap overflow-hidden md:max-h-12 max-h-10 ${!showData ? 'blur-lg' : ''}`}
           >
             {item.name}
           </Typography>
-          {item.company_name && (
-            <Typography
-              size="sm"
-              fontWeight="normal"
-              className="!no-underline text-primary-muted mt-0"
-            >
-              {item.company_name}
-            </Typography>
-          )}
         </div>
 
         <div className="flex w-1/6 justify-end">

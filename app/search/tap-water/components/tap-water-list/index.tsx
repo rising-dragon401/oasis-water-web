@@ -44,7 +44,7 @@ export default function TapWaterList({ locations }: Props) {
                 {locations
                   ?.filter((location) => location.state === state)
                   .map((filteredLocation) => (
-                    <ItemPreviewCard key={filteredLocation.id} item={filteredLocation} />
+                    <ItemPreviewCard key={filteredLocation.id} item={filteredLocation} alwaysShow />
                   ))}
               </div>
             </TabsContent>

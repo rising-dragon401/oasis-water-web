@@ -33,7 +33,7 @@ export default function RecommendedFiltersRow() {
         {ranked &&
           ranked.map((item: any) => (
             <div key={item.id} className="w-64 flex-shrink-0">
-              <ItemPreviewCard item={item} />
+              <ItemPreviewCard item={item} alwaysShow />
             </div>
           ))}
       </div>
