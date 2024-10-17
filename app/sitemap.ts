@@ -76,9 +76,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `https://www.oasiswaters.co/search/tap-water`,
     },
     {
-      url: `https://www.oasiswaters.co/about`,
-    },
-    {
       url: `https://www.oasiswaters.co/faqs`,
     },
     {

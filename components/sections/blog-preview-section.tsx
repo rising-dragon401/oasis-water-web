@@ -50,7 +50,7 @@ export default function BlogPreviewSection() {
                     <Typography
                       size="base"
                       fontWeight="normal"
-                      className="text-stone-800 !no-underline flex mt-1 line-clamp-2 overflow-hidden h-10"
+                      className="text-stone-800 !no-underline flex mt-1 line-clamp-2 overflow-hidden h-12"
                     >
                       {post.attributes.title.length > 48
                         ? `${post.attributes.title.substring(0, 48)}...`

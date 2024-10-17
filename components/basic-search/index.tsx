@@ -59,7 +59,7 @@ export default function BasicSearch({
   const [selectedFilters, setSelectedFilters] = React.useState<string[]>([])
   const [image, setImage] = React.useState<string | null>(null)
 
-  const debouncedQuery = useDebounce(query, 500)
+  const debouncedQuery = useDebounce(query, 200)
 
   const searchContainerRef = useRef<HTMLDivElement>(null) // Create a ref for the search container
 
