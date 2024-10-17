@@ -20,7 +20,9 @@ export default async function LowestRatedSection() {
 
       <div className="flex overflow-x-auto gap-8 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {lowestItems &&
-          lowestItems?.slice(0, 5).map((item) => <ItemPreviewCard key={item.id} item={item} />)}
+          lowestItems
+            ?.slice(0, 5)
+            .map((item) => <ItemPreviewCard key={item.id} item={item} alwaysShow />)}
       </div>
     </div>
   )

@@ -12,7 +12,6 @@ import useDevice from '@/lib/hooks/use-device'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Loader2 } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { mutate, default as useSWR } from 'swr'
@@ -150,7 +149,12 @@ export default function FavoritesList({ userName }: { userName: string | null | 
             {favorites && favorites.length > 0 ? (
               <div className="grid md:grid-cols-3 grid-cols-2 w-full gap-6">
                 {favorites.map((fav: any) => (
-                  <ItemPreviewCard key={fav.id} item={fav} showFavoriteButton />
+                  <ItemPreviewCard
+                    key={fav.id}
+                    item={fav}
+                    showFavoriteButton
+                    isAuthUser={isAuthUser}
+                  />
                 ))}
               </div>
             ) : (
@@ -199,7 +203,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
         )}
       </div>
 
-      {!isAuthUser && (
+      {/* {!isAuthUser && (
         <div className="flex justify-center items-center w-full mt-10">
           <Link href="https://www.oasiswater.app/affiliates" className="">
             <Button variant="secondary" className="rounded-full  !shadow-md">
@@ -207,7 +211,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
             </Button>
           </Link>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

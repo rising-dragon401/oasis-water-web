@@ -42,7 +42,7 @@ export const ReferralCodeInput = () => {
   return (
     <div>
       {!isOpen ? (
-        <Button onClick={() => setIsOpen(true)} variant="secondary" className="w-full rounded-full">
+        <Button onClick={() => setIsOpen(true)} variant="outline" className="w-full rounded-full">
           Referred by someone?
         </Button>
       ) : (

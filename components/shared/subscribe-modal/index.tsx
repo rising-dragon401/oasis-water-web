@@ -26,35 +26,23 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: ' Scores and ratings',
+    label: 'Access to all scores and ratings',
     icon: '🔓',
   },
   {
-    label: ' Top products per category',
+    label: 'Unlimited scans and searches',
     icon: '🏆',
   },
-  // {
-  //   label: 'View lab data',
-  //   icon: '🔍',
-  // },
   {
-    label: 'Research articles',
+    label: 'Full contaminant breakdowns',
     icon: '🧬',
   },
-  // {
-  //   label: 'Personal AI health companion',
-  //   icon: '🧑‍⚕️',
-  // },
   {
-    label: 'Support lab testing',
+    label: 'Personalized filter recommendations',
     icon: '🔬',
   },
-  // {
-  //   label: 'Personalized recommendations',
-  //   icon: <Dna className="w-4 h-4" />,
-  // },
   {
-    label: 'Private community',
+    label: 'Support further testing',
     icon: '🌐',
   },
 ]
@@ -144,19 +132,20 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     setLoadingCheckoutSession(true)
 
     // offer 3 day trial if annual plan
-    const metadata =
-      selectedPlan === 'annual'
-        ? {
-            trial_settings: {
-              end_behavior: {
-                missing_payment_method: 'cancel',
-              },
-            },
-            trial_period_days: 3,
-          }
-        : {}
+    // const metadata =
+    //   selectedPlan === 'annual'
+    //     ? {
+    //         trial_settings: {
+    //           end_behavior: {
+    //             missing_payment_method: 'cancel',
+    //           },
+    //         },
+    //         trial_period_days: 3,
+    //       }
+    //     : {}
+
     // no free trial anymore
-    // const metadata = {}
+    const metadata = {}
 
     try {
       const { sessionId } = await postData({
@@ -196,18 +185,19 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           <div className="flex flex-col justify-center items-center">
             <Logo className="w-20 h-20" />
             <Typography size="2xl" fontWeight="bold" className="text-center mt-2">
-              Oasis Membership
+              Unlock the truth in your water
             </Typography>
           </div>
 
           <div className="flex flex-col">
             <Typography size="base" fontWeight="normal" className="text-center text-secondary">
-              Unlock the healthiest water products for you
+              Your membership funds independent lab testing (which is expensive!) and keeps Oasis
+              unbiased.
             </Typography>
           </div>
         </DialogHeader>
 
-        <div className="flex flex-col gap-3 px-6 py-4 rounded-md bg-muted mx-8 ">
+        <div className="flex flex-col gap-3 px-4 py-4 rounded-md bg-muted mx-8 ">
           {FEATURES.map((feature) => (
             <SubscriptionItem key={feature.label} label={feature.label} icon={feature.icon} />
           ))}
@@ -287,11 +277,11 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
             <Button
               variant="default"
-              className="px-4 w-full !font-bold mb-2 flex rounded-full"
+              className="px-4 w-full !font-bold mb-2 flex rounded-full h-14"
               onClick={() => redirectToPayment()}
               loading={loadingCheckoutSession}
             >
-              Start free trial
+              Upgrade
             </Button>
 
             <ReferralCodeInput />
@@ -308,7 +298,6 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               <a href="/refund-policy" className="text-blue-500 underline">
                 {` `} Refund policy.
               </a>
-              {` `} Funds go to improving Oasis and further lab testing.
             </Typography>
           </div>
         </DialogFooter>

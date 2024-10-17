@@ -28,7 +28,7 @@ export default function RecommendedFilterRow({ contaminants }: RecommendedFilter
     <div className="mb-10">
       <div className="pt-4 pb-2 flex flex-row justify-between">
         <Typography size="2xl" fontWeight="normal">
-          Recommended filter for this tap water
+          Recommended filter
         </Typography>
       </div>
 
@@ -37,7 +37,7 @@ export default function RecommendedFilterRow({ contaminants }: RecommendedFilter
           {recommended &&
             recommended.map((item: any) => (
               <div key={item.id} className="lg:w-72 md:w-64 w-48">
-                <ItemPreviewCard item={item} />
+                <ItemPreviewCard item={item} alwaysShow />
               </div>
             ))}
         </div>

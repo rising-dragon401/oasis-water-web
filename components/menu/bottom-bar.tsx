@@ -1,5 +1,5 @@
 import { useUserProvider } from '@/providers/UserProvider'
-import { ActivitySquare, Heart, Home, Trophy, User } from 'lucide-react'
+import { Heart, Home, Trophy, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -17,11 +17,11 @@ const MENU_ITEMS = [
     href: '/top-rated',
     icon: Trophy,
   },
-  {
-    label: 'Research',
-    href: '/blog',
-    icon: ActivitySquare,
-  },
+  // {
+  //   label: 'Research',
+  //   href: '/blog',
+  //   icon: ActivitySquare,
+  // },
   {
     label: 'Favorites',
     href: '/favorites',

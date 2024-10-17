@@ -20,7 +20,9 @@ export default async function FilterSection() {
 
       <div className="flex overflow-x-auto gap-8 hide-scrollbar" style={{ animation: 'fadeIn 1s' }}>
         {filters &&
-          filters?.slice(0, 5).map((filter) => <ItemPreviewCard key={filter.name} item={filter} />)}
+          filters
+            ?.slice(0, 5)
+            .map((filter) => <ItemPreviewCard key={filter.name} item={filter} alwaysShow />)}
       </div>
     </div>
   )

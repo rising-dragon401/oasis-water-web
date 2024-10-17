@@ -2,6 +2,7 @@
 
 import { getBlogs } from '@/app/actions/blogs'
 import Typography from '@/components/typography'
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import useSWR from 'swr'
@@ -18,13 +19,14 @@ export default function BlogPreviewSection() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-row justify-between items-center">
         <Typography size="2xl" fontWeight="normal">
-          New research
+          News and research
         </Typography>
 
-        <Link href="/blog">
-          <Typography size="base" fontWeight="normal" className="italic">
+        <Link href="/blog" className="flex flex-row items-center gap-x-2">
+          <Typography size="base" fontWeight="normal" className="italic text-secondary">
             read more
           </Typography>
+          <ArrowRight className="w-4 h-4 text-secondary" />
         </Link>
       </div>
 
@@ -48,9 +50,11 @@ export default function BlogPreviewSection() {
                     <Typography
                       size="base"
                       fontWeight="normal"
-                      className="text-stone-800 !no-underline flex mt-1"
+                      className="text-stone-800 !no-underline flex mt-1 line-clamp-2 overflow-hidden h-10"
                     >
-                      {post.attributes.title}
+                      {post.attributes.title.length > 48
+                        ? `${post.attributes.title.substring(0, 48)}...`
+                        : post.attributes.title}
                     </Typography>
                   </Link>
                 </article>
