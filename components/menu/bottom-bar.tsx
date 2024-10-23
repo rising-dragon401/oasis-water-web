@@ -1,6 +1,4 @@
-import { useUserProvider } from '@/providers/UserProvider'
-import { Heart, Home, Trophy, User } from 'lucide-react'
-import Image from 'next/image'
+import { Heart, Home, User } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Typography from '../typography'
@@ -11,12 +9,11 @@ const MENU_ITEMS = [
     href: '/',
     icon: Home,
   },
-
-  {
-    label: 'Top',
-    href: '/top-rated',
-    icon: Trophy,
-  },
+  // {
+  //   label: 'Top',
+  //   href: '/top-rated',
+  //   icon: Trophy,
+  // },
   // {
   //   label: 'Research',
   //   href: '/blog',
@@ -28,7 +25,7 @@ const MENU_ITEMS = [
     icon: Heart,
   },
   {
-    label: 'Account',
+    label: 'Settings',
     href: '/account',
     icon: User,
   },
@@ -36,7 +33,6 @@ const MENU_ITEMS = [
 
 const BottomNavbar = () => {
   const pathname = usePathname()
-  const { userData } = useUserProvider()
   const activeIndex = MENU_ITEMS.findIndex((item) => item.href === pathname)
 
   return (
@@ -48,17 +44,8 @@ const BottomNavbar = () => {
         return (
           <Link href={item.href} key={item.label} className={`flex-1 focus:opacity-75`}>
             <div className="flex flex-col items-center justify-center gap-1">
-              {item.label === 'Account' && userData?.avatar_url ? (
-                <Image
-                  src={userData?.avatar_url}
-                  alt="User Profile"
-                  width={32}
-                  height={32}
-                  className="rounded-full w-7 h-7"
-                />
-              ) : (
-                <item.icon className={`h-6 w-6 ${isActiveClass}`} />
-              )}
+              <item.icon className={`h-6 w-6 ${isActiveClass}`} />
+
               <Typography size="sm" fontWeight="normal" className={isActiveClass}>
                 {item.label}
               </Typography>

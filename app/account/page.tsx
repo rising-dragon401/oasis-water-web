@@ -52,7 +52,6 @@ export default function AccountSettings() {
 
   const getReferralStats = async () => {
     const stats = await getUserReferralStats(userData.id)
-    console.log('stats', stats)
     setReferralStats(stats)
   }
 
@@ -96,7 +95,6 @@ export default function AccountSettings() {
       // todo combine these into one call
       const res = await updateUserData('full_name', newName)
       const res2 = await updateUserData('bio', newBio)
-      const res3 = await updateUserData('avatar_url', newAvatar)
 
       fetchUserData(userData.id)
 
@@ -126,6 +124,17 @@ export default function AccountSettings() {
     router.push('/')
   }
 
+  const handleAvatarSuccess = async (url: string) => {
+    const res = await updateUserData('avatar_url', url, userData.id)
+
+    if (res) {
+      setNewAvatar(url)
+      toast('Avatar updated')
+    } else {
+      toast('Error updating avatar')
+    }
+  }
+
   const handleUpgrade = async () => {
     openModal('SubscriptionModal')
   }
@@ -151,6 +160,8 @@ export default function AccountSettings() {
             file={newAvatar}
             setFile={setNewAvatar}
             height="20"
+            onSuccess={handleAvatarSuccess}
+            showIcon
           />
 
           <div className="flex flex-col items-center mt-2">

@@ -2,7 +2,7 @@ import { uploadFile } from '@/app/actions/files'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Loader2 } from 'lucide-react'
+import { Camera, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import { useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -13,9 +13,19 @@ type ImageUploadProps = {
   file?: string | null
   setFile?: (value: string) => void
   height?: string
+  onSuccess?: (url: string) => void
+  showIcon?: boolean
 }
 
-export function ImageUpload({ itemId, label, file, setFile, height }: ImageUploadProps) {
+export function ImageUpload({
+  itemId,
+  label,
+  file,
+  setFile,
+  height,
+  showIcon,
+  onSuccess,
+}: ImageUploadProps) {
   const [drag, setDrag] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -69,20 +79,23 @@ export function ImageUpload({ itemId, label, file, setFile, height }: ImageUploa
 
       setLoading(true)
 
-      const res = await uploadFile(file, `website/users/${itemId}`, file.name)
+      const res = await uploadFile(file, `users/${itemId}`, file.name)
 
       if (res) {
+        if (onSuccess) {
+          onSuccess(res.publicUrl)
+        }
+
         if (setFile) {
           setFile(res.publicUrl)
         }
       } else {
-        toast('Unable to upload image')
+        throw new Error('Unable to upload image')
       }
 
       setLoading(false)
     } catch (error) {
-      console.error('Error uploading image:', error)
-      toast('Error uploading image')
+      toast('Error uploading image. Please try another')
       setLoading(false)
     }
   }
@@ -112,7 +125,7 @@ export function ImageUpload({ itemId, label, file, setFile, height }: ImageUploa
         />
 
         {file ? (
-          <div onClick={onButtonClick} className={`cursor-pointer ${heightAndWidth}`}>
+          <div onClick={onButtonClick} className={`relative cursor-pointer ${heightAndWidth}`}>
             <Image
               src={file}
               alt="Uploaded"
@@ -120,6 +133,17 @@ export function ImageUpload({ itemId, label, file, setFile, height }: ImageUploa
               height={300}
               className={`rounded-full ${heightAndWidth}`}
             />
+            {loading ? (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader2 className="h-6 w-6 animate-spin text-muted" />
+              </div>
+            ) : (
+              showIcon && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Camera className="h-6 w-6 text-muted" />
+                </div>
+              )
+            )}
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center text-center gap-1">

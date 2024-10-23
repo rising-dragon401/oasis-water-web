@@ -137,8 +137,6 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   const refreshUserData = useCallback(
     async (uid?: string | null) => {
-      console.log('refreshUserData', uid)
-
       let userId_ = uid ?? null
 
       await Promise.all([

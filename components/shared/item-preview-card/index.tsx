@@ -76,13 +76,26 @@ export default function ItemPreviewCard({
   const getHeightClass = () => {
     switch (size) {
       case 'small':
-        return 'h-32 md:h-48 lg:h-full'
+        return 'h-24 md:h-48 lg:h-64'
       case 'medium':
-        return 'h-48 md:h-56 lg:h-full'
+        return 'h-48 md:h-56 lg:h-64'
       case 'large':
-        return 'h-64 md:h-72 lg:h-full'
+        return 'h-64 md:h-72 lg:h-80'
       default:
-        return 'h-48 md:h-56 lg:h-full' // Default to medium if size is not specified
+        return 'h-44 md:h-56 lg:h-64' // Default to medium if size is not specified
+    }
+  }
+
+  const getWidthClass = () => {
+    switch (size) {
+      case 'small':
+        return 'w-24 md:w-48 lg:w-64'
+      case 'medium':
+        return 'w-48 md:w-56 lg:w-64'
+      case 'large':
+        return 'w-64 md:w-72 lg:w-80'
+      default:
+        return 'w-44 md:w-56 lg:w-64' // Default to medium if size is not specified
     }
   }
 
@@ -94,13 +107,15 @@ export default function ItemPreviewCard({
   }
 
   const renderImage = () => {
+    const size = 400 // Set a fixed size for both width and height to ensure a square
     return (
       <Image
         src={item.image || ''}
-        className={`w-full ${getHeightClass()} rounded-lg object-cover hover:cursor-pointer ${!showData ? 'blur-2xl rounded-lg' : ''}`}
-        width={300}
-        height={300}
+        className={`w-full h-full rounded-lg object-cover hover:cursor-pointer ${!showData ? 'blur-2xl rounded-lg' : ''}`}
+        width={size}
+        height={size}
         quality={70}
+        objectFit="cover"
         blurDataURL={item.image || ''}
         alt={item.name}
       />
@@ -111,9 +126,11 @@ export default function ItemPreviewCard({
     <Link
       href={determineLink(item)}
       onClick={handleClick}
-      className="flex flex-col hover:opacity-80 relative max-w-sm rounded-md fade-in"
+      className={`flex flex-col hover:opacity-80 relative max-w-sm rounded-md fade-in ${getWidthClass()}`}
     >
-      <div className="relative flex w-full rounded-lg bg-card">
+      <div
+        className={`relative flex w-full rounded-lg bg-card aspect-w-1 aspect-h-1 ${getHeightClass()} ${getWidthClass()}`}
+      >
         {renderImage()}
         {showFavoriteButton && showData && (
           <div className="absolute top-0 right-0">

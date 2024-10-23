@@ -172,8 +172,6 @@ export default function BasicSearch({
     await client.multipleQueries(queries).then(({ results }) => {
       const hits = results.map((result: any) => result.hits)
 
-      console.log('hits: ', hits)
-
       setResults(hits.flat())
     })
 
