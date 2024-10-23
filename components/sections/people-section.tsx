@@ -23,7 +23,7 @@ export default async function PeopleSection() {
           people?.slice(0, 5).map((user: any) => <UserPreviewCard key={user.id} user={user} />)}
 
         <Link
-          href={`/affiliates`}
+          href={`/favorites`}
           className="flex w-full items-center justify-between border-border mt-4 relative bg-card rounded-full hover:shadow-md p-2 pr-4 md:p-3 md:pr-6"
         >
           <div className="flex flex-col min-w-0 pl-2">

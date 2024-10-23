@@ -49,6 +49,18 @@ const FAQ_LIST = [
     content:
       'We partner with Tapscore to provide testing kits and analyze toxins in water. You can learn more on the Lab testing page',
   },
+  {
+    value: 'people-pages',
+    trigger: 'How can I create my own Oasis page?',
+    content:
+      'Your page is automatically generated after creating an account and adding items to your favorites. Please note that certain pages were curated by the Oasis research team to showcase their public recommendations',
+  },
+  {
+    value: 'warning-score',
+    trigger: 'Why do some scores have a warning and untested symbol?',
+    content:
+      'We show a warning (untested) symbol for any waters and filters that are listed on Oasis but do not provide a lab / performance report. We are unable to provide a score for these items since there is no data to backup their claims. Users that add these items to their favorites may also see a warning symbol in their personal score.',
+  },
 ]
 
 export default function FAQs() {

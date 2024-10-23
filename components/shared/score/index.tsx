@@ -31,6 +31,8 @@ export default function Score({ score, size, showScore = false }: Props) {
 
   const color = 'stroke-blue-800'
 
+  console.log('score', score)
+
   const grade = () => {
     if (score === null) {
       return 'WARNING'
@@ -44,10 +46,12 @@ export default function Score({ score, size, showScore = false }: Props) {
       return 'Pretty good'
     } else if (score >= 35) {
       return 'Poor'
-    } else if (score >= 0 && score !== null) {
+    } else if (score >= 1 || score === null) {
       return 'Bad'
+    } else if (score === 0) {
+      return 'Untested'
     } else {
-      return 'WARNING'
+      return 'Untested'
     }
   }
 
@@ -125,7 +129,7 @@ export default function Score({ score, size, showScore = false }: Props) {
           </Typography>
         ) : (
           <div className="flex flex-row gap-1">
-            <AlertTriangle className="text-red-500" />
+            <AlertTriangle className="text-secondary" />
             <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
               / 100
             </Typography>

@@ -105,7 +105,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
   }
 
   return (
-    <div className="w-full px-2 py-4">
+    <div className="w-full px-2 ">
       <div className="flex flex-row justify-between mb-2 w-full">
         <div className="flex flex-row items-start md:gap-4 gap-2 w-full">
           <Image
@@ -139,7 +139,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
       </div>
 
       <div className="mt-4">
-        <Large className="mt-4">Products</Large>
+        <Large className="mt-4 mb-2">Recommended waters and filters</Large>
         {loadingFavorites ? (
           <div className="flex justify-center items-center w-full h-64">
             <Loader2 size={20} className="animate-spin text-secondary-foreground" />
