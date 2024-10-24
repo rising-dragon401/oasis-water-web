@@ -39,6 +39,13 @@ export default function AccountSettings() {
     total_paid_referrals: 0,
     total_trials: 0,
   })
+  const [socials, setSocials] = useState({
+    instagram: '',
+    youtube: '',
+    twitter: '',
+    tiktok: '',
+  })
+  const [loadingSocials, setLoadingSocials] = useState(false)
 
   useEffect(() => {
     if (userData) {
@@ -46,6 +53,7 @@ export default function AccountSettings() {
       setNewUsername(userData.username || '')
       setNewBio(userData.bio || '')
       setNewAvatar(userData.avatar_url || '')
+      setSocials(userData.socials || {})
       getReferralStats()
     }
   }, [userData])
@@ -137,6 +145,37 @@ export default function AccountSettings() {
 
   const handleUpgrade = async () => {
     openModal('SubscriptionModal')
+  }
+
+  const handleSocialsUpdate = async () => {
+    try {
+      setLoadingSocials(true)
+
+      const res = await updateUserData(
+        'socials',
+        {
+          instagram: socials.instagram,
+          youtube: socials.youtube,
+          twitter: socials.twitter,
+          tiktok: socials.tiktok,
+        },
+        userData.id
+      )
+
+      console.log('res', res)
+
+      if (res) {
+        toast('Socials updated')
+        fetchUserData(userData.id)
+      } else {
+        toast('Error updating socials')
+      }
+    } catch (error) {
+      console.error('Error updating socials:', error)
+      toast('Error updating socials')
+    }
+
+    setLoadingSocials(false)
   }
 
   // @ts-ignore
@@ -240,6 +279,89 @@ export default function AccountSettings() {
               {/* <div className="mt-6">
             <OasisSwitch userData={userData} />
           </div> */}
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+              Socials
+            </Typography>
+            <div className="flex flex-col space-y-6 w-full bg-muted border border-border p-4 rounded-xl">
+              <div className="flex flex-col mt-2">
+                <div className="mx-auto flex w-full flex-col space-y-4">
+                  <div className="flex flex-col max-w-96 space-y-2">
+                    <Label htmlFor="instagram" className="text-sm">
+                      Instagram
+                    </Label>
+                    <div className="flex flex-row w-full space-x-2">
+                      <Input
+                        type="text"
+                        placeholder="https://www.instagram.com/oasiswaterapp/"
+                        value={socials.instagram}
+                        onChange={(e) => setSocials({ ...socials, instagram: e.target.value })}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col max-w-96 space-y-2">
+                    <Label htmlFor="youtube" className="text-sm">
+                      YouTube
+                    </Label>
+                    <div className="flex flex-row w-full space-x-2">
+                      <Input
+                        type="text"
+                        placeholder="https://www.youtube.com/@oasiswaterapp"
+                        value={socials.youtube}
+                        onChange={(e) => setSocials({ ...socials, youtube: e.target.value })}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col max-w-96 space-y-2">
+                    <Label htmlFor="twitter" className="text-sm">
+                      X (Twitter)
+                    </Label>
+                    <div className="flex flex-row w-full space-x-2">
+                      <Input
+                        type="text"
+                        placeholder="https://x.com/oasiswaterapp"
+                        value={socials.twitter}
+                        onChange={(e) => setSocials({ ...socials, twitter: e.target.value })}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col max-w-96 space-y-2">
+                    <Label htmlFor="tiktok" className="text-sm">
+                      TikTok
+                    </Label>
+                    <div className="flex flex-row w-full space-x-2">
+                      <Input
+                        type="text"
+                        placeholder="https://www.tiktok.com/@oasiswaterapp"
+                        value={socials.tiktok}
+                        onChange={(e) => setSocials({ ...socials, tiktok: e.target.value })}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className="w-40"
+                    loading={loadingSocials}
+                    onClick={handleSocialsUpdate}
+                  >
+                    Update Socials
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
 

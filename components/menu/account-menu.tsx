@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { Heart, User } from 'lucide-react'
+import { User } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import SignOutButton from './log-out-button'
@@ -48,13 +48,6 @@ export function AccountMenu() {
         )}
 
         <DropdownMenuSeparator />
-
-        <DropdownMenuItem className="hover:cursor-pointer" asChild>
-          <Link href={`/${userData?.username}`} className="flex flex-row items-center">
-            <Heart className="mr-2 h-4 w-4" />
-            My products
-          </Link>
-        </DropdownMenuItem>
 
         <DropdownMenuItem className="hover:cursor-pointer" asChild>
           <Link href={`/account/`} className="flex flex-row items-center">
