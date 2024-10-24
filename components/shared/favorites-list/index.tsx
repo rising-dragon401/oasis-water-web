@@ -177,7 +177,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
           <>
             {favorites && favorites.length > 0 ? (
               <div className="">
-                <Tabs defaultValue="water" className="">
+                <Tabs defaultValue="all" className="">
                   <TabsList className="gap-2">
                     <TabsTrigger value="all">All</TabsTrigger>
                     <TabsTrigger value="water">Water</TabsTrigger>
