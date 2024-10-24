@@ -31,8 +31,6 @@ export default function Score({ score, size, showScore = false }: Props) {
 
   const color = 'stroke-blue-800'
 
-  console.log('score', score)
-
   const grade = () => {
     if (score === null) {
       return 'WARNING'

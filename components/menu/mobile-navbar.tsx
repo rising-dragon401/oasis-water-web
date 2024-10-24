@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { PROFILE_AVATAR } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
-import { ActivitySquare, FlaskConical, Heart, Menu, Search, Trophy, User, X } from 'lucide-react'
+import { ActivitySquare, FlaskConical, Menu, Search, Trophy, User, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import SignUpButton from '../shared/sign-up-button'
@@ -80,15 +80,6 @@ export default function MobileNavbar() {
             {/* <AISearchDialog size="small" /> */}
 
             <DropdownMenuSeparator />
-
-            {user && (
-              <DropdownMenuItem className="hover:cursor-pointer" asChild>
-                <Link href={`/${userData?.username}`} className="flex flex-row items-center">
-                  <Heart className="mr-2 h-4 w-4" />
-                  My products
-                </Link>
-              </DropdownMenuItem>
-            )}
 
             {user && (
               <DropdownMenuItem className="hover:cursor-pointer" asChild>
