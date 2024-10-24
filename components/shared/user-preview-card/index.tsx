@@ -50,9 +50,9 @@ export default function UserPreviewCard({ user }: Props) {
         <Typography
           size="xs"
           fontWeight="normal"
-          className="!no-underline text-secondary md:text-sm"
+          className="!no-underline text-secondary md:text-sm h-8 transition-all duration-300"
         >
-          {favorites?.length || 0} products
+          {(favorites ?? []).length > 0 ? `${(favorites ?? []).length} products` : ''}
         </Typography>
       </div>
     </Link>
