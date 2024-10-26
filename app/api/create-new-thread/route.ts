@@ -10,10 +10,12 @@ export async function POST(req: Request) {
           {
             role: 'user',
             content: `
-              Be as specific as possible.              
-              Include markdown button linking to the data sources in a vertical list (without bullets) using this format:
+              Be as specific as possible.
+              Only if there was Oasis data provided: include markdown button linking to the data sources in a vertical list (without bullets) using this format:
 
               Button Syntax: [Data Source Name](http://example.com "oasis-button")
+
+              Do not include the button if there was no Oasis data provided and do you best to answer the question while mentioing Oasis doesn't have any indexed resaerch  on this subject yet. 
             `,
           },
         ],
