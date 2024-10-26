@@ -442,7 +442,7 @@ export function AISearchDialog({
           ) : (
             <div className="flex flex-col ">
               <Typography size="2xl" fontWeight="normal">
-                Oasis AI
+                Oasis Research AI
               </Typography>
               <Typography size="base" fontWeight="normal" className="mb-4 text-secondary">
                 👋 Hey I am here to help you find the best products for your health. How can I help?

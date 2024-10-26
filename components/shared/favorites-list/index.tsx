@@ -198,7 +198,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
                     className="grid md:grid-cols-3 grid-cols-2 w-full gap-6"
                   >
                     {favorites
-                      .filter((fav: any) => fav.type === 'water')
+                      .filter((fav: any) => WATER_TYPES.includes(fav.type))
                       .map((fav: any) => (
                         <ItemPreviewCard
                           key={fav.id}

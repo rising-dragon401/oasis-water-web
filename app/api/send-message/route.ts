@@ -1,5 +1,4 @@
 import { ApplicationError, UserError } from '@/lib/errors'
-import { determineLink } from '@/utils/helpers'
 import { createClient } from '@supabase/supabase-js'
 import { codeBlock, oneLine } from 'common-tags'
 import GPT3Tokenizer from 'gpt3-tokenizer'
@@ -14,6 +13,7 @@ export const maxDuration = 300
 
 export async function POST(req: Request, res: Response) {
   try {
+    console.log('helllooooo')
     if (!supabaseUrl) {
       throw new ApplicationError('Missing environment variable SUPABASE_URL')
     }
@@ -43,11 +43,11 @@ export async function POST(req: Request, res: Response) {
       }
     }
 
-    const oasisPaths = {
-      'All bottled water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/bottled-water`,
-      'All filters': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/filters`,
-      'All tap water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/tap-water`,
-    }
+    // const oasisPaths = {
+    //   'All bottled water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/bottled-water`,
+    //   'All filters': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/filters`,
+    //   'All tap water': `https://${process.env.NEXT_PUBLIC_BASE_URL}search/tap-water`,
+    // }
 
     const fullQuery = oneLine`
      ${query}    
@@ -86,8 +86,10 @@ export async function POST(req: Request, res: Response) {
     const { error: matchError, data: documents } = await supabaseClient.rpc('match_documents', {
       query_embedding: embedding,
       match_threshold: 0.4,
-      match_count: 5,
+      match_count: 47,
     })
+
+    console.log('documents: ', documents)
 
     // console.log(`Match error:`, matchError)
     console.log(`Documents: ${JSON.stringify(documents)}`)
@@ -99,44 +101,45 @@ export async function POST(req: Request, res: Response) {
     const tokenizer = new GPT3Tokenizer({ type: 'gpt3' })
     const maxTokenCount = 20000
 
-    const formulateItemData = async (document: any) => {
-      let contentData
-      if (typeof document.content !== 'string') {
-        contentData = JSON.parse(document.content)
-      } else {
-        contentData = document.content
-      }
+    // deprecate item fetching in AI
+    // const formulateItemData = async (document: any) => {
+    //   let contentData
+    //   if (typeof document.content !== 'string') {
+    //     contentData = JSON.parse(document.content)
+    //   } else {
+    //     contentData = document.content
+    //   }
 
-      const itemObject = {
-        id: document.original_id,
-        type: contentData?.type || '',
-        name: contentData?.name || '',
-      }
+    //   const itemObject = {
+    //     id: document.original_id,
+    //     type: contentData?.type || '',
+    //     name: contentData?.name || '',
+    //   }
 
-      const pagePath = await determineLink(itemObject)
+    //   const pagePath = await determineLink(itemObject)
 
-      let content = document.content
-      const encoded = tokenizer.encode(content)
-      let contentField = ''
+    //   let content = document.content
+    //   const encoded = tokenizer.encode(content)
+    //   let contentField = ''
 
-      if (encoded.text.length > maxTokenCount) {
-        // If content exceeds the limit, truncate it
-        content = content.slice(0, maxTokenCount)
-        contentField = `${content.trim()}\n---\n`
-      } else {
-        // If content does not exceed the limit, use it as is
-        contentField = `${content.trim()}\n---\n`
-      }
+    //   if (encoded.text.length > maxTokenCount) {
+    //     // If content exceeds the limit, truncate it
+    //     content = content.slice(0, maxTokenCount)
+    //     contentField = `${content.trim()}\n---\n`
+    //   } else {
+    //     // If content does not exceed the limit, use it as is
+    //     contentField = `${content.trim()}\n---\n`
+    //   }
 
-      return {
-        itemID: document?.original_id,
-        table: document?.original_table,
-        name: contentData?.name,
-        affiliateLink: contentData?.affiliateLink,
-        pagePath,
-        content: contentField,
-      }
-    }
+    //   return {
+    //     itemID: document?.original_id,
+    //     table: document?.original_table,
+    //     name: contentData?.name,
+    //     affiliateLink: contentData?.affiliateLink,
+    //     pagePath,
+    //     content: contentField,
+    //   }
+    // }
 
     const getResearchMetadata = async (researchDocument: any) => {
       const { data, error } = await supabaseClient
@@ -171,15 +174,19 @@ export async function POST(req: Request, res: Response) {
     const getData = async () => {
       return await Promise.all(
         documents.map(async (document: any) => {
-          if (
-            document.original_table === 'water_filters' ||
-            document.original_table === 'items' ||
-            document.original_table === 'tap_water_locations'
-          ) {
-            return await formulateItemData(document)
-          } else if (document.original_table === 'research') {
+          if (document.original_table === 'research') {
             return await formulateResearchData(document)
           }
+          // deprecate item fetching in AI
+          // if (
+          //   document.original_table === 'water_filters' ||
+          //   document.original_table === 'items' ||
+          //   document.original_table === 'tap_water_locations'
+          // ) {
+          //   return await formulateItemData(document)
+          // } else if (document.original_table === 'research') {
+          //   return await formulateResearchData(document)
+          // }
         })
       )
     }
@@ -191,7 +198,7 @@ export async function POST(req: Request, res: Response) {
     const prompt = codeBlock`
       Question: ${sanitizedQuery}
 
-      Relevent oasis data to use to formulate your answer: ${JSON.stringify(data)}
+      Relevent oasis research data to use to formulate your answer: ${JSON.stringify(data)}
     `
     // console.log('prompt: ', prompt)
 

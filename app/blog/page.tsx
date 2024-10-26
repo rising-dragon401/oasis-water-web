@@ -32,12 +32,12 @@ export default function ResearchPage() {
           </Typography>
 
           <div className="md:w-[40vw] mt-4">
-            <AISearchDialog size="medium" variant="input" placeholder="Ask Oasis AI" />
+            <AISearchDialog size="medium" variant="input" placeholder="Ask Oasis Research" />
           </div>
         </div>
         <Tabs defaultValue="articles">
           <div className="md:!max-w-[80vw] max-w-[90vw] overflow-x-auto hide-scrollbar pb-2">
-            <TabsList>
+            <TabsList className="gap-2">
               <TabsTrigger value="articles">Articles</TabsTrigger>
               <TabsTrigger value="studies">Studies</TabsTrigger>
             </TabsList>
