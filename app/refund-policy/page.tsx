@@ -28,7 +28,7 @@ export default async function RefundPolicy() {
         </Typography>
         <Typography size="base" fontWeight="normal">
           If you have any questions or need assistance with managing your subscription, please
-          contact our customer support team at cormac@live-oasis.com.
+          contact our customer support team at hello@live-oasis.com.
         </Typography>
         <Typography size="base" fontWeight="normal">
           Thank you for your understanding and continued support.

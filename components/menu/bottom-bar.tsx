@@ -1,4 +1,4 @@
-import { Heart, Home, User } from 'lucide-react'
+import { Home, Settings, User } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Typography from '../typography'
@@ -22,12 +22,12 @@ const MENU_ITEMS = [
   {
     label: 'Favorites',
     href: '/favorites',
-    icon: Heart,
+    icon: User,
   },
   {
     label: 'Settings',
     href: '/account',
-    icon: User,
+    icon: Settings,
   },
 ]
 

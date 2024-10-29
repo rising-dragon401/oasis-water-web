@@ -25,10 +25,9 @@ export default function ContactPage() {
             <H1 className="text-stone-200">Contact Us</H1>
             <P className="text-center mb-6 max-w-md mt-2 text-stone-200">
               We may be in the lab or out traveling searching for the best water but we will get
-              back to you as soon as possible. Email cormac@live-oasis.com for the quickest
-              response.
+              back to you as soon as possible. Email hello@live-oasis.com for the quickest response.
             </P>
-            <Button variant="secondary" onClick={() => router.push('mailto:cormac@live-oasis.com')}>
+            <Button variant="secondary" onClick={() => router.push('mailto:hello@live-oasis.com')}>
               Send email
             </Button>
           </div>
