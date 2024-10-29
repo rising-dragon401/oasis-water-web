@@ -44,7 +44,7 @@ export function AISearchDialog({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const { user, uid, userData, subscription } = useUserProvider()
+  const { user, uid, userData, subscription, subscriptionData } = useUserProvider()
   const { openModal } = useModal()
 
   const [open, setOpen] = React.useState(false)
@@ -328,7 +328,7 @@ export function AISearchDialog({
           />
 
           {/* @ts-ignore */}
-          {!subscription || subscription.status !== 'active' ? (
+          {!subscription || subscriptionData.status !== 'active' ? (
             <Button
               type="submit"
               variant="default"
