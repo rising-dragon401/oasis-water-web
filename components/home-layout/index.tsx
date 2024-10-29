@@ -14,7 +14,7 @@ import { PropsWithChildren, Suspense, useEffect } from 'react'
 import useSWR from 'swr'
 import { AccountMenu } from '../menu/account-menu'
 import BottomNavbar from '../menu/bottom-bar'
-import SignUpButton from '../shared/sign-up-button'
+import DownloadAppButton from '../shared/downlaod-app-button'
 
 type Props = {
   openModal: (modalName: ModalName) => void
@@ -54,7 +54,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
 
-        <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
+        {/* <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
           <Typography size="sm" fontWeight="normal">
             {!subscription ? (
               <>
@@ -102,7 +102,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
               </>
             )}
           </Typography>
-        </div>
+        </div> */}
 
         <div className="md:flex hidden flex-w w-full justify-between items-center">
           <HomeNavbar />
@@ -117,7 +117,8 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
                 <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
                   Login
                 </Link>
-                <SignUpButton />
+                <DownloadAppButton />
+                {/* <SignUpButton />  */}
               </div>
             )}
           </div>
@@ -136,7 +137,8 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </Link>
 
           <div className="flex flex-row items-center justify-end w-full">
-            <BasicSearch showSearch={false} size="medium" />
+            {/* <BasicSearch showSearch={false} size="medium" /> */}
+            <DownloadAppButton />
           </div>
         </div>
 
@@ -149,6 +151,9 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
         </div> */}
 
         <div className="md:hidden">
+          <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
+            Login
+          </Link>
           <BottomNavbar />
         </div>
       </div>

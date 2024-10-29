@@ -173,8 +173,8 @@ export default function LabTestingPage() {
           </Typography>
           <Typography size="base" fontWeight="normal" className="mt-2 text-secondary">
             Need a custom test or want Oasis to review your water? Reach out to us at{' '}
-            <a href="mailto:cormac@live-oasis.com" className="underline">
-              cormac@live-oasis.com
+            <a href="mailto:hello@live-oasis.com" className="underline">
+              hello@live-oasis.com
             </a>
           </Typography>
         </div>
