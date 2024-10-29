@@ -25,7 +25,7 @@ export default function ResearchPage() {
       <div className="flex flex-col w-full md:px-0 px-4">
         <div className="pt-4 pb-8">
           <Typography size="3xl" fontWeight="normal">
-            Latest research
+            Research
           </Typography>
           <Typography size="lg" fontWeight="normal" className="text-secondary">
             Stay up to date on the latest scientific research regarding product health
@@ -38,7 +38,7 @@ export default function ResearchPage() {
         <Tabs defaultValue="articles">
           <div className="md:!max-w-[80vw] max-w-[90vw] overflow-x-auto hide-scrollbar pb-2">
             <TabsList className="gap-2">
-              <TabsTrigger value="articles">Articles</TabsTrigger>
+              <TabsTrigger value="articles">Posts</TabsTrigger>
               <TabsTrigger value="studies">Studies</TabsTrigger>
             </TabsList>
           </div>

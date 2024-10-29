@@ -21,7 +21,7 @@ interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
 
 export default function HomeNavbar() {
   return (
-    <NavigationMenu className="flex w-full justify-between py-2">
+    <NavigationMenu className="flex w-full justify-between py-2 ">
       <NavigationMenuList>
         <NavigationMenuItem className="mr-4">
           <Link href="/" className="flex  flex-row items-center hover:cursor-pointer">

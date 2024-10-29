@@ -111,7 +111,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
   }
 
   return (
-    <div className="w-full px-2 ">
+    <div className="w-full px-2">
       <div className="flex flex-row justify-between mb-2 w-full">
         <div className="flex flex-row items-start md:gap-4 gap-2 w-full">
           <Image
@@ -166,7 +166,7 @@ export default function FavoritesList({ userName }: { userName: string | null | 
         </Button> */}
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 w-full">
         <Large className="mt-4 mb-2">Products</Large>
 
         {loadingFavorites ? (

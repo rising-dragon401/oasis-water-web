@@ -2,7 +2,6 @@
 
 import { getActiveProductsWithPrices } from '@/app/actions/user'
 import Logo from '@/components/shared/logo'
-import { ReferralCodeInput } from '@/components/shared/referral-code-input'
 import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -48,6 +47,7 @@ const FEATURES = [
 ]
 
 const kAnnualPrice = 47
+const kWeeklyPrice = 4.99
 
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
@@ -112,6 +112,11 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
       (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID_MONTHLY
     ) ?? null
 
+  const proPriceWeekly =
+    proProduct?.prices.find(
+      (price: any) => price.id === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_ID_WEEKLY
+    ) ?? null
+
   const redirectToPayment = async () => {
     if (!user) {
       setRedirectUrl(pathname)
@@ -121,7 +126,12 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
       return
     }
 
-    const thisPrice = selectedPlan === 'annual' ? proPriceAnnual : proPriceMonthly
+    const thisPrice =
+      selectedPlan === 'annual'
+        ? proPriceAnnual
+        : selectedPlan === 'weekly'
+          ? proPriceWeekly
+          : proPriceMonthly
 
     if (!thisPrice) {
       toast('Unable to create checkout link')
@@ -185,7 +195,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           <div className="flex flex-col justify-center items-center">
             <Logo className="w-20 h-20" />
             <Typography size="2xl" fontWeight="bold" className="text-center mt-2">
-              Unlock the truth in your water
+              Unlock healthy hydration
             </Typography>
           </div>
 
@@ -224,7 +234,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
                     Yearly access
                   </Typography>
                   <Typography size="xs" fontWeight="normal">
-                    ${kAnnualPrice} /year
+                    ${kAnnualPrice}
                   </Typography>
                 </div>
               </div>
@@ -239,15 +249,15 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               </div>
             </Button>
 
-            {/* <Button
+            <Button
               variant="outline"
               className={`px-4 w-full !font-bold mb-2 flex h-12 flex-row justify-between 
-                ${selectedPlan === 'monthly' ? 'border-primary' : 'border'}
+                ${selectedPlan === 'weekly' ? 'border-primary' : 'border'}
               `}
-              onClick={() => setSelectedPlan('monthly')}
+              onClick={() => setSelectedPlan('weekly')}
             >
               <div className="flex flex-row gap-3 items-center">
-                {selectedPlan === 'monthly' ? (
+                {selectedPlan === 'weekly' ? (
                   <CheckCircle className="w-4 h-4" />
                 ) : (
                   <Circle className="w-4 h-4" />
@@ -255,10 +265,10 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
                 <div className="flex flex-col items-start ">
                   <Typography size="base" fontWeight="bold">
-                    Monthly access
+                    Weekly access
                   </Typography>
                   <Typography size="xs" fontWeight="normal">
-                    ${kMonthlyPrice} /month
+                    ${kWeeklyPrice}
                   </Typography>
                 </div>
               </div>
@@ -266,25 +276,25 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               <div className="flex flex-col items-start">
                 <div className="flex flex-col items-start">
                   <Typography size="xs" fontWeight="normal">
-                    ${(kMonthlyPrice / 5).toFixed(2)}
+                    ${(kWeeklyPrice / 5).toFixed(2)}
                   </Typography>
                   <Typography size="xs" fontWeight="normal">
                     per week
                   </Typography>
                 </div>
               </div>
-            </Button> */}
+            </Button>
 
             <Button
               variant="default"
-              className="px-4 w-full !font-bold mb-2 flex rounded-full h-14"
+              className="px-4 w-full !font-bold mb-2 flex rounded-full h-14 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white shadow-lg shadow-blue-600/50"
               onClick={() => redirectToPayment()}
               loading={loadingCheckoutSession}
             >
               Upgrade
             </Button>
 
-            <ReferralCodeInput />
+            {/* <ReferralCodeInput /> */}
 
             <div
               onClick={redirectToSignIn}

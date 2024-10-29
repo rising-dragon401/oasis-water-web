@@ -28,7 +28,7 @@ export default function UserPreviewCard({ user }: Props) {
       href={`/${user.username}`}
       className="flex w-full items-center border-border mt-4 relative bg-card rounded-full hover:shadow-md p-2 pr-4 md:p-3 md:pr-6"
     >
-      <div className="relative flex-shrink-0 w-12 h-12 mr-3 md:w-14 md:h-14 md:mr-4">
+      <div className="relative flex-shrink-0 w-10 h-10 mr-3 md:mr-4">
         <Image
           src={user.avatar_url || ''}
           className="w-full h-full rounded-full object-cover hover:cursor-pointer"
@@ -39,7 +39,7 @@ export default function UserPreviewCard({ user }: Props) {
           alt={user.full_name || 'oasis user image'}
         />
       </div>
-      <div className="flex flex-col min-w-0">
+      <div className="flex flex-col min-w-0 h-full pt-1">
         <Typography
           size="sm"
           fontWeight="bold"
@@ -50,7 +50,7 @@ export default function UserPreviewCard({ user }: Props) {
         <Typography
           size="xs"
           fontWeight="normal"
-          className="!no-underline text-secondary md:text-sm h-8 transition-all duration-300"
+          className="!no-underline text-secondary md:text-sm transition-all duration-300"
         >
           {(favorites ?? []).length > 0 ? `${(favorites ?? []).length} products` : ''}
         </Typography>

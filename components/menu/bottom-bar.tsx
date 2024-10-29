@@ -1,4 +1,4 @@
-import { Home, Settings, User } from 'lucide-react'
+import { Home, Newspaper, Settings, User } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Typography from '../typography'
@@ -14,13 +14,13 @@ const MENU_ITEMS = [
   //   href: '/top-rated',
   //   icon: Trophy,
   // },
-  // {
-  //   label: 'Research',
-  //   href: '/blog',
-  //   icon: ActivitySquare,
-  // },
   {
-    label: 'Favorites',
+    label: 'Research',
+    href: '/blog',
+    icon: Newspaper,
+  },
+  {
+    label: 'Profile',
     href: '/favorites',
     icon: User,
   },
