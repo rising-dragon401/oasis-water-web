@@ -1,7 +1,6 @@
 'use client'
 
 import { getIngredients } from '@/app/actions/ingredients'
-import BasicSearch from '@/components/basic-search'
 import HomeNavbar from '@/components/menu/home-navbar'
 import Footer from '@/components/shared/footer'
 import Logo from '@/components/shared/logo'
@@ -49,7 +48,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
 
   return (
     <div className="min-h-[100vh] flex justify-center">
-      <div className="xl:max-w-6xl lg:max-w-5xl md:max-w-4xl sm:max-w-xl max-w-sm w-full">
+      <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-4xl sm:max-w-xl max-w-sm w-full">
         <Suspense fallback={<div />}>
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
@@ -104,11 +103,11 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </Typography>
         </div> */}
 
-        <div className="md:flex hidden flex-w w-full justify-between items-center">
+        <div className="md:flex hidden flex-w w-full justify-between items-center ">
           <HomeNavbar />
 
           <div className="flex justify-end items-center gap-2">
-            <BasicSearch showSearch={false} size="small" />
+            {/* <BasicSearch showSearch={false} size="small" /> */}
 
             {user ? (
               <AccountMenu />
@@ -142,7 +141,9 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </div>
         </div>
 
-        <div className="py-3 min-h-[70vh] flex justify-center w-full">{children}</div>
+        <div className="py-3 min-h-[70vh] flex justify-center w-full xl:max-w-6xl lg:max-w-4xl md:max-w-4xl sm:max-w-xl max-w-sm">
+          {children}
+        </div>
 
         <Footer />
 
