@@ -30,7 +30,8 @@ interface UserContextType {
   userData: any
   userFavorites: any[] | null | undefined
   emailSubscriptions: any[] | null | undefined
-  subscription: SubscriptionWithProduct | null | undefined
+  subscription: boolean
+  subscriptionData: SubscriptionWithProduct | null | undefined
   loadingUser: boolean
   refreshUserData: () => void
   fetchUserData: (uid: string) => void
@@ -56,7 +57,10 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [activeSession, setActiveSession] = useState<any>(null)
   const [userId, setUserId] = useState<string | null>(null)
   const [provider, setProvider] = useState<any>(null)
-  const [subscription, setSubscription] = useState<SubscriptionWithProduct | null | undefined>(null)
+  const [subscription, setSubscription] = useState<boolean>(false)
+  const [subscriptionData, setSubscriptionData] = useState<
+    SubscriptionWithProduct | null | undefined
+  >(null)
   const [userData, setUserData] = useSessionStorage<any>('userData', null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
   const [emailSubscriptions, setEmailSubscriptions] = useState<any[] | null | undefined>(null)
@@ -102,25 +106,31 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setProvider(session.user?.app_metadata?.provider)
   }
 
-  const fetchUserData = async (uid?: string | null) => {
-    const data = await getCurrentUserData(uid)
-    setUserData(data)
+  const fetchUserData = useCallback(
+    async (uid?: string | null) => {
+      const data = await getCurrentUserData(uid)
+      setUserData(data)
 
-    // check for username
-    if (!data?.username && uid) {
-      const username = await createUsername(uid)
-      if (username) {
-        setUserData({ ...data, username })
+      // check for username
+      if (!data?.username && uid) {
+        const username = await createUsername(uid)
+        if (username) {
+          setUserData({ ...data, username })
+        }
       }
-    }
-  }
+    },
+    [setUserData]
+  )
 
-  const fetchUserFavorites = async (uid: string | null) => {
-    if (!uid) return
+  const fetchUserFavorites = useCallback(
+    async (uid: string | null) => {
+      if (!uid) return
 
-    const favs = await getUserFavorites(uid)
-    setUserFavorites(favs)
-  }
+      const favs = await getUserFavorites(uid)
+      setUserFavorites(favs)
+    },
+    [setUserFavorites]
+  )
 
   const fetchEmailSubscriptions = async (uid: string | null) => {
     const res = await getEmailSubscriptions()
@@ -130,7 +140,12 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const fetchSubscription = async (uid: string | null) => {
     const data = await getSubscription(uid)
 
-    setSubscription(data as SubscriptionWithProduct | null)
+    if (data) {
+      setSubscription(true)
+      setSubscriptionData(data as SubscriptionWithProduct)
+    } else {
+      setSubscription(false)
+    }
 
     return data
   }
@@ -151,18 +166,18 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     [user?.id]
   )
 
-  const logout = useCallback(async () => {
-    await supabase.auth.signOut()
-    setSubscription(null)
-    clearUserData()
-  }, [supabase.auth])
-
-  const clearUserData = () => {
-    console.log('clearUserData')
+  const clearUserData = useCallback(() => {
     setUserData(null)
     setUserId(null)
     setUserFavorites(null)
-  }
+  }, [setUserData, setUserId, setUserFavorites])
+
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut()
+    setSubscription(false)
+    setSubscriptionData(null)
+    clearUserData()
+  }, [supabase.auth, clearUserData])
 
   const context = useMemo(
     () => ({
@@ -170,6 +185,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       provider,
       uid: userId,
       subscription,
+      subscriptionData,
       userData,
       userFavorites,
       emailSubscriptions,
@@ -184,6 +200,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       provider,
       userId,
       subscription,
+      subscriptionData,
       userData,
       userFavorites,
       emailSubscriptions,

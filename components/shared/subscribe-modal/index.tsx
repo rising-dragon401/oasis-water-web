@@ -13,7 +13,6 @@ import { ProductWithPrices } from '@/types/custom'
 import { postData } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
 import * as Sentry from '@sentry/browser'
-import { CheckCircle, Circle } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -215,65 +214,50 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
         <DialogFooter className="flex flex-col gap-2 w-full">
           <div className="flex flex-col">
-            <Button
-              variant="outline"
-              className={`px-4 w-full !font-bold mb-2 flex h-12 flex-row justify-between
-                ${selectedPlan === 'annual' ? 'border-primary' : 'border'}
+            <div className="flex flex-row gap-2">
+              <Button
+                variant="outline"
+                className={`px-4 w-full !font-bold mb-2 flex !h-full !py-1 !rounded-md flex-row justify-between
+                ${selectedPlan === 'annual' ? 'border-primary border-2' : 'border'}
               `}
-              onClick={() => setSelectedPlan('annual')}
-            >
-              <div className="flex flex-row gap-3 items-center">
-                {selectedPlan === 'annual' ? (
-                  <CheckCircle className="w-4 h-4" />
-                ) : (
-                  <Circle className="w-4 h-4" />
-                )}
-
-                <div className="flex flex-col items-start ">
-                  <Typography size="base" fontWeight="bold">
-                    Yearly access
-                  </Typography>
-                  <Typography size="xs" fontWeight="normal">
-                    ${kAnnualPrice}
-                  </Typography>
+                onClick={() => setSelectedPlan('annual')}
+              >
+                <div className="flex flex-row gap-3 items-center w-full">
+                  <div className="flex flex-col items-start w-full">
+                    <Typography size="base" fontWeight="bold">
+                      Yearly
+                    </Typography>
+                    <div className="flex flex-row justify-between items-end w-full mt-2">
+                      <Typography size="sm" fontWeight="normal">
+                        ${kAnnualPrice}
+                      </Typography>
+                      <Typography size="xs" fontWeight="normal">
+                        ${(kAnnualPrice / 52).toFixed(2)} /wk
+                      </Typography>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Button>
 
-              <div className="flex flex-col items-start">
-                <Typography size="xs" fontWeight="normal">
-                  ${(kAnnualPrice / 52).toFixed(2)}
-                </Typography>
-                <Typography size="xs" fontWeight="normal">
-                  per week
-                </Typography>
-              </div>
-            </Button>
-
-            <Button
-              variant="outline"
-              className={`px-4 w-full !font-bold mb-2 flex h-12 flex-row justify-between 
-                ${selectedPlan === 'weekly' ? 'border-primary' : 'border'}
+              <Button
+                variant="outline"
+                className={`px-4 w-full !font-bold mb-2 flex h-full  !py-1 !rounded-md flex-row justify-between 
+                ${selectedPlan === 'weekly' ? 'border-primary border-2' : 'border'}
               `}
-              onClick={() => setSelectedPlan('weekly')}
-            >
-              <div className="flex flex-row gap-3 items-center">
-                {selectedPlan === 'weekly' ? (
-                  <CheckCircle className="w-4 h-4" />
-                ) : (
-                  <Circle className="w-4 h-4" />
-                )}
-
-                <div className="flex flex-col items-start ">
-                  <Typography size="base" fontWeight="bold">
-                    Weekly access
-                  </Typography>
-                  <Typography size="xs" fontWeight="normal">
-                    ${kWeeklyPrice}
-                  </Typography>
+                onClick={() => setSelectedPlan('weekly')}
+              >
+                <div className="flex flex-row gap-3 items-center">
+                  <div className="flex flex-col items-start w-full">
+                    <Typography size="base" fontWeight="bold">
+                      Weekly
+                    </Typography>
+                    <Typography size="sm" fontWeight="normal" className="mt-2">
+                      ${kWeeklyPrice}
+                    </Typography>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex flex-col items-start">
+                {/* <div className="flex flex-col items-start">
                 <div className="flex flex-col items-start">
                   <Typography size="xs" fontWeight="normal">
                     ${(kWeeklyPrice / 5).toFixed(2)}
@@ -282,12 +266,13 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
                     per week
                   </Typography>
                 </div>
-              </div>
-            </Button>
+              </div> */}
+              </Button>
+            </div>
 
             <Button
               variant="default"
-              className="px-4 w-full !font-bold mb-2 flex rounded-full h-14 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white shadow-lg shadow-blue-600/50"
+              className="px-4 mt-4 w-full !font-bold mb-2 flex rounded-full h-12 shadow-lg shadow-blue-600/50"
               onClick={() => redirectToPayment()}
               loading={loadingCheckoutSession}
             >
