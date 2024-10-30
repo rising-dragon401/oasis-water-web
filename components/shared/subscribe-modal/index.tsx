@@ -6,6 +6,14 @@ import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscripti
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Large, Muted } from '@/components/ui/typography'
+import { kAppStore, kGooglePlay } from '@/lib/constants/socials'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
@@ -15,6 +23,7 @@ import { getStripe } from '@/utils/stripe-client'
 import * as Sentry from '@sentry/browser'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { TbBrandApple, TbBrandGooglePlay } from 'react-icons/tb'
 import { toast } from 'sonner'
 
 type SubscribeModalProps = {
@@ -189,7 +198,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
         setOpen(!open)
       }}
     >
-      <DialogContent className="sm:max-w-[425px] overflow-y-scroll max-h-[90vh] ">
+      <DialogContent className="md:max-w-none max-w-sm overflow-y-scroll max-h-[90vh] mx-10 ">
         <DialogHeader>
           <div className="flex flex-col justify-center items-center">
             <Logo className="w-20 h-20" />
@@ -198,11 +207,13 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             </Typography>
           </div>
 
-          <div className="flex flex-col">
-            <Typography size="base" fontWeight="normal" className="text-center text-secondary">
+          <div className="flex flex-col text-center">
+            <Large>$4 /mo</Large>
+            <Muted>Billed annually at $47</Muted>
+            {/* <Typography size="base" fontWeight="normal" className="text-center text-secondary">
               Your membership funds independent lab testing (which is expensive!) and keeps Oasis
               unbiased.
-            </Typography>
+            </Typography> */}
           </div>
         </DialogHeader>
 
@@ -212,7 +223,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           ))}
         </div>
 
-        <DialogFooter className="flex flex-col gap-2 w-full">
+        <DialogFooter className="flex flex-col gap-2 w-full px-4">
           <div className="flex flex-col">
             <div className="flex flex-row gap-2">
               <Button
@@ -239,61 +250,87 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
                 </div>
               </Button>
 
-              <Button
-                variant="outline"
-                className={`px-4 w-full !font-bold mb-2 flex h-full  !py-1 !rounded-md flex-row justify-between 
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={`px-4 w-full !font-bold mb-2 flex h-full  !py-1 !rounded-md flex-row justify-between 
                 ${selectedPlan === 'weekly' ? 'border-primary border-2' : 'border'}
               `}
-                onClick={() => setSelectedPlan('weekly')}
-              >
-                <div className="flex flex-row gap-3 items-center">
-                  <div className="flex flex-col items-start w-full">
-                    <Typography size="base" fontWeight="bold">
-                      Weekly
-                    </Typography>
-                    <Typography size="sm" fontWeight="normal" className="mt-2">
-                      ${kWeeklyPrice}
-                    </Typography>
-                  </div>
-                </div>
-
-                {/* <div className="flex flex-col items-start">
-                <div className="flex flex-col items-start">
-                  <Typography size="xs" fontWeight="normal">
-                    ${(kWeeklyPrice / 5).toFixed(2)}
-                  </Typography>
-                  <Typography size="xs" fontWeight="normal">
-                    per week
-                  </Typography>
-                </div>
-              </div> */}
-              </Button>
+                    // onClick={() => setSelectedPlan('weekly')}
+                  >
+                    <div className="flex flex-row gap-3 items-center w-full">
+                      <div className="flex flex-col items-start w-full">
+                        <Typography size="base" fontWeight="bold">
+                          Weekly
+                        </Typography>
+                        <div className="flex flex-row justify-between items-end w-full mt-2">
+                          <Typography size="sm" fontWeight="normal">
+                            ${kWeeklyPrice}
+                          </Typography>
+                          <Typography size="xs" fontWeight="normal">
+                            app only
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-40" align="end">
+                  <DropdownMenuItem>
+                    <TbBrandApple className="w-4 h-4 mr-2" />
+                    <a href={kAppStore} target="_blank" rel="noopener noreferrer">
+                      iOS app
+                    </a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <TbBrandGooglePlay className="w-4 h-4 mr-2" />
+                    <a href={kGooglePlay} target="_blank" rel="noopener noreferrer">
+                      Android app
+                    </a>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
-            <Button
-              variant="default"
-              className="px-4 mt-4 w-full !font-bold mb-2 flex rounded-full h-12 shadow-lg shadow-blue-600/50"
-              onClick={() => redirectToPayment()}
-              loading={loadingCheckoutSession}
-            >
-              Upgrade
-            </Button>
+            <div className="flex flex-col gap-1 text-center">
+              <Button
+                variant="default"
+                className="px-4 mt-4 w-full !font-bold mb-2 flex rounded-full h-12 shadow-md shadow-blue-600/50"
+                onClick={() => redirectToPayment()}
+                loading={loadingCheckoutSession}
+              >
+                Upgrade
+              </Button>
+              <Muted>We charge to support product lab testing and to keep Oasis unbiased.</Muted>
+            </div>
 
             {/* <ReferralCodeInput /> */}
 
-            <div
+            {/* <div
               onClick={redirectToSignIn}
               className="text-center text-secondary my-2 text-sm underline hover:cursor-pointer"
             >
               or sign in to existing Member account
-            </div>
+            </div> */}
 
-            <Typography size="sm" fontWeight="normal" className="text-center italic mt-1">
-              We do not offer refunds as stated in our
-              <a href="/refund-policy" className="text-blue-500 underline">
-                {` `} Refund policy.
-              </a>
-            </Typography>
+            <div className="flex flex-row mt-4 w-full justify-between">
+              <Muted className="text-center italic mt-1 text-xs">
+                <a href="/terms" className="underline">
+                  Terms of service
+                </a>
+              </Muted>
+              <Muted className="text-center italic mt-1 text-xs">
+                <a href="/privacy-policy" className="underline">
+                  Privacy policy
+                </a>
+              </Muted>
+              <Muted className="text-center italic mt-1 text-xs">
+                <a href="/refund-policy" className="underline">
+                  Refund policy.
+                </a>
+              </Muted>
+            </div>
           </div>
         </DialogFooter>
       </DialogContent>
