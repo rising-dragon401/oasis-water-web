@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Large, Muted } from '@/components/ui/typography'
+import { Muted } from '@/components/ui/typography'
 import { kAppStore, kGooglePlay } from '@/lib/constants/socials'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
 import { useModal } from '@/providers/ModalProvider'
@@ -207,14 +207,14 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
             </Typography>
           </div>
 
-          <div className="flex flex-col text-center">
+          {/* <div className="flex flex-col text-center">
             <Large>$4 /mo</Large>
-            <Muted>Billed annually at $47</Muted>
-            {/* <Typography size="base" fontWeight="normal" className="text-center text-secondary">
+            <Muted>Billed annually at $47</Muted> */}
+          {/* <Typography size="base" fontWeight="normal" className="text-center text-secondary">
               Your membership funds independent lab testing (which is expensive!) and keeps Oasis
               unbiased.
             </Typography> */}
-          </div>
+          {/* </div> */}
         </DialogHeader>
 
         <div className="flex flex-col gap-3 px-4 py-4 rounded-md bg-muted mx-8 ">
