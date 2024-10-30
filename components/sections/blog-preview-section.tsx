@@ -31,7 +31,7 @@ export default function BlogPreviewSection() {
       </div>
 
       <div className="w-full">
-        <div className="left-0 right-0 overflow-x-auto hide-scrollbar ">
+        <div className="left-0 right-0 overflow-x-auto hide-scrollbar transition-all duration-500 ease-in-out">
           <div className="flex flex-nowrap gap-6 pb-4">
             {blogs &&
               blogs.slice(0, 4).map((post) => (

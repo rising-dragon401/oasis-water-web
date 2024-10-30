@@ -1,12 +1,11 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useUserProvider } from '@/providers/UserProvider'
-import { useEffect } from 'react'
+import { getCurrentUserData } from '@/app/actions/user'
 import Loader from '@/components/shared/loader'
-import { getCurrentUserData, addToEmailList } from '@/app/actions/user'
 import Typography from '@/components/typography'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function Preloader() {
   const router = useRouter()
@@ -20,9 +19,9 @@ export default function Preloader() {
 
       if (userData) {
         // update user email fields
-        if (userData?.email) {
-          await addToEmailList(userData.id, userData?.email, 'newsletter', checked)
-        }
+        // if (userData?.email) {
+        //   await addToEmailList(userData.id, userData?.email, 'newsletter', checked)
+        // }
 
         router.push(previousPath || '/')
       } else {

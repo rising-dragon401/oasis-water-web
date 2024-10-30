@@ -276,8 +276,8 @@ export async function getSubscription(uid: string | null) {
   try {
     const { data: subscription } = await supabase
       .from('subscriptions')
-      .select('*, prices(*, products(*))')
-      .in('status', ['trialing', 'active'])
+      .select('*, prices(*, products(*)), metadata')
+      .in('status', ['active'])
       .eq('user_id', uid)
       .single()
 
@@ -315,8 +315,6 @@ export async function getSubscription(uid: string | null) {
       }
     } else if (provider === 'revenue_cat') {
       const isActive = subscription?.prices?.active
-
-      console.log('isActive: ', isActive)
 
       if (isActive) {
         planPlan = 'Member'

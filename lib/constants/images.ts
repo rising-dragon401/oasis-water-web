@@ -5,7 +5,7 @@ export const OG_IMAGE =
   'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg'
 
 export const AUTH_IMAGES = [
-  'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/auth/water.jpg?t=2023-12-29T17%3A27%3A23.323Z',
+  'https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/welcome-scan-graphic.png?t=2024-10-30T20%3A55%3A40.800Z',
 ]
 
 export const PROFILE_AVATAR =

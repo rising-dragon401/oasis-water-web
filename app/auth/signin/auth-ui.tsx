@@ -50,8 +50,8 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
           variables: {
             default: {
               colors: {
-                brand: '#232c74',
-                brandAccent: '#232c74',
+                brand: '#4354A4',
+                brandAccent: '#4354A4',
               },
             },
           },
