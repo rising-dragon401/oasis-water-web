@@ -110,7 +110,10 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
             {/* <BasicSearch showSearch={false} size="small" /> */}
 
             {user ? (
-              <AccountMenu />
+              <div className="flex flex-row gap-4 items-center ml-4">
+                <DownloadAppButton />
+                <AccountMenu />
+              </div>
             ) : (
               <div className="flex flex-row gap-4 items-center ml-4">
                 <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
@@ -135,7 +138,12 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
             </Typography>
           </Link>
 
-          <div className="flex flex-row items-center justify-end w-full">
+          <div className="flex flex-row items-center justify-end w-full gap-4">
+            {!user && (
+              <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
+                Login
+              </Link>
+            )}
             {/* <BasicSearch showSearch={false} size="medium" /> */}
             <DownloadAppButton />
           </div>

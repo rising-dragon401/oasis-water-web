@@ -370,7 +370,7 @@ export default function AccountSettings() {
               Membership
             </Typography>
             <div className="flex flex-col justify-between w-full bg-muted border border-border p-4 rounded-xl">
-              <div className="flex flex-row justify-between w-full">
+              <div className="flex md:flex-row flex-col  justify-between w-full">
                 <Typography size="base" fontWeight="normal" className="py-1 bg-muted rounded-lg">
                   {subscription ? (
                     <div className="flex flex-row items-center">

@@ -14,7 +14,9 @@ export default function DownloadAppButton({ referral }: { referral?: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="default">Download app</Button>
+        <Button variant="default" size="sm">
+          Download app
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">
         <DropdownMenuItem>
