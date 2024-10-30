@@ -22,7 +22,7 @@ import { getUserReferralStats } from '../actions/admin'
 import PasswordResetForm from './components/password-reset-form'
 
 export default function AccountSettings() {
-  const { provider, user, userData, subscription, fetchUserData, logout } = useUserProvider()
+  const { provider, userData, subscription, fetchUserData, logout } = useUserProvider()
   const { session } = useSupabase()
   const router = useRouter()
   const { openModal } = useModal()
@@ -214,6 +214,50 @@ export default function AccountSettings() {
 
           <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
             <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+              Membership
+            </Typography>
+            <div className="flex flex-col justify-between w-full bg-muted border border-border p-4 rounded-xl">
+              <div className="flex md:flex-row flex-col  justify-between w-full">
+                <Typography size="base" fontWeight="normal" className="py-1 bg-muted rounded-lg">
+                  {subscription ? (
+                    <div className="flex flex-row items-center">
+                      <BadgeCheck className="w-4 h-4 mr-1" />
+                      Oasis Member
+                    </div>
+                  ) : (
+                    'Free account'
+                  )}
+                </Typography>
+
+                {/* @ts-ignore */}
+                {subscription && subProvider !== 'revenue_cat' && (
+                  <Button
+                    variant="outline"
+                    onClick={handleManageSubscription}
+                    className="w-60"
+                    loading={loadingSubscription}
+                  >
+                    Manage
+                  </Button>
+                )}
+
+                {!subscription && (
+                  <Button variant="default" onClick={handleUpgrade} className="w-40">
+                    Upgrade
+                  </Button>
+                )}
+              </div>
+
+              {subProvider === 'revenue_cat' && (
+                <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
+                  Manage your membership in your phone settings
+                </Typography>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
               Edit Profile
             </Typography>
             <div className="flex flex-col space-y-6 w-full bg-muted border border-border p-4 rounded-xl">
@@ -362,50 +406,6 @@ export default function AccountSettings() {
                   </Button>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
-            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
-              Membership
-            </Typography>
-            <div className="flex flex-col justify-between w-full bg-muted border border-border p-4 rounded-xl">
-              <div className="flex md:flex-row flex-col  justify-between w-full">
-                <Typography size="base" fontWeight="normal" className="py-1 bg-muted rounded-lg">
-                  {subscription ? (
-                    <div className="flex flex-row items-center">
-                      <BadgeCheck className="w-4 h-4 mr-1" />
-                      Oasis Member
-                    </div>
-                  ) : (
-                    'Free account'
-                  )}
-                </Typography>
-
-                {/* @ts-ignore */}
-                {subscription && subProvider !== 'revenue_cat' && (
-                  <Button
-                    variant="outline"
-                    onClick={handleManageSubscription}
-                    className="w-60"
-                    loading={loadingSubscription}
-                  >
-                    Manage
-                  </Button>
-                )}
-
-                {!subscription && (
-                  <Button variant="default" onClick={handleUpgrade} className="w-40">
-                    Upgrade
-                  </Button>
-                )}
-              </div>
-
-              {subProvider === 'revenue_cat' && (
-                <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
-                  Manage your membership in your phone settings
-                </Typography>
-              )}
             </div>
           </div>
 
