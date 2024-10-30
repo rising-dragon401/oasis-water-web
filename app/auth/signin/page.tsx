@@ -3,6 +3,7 @@
 import { getCurrentUserData } from '@/app/actions/user'
 import { AUTH_IMAGES } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
@@ -37,34 +38,30 @@ export default function SignIn() {
   return (
     <>
       <div className="container relative h-full flex-col items-center justify-center md:grid lg:max-w-none md:grid-cols-2 md:px-0">
-        <div
-          className="hidden md:flex h-full flex-col justify-end bg-muted p-10 text-white dark:border-r lg:flex"
-          style={{
-            backgroundImage: `url(${image})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat',
-          }}
-        >
-          <div className="flex" />
-          {/* <div className="relative z-20 mt-auto">
-            <blockquote className="space-y-2">
+        <div className="hidden md:flex h-full flex-col justify-center items-center p-10 dark:border-r lg:flex">
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="flex flex-col items-center justify-center w-80">
+              <Image src={image} alt="Oasis" width={600} height={800} />
+            </div>
+            {/* <blockquote className="space-y-2">
               <p className="text-lg">
-                “A common critique of technology is that it removes choice from
-                our lives as machines make decisions for us. This is undoubtedly
-                true, yet more than offset by the freedom to create our lives
-                that flows from the material abundance created by our use of
-                machines.”
+                “A common critique of technology is that it removes choice from our lives as
+                machines make decisions for us. This is undoubtedly true, yet more than offset by
+                the freedom to create our lives that flows from the material abundance created by
+                our use of machines.”
               </p>
               <footer className="text-sm">Marc Andreeson</footer>
-            </blockquote>
-          </div> */}
+            </blockquote> */}
+          </div>
         </div>
+
         <div className="lg:p-8 flex">
           <div className="mx-auto flex w-full flex-col justify-center md:mt-14 mt-16 space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">Welcome to your Oasis</h1>
-              <p className="text-sm text-muted-foreground">Find the healthiest products for you</p>
+              <h1 className="text-2xl font-semibold tracking-tight">Know your water</h1>
+              <p className="text-sm text-muted-foreground">
+                Learn what&apos;s in your drinking and find the healthiest options for you.
+              </p>
             </div>
 
             <AuthUI showToast={showToast} toastMessage={toastMessage} />

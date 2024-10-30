@@ -15,7 +15,7 @@ export default async function Home() {
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
           <div className="flex flex-col items-center text-center gap-1">
             <Typography size="4xl" fontWeight="bold" className="max-w-3xl">
-              Search healthy water
+              What&apos;s in your water?
             </Typography>
 
             <Typography
@@ -23,7 +23,7 @@ export default async function Home() {
               fontWeight="normal"
               className="md:max-w-xl max-w-xs text-secondary"
             >
-              Discover the best water, filters and other products based on science.
+              90% of water contains toxins most filters don&apos;t remove them
             </Typography>
           </div>
 

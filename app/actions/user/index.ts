@@ -276,7 +276,7 @@ export async function getSubscription(uid: string | null) {
   try {
     const { data: subscription } = await supabase
       .from('subscriptions')
-      .select('*, prices(*, products(*))')
+      .select('*, prices(*, products(*)), metadata')
       .in('status', ['trialing', 'active'])
       .eq('user_id', uid)
       .single()
