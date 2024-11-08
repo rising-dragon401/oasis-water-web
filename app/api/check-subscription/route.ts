@@ -46,6 +46,7 @@ export async function POST(req: Request) {
       }
 
       console.log('provider: ', provider)
+      console.log('subscriptionId: ', subscriptionId)
 
       let subscriptionData = null
       let status = null
@@ -77,6 +78,8 @@ export async function POST(req: Request) {
         console.log('rcCustomerId: ', rcCustomerId)
 
         subscriptionData = await getRevenueCatSubscription(rcCustomerId)
+
+        console.log('rc sub data: ', JSON.stringify(subscriptionData, null, 2))
 
         if (subscriptionData) {
           // update or insert subscription to supabase
