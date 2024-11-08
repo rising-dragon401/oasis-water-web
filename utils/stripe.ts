@@ -5,11 +5,16 @@ export const stripe = new Stripe(
   {
     // https://github.com/stripe/stripe-node#configuration
     apiVersion: '2023-10-16',
-    // Register this as an official Stripe plugin.
-    // https://stripe.com/docs/building-plugins#setappinfo
-    appInfo: {
-      name: 'Next.js Subscription Starter',
-      version: '0.1.0',
-    },
   }
 )
+
+export const getStripeSubscription = async (subscriptionId: string) => {
+  console.log('getting stripe subscription: ', subscriptionId)
+
+  const subscription = await stripe.subscriptions.retrieve(subscriptionId).catch((error) => {
+    console.error('Error fetching subscription:', error)
+    throw error
+  })
+
+  return subscription
+}

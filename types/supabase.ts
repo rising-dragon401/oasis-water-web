@@ -75,15 +75,7 @@ export type Database = {
           id?: string
           stripe_customer_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "customers_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       deletion_requests: {
         Row: {
@@ -309,6 +301,7 @@ export type Database = {
           sources: Json[] | null
           tags: string | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at: string | null
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -338,6 +331,7 @@ export type Database = {
           sources?: Json[] | null
           tags?: string | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at?: string | null
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -367,6 +361,7 @@ export type Database = {
           sources?: Json[] | null
           tags?: string | null
           type?: Database["public"]["Enums"]["item_type"]
+          updated_at?: string | null
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -709,13 +704,6 @@ export type Database = {
             referencedRelation: "prices"
             referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: "subscriptions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
         ]
       }
       tap_water_locations: {
@@ -724,6 +712,7 @@ export type Database = {
           id: number
           image: string | null
           is_featured: boolean | null
+          lat_long: Json | null
           name: string
           score: number | null
           state: string | null
@@ -735,6 +724,7 @@ export type Database = {
           id?: number
           image?: string | null
           is_featured?: boolean | null
+          lat_long?: Json | null
           name: string
           score?: number | null
           state?: string | null
@@ -746,6 +736,7 @@ export type Database = {
           id?: number
           image?: string | null
           is_featured?: boolean | null
+          lat_long?: Json | null
           name?: string
           score?: number | null
           state?: string | null
@@ -761,6 +752,7 @@ export type Database = {
           billing_address: Json | null
           bio: string | null
           created_at: string
+          do_not_override_sub: boolean | null
           email: string | null
           followers: string[] | null
           following: string[] | null
@@ -770,12 +762,17 @@ export type Database = {
           id: string
           is_featured: boolean | null
           is_oasis_public: boolean | null
+          is_onboarded: boolean | null
+          location: Json | null
           metadata: Json | null
+          newsletter_subscribed: boolean | null
           payment_method: Json | null
           permissions: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code: string | null
           referred_by: string | null
           score: number | null
+          socials: Json | null
+          tap_location_id: number | null
           username: string | null
         }
         Insert: {
@@ -784,6 +781,7 @@ export type Database = {
           billing_address?: Json | null
           bio?: string | null
           created_at?: string
+          do_not_override_sub?: boolean | null
           email?: string | null
           followers?: string[] | null
           following?: string[] | null
@@ -793,12 +791,17 @@ export type Database = {
           id: string
           is_featured?: boolean | null
           is_oasis_public?: boolean | null
+          is_onboarded?: boolean | null
+          location?: Json | null
           metadata?: Json | null
+          newsletter_subscribed?: boolean | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code?: string | null
           referred_by?: string | null
           score?: number | null
+          socials?: Json | null
+          tap_location_id?: number | null
           username?: string | null
         }
         Update: {
@@ -807,6 +810,7 @@ export type Database = {
           billing_address?: Json | null
           bio?: string | null
           created_at?: string
+          do_not_override_sub?: boolean | null
           email?: string | null
           followers?: string[] | null
           following?: string[] | null
@@ -816,22 +820,20 @@ export type Database = {
           id?: string
           is_featured?: boolean | null
           is_oasis_public?: boolean | null
+          is_onboarded?: boolean | null
+          location?: Json | null
           metadata?: Json | null
+          newsletter_subscribed?: boolean | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
           redeemed_invite_code?: string | null
           referred_by?: string | null
           score?: number | null
+          socials?: Json | null
+          tap_location_id?: number | null
           username?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "users_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "users_redeemed_invite_code_fkey"
             columns: ["redeemed_invite_code"]
@@ -844,6 +846,13 @@ export type Database = {
             columns: ["referred_by"]
             isOneToOne: false
             referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "users_tap_location_id_fkey"
+            columns: ["tap_location_id"]
+            isOneToOne: false
+            referencedRelation: "tap_water_locations"
             referencedColumns: ["id"]
           },
         ]
@@ -970,6 +979,7 @@ export type Database = {
           sources: Json[] | null
           tags: string | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at: string | null
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -1038,6 +1048,7 @@ export type Database = {
           sources: Json[] | null
           tags: string | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at: string | null
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -1050,6 +1061,7 @@ export type Database = {
           id: number
           image: string | null
           is_featured: boolean | null
+          lat_long: Json | null
           name: string
           score: number | null
           state: string | null
@@ -1066,6 +1078,7 @@ export type Database = {
           id: string
           full_name: string
           username: string
+          bio: string
           is_featured: boolean
           avatar_url: string
           score: number
@@ -1230,6 +1243,7 @@ export type Database = {
         | "past_due"
         | "unpaid"
         | "paused"
+        | "expired"
       water_filtration_methods:
         | "Distillation"
         | "Reverse osmosis"
@@ -1330,4 +1344,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

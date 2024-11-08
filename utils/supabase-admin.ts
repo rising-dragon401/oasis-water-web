@@ -86,6 +86,198 @@ const getUserByUUID = async (uuid: string) => {
   return data
 }
 
+export const getUserSubscription = async (uid: string) => {
+  const { data, error } = await supabaseAdmin
+    .from('subscriptions')
+    .select('*')
+    .eq('user_id', uid)
+    .order('created', { ascending: false })
+
+  if (error) {
+    return null
+  }
+
+  return data[0]
+}
+
+export const updateSubscriptionStatus = async (subscriptionId: string, status: any) => {
+  const { error } = await supabaseAdmin
+    .from('subscriptions')
+    .update({ status })
+    .eq('id', subscriptionId)
+  if (error) {
+    return false
+  }
+
+  return true
+}
+
+const RC_PRODUCT_IDS = {
+  prod16696e4749: 'rc_pro_weekly_499',
+  prod3486c429e8: 'rc_pro_annual_47',
+  prodb1af374c51: 'rc_pro_weekly_499:rc-pro-weekly-499',
+  prod4f3e26720b: 'rc_pro_annual_47:annual-autorenewing',
+  prod30030bc74b: 'rc_pro_monthly_4:monthly-autorenewing',
+  prod159d98128e: 'rc_pro_monthly_799',
+}
+
+export const manageRcSubscriptionChange = async (
+  subscriptionData: any,
+  rcCustomerId: string,
+  uid: string
+) => {
+  try {
+    // console.log('manageRcSubscriptionChange', JSON.stringify(subscriptionData, null, 2))
+
+    const subscriptionItem = subscriptionData?.items[0]
+    const productId = subscriptionItem?.product_id
+    const productIdentifier = RC_PRODUCT_IDS[productId as keyof typeof RC_PRODUCT_IDS] || productId
+    const entitlementId = subscriptionItem?.entitlements.items[0]?.id
+    // const entitlementData = await getRevenueCatEntitlement(rcCustomerId, entitlementId)
+    const status = subscriptionItem?.status
+    const customerId = rcCustomerId
+    const proCreatedAt = subscriptionItem?.created
+    const provider = 'revenue_cat'
+    const currentPeriodEnd = subscriptionItem?.current_period_end
+    const cancelAtPeriodEnd = subscriptionItem?.cancel_at_period_end
+    const rcSubscriptionId = subscriptionItem?.id // why did I not use this lolol
+
+    // TOOD maybe overritw all rc sub ids with the ids from revenue cat
+
+    // THIS IS NOT UNIQUE... FUUUUDGE
+    // so basically there will be duplicate sub ids for rev cat but never the same sub id for the same user, unless they purchase at the same exact time
+    const oldSubId = 'sub_rc_' + proCreatedAt?.toString() + productIdentifier
+    // const newSubId = 'sub_rc_' + proCreatedAt?.toString() + uid + productIdentifier
+    const newSubId = rcSubscriptionId
+
+    // Unknown amount
+    let amount = 0
+
+    if (productIdentifier === 'rc_pro_weekly_499') {
+      amount = 499
+    } else if (productIdentifier === 'rc_pro_annual_47') {
+      amount = 4700
+    } else if (productIdentifier === 'rc_pro_monthly_799') {
+      amount = 799
+    }
+
+    let hasExistingSubscription = false
+    let hasActiveSubId = false
+    let hasArchivedSubId = false
+    let identifiedSubId = null
+
+    // First check for existing subscription with the new sub id
+    const { data: newSubIdData, error: fetchError } = await supabaseAdmin
+      .from('subscriptions')
+      .select('*')
+      .eq('id', newSubId)
+      .eq('user_id', uid)
+
+    if (newSubIdData && newSubIdData?.length > 0) {
+      identifiedSubId = newSubId
+      hasActiveSubId = true
+    }
+
+    // If no active sub id, check for old id
+    if (!hasActiveSubId) {
+      const { data: oldSubIdData, error: fetchError } = await supabaseAdmin
+        .from('subscriptions')
+        .select('*')
+        .eq('id', oldSubId)
+        .eq('user_id', uid)
+
+      if (oldSubIdData && oldSubIdData?.length > 0) {
+        identifiedSubId = oldSubId
+        hasArchivedSubId = true
+      }
+    }
+
+    // so we just checked if there is an existing row with the same sub id and user id
+    // if there is update it
+    // if not, we check if there is a row with the same rcCustomerId
+    // if not we insert the new row
+
+    // existing row with same sub id detected
+    hasExistingSubscription = hasArchivedSubId || hasActiveSubId
+
+    const subscriptionId = identifiedSubId ? identifiedSubId : newSubId
+
+    console.log('subscriptionId', subscriptionId)
+    console.log('hasExistingSubscription', hasExistingSubscription)
+    console.log('status', status)
+
+    // Latest data from rev cat
+    const subDetailsToAdd = {
+      id: subscriptionId,
+      user_id: uid,
+      metadata: {
+        provider,
+        rcSubscriptionId,
+        rcCustomerId: customerId,
+        ...subscriptionItem,
+      },
+      amount,
+      status,
+      price_id: productIdentifier || null,
+      quantity: 1,
+      created: proCreatedAt,
+      current_period_end: currentPeriodEnd,
+      cancel_at_period_end: cancelAtPeriodEnd,
+      rc_customer_id: customerId,
+    }
+
+    // Only allow one row per newSubId
+    //
+
+    // if existing, update status
+    if (hasExistingSubscription) {
+      // need this for restoring purchases
+      const { error } = await supabaseAdmin
+        .from('subscriptions')
+        .update({ status, rc_customer_id: customerId })
+        .eq('id', subscriptionId)
+    } else {
+      // Check for row with existing rcCustomerId and subscriptionId
+      const { data: existingRcCustomerIdData, error: fetchError } = await supabaseAdmin
+        .from('subscriptions')
+        .select('*')
+        .eq('rc_customer_id', customerId)
+        .eq('id', subscriptionId)
+
+      if (existingRcCustomerIdData && existingRcCustomerIdData?.length > 0) {
+        // skip, this is a duplicate subscription that belongs to another user
+        throw new Error(
+          'Duplicate subscription. Same rcCustomerId but belongs to another user (uid)'
+        )
+      }
+
+      console.log('inserting new subscription')
+
+      // Insert new subscription
+      const { error } = await supabaseAdmin.from('subscriptions').insert(subDetailsToAdd)
+
+      if (error) {
+        console.log('inserting new subscription error', error)
+        throw new Error(error.message)
+      }
+
+      // TODOonly reward referral if subscription is active and new sub
+      // if (status === 'active') {
+      //   await handleReferral(subscriptionData, uid)
+      // }
+    }
+
+    return {
+      success: true,
+    }
+  } catch (error) {
+    return {
+      success: false,
+      data: error,
+    }
+  }
+}
+
 /**
  * Copies the billing details from the payment method to the customer object.
  */
