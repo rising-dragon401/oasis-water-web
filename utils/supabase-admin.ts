@@ -127,9 +127,14 @@ export const manageRcSubscriptionChange = async (
   uid: string
 ) => {
   try {
-    // console.log('manageRcSubscriptionChange', JSON.stringify(subscriptionData, null, 2))
+    console.log('manageRcSubscriptionChange', JSON.stringify(subscriptionData, null, 2))
 
-    const subscriptionItem = subscriptionData?.items[0]
+    // Find the most recent subscription item based on starts_at
+    const subscriptionItem = subscriptionData?.items.sort((a: any, b: any) => {
+      return new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime()
+    })[0]
+
+    // const subscriptionItem = subscriptionData?.items[0]
     const productId = subscriptionItem?.product_id
     const productIdentifier = RC_PRODUCT_IDS[productId as keyof typeof RC_PRODUCT_IDS] || productId
     const entitlementId = subscriptionItem?.entitlements.items[0]?.id
