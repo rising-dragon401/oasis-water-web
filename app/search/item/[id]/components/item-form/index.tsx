@@ -28,7 +28,7 @@ type Props = {
 }
 
 export default function ItemForm({ id }: Props) {
-  const { uid, userData } = useUserProvider()
+  const { uid, subscription } = useUserProvider()
 
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
@@ -282,21 +282,27 @@ export default function ItemForm({ id }: Props) {
               Contaminants ☠️
             </Typography>
             {sortedContaminants && sortedContaminants.length > 0 ? (
-              <PaywallContent
-                label="Unlock contaminants"
-                items={[
-                  'Rating and scores 🌟',
-                  'Research reports and data 🔬',
-                  'Latest lab results 💧',
-                  'Request new products 🌿',
-                ]}
-              >
-                <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
-                  {sortedContaminants.map((contaminant: any, index: number) => (
-                    <ContaminantCard key={contaminant.id || index} data={contaminant} />
-                  ))}
-                </div>
-              </PaywallContent>
+              <>
+                {!subscription ? (
+                  <PaywallContent
+                    label="Unlock contaminants"
+                    items={[
+                      'Rating and scores 🌟',
+                      'Research reports and data 🔬',
+                      'Latest lab results 💧',
+                      'Request new products 🌿',
+                    ]}
+                  >
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-6 h-80 bg-secondary rounded-md"></div>
+                  </PaywallContent>
+                ) : (
+                  <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+                    {sortedContaminants.map((contaminant: any, index: number) => (
+                      <ContaminantCard key={contaminant.id || index} data={contaminant} />
+                    ))}
+                  </div>
+                )}
+              </>
             ) : (
               <>
                 {item.is_indexed !== false ? (

@@ -43,18 +43,20 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
     const data = await fetchFunction()
     localStorage.setItem(key, JSON.stringify(data))
 
+    setAllItems(data)
+
     // Sort the data if the user has a subscription
-    if (subscription && uid) {
-      const indexedItems = data.filter((item: any) => item.is_indexed !== false)
-      const nonIndexedItems = data.filter((item: any) => item.is_indexed === false)
+    // if (subscription && uid) {
+    //   const indexedItems = data.filter((item: any) => item.is_indexed !== false)
+    //   const nonIndexedItems = data.filter((item: any) => item.is_indexed === false)
 
-      indexedItems.sort((a: any, b: any) => b.score - a.score)
-      nonIndexedItems.sort((a: any, b: any) => b.score - a.score)
+    //   indexedItems.sort((a: any, b: any) => b.score - a.score)
+    //   nonIndexedItems.sort((a: any, b: any) => b.score - a.score)
 
-      setAllItems([...indexedItems, ...nonIndexedItems])
-    } else {
-      setAllItems(data)
-    }
+    //   setAllItems([...indexedItems, ...nonIndexedItems])
+    // } else {
+    //   setAllItems(data)
+    // }
 
     setLoading(false)
   }
@@ -137,22 +139,33 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
           className="p-0 mb-0"
         >
           <ArrowLeft className="w-4 h-4" />
-          See all categories
+          All categories
         </Button>
         <div className="flex md:flex-row md:gap-0 gap-2 flex-col justify-between w-full">
           {subscription ? (
             <div className="flex flex-col gap-2">
               <Typography size="4xl" fontWeight="bold" className="max-w-lg">
-                Top rated {category?.title.toLowerCase()}
+                {category?.title}
               </Typography>
               <Typography size="base" fontWeight="normal" className="max-w-lg">
-                Best {category?.title.toLowerCase()} based on science sorted by score
+                View the most up to date list in the Oasis app - don&apos;t worry your account and
+                membership will transfer.
               </Typography>
+              <Button
+                variant="default"
+                className="flex flex-row gap-1 w-56"
+                onClick={() => {
+                  openModal('SubscriptionModal')
+                }}
+              >
+                Get the Oasis app
+                <Lock className="w-4 h-4" />
+              </Button>
             </div>
           ) : (
             <div className="flex flex-col gap-2">
               <Typography size="4xl" fontWeight="bold" className="max-w-lg">
-                All {category?.title.toLowerCase()}
+                {category?.title}
               </Typography>
               <Typography size="base" fontWeight="normal" className="max-w-lg">
                 Want to know the best {category?.title.toLowerCase()} based on science?

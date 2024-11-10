@@ -14,7 +14,7 @@ import { useModal } from '@/providers/ModalProvider'
 import { useSupabase } from '@/providers/SupabaseProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { postData } from '@/utils/helpers'
-import { BadgeCheck, Copy } from 'lucide-react'
+import { BadgeCheck } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -22,7 +22,7 @@ import { getUserReferralStats } from '../actions/admin'
 import PasswordResetForm from './components/password-reset-form'
 
 export default function AccountSettings() {
-  const { provider, userData, subscription, fetchUserData, logout } = useUserProvider()
+  const { provider, userData, subscription, subProvider, fetchUserData, logout } = useUserProvider()
   const { session } = useSupabase()
   const router = useRouter()
   const { openModal } = useModal()
@@ -62,6 +62,8 @@ export default function AccountSettings() {
     const stats = await getUserReferralStats(userData.id)
     setReferralStats(stats)
   }
+
+  console.log('subProvider', subProvider)
 
   const handleManageSubscription = async () => {
     setLoadingSubscription(true)
@@ -177,9 +179,6 @@ export default function AccountSettings() {
 
     setLoadingSocials(false)
   }
-
-  // @ts-ignore
-  const subProvider = subscription?.metadata?.provider === 'revenue_cat' ? 'revenue_cat' : 'stripe'
 
   if (session && !userData) {
     return (
@@ -325,7 +324,7 @@ export default function AccountSettings() {
           </div> */}
             </div>
           </div>
-
+          {/* 
           <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
             <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
               Socials
@@ -407,9 +406,9 @@ export default function AccountSettings() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
+          {/* <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
             <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
               Referrals and Earnings
             </Typography>
@@ -461,7 +460,7 @@ export default function AccountSettings() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex flex-col space-y-2 w-full max-w-2xl mt-6">
             <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
@@ -469,7 +468,7 @@ export default function AccountSettings() {
             </Typography>
             <div className="flex flex-col items-start space-y-4 w-full bg-muted border border-border p-4 rounded-xl">
               <Typography size="xs" fontWeight="normal" className="">
-                Logged in as <span className="font-bold">{userData?.email}</span> using {provider}
+                Logged in as <span className="font-bold">{userData?.email}</span>
               </Typography>
 
               <PasswordResetForm />

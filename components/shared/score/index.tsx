@@ -3,7 +3,7 @@
 import Typography from '@/components/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
-import { AlertTriangle, Lock } from 'lucide-react'
+import { Lock } from 'lucide-react'
 
 type Props = {
   score: number | null
@@ -54,90 +54,90 @@ export default function Score({ score, size, showScore = false }: Props) {
   }
 
   // Gray out blue circle if no subscription
-  if (!subscription && !showScore) {
-    return (
-      <>
-        <div
-          onClick={() => openModal('SubscriptionModal')}
-          className="relative flex justify-center items-center cursor-pointer "
-          style={{ width: svgSize, height: svgSize }}
-        >
-          <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
-            <circle
-              className={`stroke-gray-400 `}
-              strokeWidth={strokeWidth}
-              fill="transparent"
-              r={radius}
-              cx={svgSize / 2} // Center circle
-              cy={svgSize / 2} // Center circle
-            />
-          </svg>
-          <div
-            className="absolute flex flex-col justify-center items-center"
-            style={{ width: '100%', height: '100%' }}
-          >
-            <Typography size="lg" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-              Score:
-            </Typography>
-            <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-              <button onClick={() => openModal('SubscriptionModal')}>
-                <Lock className="text-primary w-4 h-4" />
-              </button>
-              / 100
-            </Typography>
-          </div>
-        </div>
-      </>
-    )
-  }
-
+  // if (!subscription && !showScore) {
   return (
-    <div
-      className="relative flex justify-center items-center cursor-pointer"
-      style={{ width: svgSize, height: svgSize }}
-    >
-      <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
-        <circle
-          className={`${color} opacity-30`}
-          strokeWidth={strokeWidth}
-          fill="transparent"
-          r={radius}
-          cx={svgSize / 2} // Center circle
-          cy={svgSize / 2} // Center circle
-        />
-        <circle
-          className={color}
-          strokeWidth={strokeWidth}
-          strokeDasharray={`${circumference} ${circumference}`}
-          strokeDashoffset={offset}
-          strokeLinecap="round"
-          fill="transparent"
-          r={radius}
-          cx={svgSize / 2} // Center circle
-          cy={svgSize / 2} // Center circle
-        />
-      </svg>
+    <>
       <div
-        className="absolute flex flex-col justify-center items-center"
-        style={{ width: '100%', height: '100%' }}
+        onClick={() => openModal('SubscriptionModal')}
+        className="relative flex justify-center items-center cursor-pointer "
+        style={{ width: svgSize, height: svgSize }}
       >
-        {score ? (
-          <Typography size="xl" fontWeight="normal" className="flex gap-2 mb-0">
-            {score} / 100
+        <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
+          <circle
+            className={`stroke-gray-400 `}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            r={radius}
+            cx={svgSize / 2} // Center circle
+            cy={svgSize / 2} // Center circle
+          />
+        </svg>
+        <div
+          className="absolute flex flex-col justify-center items-center"
+          style={{ width: '100%', height: '100%' }}
+        >
+          <Typography size="lg" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+            Score:
           </Typography>
-        ) : (
-          <div className="flex flex-row gap-1">
-            <AlertTriangle className="text-secondary" />
-            <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-              / 100
-            </Typography>
-          </div>
-        )}
-
-        <span className="text-secondary" style={{ fontSize: fontSize }}>
-          {grade()}
-        </span>
+          <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+            <button onClick={() => openModal('SubscriptionModal')}>
+              <Lock className="text-primary w-4 h-4" />
+            </button>
+            / 100
+          </Typography>
+        </div>
       </div>
-    </div>
+    </>
   )
+  // }
+
+  // return (
+  //   <div
+  //     className="relative flex justify-center items-center cursor-pointer"
+  //     style={{ width: svgSize, height: svgSize }}
+  //   >
+  //     <svg className="progress-ring absolute" width={svgSize} height={svgSize}>
+  //       <circle
+  //         className={`${color} opacity-30`}
+  //         strokeWidth={strokeWidth}
+  //         fill="transparent"
+  //         r={radius}
+  //         cx={svgSize / 2} // Center circle
+  //         cy={svgSize / 2} // Center circle
+  //       />
+  //       <circle
+  //         className={color}
+  //         strokeWidth={strokeWidth}
+  //         strokeDasharray={`${circumference} ${circumference}`}
+  //         strokeDashoffset={offset}
+  //         strokeLinecap="round"
+  //         fill="transparent"
+  //         r={radius}
+  //         cx={svgSize / 2} // Center circle
+  //         cy={svgSize / 2} // Center circle
+  //       />
+  //     </svg>
+  //     <div
+  //       className="absolute flex flex-col justify-center items-center"
+  //       style={{ width: '100%', height: '100%' }}
+  //     >
+  //       {score ? (
+  //         <Typography size="xl" fontWeight="normal" className="flex gap-2 mb-0">
+  //           {score} / 100
+  //         </Typography>
+  //       ) : (
+  //         <div className="flex flex-row gap-1">
+  //           <AlertTriangle className="text-secondary" />
+  //           <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+  //             / 100
+  //           </Typography>
+  //         </div>
+  //       )}
+
+  //       <span className="text-secondary" style={{ fontSize: fontSize }}>
+  //         {grade()}
+  //       </span>
+  //     </div>
+  //   </div>
+  // )
 }

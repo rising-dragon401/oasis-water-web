@@ -32,6 +32,7 @@ interface UserContextType {
   emailSubscriptions: any[] | null | undefined
   subscription: boolean
   subscriptionData: SubscriptionWithProduct | null | undefined
+  subProvider: string | null | undefined
   loadingUser: boolean
   refreshUserData: () => void
   fetchUserData: (uid: string) => void
@@ -61,6 +62,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [subscriptionData, setSubscriptionData] = useState<
     SubscriptionWithProduct | null | undefined
   >(null)
+  const [subProvider, setSubProvider] = useState<any>(null)
   const [userData, setUserData] = useSessionStorage<any>('userData', null)
   const [userFavorites, setUserFavorites] = useState<any[] | null | undefined>(null)
   const [emailSubscriptions, setEmailSubscriptions] = useState<any[] | null | undefined>(null)
@@ -143,6 +145,10 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (data) {
       setSubscription(true)
       setSubscriptionData(data as SubscriptionWithProduct)
+
+      //@ts-ignore
+      const provider = data?.metadata?.provider === 'revenue_cat' ? 'revenue_cat' : 'stripe'
+      setSubProvider(provider)
     } else {
       setSubscription(false)
     }
@@ -186,6 +192,7 @@ const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       uid: userId,
       subscription,
       subscriptionData,
+      subProvider,
       userData,
       userFavorites,
       emailSubscriptions,
