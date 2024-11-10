@@ -9,7 +9,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-import { FlaskConical, Newspaper, Search, User } from 'lucide-react'
+import { FlaskConical, Newspaper, Search } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
 import Typography from '../typography'
@@ -40,10 +40,17 @@ export default function HomeNavbar() {
           </Link>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
+        {/* <NavigationMenuItem>
           <Link href="/favorites" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <User className="w-4 h-4 mr-2" />
             Profile
+          </Link>
+        </NavigationMenuItem> */}
+
+        <NavigationMenuItem>
+          <Link href="/lab-testing" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <FlaskConical className="w-4 h-4 mr-2" />
+            Lab testing
           </Link>
         </NavigationMenuItem>
 
@@ -51,13 +58,6 @@ export default function HomeNavbar() {
           <Link href="/blog" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <Newspaper className="w-4 h-4 mr-2" />
             Research
-          </Link>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/lab-testing" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <FlaskConical className="w-4 h-4 mr-2" />
-            Lab testing
           </Link>
         </NavigationMenuItem>
       </NavigationMenuList>

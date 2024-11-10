@@ -86,14 +86,14 @@ export default function Footer() {
                   Mission
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   href="/affiliates"
                   className="text-secondary  transition duration-150 ease-in-out"
                 >
                   Affiliates
                 </Link>
-              </li>
+              </li> */}
 
               <li>
                 <Link
@@ -103,6 +103,15 @@ export default function Footer() {
                   Contact us
                 </Link>
               </li>
+
+              <div
+                className="cursor-pointer text-secondary"
+                onClick={() => {
+                  setOpenFeedback(true)
+                }}
+              >
+                Feedback
+              </div>
             </ul>
           </div>
 
@@ -135,14 +144,6 @@ export default function Footer() {
                   FAQs
                 </Link>
               </li>
-              <div
-                className="cursor-pointer text-secondary"
-                onClick={() => {
-                  setOpenFeedback(true)
-                }}
-              >
-                Feedback
-              </div>
             </ul>
           </div>
 

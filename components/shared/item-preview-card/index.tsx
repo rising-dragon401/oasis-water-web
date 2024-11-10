@@ -155,7 +155,19 @@ export default function ItemPreviewCard({
             <div>{renderWarning()}</div>
           ) : (
             <>
-              {!subscription && item.type !== 'tap_water' ? (
+              <div className="flex flex-col items-end w-full text-right">
+                <button onClick={() => openModal('SubscriptionModal')}>
+                  <Lock size={16} />
+                </button>
+                <Typography
+                  size="xs"
+                  fontWeight="normal"
+                  className="!no-underline text-secondary text-right"
+                >
+                  /100
+                </Typography>
+              </div>
+              {/* {!subscription && item.type !== 'tap_water' ? (
                 <div className="flex flex-col items-end w-full text-right">
                   <button onClick={() => openModal('SubscriptionModal')}>
                     <Lock size={16} />
@@ -170,7 +182,7 @@ export default function ItemPreviewCard({
                 </div>
               ) : (
                 <>{item.score ? <div>{renderScore()}</div> : <div>{renderWarning()}</div>}</>
-              )}
+              )} */}
             </>
           )}
         </div>

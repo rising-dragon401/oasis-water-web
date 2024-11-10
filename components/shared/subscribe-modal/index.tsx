@@ -1,17 +1,12 @@
 'use client'
 
 import { getActiveProductsWithPrices } from '@/app/actions/user'
-import Logo from '@/components/shared/logo'
-import { SubscriptionItem } from '@/components/shared/subscribe-modal/subscription-item'
+import { Check } from 'lucide-react'
+import Image from 'next/image'
+// import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Muted } from '@/components/ui/typography'
 import { kAppStore, kGooglePlay } from '@/lib/constants/socials'
 import useLocalStorage from '@/lib/hooks/use-local-storage'
@@ -33,25 +28,33 @@ type SubscribeModalProps = {
 
 const FEATURES = [
   {
-    label: 'Access to all scores and ratings',
+    label: 'View scores and ratings',
     icon: '🔓',
   },
   {
-    label: 'Unlimited scans and searches',
+    label: 'Scan your water / filter',
     icon: '🏆',
   },
   {
-    label: 'Full contaminant breakdowns',
+    label: 'Check your tap water quality',
     icon: '🧬',
   },
   {
-    label: 'Personalized filter recommendations',
-    icon: '🔬',
+    label: 'Save your favorites',
+    icon: '💖',
   },
   {
-    label: 'Support further testing',
-    icon: '🌐',
+    label: 'Stay notified of new scores',
+    icon: '👥',
   },
+  // {
+  //   label: 'See what others are',
+  //   icon: '🔬',
+  // },
+  // {
+  //   label: 'Support further testing',
+  //   icon: '🌐',
+  // },
 ]
 
 const kAnnualPrice = 47
@@ -60,7 +63,7 @@ const kWeeklyPrice = 4.99
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { user } = useUserProvider()
+  const { user, subscription } = useUserProvider()
   const { closeModal } = useModal()
 
   const [products, setProducts] = useState<ProductWithPrices[]>([])
@@ -191,6 +194,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
     }, 0)
   }
 
+  const appPreviewImage =
+    'https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/welcome-scan-graphic.png?t=2024-10-30T20%3A55%3A40.800Z'
+
   return (
     <Dialog
       open={open}
@@ -198,13 +204,29 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
         setOpen(!open)
       }}
     >
-      <DialogContent className="md:max-w-none max-w-sm overflow-y-scroll max-h-[90vh] mx-10 ">
+      <DialogContent className="md:max-w-none max-w-sm overflow-y-scroll min-h-[40vh] mx-10">
         <DialogHeader>
-          <div className="flex flex-col justify-center items-center">
-            <Logo className="w-20 h-20" />
-            <Typography size="2xl" fontWeight="bold" className="text-center mt-2">
-              Unlock healthy hydration
-            </Typography>
+          <div className="flex flex-col justify-center items-center gap-4 mt-4">
+            <div className="flex flex-col gap-1">
+              <Typography size="2xl" fontWeight="bold" className="text-center ">
+                {subscription ? 'Download app to view' : 'Download app to unlock'}
+              </Typography>
+              {subscription && (
+                <Muted className="text-center">
+                  Don&apos;t worry your existing membership will transfer over
+                </Muted>
+              )}
+            </div>
+            <div className="flex flex-col items-center h-full w-36">
+              <Image
+                src={appPreviewImage}
+                alt="Oasis"
+                width={300}
+                height={400}
+                className="rounded-md"
+                objectFit="contain"
+              />
+            </div>
           </div>
 
           {/* <div className="flex flex-col text-center">
@@ -217,14 +239,41 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
           {/* </div> */}
         </DialogHeader>
 
-        <div className="flex flex-col gap-3 px-4 py-4 rounded-md bg-muted mx-8 ">
+        <div className="flex flex-col gap-3 px-4 pb-4 rounded-md mx-auto">
           {FEATURES.map((feature) => (
-            <SubscriptionItem key={feature.label} label={feature.label} icon={feature.icon} />
+            <div key={feature.label} className="flex flex-row gap-2 items-center">
+              <Check className="w-4 h-4" />
+
+              <Typography size="base" fontWeight="normal">
+                {feature.label}
+              </Typography>
+            </div>
           ))}
         </div>
 
-        <DialogFooter className="flex flex-col gap-2 w-full px-4">
-          <div className="flex flex-col">
+        <DialogFooter className="flex flex-col gap-2 w-full px-4 pb-4">
+          <div className="flex flex-col gap-2 w-full">
+            <Button
+              variant="default"
+              className="w-full"
+              onClick={() => {
+                window.open(kAppStore, '_blank')
+              }}
+            >
+              <TbBrandApple className="w-4 h-4 mr-2" />
+              iOS app
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                window.open(kGooglePlay, '_blank')
+              }}
+            >
+              <TbBrandGooglePlay className="w-4 h-4 mr-2" />
+              Android app
+            </Button>
+            {/* 
             <div className="flex flex-row gap-2">
               <Button
                 variant="outline"
@@ -303,7 +352,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
                 Upgrade
               </Button>
               <Muted>We charge to support product lab testing and to keep Oasis unbiased.</Muted>
-            </div>
+            </div> */}
 
             {/* <ReferralCodeInput /> */}
 
@@ -314,7 +363,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               or sign in to existing Member account
             </div> */}
 
-            <div className="flex flex-row mt-4 w-full justify-between">
+            {/* <div className="flex flex-row mt-4 w-full justify-between">
               <Muted className="text-center italic mt-1 text-xs">
                 <a href="/terms" className="underline">
                   Terms of service
@@ -330,7 +379,7 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
                   Refund policy.
                 </a>
               </Muted>
-            </div>
+            </div> */}
           </div>
         </DialogFooter>
       </DialogContent>

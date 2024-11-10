@@ -2,7 +2,6 @@
 
 import { getBlogs } from '@/app/actions/blogs'
 import SubpageLayout from '@/components/home-layout'
-import { AISearchDialog } from '@/components/shared/ai-search-dialogue'
 import Typography from '@/components/typography'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ArrowUpRight } from 'lucide-react'
@@ -31,9 +30,9 @@ export default function ResearchPage() {
             Stay up to date on the latest scientific research regarding product health
           </Typography>
 
-          <div className="md:w-[40vw] mt-4">
+          {/* <div className="md:w-[40vw] mt-4">
             <AISearchDialog size="medium" variant="input" placeholder="Ask Oasis Research" />
-          </div>
+          </div> */}
         </div>
         <Tabs defaultValue="articles">
           <div className="md:!max-w-[80vw] max-w-[90vw] overflow-x-auto hide-scrollbar pb-2">

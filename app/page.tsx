@@ -1,12 +1,16 @@
 import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
 import BlogPreviewSection from '@/components/sections/blog-preview-section'
-import PeopleSection from '@/components/sections/people-section'
+import AppleButton from '@/components/shared/apple-button'
+import GooglePlayButton from '@/components/shared/google-play-button'
 import Typography from '@/components/typography'
 import { CATEGORIES } from '@/lib/constants/categories'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+
+const appPreviewImage =
+  'https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/welcome-scan-graphic.png?t=2024-10-30T20%3A55%3A40.800Z'
 
 export default async function Home() {
   return (
@@ -23,21 +27,17 @@ export default async function Home() {
               fontWeight="normal"
               className="md:max-w-xl max-w-xs text-secondary"
             >
-              90% of water contains toxins most filters don&apos;t remove them
+              90% of water contains toxins and most filters don&apos;t remove them.
             </Typography>
           </div>
 
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        {/* <div className="md:mt-14 mt-10 w-full">
-          <MostRecentSection />
-        </div> */}
-
         <div className="flex flex-col md:mt-14 md:mb-24 mt-10 mb-20 gap-y-4 w-full">
           <div className="flex flex-row items-center justify-between">
             <Typography size="2xl" fontWeight="normal">
-              Top waters and filters
+              Top rated
             </Typography>
             <Link href="/top-rated" className="flex flex-row items-center gap-x-2">
               <Typography size="base" fontWeight="normal" className="italic text-secondary">
@@ -81,12 +81,33 @@ export default async function Home() {
           </div>
         </div>
 
-        <div className="md:mt-24 mt-20 w-full">
-          <PeopleSection />
+        <div className="md:mt-24 mt-16 w-full">
+          <BlogPreviewSection />
         </div>
 
-        <div className="md:mt-10 mt-6 w-full">
-          <BlogPreviewSection />
+        <div className="flex flex-col w-full justify-center items-center gap-y-4 p-4 rounded-lg mt-10 mb-24 py-8">
+          <Typography size="2xl" fontWeight="normal" className="text-center">
+            Get the Oasis app for the full picture
+          </Typography>
+
+          <Typography size="lg" fontWeight="normal" className="text-secondary text-center">
+            See scores and ratings, scan your water and get notified when lab results change.
+          </Typography>
+
+          <div className="flex flex-col items-center justify-center h-full">
+            <Image
+              src={appPreviewImage}
+              alt="app store"
+              width={200}
+              height={400}
+              objectFit="contain"
+            />
+          </div>
+
+          <div className="flex flex-row gap-4 w-full max-w-lg">
+            <AppleButton />
+            <GooglePlayButton />
+          </div>
         </div>
       </div>
     </SubpageLayout>
