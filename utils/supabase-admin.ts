@@ -231,6 +231,8 @@ export const manageRcSubscriptionChange = async (
       rc_customer_id: customerId,
     }
 
+    console.log('subDetailsToAdd: ', JSON.stringify(subDetailsToAdd, null, 2))
+
     // Only allow one row per newSubId
     //
 
