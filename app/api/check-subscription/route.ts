@@ -84,18 +84,20 @@ export async function POST(req: Request) {
         status = subscriptionData?.items[0]?.status
         subscriptionId = subscriptionData?.items[0]?.id
 
-        console.log('status: ', status)
-        console.log('subscriptionId: ', subscriptionId)
-
         if (subscriptionData) {
           // update or insert subscription to supabase
           const updateRes = await manageRcSubscriptionChange(subscriptionData, rcCustomerId, uid)
 
           // Used to not return the status/sub id if found duplicate rc customer id
           if (updateRes && updateRes?.success) {
+            // status = subscriptionData?.items[0]?.status
+            // subscriptionId = subscriptionData?.items[0]?.id
           }
         }
       }
+
+      console.log('returning status: ', status)
+      console.log('returning subscriptionId: ', subscriptionId)
 
       const responseData = {
         uid,

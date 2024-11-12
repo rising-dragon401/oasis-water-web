@@ -134,6 +134,8 @@ export const manageRcSubscriptionChange = async (
       return new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime()
     })[0]
 
+    console.log('subscriptionItem', JSON.stringify(subscriptionItem, null, 2))
+
     // const subscriptionItem = subscriptionData?.items[0]
     const productId = subscriptionItem?.product_id
     const productIdentifier = RC_PRODUCT_IDS[productId as keyof typeof RC_PRODUCT_IDS] || productId
@@ -243,20 +245,30 @@ export const manageRcSubscriptionChange = async (
         .from('subscriptions')
         .update({ status, rc_customer_id: customerId })
         .eq('id', subscriptionId)
-    } else {
-      // Check for row with existing rcCustomerId and subscriptionId
-      const { data: existingRcCustomerIdData, error: fetchError } = await supabaseAdmin
-        .from('subscriptions')
-        .select('*')
-        .eq('rc_customer_id', customerId)
-        .eq('id', subscriptionId)
 
-      if (existingRcCustomerIdData && existingRcCustomerIdData?.length > 0) {
-        // skip, this is a duplicate subscription that belongs to another user
-        throw new Error(
-          'Duplicate subscription. Same rcCustomerId but belongs to another user (uid)'
-        )
+      if (error) {
+        console.log('updating existing subscription error', error)
+        throw new Error(error.message)
       }
+
+      console.log('updated existing subscription!')
+    } else {
+      //Removing duplicate check becuase one user can have multiple subs
+      // Also each user should have their onw rc customer id
+
+      // Check for row with existing rcCustomerId and subscriptionId
+      // const { data: existingRcCustomerIdData, error: fetchError } = await supabaseAdmin
+      //   .from('subscriptions')
+      //   .select('*')
+      //   .eq('rc_customer_id', customerId)
+      //   .eq('id', subscriptionId)
+
+      // if (existingRcCustomerIdData && existingRcCustomerIdData?.length > 0) {
+      //   // skip, this is a duplicate subscription that belongs to another user
+      //   throw new Error(
+      //     'Duplicate subscription. Same rcCustomerId but belongs to another user (uid)'
+      //   )
+      // }
 
       console.log('inserting new subscription')
 
