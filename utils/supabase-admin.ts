@@ -288,6 +288,8 @@ export const manageRcSubscriptionChange = async (
 
     return {
       success: true,
+      subscriptionId,
+      status,
     }
   } catch (error) {
     return {
