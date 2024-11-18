@@ -1,7 +1,5 @@
 import { ApplicationError } from '@/lib/errors'
-import { getURL } from '@/utils/helpers'
 import { stripe } from '@/utils/stripe'
-import { createOrRetrieveCustomer } from '@/utils/supabase-admin'
 import { getSession } from '@/utils/supabase/server'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -31,56 +29,17 @@ export async function POST(req: Request) {
 
       const user = authSession?.user
 
-      // 3. Retrieve or create the customer in Stripe
-      const customer = await createOrRetrieveCustomer({
-        uuid: user?.id || '',
-        email: user?.email || '',
+      // Create price
+      const price = await stripe.prices.create({
+        currency: 'usd',
+        custom_unit_amount: {
+          enabled: true,
+        },
+        product: `standardWaterTest_pID=${product_id}_pType=${product_type}_pName=${product_name}_labID=${lab_id}`,
       })
 
-      // 4. Create a checkout session in Stripe
-      let session
-      const sessionParams = {
-        customer,
-        customer_update: {
-          address: 'auto',
-        },
-        line_items: [
-          {
-            // price_data: {
-            //   currency: 'usd',
-            //   product: `prod_REec5gvSo54UXL`,
-            //   // product_data: {
-            //   //   name: `${product_name} - Standard Water Testing`,
-            //   //   description: `Contribute to the lab testing for ${product_name}. 100% of funds go directly to the lab cost.`,
-            //   //   images: [image],
-            //   // },
-            // },
-            price: `price_1QMBJUB1nYcLK5a9of3DJYhx`,
-            quantity: 1,
-          },
-        ],
-        mode: 'payment',
-        metadata: {
-          product_id,
-          product_type,
-          lab_id,
-          user_id,
-        },
-        custom_text: {
-          submit: {
-            message: `Contribute to the lab testing for ${product_name}`, // Custom message for the submit button
-          },
-        },
-        submit_type: 'donate',
-        success_url: `${getURL()}/`,
-        cancel_url: `${getURL()}/`,
-      }
-
-      // @ts-ignore
-      session = await stripe.checkout.sessions.create(sessionParams)
-
-      if (session) {
-        return new Response(JSON.stringify({ sessionId: session.id }), {
+      if (price) {
+        return new Response(JSON.stringify({ priceId: price.id }), {
           status: 200,
         })
       } else {

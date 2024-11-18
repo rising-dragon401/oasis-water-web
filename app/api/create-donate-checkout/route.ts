@@ -46,16 +46,16 @@ export async function POST(req: Request) {
         },
         line_items: [
           {
-            price_data: {
-              currency: 'usd',
-              // product: `prod_REec5gvSo54UXL`,
-              // product_data: {
-              //   name: `${product_name} - Standard Water Testing`,
-              //   description: `Contribute to the lab testing for ${product_name}. 100% of funds go directly to the lab cost.`,
-              //   images: [image],
-              //   unit_amount: amount * 100, // Convert dollars to cents
-              // },
-            },
+            // price_data: {
+            //   currency: 'usd',
+            //   // product: `prod_REec5gvSo54UXL`,
+            //   // product_data: {
+            //   //   name: `${product_name} - Standard Water Testing`,
+            //   //   description: `Contribute to the lab testing for ${product_name}. 100% of funds go directly to the lab cost.`,
+            //   //   images: [image],
+            //   //   unit_amount: amount * 100, // Convert dollars to cents
+            //   // },
+            // },
             price: `price_1QMBJUB1nYcLK5a9of3DJYhx`,
             quantity: 1,
           },

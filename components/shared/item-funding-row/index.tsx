@@ -8,25 +8,31 @@ import { useUserProvider } from '@/providers/UserProvider'
 import { determineLink, postDataDonate } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
 import * as Sentry from '@sentry/browser'
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-export default function ItemFundingRow({ item }: { item: any }) {
+export default function ItemFundingRow({
+  item,
+  linkToProduct = false,
+}: {
+  item: any
+  linkToProduct?: boolean
+}) {
   const router = useRouter()
   const { uid } = useUserProvider()
   const pathname = usePathname()
 
   const [loading, setLoading] = useState(false)
   const [fundingDetails, setFundingDetails] = useState<any>(null)
+  const [isHovered, setIsHovered] = useState(false)
 
   const getFundingPercentage = (fundedAmount: number, totalCost: number) => {
     return (fundedAmount / totalCost) * 100
   }
-
-  console.log('fundingDetails', JSON.stringify(fundingDetails, null, 2))
 
   useEffect(() => {
     fetchFundingStatus({ itemId: item.id, type: item.type, name: item.name })
@@ -40,6 +46,8 @@ export default function ItemFundingRow({ item }: { item: any }) {
   const redirectToFundingLink = async () => {
     setLoading(true)
 
+    console.log('fundingDetails', JSON.stringify(fundingDetails))
+
     if (!uid) {
       localStorage.setItem('redirectUrl', pathname)
       toast('Please sign in to contribute')
@@ -52,7 +60,7 @@ export default function ItemFundingRow({ item }: { item: any }) {
       return
     }
 
-    if (!fundingDetails.lab_id) {
+    if (!fundingDetails?.lab_id) {
       toast('Unable to process donation link. Please try again later')
       throw new Error('Unable to process donation link. Item lab id not found')
     }
@@ -83,19 +91,16 @@ export default function ItemFundingRow({ item }: { item: any }) {
       const stripe = await getStripe()
       stripe?.redirectToCheckout({ sessionId })
     } catch (e) {
+      toast('Unable to process donation link. Please try again later')
       console.error('Error: ', e)
       Sentry.captureException(e)
       setLoading(false)
     }
   }
 
-  return (
-    <div className="flex flex-col gap-4 w-full">
-      <Link
-        href={determineLink(item)}
-        key={item.id}
-        className="flex flex-row gap-4 items-center border border-border py-3 rounded-xl bg-card pr-4"
-      >
+  const renderCardBody = () => {
+    return (
+      <>
         <div className="flex flex-col gap-2 w-1/4">
           <div className="flex justify-center items-center">
             <Image src={item.image} alt={item.name} width={75} height={75} objectFit="fill" />
@@ -108,7 +113,17 @@ export default function ItemFundingRow({ item }: { item: any }) {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => redirectToFundingLink()}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  redirectToFundingLink()
+                  e.preventDefault()
+                }}
+                onMouseEnter={() => {
+                  setIsHovered(false)
+                }}
+                onMouseLeave={() => {
+                  setIsHovered(true)
+                }}
                 loading={loading}
               >
                 Contribute
@@ -116,12 +131,12 @@ export default function ItemFundingRow({ item }: { item: any }) {
             ) : (
               <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
                 <Button variant="outline" size="sm">
-                  Login to Contribute
+                  Contribute
                 </Button>
               </Link>
             )}
           </div>
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 max-w-64">
             <Progress
               value={getFundingPercentage(
                 fundingDetails?.funded_amount || 0,
@@ -141,7 +156,35 @@ export default function ItemFundingRow({ item }: { item: any }) {
             </div>
           </div>
         </div>
-      </Link>
+      </>
+    )
+  }
+  return (
+    <div className="flex flex-col gap-4 w-full">
+      {linkToProduct ? (
+        <Link
+          href={determineLink(item)}
+          key={item.id}
+          className="flex flex-row gap-4 items-center border border-border py-3 rounded-xl bg-card pr-4 relative"
+          onMouseEnter={() => {
+            setIsHovered(true)
+          }}
+          onMouseLeave={() => {
+            setIsHovered(false)
+          }}
+        >
+          {renderCardBody()}
+          <ArrowRight
+            className={`w-4 h-4 text-muted-foreground absolute bottom-2 right-2 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        </Link>
+      ) : (
+        <div className="flex flex-row gap-4 items-center border border-border py-3 rounded-xl bg-card pr-4 relative">
+          {renderCardBody()}
+        </div>
+      )}
     </div>
   )
 }

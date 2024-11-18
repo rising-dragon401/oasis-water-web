@@ -3,6 +3,7 @@
 import { fetchFundingStatus } from '@/app/actions/labs'
 import { Progress } from '@/components/ui/progress'
 import { Muted, P } from '@/components/ui/typography'
+import {} from 'lucide-react'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
@@ -25,7 +26,7 @@ export default function UntestedCard({ item }: { item: any }) {
   }
 
   return (
-    <div className="flex flex-row justify-start items-center gap-2 bg-card rounded-xl border border-border">
+    <div className="flex flex-row justify-start items-center gap-2 bg-card rounded-xl border border-border relative">
       <div className="flex flex-col gap-2">
         <div className="flex justify-center items-center w-24 h-24">
           <Image src={item.image} alt={item.name} width={75} height={75} objectFit="fill" />
@@ -35,7 +36,7 @@ export default function UntestedCard({ item }: { item: any }) {
       <div className="flex flex-col gap-2 justify-between h-full">
         <P>{item.name}</P>
         {/* <Muted>Starndard water test</Muted> */}
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 max-w-xs">
           <Progress
             value={getFundingPercentage(
               fundingStatus?.funded_amount || 0,
