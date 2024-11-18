@@ -14,7 +14,9 @@ export default function UntestedCard({ item }: { item: any }) {
     console.log(item.id, item.type)
 
     if (item.id && item.type) {
-      fetchFundingStatus({ itemId: item.id, type: item.type }).then(setFundingStatus)
+      fetchFundingStatus({ itemId: item.id, type: item.type, name: item.name }).then(
+        setFundingStatus
+      )
     }
   }, [item.id, item.type])
 

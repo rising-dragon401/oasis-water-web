@@ -146,11 +146,6 @@ export const fetchUntestedThings = async ({
     // Sort the combined data by test_request_count in descending order
     allData.sort((a, b) => b?.test_request_count - a?.test_request_count)
 
-    for (const item of allData) {
-      const fundingStatus = await fetchFundingStatus({ itemId: item.id, type: item.type })
-      item.funding_status = fundingStatus
-    }
-
     return allData
   } catch (error) {
     console.error(error)
