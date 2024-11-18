@@ -56,7 +56,7 @@ export async function POST(req: Request) {
             //   //   unit_amount: amount * 100, // Convert dollars to cents
             //   // },
             // },
-            price: `price_1QMBJUB1nYcLK5a9of3DJYhx`,
+            price: `price_1QMcgtB1nYcLK5a9I9SSTULx`,
             quantity: 1,
           },
         ],
