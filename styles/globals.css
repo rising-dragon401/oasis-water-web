@@ -18,34 +18,28 @@ html {
 
 @layer base {
   :root {
-    --background: 40 42.86% 97.25%;
-    --foreground: 0 0% 13%;
+    --background: #fefcf9;
+    --primary: #222529;
+    --card: #ffffff;
+    --accent: #0d00f3;
+    --border: #d3d6d1;
+    --input: #f6f4f2;
+    --secondary: #f1f0ed;
+    --foreground: #9b9c9a;
+    --muted: #d3d6d1;
 
-    --card: 42 42% 94%;
     --card-foreground: 0 0% 13%;
-
-    --popover: 39 57% 96%;
+    --popover: #ffffff;
     --popover-foreground: 0 0% 13%;
-
-    --primary: 20 7% 18%;
     --primary-foreground: 39 57% 96%;
-
-    --secondary: 40 13% 64%;
     --secondary-foreground: 0 0% 13%;
-
-    --muted: 30 6% 93%;
     --muted-foreground: 0 0% 45%;
-
-    --accent: 229 59% 38%;
     --accent-foreground: 39 57% 96%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 39 57% 96%;
 
-    --border: 30 6% 89%;
-    --input: 30 6% 93%;
     --ring: 0 0% 13%;
-
     --radius: 0.5rem;
   }
 
@@ -100,4 +94,13 @@ html {
 
 .fade-in {
   animation: fadeIn 0.2s ease-out;
+}
+
+.supabase-auth-ui_ui-container {
+  button {
+    border-radius: 6rem;
+  }
+  input {
+    border-radius: 0.6rem;
+  }
 }

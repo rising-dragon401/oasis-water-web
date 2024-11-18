@@ -130,6 +130,7 @@ export const manageRcSubscriptionChange = async (
     console.log('manageRcSubscriptionChange', JSON.stringify(subscriptionData, null, 2))
 
     // Find the most recent subscription item based on starts_at
+    // Note it doesn't check expiration date... however RevenueCat shouldn't let you double subscribe
     const subscriptionItem = subscriptionData?.items.sort((a: any, b: any) => {
       return new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime()
     })[0]

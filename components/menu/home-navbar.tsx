@@ -40,17 +40,17 @@ export default function HomeNavbar() {
           </Link>
         </NavigationMenuItem>
 
-        {/* <NavigationMenuItem>
-          <Link href="/favorites" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <User className="w-4 h-4 mr-2" />
-            Profile
+        <NavigationMenuItem>
+          <Link href="/products" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+            <FlaskConical className="w-4 h-4 mr-2" />
+            Products
           </Link>
-        </NavigationMenuItem> */}
+        </NavigationMenuItem>
 
         <NavigationMenuItem>
           <Link href="/lab-testing" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
             <FlaskConical className="w-4 h-4 mr-2" />
-            Lab testing
+            Test your water
           </Link>
         </NavigationMenuItem>
 

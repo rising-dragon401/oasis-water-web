@@ -7,7 +7,7 @@ import { TbBrandApple } from 'react-icons/tb'
 export default function AppleButton() {
   return (
     <Button
-      variant="default"
+      variant="secondary"
       className="w-full"
       onClick={() => {
         window.open(kAppStore, '_blank')

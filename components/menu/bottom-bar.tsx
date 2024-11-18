@@ -36,7 +36,7 @@ const BottomNavbar = () => {
   const activeIndex = MENU_ITEMS.findIndex((item) => item.href === pathname)
 
   return (
-    <div className="fixed bottom-0 py-3 left-0 right-0 bg-muted border-t border-gray-200 flex justify-around items-center shadow-md">
+    <div className="fixed bottom-0 py-3 left-0 right-0 bg-muted border-t border-gray-200 flex justify-around items-center shadow-md z-50">
       {MENU_ITEMS.map((item, index) => {
         const isActive = activeIndex === index
         const isActiveClass = isActive ? 'text-primary' : '!text-gray-400'

@@ -93,22 +93,6 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
 
   const [, setRedirectUrl] = useLocalStorage('redirectUrl', '')
 
-  useEffect(() => {
-    // @ts-ignore
-    if (typeof Rewardful !== 'undefined') {
-      // @ts-ignore
-      rewardful('ready', function () {
-        // @ts-ignore
-        if (Rewardful.referral) {
-          // @ts-ignore
-          setReferral(Rewardful.referral)
-          // @ts-ignore
-          console.log('Rewardful.referral: ', Rewardful.referral)
-        }
-      })
-    }
-  }, [])
-
   const proProduct = products?.find(
     (product: any) => product.name === process.env.NEXT_PUBLIC_PRO_STRIPE_PRICE_NAME
   )

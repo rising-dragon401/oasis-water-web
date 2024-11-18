@@ -9,7 +9,7 @@ export function UntestedTooltip({ description }: { description: string }) {
         <TooltipTrigger asChild>
           <Button
             variant="ghost"
-            className="max-w-72 text-left bg-secondary rounded-md px-2 py-0 h-8 text-background"
+            className="max-w-72 text-left bg-primary rounded-md px-4 py-0 h-8 text-background"
           >
             <Flag className="w-4 h-4 mr-2" />
             Not tested

@@ -75,6 +75,10 @@ export async function POST(req: Request) {
               checkoutSession.customer as string,
               true
             )
+          } else if (checkoutSession.mode === 'payment') {
+            console.log('checkoutSession: ', JSON.stringify(checkoutSession, null, 2))
+            const donation = checkoutSession.metadata
+            console.log('donation: ', donation)
           }
           break
         default:

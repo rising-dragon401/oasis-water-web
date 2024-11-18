@@ -83,3 +83,33 @@ export const postData = async ({
 
   return res.json()
 }
+
+export const postDataDonate = async ({
+  url,
+  data,
+}: {
+  url: string
+  data: {
+    product_id: string
+    product_type: string
+    product_name: string
+    image?: string
+    lab_id: string
+    user_id: string
+  }
+}) => {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: new Headers({ 'Content-Type': 'application/json' }),
+    credentials: 'same-origin',
+    body: JSON.stringify(data),
+  })
+
+  if (!res.ok) {
+    console.log('Error in postData', { url, data, res })
+
+    throw Error(res.statusText)
+  }
+
+  return res.json()
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import { getCurrentUserData } from '@/app/actions/user'
+import { H3 } from '@/components/ui/typography'
 import { AUTH_IMAGES } from '@/lib/constants/images'
 import { useUserProvider } from '@/providers/UserProvider'
 import Image from 'next/image'
@@ -14,19 +14,16 @@ export default function SignIn() {
   const router = useRouter()
 
   useEffect(() => {
-    const fetch = async () => {
-      refreshUserData()
-
-      const userData = await getCurrentUserData()
-
-      if (userData) {
-        router.push('/')
-      } else {
-        console.log('No user found')
-      }
-    }
-    fetch()
-
+    // const fetch = async () => {
+    //   refreshUserData()
+    //   const userData = await getCurrentUserData()
+    //   if (userData) {
+    //     router.push('/')
+    //   } else {
+    //     console.log('No user found')
+    //   }
+    // }
+    // fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -58,7 +55,7 @@ export default function SignIn() {
         <div className="lg:p-8 flex">
           <div className="mx-auto flex w-full flex-col justify-center md:mt-14 mt-16 space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">Welcome back to your Oasis</h1>
+              <H3>Welcome to your Oasis</H3>
             </div>
 
             <AuthUI showToast={showToast} toastMessage={toastMessage} />

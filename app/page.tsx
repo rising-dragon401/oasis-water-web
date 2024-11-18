@@ -1,13 +1,9 @@
 import BasicSearch from '@/components/basic-search'
 import SubpageLayout from '@/components/home-layout'
-import BlogPreviewSection from '@/components/sections/blog-preview-section'
 import AppleButton from '@/components/shared/apple-button'
 import GooglePlayButton from '@/components/shared/google-play-button'
 import Typography from '@/components/typography'
-import { CATEGORIES } from '@/lib/constants/categories'
-import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 
 const appPreviewImage =
   'https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/welcome-scan-graphic.png?t=2024-10-30T20%3A55%3A40.800Z'
@@ -18,6 +14,7 @@ export default async function Home() {
       <div className="flex h-full flex-col md:pt-10 pt-6 w-full md:px-0 px-2">
         <div className="flex flex-col w-full items-center justify-center gap-y-4">
           <div className="flex flex-col items-center text-center gap-1">
+            <Typography size="4xl" fontWeight="bold" className="max-w-3xl"></Typography>
             <Typography size="4xl" fontWeight="bold" className="max-w-3xl">
               What&apos;s in your water?
             </Typography>
@@ -34,7 +31,7 @@ export default async function Home() {
           <BasicSearch showSearch={true} size="large" />
         </div>
 
-        <div className="flex flex-col md:mt-14 md:mb-24 mt-10 mb-20 gap-y-4 w-full">
+        {/* <div className="flex flex-col md:mt-14 md:mb-24 mt-10 mb-20 gap-y-4 w-full">
           <div className="flex flex-row items-center justify-between">
             <Typography size="2xl" fontWeight="normal">
               Top rated
@@ -79,14 +76,13 @@ export default async function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="md:mt-24 mt-16 w-full">
-          <BlogPreviewSection />
-        </div>
-
-        <div className="flex flex-col w-full justify-center items-center gap-y-4 p-4 rounded-lg mt-10 mb-24 py-8">
-          <Typography size="2xl" fontWeight="normal" className="text-center">
+        <div
+          className="flex flex-col w-full justify-center items-center gap-y-4 p-4 rounded-lg mt-24
+         mb-24 py-8"
+        >
+          <Typography size="3xl" fontWeight="normal" className="text-center">
             Get the Oasis app for the full picture
           </Typography>
 
