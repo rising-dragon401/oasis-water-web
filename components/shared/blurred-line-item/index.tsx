@@ -48,7 +48,7 @@ export default function BlurredLineItem({
         {label}
       </Typography>{' '}
       <div className="flex flex-row gap-2 items-center min-w-18">
-        {showPaywall ? (
+        {showPaywall && isPaywalled ? (
           <div onClick={handleOpenPaywall} className="cursor-pointer">
             <Lock className="w-4 h-4" />
           </div>

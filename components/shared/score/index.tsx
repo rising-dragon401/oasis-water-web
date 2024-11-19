@@ -1,6 +1,6 @@
 'use client'
 
-import Typography from '@/components/typography'
+import { Muted, P } from '@/components/ui/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Lock } from 'lucide-react'
@@ -16,7 +16,7 @@ export default function Score({ score, size, showScore = false }: Props) {
   const { openModal } = useModal()
 
   const radius =
-    size === 'xl' ? 80 : size === 'lg' ? 70 : size === 'md' ? 60 : size === 'sm' ? 50 : 40
+    size === 'xl' ? 80 : size === 'lg' ? 70 : size === 'md' ? 48 : size === 'sm' ? 50 : 40
   const strokeWidth = 6
   const svgSize = 2 * (radius + strokeWidth) // Adjust SVG size to accommodate stroke
   const validScore = score ?? 0 // Default to 0 if score is null
@@ -76,15 +76,13 @@ export default function Score({ score, size, showScore = false }: Props) {
           className="absolute flex flex-col justify-center items-center"
           style={{ width: '100%', height: '100%' }}
         >
-          <Typography size="lg" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
-            Score:
-          </Typography>
-          <Typography size="xl" fontWeight="normal" className="flex gap-2 text-secondary mb-0">
+          <Muted>Score:</Muted>
+          <P>
             <button onClick={() => openModal('SubscriptionModal')}>
               <Lock className="text-primary w-4 h-4" />
             </button>
             / 100
-          </Typography>
+          </P>
         </div>
       </div>
     </>

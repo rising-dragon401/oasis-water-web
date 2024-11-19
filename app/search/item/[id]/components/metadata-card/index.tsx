@@ -7,7 +7,7 @@ type Props = {
 
 export default function MetaDataCard({ title, description }: Props) {
   return (
-    <Card className="bg-transparent">
+    <Card>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

@@ -130,6 +130,7 @@ export const manageRcSubscriptionChange = async (
     console.log('manageRcSubscriptionChange', JSON.stringify(subscriptionData, null, 2))
 
     // Find the most recent subscription item based on starts_at
+    // Note it doesn't check expiration date... however RevenueCat shouldn't let you double subscribe
     const subscriptionItem = subscriptionData?.items.sort((a: any, b: any) => {
       return new Date(b.starts_at).getTime() - new Date(a.starts_at).getTime()
     })[0]
@@ -298,6 +299,59 @@ export const manageRcSubscriptionChange = async (
     }
   }
 }
+
+export const manageDonation = async (
+  uid: string,
+  amount: number,
+  product_id: string,
+  product_type: string,
+  lab_id: any
+) => {
+  try {
+    const kind = 'donation'
+
+    const { data, error } = await supabaseAdmin.from('contributions').insert({
+      // @ts-ignore
+      user_id: uid,
+      amount, // cents
+      product_id,
+      product_type,
+      lab_id,
+      kind,
+    })
+
+    if (error) {
+      throw error
+    }
+
+    const { data: updatedLabData, error: updateLabError } = await supabaseAdmin.rpc('increment', {
+      table_name: 'labs',
+      column_name: 'raised_amount',
+      record_id: lab_id,
+      amount,
+    })
+
+    if (updateLabError) {
+      throw updateLabError
+    }
+
+    const { error: updateItemError } = await supabaseAdmin
+      .from('items')
+      .update({ lab_updated_at: new Date().toISOString() })
+      .eq('id', product_id)
+
+    if (updateItemError) {
+      throw updateItemError
+    }
+  } catch (error) {
+    console.error('Error managing donation: ', error)
+  }
+}
+
+// export const addCommunityAction = async (uid: string, action: string) => {
+//   const { error } = await supabaseAdmin.from('users').update({ community_action: action }).eq('id', uid)
+//   if (error) throw error
+// }
 
 /**
  * Copies the billing details from the payment method to the customer object.

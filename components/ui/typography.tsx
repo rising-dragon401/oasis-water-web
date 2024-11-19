@@ -5,7 +5,10 @@ const H1 = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeading
   ({ className, ...props }, ref) => {
     return (
       <h1
-        className={cn('scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl', className)}
+        className={cn(
+          'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl text-primary',
+          className
+        )}
         ref={ref}
         {...props}
       />
@@ -20,7 +23,7 @@ const H2 = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeading
     return (
       <h2
         className={cn(
-          'scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0',
+          'scroll-m-20 pb-2 text-3xl tracking-tight first:mt-0 text-primary',
           className
         )}
         ref={ref}
@@ -36,7 +39,7 @@ const H3 = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeading
   ({ className, ...props }, ref) => {
     return (
       <h3
-        className={cn('scroll-m-20 text-2xl font-semibold tracking-tight', className)}
+        className={cn('scroll-m-20 text-2xl  tracking-tight text-primary', className)}
         ref={ref}
         {...props}
       />
@@ -50,7 +53,7 @@ const H4 = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeading
   ({ className, ...props }, ref) => {
     return (
       <h4
-        className={cn('scroll-m-20 text-xl font-semibold tracking-tight', className)}
+        className={cn('scroll-m-20 text-xl tracking-tight text-primary', className)}
         ref={ref}
         {...props}
       />
@@ -62,7 +65,7 @@ H4.displayName = 'H4'
 
 const P = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
   ({ className, ...props }, ref) => {
-    return <p className={cn('text-base', className)} ref={ref} {...props} />
+    return <p className={cn('text-base text-primary', className)} ref={ref} {...props} />
   }
 )
 
@@ -74,7 +77,7 @@ const BlockQuote = React.forwardRef<
 >(({ className, ...props }, ref) => {
   return (
     <blockquote
-      className={cn('mt-6 border-l-2 border-border pl-6 italic', className)}
+      className={cn('mt-6 border-l-2 border-border pl-6 italic text-primary', className)}
       ref={ref}
       {...props}
     />
@@ -110,7 +113,9 @@ Lead.displayName = 'Lead'
 
 const Large = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
-    return <div className={cn('text-lg font-semibold', className)} ref={ref} {...props} />
+    return (
+      <div className={cn('text-lg font-semibold text-primary', className)} ref={ref} {...props} />
+    )
   }
 )
 
@@ -119,7 +124,11 @@ Large.displayName = 'Large'
 const Small = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
   ({ className, ...props }, ref) => {
     return (
-      <small className={cn('text-sm font-medium leading-none', className)} ref={ref} {...props} />
+      <small
+        className={cn('text-sm font-medium leading-none text-primary', className)}
+        ref={ref}
+        {...props}
+      />
     )
   }
 )

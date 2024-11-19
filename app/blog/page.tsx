@@ -4,6 +4,7 @@ import { getBlogs } from '@/app/actions/blogs'
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { H2, P } from '@/components/ui/typography'
 import { ArrowUpRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -23,12 +24,8 @@ export default function ResearchPage() {
     <SubpageLayout>
       <div className="flex flex-col w-full md:px-0 px-4">
         <div className="pt-4 pb-8">
-          <Typography size="3xl" fontWeight="normal">
-            Research
-          </Typography>
-          <Typography size="lg" fontWeight="normal" className="text-secondary">
-            Stay up to date on the latest scientific research regarding product health
-          </Typography>
+          <H2>Research</H2>
+          <P>Stay up to date on the latest scientific research regarding product health</P>
 
           {/* <div className="md:w-[40vw] mt-4">
             <AISearchDialog size="medium" variant="input" placeholder="Ask Oasis Research" />
@@ -79,18 +76,16 @@ export default function ResearchPage() {
                   target="_blank"
                   rel="noopener noreferrer"
                   key={study.id}
-                  className="rounded-xl bg-muted p-4 h-full transform transition-transform duration-500 ease-in-out hover:-translate-y-2 cursor-pointer block relative group"
+                  className="rounded-xl bg-card border border-border p-4 h-full transform transition-transform duration-500 ease-in-out hover:-translate-y-2 cursor-pointer block relative group"
                 >
-                  <Typography size="base" fontWeight="normal" className="pr-6 line-clamp-5">
-                    {study.title}
-                  </Typography>
-                  <Typography size="xs" fontWeight="normal" className="text-secondary">
+                  <P>{study.title}</P>
+                  <P className="text-muted-foreground">
                     {new Date(study.created_at).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
                     })}
-                  </Typography>
+                  </P>
                   <ArrowUpRight className="w-4 h-4 text-secondary absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               ))}

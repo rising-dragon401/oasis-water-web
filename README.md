@@ -19,3 +19,7 @@ Full text search: https://supabase.com/docs/guides/database/full-text-search?lan
 ```
 ngrok http --domain=quagga-adapted-sincerely.ngrok-free.app 3000
 ```
+
+# Stripe local webhook
+
+stripe listen --forward-to localhost:3000/api/webhooks/stripe

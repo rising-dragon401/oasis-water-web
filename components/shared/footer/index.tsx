@@ -11,8 +11,8 @@ export default function Footer() {
   const [openFeedback, setOpenFeedback] = useState(false)
 
   return (
-    <footer className="overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <footer className="overflow-hidden w-full">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full">
         <div className="flex md:flex-row md:gap-2 flex-col-reverse justify-between md:items-start items-center gap-4">
           <div className="mb-4 sm:mb-0 block md:hidden">
             <div className="mb-4 flex justify-center md:justify-start">
@@ -20,8 +20,8 @@ export default function Footer() {
                 <Logo />
               </Link>
             </div>
-            <div className="text-sm text-secondary">
-              © Oasis <span className="text-secondary">-</span> All rights reserved.
+            <div className="text-sm text-muted-foreground">
+              © Oasis <span className="text-muted-foreground">-</span> All rights reserved.
             </div>
           </div>
 
@@ -32,8 +32,8 @@ export default function Footer() {
                   <Logo />
                 </Link>
               </div>
-              <div className="text-sm text-secondary">
-                © Oasis <span className="text-secondary">-</span> All rights reserved.
+              <div className="text-sm text-muted-foreground">
+                © Oasis <span className="text-muted-foreground">-</span> All rights reserved.
               </div>
             </div>
             <ul className="my-8 flex-row gap-4 flex list-none">
@@ -73,7 +73,7 @@ export default function Footer() {
                   href={kTelegramJoinLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-secondary  transition duration-150 ease-in-out"
+                  className="text-muted-foreground  transition duration-150 ease-in-out"
                 >
                   Telegram community
                 </Link>
@@ -81,7 +81,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/mission"
-                  className="text-secondary  transition duration-150 ease-in-out"
+                  className="text-muted-foreground  transition duration-150 ease-in-out"
                 >
                   Mission
                 </Link>
@@ -89,7 +89,7 @@ export default function Footer() {
               {/* <li>
                 <Link
                   href="/affiliates"
-                  className="text-secondary  transition duration-150 ease-in-out"
+                  className="text-muted-foreground  transition duration-150 ease-in-out"
                 >
                   Affiliates
                 </Link>
@@ -98,14 +98,14 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-secondary transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Contact us
                 </Link>
               </li>
 
               <div
-                className="cursor-pointer text-secondary"
+                className="cursor-pointer text-muted-foreground"
                 onClick={() => {
                   setOpenFeedback(true)
                 }}
@@ -123,7 +123,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/lab-testing"
-                  className="text-secondary transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   Lab testing
                 </Link>
@@ -131,7 +131,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/about/how-scoring-works"
-                  className="text-secondary transition duration-150 ease-in-out"
+                  className="text-muted-foreground transition duration-150 ease-in-out"
                 >
                   How scoring works
                 </Link>
@@ -139,7 +139,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-secondary  transition duration-150 ease-in-out"
+                  className="text-muted-foreground  transition duration-150 ease-in-out"
                 >
                   FAQs
                 </Link>
@@ -153,7 +153,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/privacy-policy"
-                  className="text-secondary  transition duration-150 ease-in-out"
+                  className="text-muted-foreground  transition duration-150 ease-in-out"
                 >
                   Privacy policy
                 </Link>
@@ -161,13 +161,16 @@ export default function Footer() {
               <li>
                 <Link
                   href="/refund-policy"
-                  className="text-secondary  transition duration-150 ease-in-out"
+                  className="text-muted-foreground  transition duration-150 ease-in-out"
                 >
                   Refund policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="text-secondary  transition duration-150 ease-in-out">
+                <Link
+                  href="/terms"
+                  className="text-muted-foreground  transition duration-150 ease-in-out"
+                >
                   Terms
                 </Link>
               </li>

@@ -1,5 +1,6 @@
 import { stripe } from '@/utils/stripe'
 import {
+  manageDonation,
   manageSubscriptionStatusChange,
   upsertPriceRecord,
   upsertProductRecord,
@@ -7,6 +8,13 @@ import {
 import Stripe from 'stripe'
 
 export const runtime = 'nodejs'
+
+type DonationMetadata = {
+  user_id: string
+  product_id: string
+  product_type: string
+  lab_id: string
+}
 
 const relevantEvents = new Set([
   'product.created',
@@ -75,6 +83,18 @@ export async function POST(req: Request) {
               checkoutSession.customer as string,
               true
             )
+          } else if (checkoutSession.mode === 'payment') {
+            const donation = checkoutSession.metadata
+
+            const amount = checkoutSession.amount_total ?? 0
+
+            const { user_id, product_id, product_type, lab_id } = donation as DonationMetadata
+
+            if (!user_id || !product_id || !product_type || !lab_id || !amount) {
+              throw new Error('Missing metadata in checkout session')
+            }
+
+            await manageDonation(user_id, amount, product_id, product_type, lab_id)
           }
           break
         default:
