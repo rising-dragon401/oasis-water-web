@@ -17,7 +17,8 @@ export async function POST(req: Request) {
       throw new ApplicationError('Missing environment variable SUPABASE_SERVICE_ROLE_KEY')
     }
 
-    const labTestingPriceId = process.env.NEXT_PUBLIC_STRIPE_LAB_TESTING_PRICE_ID
+    const labTestingPriceId =
+      process.env.NEXT_PUBLIC_DONATE_STRIPE_PRICE_ID || `price_1QMBJUB1nYcLK5a9of3DJYhx`
 
     // 1. Destructure the price and quantity from the POST body
     const { product_id, product_type, product_name, image, lab_id, user_id } = await req.json()
@@ -49,16 +50,6 @@ export async function POST(req: Request) {
         },
         line_items: [
           {
-            // price_data: {
-            //   currency: 'usd',
-            //   // product: `prod_REec5gvSo54UXL`,
-            //   // product_data: {
-            //   //   name: `${product_name} - Standard Water Testing`,
-            //   //   description: `Contribute to the lab testing for ${product_name}. 100% of funds go directly to the lab cost.`,
-            //   //   images: [image],
-            //   //   unit_amount: amount * 100, // Convert dollars to cents
-            //   // },
-            // },
             price: labTestingPriceId,
             quantity: 1,
           },
