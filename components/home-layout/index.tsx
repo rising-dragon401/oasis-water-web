@@ -94,11 +94,6 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </Link>
 
           <div className="flex flex-row items-center justify-end w-full gap-4">
-            {!user && (
-              <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
-                Login
-              </Link>
-            )}
             <MobileNavbar />
             {/* <BasicSearch showSearch={false} size="medium" /> */}
           </div>

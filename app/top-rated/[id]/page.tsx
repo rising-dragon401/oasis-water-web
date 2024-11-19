@@ -1,6 +1,11 @@
 import SubpageLayout from '@/components/home-layout'
 import RankingList from '@/components/shared/ranking-list'
 
+export const metadata = {
+  title: 'Top Rated Products | Oasis',
+  description: 'Explore the top rated products in each category',
+}
+
 export default async function TopRatedItems({ params }: { params: any }) {
   const id = params.id
 

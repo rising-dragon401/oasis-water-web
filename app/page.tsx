@@ -1,8 +1,11 @@
 import SubpageLayout from '@/components/home-layout'
-import RecentlyTestedRow from '@/components/recently-tested-row'
-import AppDownloadCta from '@/components/shared/app-download-cta'
 
+import RecentlyTestedRow from '@/components/recently-tested-row'
+import ContributeSection from '@/components/sections/contribute-section'
 import FundingRowsSection from '@/components/sections/funding-rows-section'
+import TapWaterSection from '@/components/sections/tap-water-section'
+import TopProductsSection from '@/components/sections/top-products-section'
+import AppDownloadCta from '@/components/shared/app-download-cta'
 import DownloadAppButton from '@/components/shared/download-app-button'
 import {
   Accordion,
@@ -63,12 +66,12 @@ const FAQ_LIST = [
     content:
       "Scoring for waters and filters is based on a comprehensive analysis of the scientific data and elements from the lab reports. Please see the 'How Scoring Works' page on our website for more details.",
   },
-  {
-    value: 'tap-water-rated-higher',
-    trigger: 'Why is some tap water rated higher than bottled waters?',
-    content:
-      'Tap water ratings are scored on a different scale than bottled water ratings. And should not be direclty compared.',
-  },
+  // {
+  //   value: 'tap-water-rated-higher',
+  //   trigger: 'Why is some tap water rated higher than bottled waters?',
+  //   content:
+  //     'Tap water ratings are scored on a different scale than bottled water ratings. And should not be direclty compared.',
+  // },
   {
     value: 'data',
     trigger: 'Where do you get your data from?',
@@ -89,10 +92,6 @@ const FAQ_LIST = [
   },
 ]
 
-//  Brands cannot be trusted to inform
-//                 consumers. Oasis is an open-source 100% independent platform that collects lab
-//                 reports and rates products based on science and community input.
-
 export default function NewLandingPage() {
   return (
     <SubpageLayout>
@@ -104,17 +103,27 @@ export default function NewLandingPage() {
               <H1 className="md:text-5xl text-4xl max-w-2xl font-bold tracking-tight mb-2">
                 Water ratings backed by science
               </H1>
-              <P className="text-base max-w-xl">
-                90% of our waters are polluted with toxins and microplastics, compromising our
-                health. Uncover what you are actually drinking
+              <P className="md:text-base sm:text-sm max-w-xl">
+                90% of our waters are polluted with toxins, microplastics and other contaminants.
+                Discover the best hydration products for your health
               </P>
+              {/* 
+              <div className="mt-6 w-full justify-center">
+                <BasicSearch
+                  showSearch={true}
+                  size="medium"
+                  indices={['waters', 'filters']}
+                  placeholder="Search products"
+                  numResults={10}
+                />
+              </div> */}
               <div className="mt-6 flex gap-4 flex-row">
                 <Link href="/product-testing">
                   <Button className="h-12 px-6 rounded-lg" variant="outline">
                     Contribute
                   </Button>
                 </Link>
-                <DownloadAppButton showIcon className="h-12 px-6" />
+                <DownloadAppButton showIcon className="h-12 px-6" overrideText="Check your water" />
               </div>
               <div className="mt-10 flex justify-center">
                 <Image
@@ -122,30 +131,37 @@ export default function NewLandingPage() {
                   src="https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/acqua-pann-scan-light.png?t=2024-11-19T00%3A22%3A59.079Z"
                   width={400}
                   height={800}
-                  className="md:w-64 w-48 h-auto rounded-lg"
+                  className="md:w-48 w-48 h-auto rounded-lg"
                 />
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center md:mt-6 mt-0">
           <RecentlyTestedRow />
         </div>
 
-        <div className="max-w-4xl mx-auto py-8">
+        <div className="max-w-4xl mx-auto py-10">
           <FundingRowsSection />
         </div>
 
-        {/* FAQ Section */}
-        <div className="md:pt-8 md:pb-16 pt-8 pb-8">
+        <TapWaterSection />
+
+        <div className="max-w-4xl mx-auto py-10 w-full">
+          <TopProductsSection />
+        </div>
+
+        <ContributeSection />
+
+        <div className="md:pt-8 md:pb-16 pt-8 pb-8 mt-10">
           <div className="mx-auto max-w-6xl px-6 lg:px-8">
             <H2 className="text-center font-normal mb-10">Frequently Asked Questions</H2>
             <div className="space-y-6">
               <Accordion type="single" collapsible className="">
                 {FAQ_LIST.map((faq) => (
                   <AccordionItem key={faq.value} value={faq.value}>
-                    <AccordionTrigger className="text-primary font-bold hover:bg-secondary hover:underline-none rounded-t-lg px-2">
+                    <AccordionTrigger className="text-primary font-bold hover:bg-secondary hover:underline-none rounded-t-lg px-2 text-left">
                       {faq.trigger}
                     </AccordionTrigger>
                     <AccordionContent className="text-primary rounded-b-lg px-2">
@@ -158,7 +174,7 @@ export default function NewLandingPage() {
           </div>
         </div>
 
-        <div className="flex flex-col items-center md:mx-0 mx-4 mb-10">
+        <div className="flex flex-col items-center md:mx-0 mx-4 mb-10 mt-14">
           <AppDownloadCta />
         </div>
       </div>

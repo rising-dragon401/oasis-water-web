@@ -6,34 +6,55 @@ import { createSupabaseServerClient } from '@/utils/supabase/server'
 export const getFilters = async ({
   limit,
   sortMethod,
-  type = 'filter',
+  type,
+  tags,
 }: {
   limit?: number
   sortMethod?: 'name' | 'score'
-  type?: 'filter' | 'shower_filter' | 'bottle_filter'
+  type?: string[] | null
+  tags?: string[] | null
 } = {}) => {
   const supabase = await createSupabaseServerClient()
 
   let filters
-  let orderBy = sortMethod || 'name'
+  const orderBy = sortMethod || 'name'
 
   let query = supabase.from('water_filters').select().order(orderBy)
 
-  if (type) {
-    query = query.eq('type', type)
+  if (type && type.length > 0) {
+    query = query.in('type', type)
+  }
+
+  if (tags && tags.length > 0) {
+    query = query.or(tags.map((tag) => `tags.ilike.%${tag}%`).join(','))
   }
 
   if (limit) {
     query = query.limit(limit)
   }
 
-  const { data } = await query
+  const { data: filterData } = await query
 
-  filters = data
-
-  if (!filters) {
+  if (!filterData) {
     return []
   }
+
+  // Fetch brand names for each filter
+  const filterIds = filterData.map((filter) => filter.id)
+  const { data: brandData } = await supabase.from('brands').select('id, name').in('id', filterIds)
+
+  if (!brandData) {
+    return []
+  }
+
+  // Map brand names to filters
+  filters = filterData.map((filter) => {
+    const brand = brandData.find((b) => b.id === filter.id)
+    return {
+      ...filter,
+      brandName: brand ? brand.name : null,
+    }
+  })
 
   filters = filters.sort((a, b) => {
     if (a.is_indexed === false) return 1

@@ -22,6 +22,8 @@ type CategoryType = {
   selectedTags?: string[]
   isParentCategory?: boolean
   productType?: string
+  description?: string
+  isComingSoon?: boolean
 }
 
 export const ITEM_TYPES = [
@@ -35,6 +37,7 @@ export const ITEM_TYPES = [
     tableName: 'items',
     categoryLabel: 'Bottled water',
     icon: 'water-outline',
+    description: 'Bottled water',
   },
   {
     id: 'filter',
@@ -71,6 +74,7 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/bottled_water_cover.png',
     isParentCategory: true,
+    description: 'Bottled water',
   },
   {
     id: 'filter',
@@ -97,6 +101,7 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/water_filters_cover.png?t=2024-09-02T23%3A58%3A21.298Z',
     isParentCategory: true,
+    description: 'Filters for your water',
   },
   {
     id: 'shower_filter',
@@ -109,6 +114,7 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/shower_filter_cover.png',
     isParentCategory: true,
+    description: 'Shower filters',
   },
   {
     id: 'gallons',
@@ -117,10 +123,11 @@ export const CATEGORIES: CategoryType[] = [
     tags: ['gallon'],
     selectedTags: ['gallon'],
     productType: 'water',
-    title: 'Water gallons',
+    title: 'Water delivery',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/water_gallon_cover.png?t=2024-09-03T00%3A05%3A12.584Z',
     isParentCategory: false,
+    description: 'Water gallons',
   },
   {
     id: 'bottle_filter',
@@ -133,6 +140,7 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/water_bottle_filter.png',
     isParentCategory: true,
+    description: 'Bottle filters',
   },
   {
     id: 'sink_filter',
@@ -145,6 +153,7 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/sink_filter_cover.png',
     isParentCategory: false,
+    description: 'Sink filters',
   },
   {
     id: 'home_filter',
@@ -157,6 +166,7 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/home_filter_cover.png',
     isParentCategory: false,
+    description: 'Home filters',
   },
   {
     id: 'sparkling_water',
@@ -169,20 +179,23 @@ export const CATEGORIES: CategoryType[] = [
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/sparkling_water_cover%20(1).png',
     isParentCategory: false,
+    description: 'Sparkling water',
   },
-  // {
-  // 	id: "flavored_water",
-  // 	title: "Flavored drinks",
-  // 	image:
-  // 		"https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/sparkling_water_cover.png",
-  // 	tags: ["still", "sparkling"],
-  // },
-  // {
-  // 	id: "energy_drink",
-  // 	title: "Energy drinks",
-  // 	image:
-  // 		"https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/energy%20drink%20cover.png",
-  // },
+  {
+    id: 'flavored_water',
+    title: 'Flavored drinks',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/sparkling_water_cover.png',
+    tags: ['still', 'sparkling'],
+    isComingSoon: true,
+  },
+  {
+    id: 'energy_drink',
+    title: 'Energy drinks',
+    image:
+      'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/energy%20drink%20cover.png',
+    isComingSoon: true,
+  },
   // {
   // 	id: "coconut_water",
   // 	title: "Coconut water",

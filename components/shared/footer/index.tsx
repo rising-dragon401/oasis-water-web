@@ -125,7 +125,7 @@ export default function Footer() {
                   href="/lab-testing"
                   className="text-muted-foreground transition duration-150 ease-in-out"
                 >
-                  Lab testing
+                  Test your water
                 </Link>
               </li>
               <li>

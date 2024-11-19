@@ -12,7 +12,7 @@ import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
-import { H2, Muted } from '@/components/ui/typography'
+import { H3, Muted, P } from '@/components/ui/typography'
 import { useUserProvider } from '@/providers/UserProvider'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -129,9 +129,9 @@ export default function ItemForm({ id }: Props) {
           </div>
 
           <div className="flex flex-col w-full justify-between h-full md:max-h-96">
-            <div className="flex flex-row justify-between w-full items-start">
+            <div className="flex flex-row justify-between w-full items-start gap-4">
               <div className="flex flex-col w-full">
-                <H2>{item.name}</H2>
+                <P className="text-2xl">{item.name}</P>
                 <Link href={`/search/company/${item.company?.name}`}>
                   <Muted>{item.company?.name}</Muted>
                 </Link>
@@ -148,62 +148,60 @@ export default function ItemForm({ id }: Props) {
               </div>
             )}
 
-            <div className="flex flex-col h-full">
-              <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full mt-2 ">
-                {item.is_indexed && (
-                  <div className="flex flex-col gap-y-1 w-full">
-                    <BlurredLineItem
-                      label="Harmful ingredients"
-                      value={harmfulIngredients?.length}
-                      isPaywalled={true}
-                      score={harmfulIngredients?.length > 0 ? 'bad' : 'good'}
-                    />
+            <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full mt-2 ">
+              {item.is_indexed && (
+                <div className="flex flex-col gap-y-1 w-full ">
+                  <BlurredLineItem
+                    label="Harmful ingredients"
+                    value={harmfulIngredients?.length}
+                    isPaywalled={true}
+                    score={harmfulIngredients?.length > 0 ? 'bad' : 'good'}
+                  />
 
-                    <BlurredLineItem
-                      label="Beneficial ingredients"
-                      value={beneficialIngredients?.length}
-                      isPaywalled={true}
-                      score={beneficialIngredients?.length > 0 ? 'good' : 'bad'}
-                    />
+                  <BlurredLineItem
+                    label="Beneficial ingredients"
+                    value={beneficialIngredients?.length}
+                    isPaywalled={true}
+                    score={beneficialIngredients?.length > 0 ? 'good' : 'bad'}
+                  />
 
-                    <BlurredLineItem
-                      label="pH"
-                      value={
-                        item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
-                          ? 'Unknown'
-                          : item.metadata.ph_level
-                      }
-                      isPaywalled={false}
-                      score={parseFloat(item.metadata?.ph_level) > 7 ? 'good' : 'neutral'}
-                    />
+                  <BlurredLineItem
+                    label="pH"
+                    value={
+                      item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
+                        ? 'Unknown'
+                        : item.metadata.ph_level
+                    }
+                    isPaywalled={false}
+                    score={parseFloat(item.metadata?.ph_level) > 7 ? 'good' : 'neutral'}
+                  />
 
-                    <BlurredLineItem
-                      label="TDS"
-                      value={item.metadata?.tds || 'N/A'}
-                      isPaywalled={false}
-                      score="neutral"
-                    />
+                  <BlurredLineItem
+                    label="TDS"
+                    value={item.metadata?.tds || 'N/A'}
+                    isPaywalled={false}
+                    score="neutral"
+                  />
 
-                    <BlurredLineItem
-                      label="PFAS"
-                      value={item.metadata?.pfas || 'N/A'}
-                      isPaywalled={false}
-                      score={item.metadata?.pfas === 'Yes' ? 'bad' : 'good'}
-                    />
+                  <BlurredLineItem
+                    label="PFAS"
+                    value={item.metadata?.pfas || 'N/A'}
+                    isPaywalled={false}
+                    score={item.metadata?.pfas === 'Yes' ? 'bad' : 'good'}
+                  />
 
-                    <BlurredLineItem
-                      label="Packaging"
-                      value={
-                        item?.packaging
-                          ? item.packaging.charAt(0).toUpperCase() + item.packaging.slice(1)
-                          : 'Unknown'
-                      }
-                      isPaywalled={false}
-                      score={item.packaging === 'glass' ? 'good' : 'bad'}
-                    />
-                  </div>
-                )}
-              </div>
+                  <BlurredLineItem
+                    label="Packaging"
+                    value={
+                      item?.packaging
+                        ? item.packaging.charAt(0).toUpperCase() + item.packaging.slice(1)
+                        : 'Unknown'
+                    }
+                    isPaywalled={false}
+                    score={item.packaging === 'glass' ? 'good' : 'bad'}
+                  />
+                </div>
+              )}
             </div>
 
             {!isTested && (
@@ -226,10 +224,8 @@ export default function ItemForm({ id }: Props) {
 
         <>
           {isTested && (
-            <div className="flex flex-col gap-2 mt-6">
-              <Typography size="2xl" fontWeight="normal">
-                Contaminants and minerals
-              </Typography>
+            <div className="flex flex-col gap-2 mt-10">
+              <H3>Contaminants and minerals</H3>
               {sortedContaminants && sortedContaminants.length > 0 ? (
                 <>
                   {!subscription ? (
@@ -242,7 +238,7 @@ export default function ItemForm({ id }: Props) {
                         'Health risks and benefits 🤍',
                       ]}
                     >
-                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 h-80 bg-secondary rounded-md"></div>
+                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 h-80 bg-muted rounded-md"></div>
                     </PaywallContent>
                   ) : (
                     <div className="grid md:grid-cols-2 grid-cols-1 gap-6">

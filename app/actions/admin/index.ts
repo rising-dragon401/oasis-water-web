@@ -115,3 +115,33 @@ export const getUserReferralStats = async (userId: string) => {
 
   return stats
 }
+
+export const getAllLocationMarkers = async () => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase
+    .from('tap_water_locations')
+    .select('name, score, lat_long')
+    .not('lat_long', 'is', null)
+    .not('score', 'is', null)
+    .limit(1000)
+
+  if (error) {
+    console.error('Error fetching locations:', error)
+    return []
+  }
+
+  const formattedData = data.map((location) => {
+    const { latitude, longitude } = location.lat_long
+    return {
+      name: location.name,
+      score: location.score,
+      lat: latitude,
+      lng: longitude,
+    }
+  })
+
+  console.log('formattedData', JSON.stringify(formattedData, null, 2))
+
+  return formattedData
+}

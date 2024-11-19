@@ -1,6 +1,7 @@
 'use client'
 
 import Typography from '@/components/typography'
+import { P } from '@/components/ui/typography'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
 import { Item, TapWaterLocation, WaterFilter } from '@/types/custom'
@@ -8,7 +9,6 @@ import { determineLink } from '@/utils/helpers'
 import { AlertTriangle, Lock } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import FavoriteButton from '../favorite-button'
 
 type Props = {
   item: Item | WaterFilter | TapWaterLocation
@@ -47,7 +47,7 @@ export default function ItemPreviewCard({
         <Typography
           size="xs"
           fontWeight="normal"
-          className="!no-underline text-secondary text-right"
+          className="!no-underline text-muted-foreground text-right"
         >
           /100
         </Typography>
@@ -62,7 +62,7 @@ export default function ItemPreviewCard({
         <Typography
           size="xs"
           fontWeight="normal"
-          className="!no-underline text-secondary text-right"
+          className="!no-underline text-muted-foreground text-right"
         >
           /100
         </Typography>
@@ -129,24 +129,18 @@ export default function ItemPreviewCard({
       className={`flex flex-col hover:opacity-80 relative max-w-sm rounded-md fade-in ${getWidthClass()}`}
     >
       <div
-        className={`relative flex w-full rounded-lg bg-card aspect-w-1 aspect-h-1 ${getHeightClass()} ${getWidthClass()}`}
+        className={`relative flex w-full rounded-lg bg-card border border-border aspect-w-1 aspect-h-1 ${getHeightClass()} ${getWidthClass()}`}
       >
         {renderImage()}
-        {showFavoriteButton && showData && (
-          <div className="absolute top-0 right-0">
-            <FavoriteButton item={item} />
-          </div>
-        )}
       </div>
       <div className="flex flex-row justify-between p-1 px-2 md:gap-2 items-start w-full">
         <div className="flex flex-col w-5/6 justify-start">
-          <Typography
-            size="sm"
-            fontWeight="bold"
-            className={`!no-underline text-primary flex-wrap overflow-hidden md:max-h-12 max-h-10 ${!showData ? 'blur-lg' : ''}`}
+          <P
+            className={`text-sm !no-underline text-primary flex-wrap overflow-hidden ${!showData ? 'blur-lg' : ''}`}
+            style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
           >
             {item.name}
-          </Typography>
+          </P>
         </div>
 
         <div className="flex w-1/6 justify-end">
@@ -162,7 +156,7 @@ export default function ItemPreviewCard({
                 <Typography
                   size="xs"
                   fontWeight="normal"
-                  className="!no-underline text-secondary text-right"
+                  className="!no-underline text-muted-foreground text-right"
                 >
                   /100
                 </Typography>

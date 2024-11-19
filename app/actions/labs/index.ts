@@ -100,8 +100,6 @@ export const fetchFundingStatus = async ({
     throw new Error(`Error fetching contributions: ${contributionsError.message}`)
   }
 
-  console.log('contributionsData', JSON.stringify(contributionsData, null, 2))
-
   // Restructure contributions to include user details in the same object
   const userContributions = contributionsData.map((contribution) => ({
     user_id: contribution.user_id,
