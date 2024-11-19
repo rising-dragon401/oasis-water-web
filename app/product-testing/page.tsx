@@ -89,7 +89,7 @@ export default function AllProductsPage() {
             linkToProduct={true}
             showContribute={tab === 'untested'}
             date={tab === 'tested' || tab === 'in_progress' ? item.updated_at : null}
-            titleClassName={'text-lg'}
+            titleClassName="md:text-lg sm:text-sm"
           />
         ))}
       </div>

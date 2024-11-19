@@ -104,12 +104,12 @@ export default function NewLandingPage() {
               <H1 className="md:text-5xl text-4xl max-w-2xl font-bold tracking-tight mb-2">
                 Water ratings backed by science
               </H1>
-              <P className="text-base  max-w-xl">
+              <P className="text-base max-w-xl">
                 90% of our waters are polluted with toxins and microplastics, compromising our
                 health. Uncover what you are actually drinking
               </P>
               <div className="mt-6 flex gap-4 flex-row">
-                <Link href="/products">
+                <Link href="/product-testing">
                   <Button className="h-12 px-6 rounded-lg" variant="outline">
                     Contribute
                   </Button>
