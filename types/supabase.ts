@@ -13,6 +13,8 @@ export type Database = {
         Row: {
           company: number | null
           created_at: string
+          featured: boolean | null
+          featured_order: number | null
           id: number
           image: string | null
           name: string
@@ -20,6 +22,8 @@ export type Database = {
         Insert: {
           company?: number | null
           created_at?: string
+          featured?: boolean | null
+          featured_order?: number | null
           id?: number
           image?: string | null
           name: string
@@ -27,6 +31,8 @@ export type Database = {
         Update: {
           company?: number | null
           created_at?: string
+          featured?: boolean | null
+          featured_order?: number | null
           id?: number
           image?: string | null
           name?: string
@@ -37,6 +43,71 @@ export type Database = {
             columns: ["company"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: number
+          image: string | null
+          label: string | null
+          ref: string | null
+          request_count: number | null
+          status: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          image?: string | null
+          label?: string | null
+          ref?: string | null
+          request_count?: number | null
+          status?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          image?: string | null
+          label?: string | null
+          ref?: string | null
+          request_count?: number | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      community_actions: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          image: string | null
+          path: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          image?: string | null
+          path?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          image?: string | null
+          path?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_actions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -61,6 +132,73 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      contributions: {
+        Row: {
+          amount: number | null
+          category_id: number | null
+          created_at: string
+          file_url: string | null
+          id: number
+          kind: string | null
+          lab_id: number | null
+          name: string | null
+          note: string | null
+          product_id: number | null
+          product_type: Database["public"]["Enums"]["item_type"] | null
+          user_id: string | null
+        }
+        Insert: {
+          amount?: number | null
+          category_id?: number | null
+          created_at?: string
+          file_url?: string | null
+          id?: number
+          kind?: string | null
+          lab_id?: number | null
+          name?: string | null
+          note?: string | null
+          product_id?: number | null
+          product_type?: Database["public"]["Enums"]["item_type"] | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number | null
+          category_id?: number | null
+          created_at?: string
+          file_url?: string | null
+          id?: number
+          kind?: string | null
+          lab_id?: number | null
+          name?: string | null
+          note?: string | null
+          product_id?: number | null
+          product_type?: Database["public"]["Enums"]["item_type"] | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contributions_lab_id_fkey"
+            columns: ["lab_id"]
+            isOneToOne: false
+            referencedRelation: "labs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "requests_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       customers: {
         Row: {
@@ -292,6 +430,7 @@ export type Database = {
           is_distilled: boolean | null
           is_indexed: boolean | null
           is_private: boolean | null
+          lab_updated_at: string | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
@@ -300,8 +439,11 @@ export type Database = {
           score: number | null
           sources: Json[] | null
           tags: string | null
+          test_request_count: number | null
+          testing_status: Database["public"]["Enums"]["testing_status"] | null
           type: Database["public"]["Enums"]["item_type"]
           updated_at: string | null
+          views: number | null
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -322,6 +464,7 @@ export type Database = {
           is_distilled?: boolean | null
           is_indexed?: boolean | null
           is_private?: boolean | null
+          lab_updated_at?: string | null
           metadata?: Json | null
           name: string
           nutrients?: Json[] | null
@@ -330,8 +473,11 @@ export type Database = {
           score?: number | null
           sources?: Json[] | null
           tags?: string | null
+          test_request_count?: number | null
+          testing_status?: Database["public"]["Enums"]["testing_status"] | null
           type: Database["public"]["Enums"]["item_type"]
           updated_at?: string | null
+          views?: number | null
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -352,6 +498,7 @@ export type Database = {
           is_distilled?: boolean | null
           is_indexed?: boolean | null
           is_private?: boolean | null
+          lab_updated_at?: string | null
           metadata?: Json | null
           name?: string
           nutrients?: Json[] | null
@@ -360,8 +507,11 @@ export type Database = {
           score?: number | null
           sources?: Json[] | null
           tags?: string | null
+          test_request_count?: number | null
+          testing_status?: Database["public"]["Enums"]["testing_status"] | null
           type?: Database["public"]["Enums"]["item_type"]
           updated_at?: string | null
+          views?: number | null
           water_source?:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -379,6 +529,62 @@ export type Database = {
             columns: ["company"]
             isOneToOne: false
             referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      labs: {
+        Row: {
+          created_at: string
+          id: number
+          is_funded: boolean | null
+          label: string | null
+          parsed_data: Json | null
+          product: number | null
+          product_type: Database["public"]["Enums"]["item_type"] | null
+          raised_amount: number | null
+          report: string | null
+          sample_date: string | null
+          status: Database["public"]["Enums"]["testing_status"] | null
+          test_kit: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_funded?: boolean | null
+          label?: string | null
+          parsed_data?: Json | null
+          product?: number | null
+          product_type?: Database["public"]["Enums"]["item_type"] | null
+          raised_amount?: number | null
+          report?: string | null
+          sample_date?: string | null
+          status?: Database["public"]["Enums"]["testing_status"] | null
+          test_kit?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_funded?: boolean | null
+          label?: string | null
+          parsed_data?: Json | null
+          product?: number | null
+          product_type?: Database["public"]["Enums"]["item_type"] | null
+          raised_amount?: number | null
+          report?: string | null
+          sample_date?: string | null
+          status?: Database["public"]["Enums"]["testing_status"] | null
+          test_kit?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "labs_test_kit_fkey"
+            columns: ["test_kit"]
+            isOneToOne: false
+            referencedRelation: "test_kits"
             referencedColumns: ["id"]
           },
         ]
@@ -641,6 +847,47 @@ export type Database = {
         }
         Relationships: []
       }
+      sources: {
+        Row: {
+          created_at: string
+          date: string | null
+          description: string | null
+          id: number
+          lab_id: number | null
+          name: string | null
+          type: string | null
+          url: string | null
+        }
+        Insert: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          id?: number
+          lab_id?: number | null
+          name?: string | null
+          type?: string | null
+          url?: string | null
+        }
+        Update: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          id?: number
+          lab_id?: number | null
+          name?: string | null
+          type?: string | null
+          url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sources_lab_id_fkey"
+            columns: ["lab_id"]
+            isOneToOne: false
+            referencedRelation: "labs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscriptions: {
         Row: {
           amount: number | null
@@ -653,8 +900,10 @@ export type Database = {
           ended_at: string | null
           id: string
           metadata: Json | null
+          platform: string | null
           price_id: string | null
           quantity: number | null
+          rc_customer_id: string | null
           status: Database["public"]["Enums"]["subscription_status"] | null
           trial_end: string | null
           trial_start: string | null
@@ -671,8 +920,10 @@ export type Database = {
           ended_at?: string | null
           id: string
           metadata?: Json | null
+          platform?: string | null
           price_id?: string | null
           quantity?: number | null
+          rc_customer_id?: string | null
           status?: Database["public"]["Enums"]["subscription_status"] | null
           trial_end?: string | null
           trial_start?: string | null
@@ -689,8 +940,10 @@ export type Database = {
           ended_at?: string | null
           id?: string
           metadata?: Json | null
+          platform?: string | null
           price_id?: string | null
           quantity?: number | null
+          rc_customer_id?: string | null
           status?: Database["public"]["Enums"]["subscription_status"] | null
           trial_end?: string | null
           trial_start?: string | null
@@ -708,40 +961,82 @@ export type Database = {
       }
       tap_water_locations: {
         Row: {
+          country: string | null
           created_at: string
           id: number
           image: string | null
           is_featured: boolean | null
+          is_indexed: boolean | null
           lat_long: Json | null
           name: string
           score: number | null
           state: string | null
+          test_request_count: number | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at: string | null
           utilities: Json[] | null
         }
         Insert: {
+          country?: string | null
           created_at?: string
           id?: number
           image?: string | null
           is_featured?: boolean | null
+          is_indexed?: boolean | null
           lat_long?: Json | null
           name: string
           score?: number | null
           state?: string | null
+          test_request_count?: number | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at?: string | null
           utilities?: Json[] | null
         }
         Update: {
+          country?: string | null
           created_at?: string
           id?: number
           image?: string | null
           is_featured?: boolean | null
+          is_indexed?: boolean | null
           lat_long?: Json | null
           name?: string
           score?: number | null
           state?: string | null
+          test_request_count?: number | null
           type?: Database["public"]["Enums"]["item_type"]
+          updated_at?: string | null
           utilities?: Json[] | null
+        }
+        Relationships: []
+      }
+      test_kits: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          ingredients: number[] | null
+          name: string | null
+          price: number | null
+          product_type: Database["public"]["Enums"]["item_type"] | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          ingredients?: number[] | null
+          name?: string | null
+          price?: number | null
+          product_type?: Database["public"]["Enums"]["item_type"] | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          ingredients?: number[] | null
+          name?: string | null
+          price?: number | null
+          product_type?: Database["public"]["Enums"]["item_type"] | null
         }
         Relationships: []
       }
@@ -763,11 +1058,15 @@ export type Database = {
           is_featured: boolean | null
           is_oasis_public: boolean | null
           is_onboarded: boolean | null
+          lab_requests_filters_count: number | null
+          lab_requests_items_count: number | null
+          lab_requests_tap_water_count: number | null
           location: Json | null
           metadata: Json | null
           newsletter_subscribed: boolean | null
           payment_method: Json | null
           permissions: Database["public"]["Enums"]["permission"] | null
+          rc_customer_id: string | null
           redeemed_invite_code: string | null
           referred_by: string | null
           score: number | null
@@ -792,11 +1091,15 @@ export type Database = {
           is_featured?: boolean | null
           is_oasis_public?: boolean | null
           is_onboarded?: boolean | null
+          lab_requests_filters_count?: number | null
+          lab_requests_items_count?: number | null
+          lab_requests_tap_water_count?: number | null
           location?: Json | null
           metadata?: Json | null
           newsletter_subscribed?: boolean | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
+          rc_customer_id?: string | null
           redeemed_invite_code?: string | null
           referred_by?: string | null
           score?: number | null
@@ -821,11 +1124,15 @@ export type Database = {
           is_featured?: boolean | null
           is_oasis_public?: boolean | null
           is_onboarded?: boolean | null
+          lab_requests_filters_count?: number | null
+          lab_requests_items_count?: number | null
+          lab_requests_tap_water_count?: number | null
           location?: Json | null
           metadata?: Json | null
           newsletter_subscribed?: boolean | null
           payment_method?: Json | null
           permissions?: Database["public"]["Enums"]["permission"] | null
+          rc_customer_id?: string | null
           redeemed_invite_code?: string | null
           referred_by?: string | null
           score?: number | null
@@ -878,7 +1185,9 @@ export type Database = {
           score: number | null
           sources: Json[] | null
           tags: string | null
+          test_request_count: number | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at: string | null
         }
         Insert: {
           affiliate_url?: string | null
@@ -902,7 +1211,9 @@ export type Database = {
           score?: number | null
           sources?: Json[] | null
           tags?: string | null
+          test_request_count?: number | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at?: string | null
         }
         Update: {
           affiliate_url?: string | null
@@ -926,7 +1237,9 @@ export type Database = {
           score?: number | null
           sources?: Json[] | null
           tags?: string | null
+          test_request_count?: number | null
           type?: Database["public"]["Enums"]["item_type"]
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -950,6 +1263,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_item_contaminant_count: {
+        Args: {
+          item_id: number
+        }
+        Returns: {
+          contaminant_count: number
+        }[]
+      }
       get_items_with_ingredient: {
         Args: {
           ingredient_id: number
@@ -970,6 +1291,7 @@ export type Database = {
           is_distilled: boolean | null
           is_indexed: boolean | null
           is_private: boolean | null
+          lab_updated_at: string | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
@@ -978,8 +1300,11 @@ export type Database = {
           score: number | null
           sources: Json[] | null
           tags: string | null
+          test_request_count: number | null
+          testing_status: Database["public"]["Enums"]["testing_status"] | null
           type: Database["public"]["Enums"]["item_type"]
           updated_at: string | null
+          views: number | null
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -1018,7 +1343,9 @@ export type Database = {
           score: number | null
           sources: Json[] | null
           tags: string | null
+          test_request_count: number | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at: string | null
         }[]
       }
       get_random_items: {
@@ -1039,6 +1366,7 @@ export type Database = {
           is_distilled: boolean | null
           is_indexed: boolean | null
           is_private: boolean | null
+          lab_updated_at: string | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
@@ -1047,8 +1375,11 @@ export type Database = {
           score: number | null
           sources: Json[] | null
           tags: string | null
+          test_request_count: number | null
+          testing_status: Database["public"]["Enums"]["testing_status"] | null
           type: Database["public"]["Enums"]["item_type"]
           updated_at: string | null
+          views: number | null
           water_source:
             | Database["public"]["Enums"]["bottled_water_source"]
             | null
@@ -1057,15 +1388,19 @@ export type Database = {
       get_random_locations: {
         Args: Record<PropertyKey, never>
         Returns: {
+          country: string | null
           created_at: string
           id: number
           image: string | null
           is_featured: boolean | null
+          is_indexed: boolean | null
           lat_long: Json | null
           name: string
           score: number | null
           state: string | null
+          test_request_count: number | null
           type: Database["public"]["Enums"]["item_type"]
+          updated_at: string | null
           utilities: Json[] | null
         }[]
       }
@@ -1091,6 +1426,24 @@ export type Database = {
           "": unknown
         }
         Returns: unknown
+      }
+      increment: {
+        Args: {
+          table_name: string
+          column_name: string
+          record_id: number
+          amount: number
+        }
+        Returns: undefined
+      }
+      increment_user_column: {
+        Args: {
+          table_name: string
+          column_name: string
+          user_id: string
+          amount: number
+        }
+        Returns: undefined
       }
       ivfflathandler: {
         Args: {
@@ -1231,7 +1584,7 @@ export type Database = {
         | "cardboard"
         | "aluminum"
         | "aluminum (can)"
-      permission: "admin" | "manager" | "user"
+      permission: "admin" | "manager" | "user" | "owner"
       pricing_plan_interval: "day" | "week" | "month" | "year"
       pricing_type: "one_time" | "recurring"
       subscription_status:
@@ -1244,6 +1597,14 @@ export type Database = {
         | "unpaid"
         | "paused"
         | "expired"
+        | "in_grace_period"
+        | "in_billing_retry"
+      testing_status:
+        | "complete"
+        | "in_progress"
+        | "untested"
+        | "out_of_date"
+        | "not_started"
       water_filtration_methods:
         | "Distillation"
         | "Reverse osmosis"

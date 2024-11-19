@@ -55,16 +55,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <CSPostHogProvider>
         <body>
-          {/* Rewardful tracking scripts */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-            (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
-          `,
-            }}
-          ></script>
-          <script async src="https://r.wdfl.co/rw.js" data-rewardful="f64466"></script>
-
           <SupabaseProvider>
             <UserProvider>
               <main id="skip" className="h-[calc(100dvh)]">

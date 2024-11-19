@@ -27,7 +27,10 @@ html {
     --secondary: #f1f0ed;
     --foreground: #9b9c9a;
     --muted: #d3d6d1;
-
+    --danger: #ff6f61;
+    --success: #2e8b57;
+    --warning: #ffdd57;
+    --neutral: #e5e7eb;
     --card-foreground: 0 0% 13%;
     --popover: #ffffff;
     --popover-foreground: 0 0% 13%;

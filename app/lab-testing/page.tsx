@@ -1,6 +1,7 @@
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
+import { Muted, P } from '@/components/ui/typography'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 
@@ -94,17 +95,13 @@ export default function LabTestingPage() {
       <div className="flex flex-col w-full px-4 pt-14 pb-10">
         <div className="flex flex-col w-full items-center mb-8">
           <Typography size="4xl" fontWeight="normal" className="text-center">
-            Order water testing kits
+            Test your water
           </Typography>
-          <Typography
-            size="base"
-            fontWeight="normal"
-            className="mt-2 text-secondary text-center max-w-2xl"
-          >
+          <P className="text-center">
             We partner with TapScore to provide comprehensive and state of the art water testing and
             analysis. Get a personal testing kit shipped to your home to test tap water and bottled
             waters.
-          </Typography>
+          </P>
 
           <div className="flex flex-row gap-4 items-center mt-4 mb-6">
             <a href="https://shrsl.com/4hhtf" target="_blank" rel="noopener noreferrer">
@@ -117,7 +114,7 @@ export default function LabTestingPage() {
           {TEST_KITS.map((testKit) => (
             <a
               key={testKit.name}
-              className="w-full bg-card md:px-8 px-2 py-2 rounded-2xl flex flex-col gap-4 hover:shadow-lg hover:cursor-pointer"
+              className="w-full bg-card border border-border md:px-8 px-2 py-2 rounded-2xl flex flex-col gap-4 hover:shadow-lg hover:cursor-pointer"
               href={testKit.affiliateLink}
               target="_blank"
               rel="noopener noreferrer"
@@ -135,20 +132,18 @@ export default function LabTestingPage() {
                 <Typography size="xl" fontWeight="normal" className="">
                   {testKit.name}
                 </Typography>
-                <Typography size="sm" fontWeight="normal" className="text-secondary md:h-20 h-24">
-                  {testKit.description}
-                </Typography>
+                <P>{testKit.description}</P>
                 <div className="flex flex-row justify-between items-center w-full">
                   {/* <Button variant="outline">Order now</Button> */}
 
-                  <Typography size="xl" fontWeight="normal" className="text-secondary">
+                  <Muted>
                     {testKit.price.toLocaleString('en-US', {
                       style: 'currency',
                       currency: 'USD',
                       minimumFractionDigits: 0,
                       maximumFractionDigits: 0,
                     })}
-                  </Typography>
+                  </Muted>
                 </div>
               </div>
             </a>
@@ -160,14 +155,12 @@ export default function LabTestingPage() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Typography size="2xl" fontWeight="normal">
-              Shop other tests
-            </Typography>
+            <P>Shop other tests</P>
             <ArrowRight className="w-8 h-8 text-primary" />
           </a>
         </div>
 
-        <div className="flex flex-col gap-4 py-14 px-8 rounded-2xl mt-24 bg-muted border">
+        {/* <div className="flex flex-col gap-4 py-14 px-8 rounded-2xl mt-24 bg-muted border">
           <Typography size="2xl" fontWeight="normal">
             Consulting and test inquiries
           </Typography>
@@ -177,7 +170,7 @@ export default function LabTestingPage() {
               hello@live-oasis.com
             </a>
           </Typography>
-        </div>
+        </div> */}
       </div>
     </SubpageLayout>
   )

@@ -45,6 +45,7 @@ export const getItem = async (id: string) => {
 }
 
 export const getItemDetails = async (id: string) => {
+  console.log('GET ITEM DETAILS', id)
   const supabase = await createSupabaseServerClient()
   try {
     const { data: item, error } = await supabase
@@ -115,7 +116,7 @@ export const getItemDetails = async (id: string) => {
     return itemWithDetails
   } catch (error) {
     console.error('getItemDetails error: ', error)
-    return error
+    return null
   }
 }
 

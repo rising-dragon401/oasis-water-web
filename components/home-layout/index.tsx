@@ -1,6 +1,7 @@
 'use client'
 
 import HomeNavbar from '@/components/menu/home-navbar'
+import MobileNavbar from '@/components/menu/mobile-navbar'
 import Footer from '@/components/shared/footer'
 import Logo from '@/components/shared/logo'
 import Typography from '@/components/typography'
@@ -10,8 +11,7 @@ import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { PropsWithChildren, Suspense, useEffect } from 'react'
 import { AccountMenu } from '../menu/account-menu'
-import BottomNavbar from '../menu/bottom-bar'
-import DownloadAppButton from '../shared/downlaod-app-button'
+import DownloadAppButton from '../shared/download-app-button'
 
 type Props = {
   openModal: (modalName: ModalName) => void
@@ -35,71 +35,33 @@ const SearchParamsComponent = ({ openModal, isOpen }: Props) => {
 }
 
 export default function SubpageLayout({ children }: PropsWithChildren) {
-  const { user, userData, subscription } = useUserProvider()
+  const { user } = useUserProvider()
   const pathname = usePathname()
+
   const { openModal, isOpen } = useModal()
 
   return (
     <div className="min-h-[100vh] flex justify-center">
-      <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-4xl sm:max-w-xl max-w-sm w-full">
+      <div className="xl:max-w-6xl lg:max-w-4xl md:max-w-4xl w-full flex flex-col items-center">
         <Suspense fallback={<div />}>
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
+        <div className="md:flex hidden w-full justify-center items-center">
+          <div className="flex-1 flex justify-start w-full">
+            <Link href="/" className="flex flex-row items-center hover:cursor-pointer">
+              <Logo />
 
-        {/* <div className="py-2 mt-2 text-center bg-muted border-input border rounded-lg">
-          <Typography size="sm" fontWeight="normal">
-            {!subscription ? (
-              <>
-                Start a free trial on our{' '}
-                <a
-                  href="https://apps.apple.com/us/app/oasis-water-health-ratings/id6499478532"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline font-bold"
-                >
-                  iOS app
-                </a>{' '}
-                or{' '}
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.liveoasis.oasis"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline font-bold"
-                >
-                  Android app
-                </a>{' '}
-                🎉
-              </>
-            ) : (
-              <>
-                Our {``}
-                <a
-                  href="https://apps.apple.com/us/app/oasis-water-health-ratings/id6499478532"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline font-bold"
-                >
-                  iOS
-                </a>{' '}
-                and{' '}
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.liveoasis.oasis"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:underline font-bold"
-                >
-                  Android
-                </a>{' '}
-                apps are live 🎉
-              </>
-            )}
-          </Typography>
-        </div> */}
+              <Typography size="2xl" fontWeight="normal" className="!text-accent">
+                Oasis
+              </Typography>
+            </Link>
+          </div>
 
-        <div className="md:flex hidden flex-w w-full justify-between items-center ">
-          <HomeNavbar />
+          <div className="flex-1 flex justify-center w-full">
+            <HomeNavbar />
+          </div>
 
-          <div className="flex justify-end items-center gap-2">
+          <div className="flex-1 flex justify-end items-center gap-2">
             {/* <BasicSearch showSearch={false} size="small" /> */}
 
             {user ? (
@@ -119,7 +81,7 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           </div>
         </div>
 
-        <div className="md:hidden flex flex-row justify-between items-center pt-1 gap-4">
+        <div className="md:hidden flex flex-row w-full max-w-sm justify-between items-center pt-1 gap-4">
           <Link
             href="/"
             className="flex  flex-row items-center justify-center hover:cursor-pointer"
@@ -137,8 +99,8 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
                 Login
               </Link>
             )}
+            <MobileNavbar />
             {/* <BasicSearch showSearch={false} size="medium" /> */}
-            <DownloadAppButton />
           </div>
         </div>
 
@@ -147,17 +109,6 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
         </div>
 
         <Footer />
-
-        {/* <div className="fixed bottom-6 right-6 hidden md:flex">
-          <AISearchDialog size="small" variant="button" />
-        </div> */}
-
-        <div className="md:hidden">
-          <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
-            Login
-          </Link>
-          <BottomNavbar />
-        </div>
       </div>
     </div>
   )

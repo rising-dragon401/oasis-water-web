@@ -238,7 +238,7 @@ export default function BasicSearch({
             <div className="relative w-full">
               <Input
                 ref={inputRef}
-                placeholder="Search"
+                placeholder={placeholder || 'Search'}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setInputFocused(true)}

@@ -16,7 +16,6 @@ import { H2, Muted } from '@/components/ui/typography'
 import { useUserProvider } from '@/providers/UserProvider'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import MetaDataCard from '../metadata-card'
 type Props = {
   id: string
 }
@@ -118,8 +117,8 @@ export default function ItemForm({ id }: Props) {
   return (
     <div className="flex-col flex w-full gap-y-8 pb-16">
       <div className="md:pt-4 pt-2 md:px-0 px-4">
-        <div className="flex md:flex-row flex-col gap-6">
-          <div className="flex justify-center w-full ">
+        <div className="flex md:flex-row flex-col gap-6 md:h-full md:max-h-96">
+          <div className="flex justify-center w-full md:max-h-96">
             {item.affiliate_url ? (
               <Link href={item.affiliate_url} target="_blank" rel="noopener noreferrer">
                 <ItemImage src={item.image} alt={item.name} item={item} />
@@ -129,7 +128,7 @@ export default function ItemForm({ id }: Props) {
             )}
           </div>
 
-          <div className="flex- flex-col w-full justify-between h-full">
+          <div className="flex flex-col w-full justify-between h-full md:max-h-96">
             <div className="flex flex-row justify-between w-full items-start">
               <div className="flex flex-col w-full">
                 <H2>{item.name}</H2>
@@ -142,6 +141,12 @@ export default function ItemForm({ id }: Props) {
                 <Score score={itemScore} size="md" />
               </div>
             </div>
+
+            {!isTested && (
+              <div className="flex flex-col h-full w-40">
+                <UntestedTooltip description="No lab reports available for this item so contaminant and toxin levels cannot be verified." />
+              </div>
+            )}
 
             <div className="flex flex-col h-full">
               <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full mt-2 ">
@@ -199,29 +204,12 @@ export default function ItemForm({ id }: Props) {
                   </div>
                 )}
               </div>
-
-              {/* {item.affiliate_url && item.score > 70 && (
-                <Button
-                  variant={item.score > 70 ? 'outline' : 'outline'}
-                  onClick={() => {
-                    window.open(item.affiliate_url, '_blank')
-                  }}
-                  className="mt-4"
-                >
-                  Where to buy
-                  <ArrowUpRight size={16} className="ml-2" />
-                </Button>
-              )} */}
             </div>
 
             {!isTested && (
-              <UntestedTooltip description="No lab reports available for this item so contaminant and toxin levels cannot be verified." />
-            )}
-
-            {!isTested && (
-              <div className="md:mt-10 mt-4">
-                <Muted>Help fund the testing of this item:</Muted>
-                <ItemFundingRow item={item} />
+              <div className="md:mt-10 mt-4 h-full justify-end flex-col">
+                <Muted className="mb-1">Help fund the testing of this item:</Muted>
+                <ItemFundingRow item={item} showContribute={true} date={item.updated_at} />
                 {/* <UntestedCard item={item} /> */}
               </div>
             )}
@@ -284,7 +272,7 @@ export default function ItemForm({ id }: Props) {
             </div>
           )}
 
-          {item.type === 'bottled_water' && (
+          {/* {item.type === 'bottled_water' && (
             <div className="grid md:grid-cols-2 md:grid-rows-1 grid-rows-2 gap-4 mt-14">
               <MetaDataCard title="Water source" description={item.metadata?.source || 'Unkown'} />
               <MetaDataCard
@@ -296,15 +284,13 @@ export default function ItemForm({ id }: Props) {
                 }
               />
             </div>
-          )}
+          )} */}
 
-          <div className="flex flex-col gap-2 mt-14">
-            <AppDownloadCta title="See the full picture with the Oasis app" />
+          <div className="flex flex-col gap-2 md:mt-24 mt-14 md:mb-14 mb-8">
+            <AppDownloadCta title="Get the full picture with the Oasis app" />
           </div>
         </>
       </div>
-
-      {/* <RecommendedRow category={item.type} /> */}
     </div>
   )
 }

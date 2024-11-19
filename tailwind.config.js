@@ -50,6 +50,10 @@ module.exports = {
           DEFAULT: 'var(--card)',
           foreground: 'var(--card-foreground)',
         },
+        danger: 'var(--danger)',
+        beneficial: 'var(--success)',
+        warning: 'var(--warning)',
+        neutral: 'var(--neutral)',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -84,19 +88,11 @@ module.exports = {
     },
   },
   plugins: [
+    require('postcss-import'),
+    require('tailwindcss/nesting'),
+    require('tailwindcss'),
+    require('autoprefixer'),
     require('tailwindcss-animate'),
     require('@tailwindcss/typography'),
-    function ({ addUtilities }) {
-      const newUtilities = {
-        '.stroke-primary': {
-          stroke: 'hsl(var(--primary))',
-        },
-        '.stroke-secondary': {
-          stroke: 'hsl(var(--secondary))',
-        },
-        // Add more classes as needed
-      }
-      addUtilities(newUtilities)
-    },
   ],
 }

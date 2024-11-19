@@ -8,14 +8,24 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { kAppStore, kGooglePlay } from '@/lib/constants/socials'
+import { ArrowRight } from 'lucide-react'
 import { TbBrandApple, TbBrandGooglePlay } from 'react-icons/tb'
 
-export default function DownloadAppButton({ referral }: { referral?: string }) {
+export default function DownloadAppButton({
+  referral,
+  showIcon = false,
+  className,
+}: {
+  referral?: string
+  showIcon?: boolean
+  className?: string
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="default" size="sm">
+        <Button variant="default" size="sm" className={className}>
           Download app
+          {showIcon && <ArrowRight className="w-4 h-4 ml-2" />}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">

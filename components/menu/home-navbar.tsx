@@ -1,18 +1,14 @@
 'use client'
 
-import Logo from '@/components/shared/logo'
 import {
   NavigationMenu,
-  NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-import { FlaskConical, Newspaper, Search } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
-import Typography from '../typography'
 
 interface ListItemProps extends React.ComponentPropsWithoutRef<'a'> {
   logo?: React.ReactNode
@@ -23,43 +19,20 @@ export default function HomeNavbar() {
   return (
     <NavigationMenu className="flex w-full justify-between py-2 ">
       <NavigationMenuList>
-        <NavigationMenuItem className="mr-4">
-          <Link href="/" className="flex  flex-row items-center hover:cursor-pointer">
-            <Logo />
+        <Link href="/" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+          Home
+        </Link>
 
-            <Typography size="2xl" fontWeight="normal" className="!text-accent">
-              Oasis
-            </Typography>
-          </Link>
-        </NavigationMenuItem>
+        <Link
+          href="/product-testing"
+          className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}
+        >
+          Product testing
+        </Link>
 
-        <NavigationMenuItem>
-          <Link href="/" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <Search className="w-4 h-4 mr-2" />
-            Search
-          </Link>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/products" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <FlaskConical className="w-4 h-4 mr-2" />
-            Products
-          </Link>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/lab-testing" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <FlaskConical className="w-4 h-4 mr-2" />
-            Test your water
-          </Link>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/blog" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
-            <Newspaper className="w-4 h-4 mr-2" />
-            Research
-          </Link>
-        </NavigationMenuItem>
+        <Link href="/blog" className={cn(navigationMenuTriggerStyle(), 'cursor-pointer')}>
+          Research
+        </Link>
       </NavigationMenuList>
     </NavigationMenu>
   )
