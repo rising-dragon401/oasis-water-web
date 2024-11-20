@@ -1,31 +1,38 @@
 'use client'
 
-import { fetchFundingStatus } from '@/app/actions/labs'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
-import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Muted, P } from '@/components/ui/typography'
 import { useUserProvider } from '@/providers/UserProvider'
 import { determineLink, postDataDonate, timeSince } from '@/utils/helpers'
 import { getStripe } from '@/utils/stripe-client'
 import * as Sentry from '@sentry/browser'
-import { ArrowRight } from 'lucide-react'
+import { Check } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'sonner'
+
 export default function ItemFundingRow({
   item,
+  raisedAmount = null,
+  totalCost = null,
+  contributions = [],
   linkToProduct = false,
-  showContribute = false,
+  showFundProgress = false,
+  showFundButton = false,
   date = null,
   titleClassName = '',
 }: {
   item: any
+  raisedAmount?: number | null
+  totalCost?: number | null
+  contributions?: any[]
   linkToProduct?: boolean
-  showContribute?: boolean
+  showFundProgress?: boolean
+  showFundButton?: boolean
   date?: string | null
   titleClassName?: string
 }) {
@@ -33,40 +40,19 @@ export default function ItemFundingRow({
   const { uid } = useUserProvider()
   const pathname = usePathname()
 
-  const [initLoading, setInitLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [fundingDetails, setFundingDetails] = useState<any>(null)
   const [isHovered, setIsHovered] = useState(false)
 
-  const raisedAmount = useMemo(() => {
-    return fundingDetails?.raised_amount / 100 || 0
-  }, [fundingDetails])
-
-  const totalCost = useMemo(() => {
-    return fundingDetails?.total_cost / 100 || 0
-  }, [fundingDetails])
-
-  const getFundingPercentage = (amount: number, cost: number) => {
-    const percentage = (amount / cost) * 100
-    return percentage > 100 ? 100 : percentage
-  }
-
-  useEffect(() => {
-    if (!item.id || !item.type) {
-      return
+  const getFundingPercentage = (amount: number | null, cost: number | null) => {
+    if (!amount || !cost) {
+      return 0
     }
 
-    setInitLoading(true)
-    fetchFundingStatus({ itemId: item.id, type: item.type, name: item.name })
-      .then(setFundingDetails)
-      .catch((e) => {
-        console.error('Error: ', e)
-        Sentry.captureException(e)
-      })
-      .finally(() => {
-        setInitLoading(false)
-      })
-  }, [item.id, item.type])
+    const percentage = (amount / cost) * 100
+
+    return percentage > 100 ? 100 : percentage
+  }
 
   const redirectToFundingLink = async () => {
     setLoading(true)
@@ -124,7 +110,7 @@ export default function ItemFundingRow({
   }
 
   const renderContributors = () => {
-    return fundingDetails?.user_contributions?.map((contribution: any) => (
+    return contributions?.map((contribution: any) => (
       <TooltipProvider key={contribution.user_id}>
         <Tooltip>
           <TooltipTrigger>
@@ -145,6 +131,13 @@ export default function ItemFundingRow({
     ))
   }
 
+  const percentageFunded = useMemo(
+    () => getFundingPercentage(raisedAmount, totalCost),
+    [raisedAmount, totalCost]
+  )
+
+  const isFunded = percentageFunded >= 100
+
   const renderCardBody = () => {
     return (
       <>
@@ -154,13 +147,13 @@ export default function ItemFundingRow({
           </div>
         </div>
         <div className="flex flex-col w-3/4 justify-between h-full py-1">
-          <div className="h-12 flex flex-row justify-between">
+          <div className="h-10 flex flex-row justify-between">
             <div className="flex flex-col w-full">
               <P className={` font-bold text-sm max-w-[80%] ${titleClassName}`}>{item.name}</P>
               {/* <Muted>Standard water test</Muted> */}
             </div>
 
-            {showContribute && (
+            {showFundButton && (
               <>
                 {uid ? (
                   <Button
@@ -179,47 +172,43 @@ export default function ItemFundingRow({
                     }}
                     loading={loading}
                   >
-                    Contribute
+                    Fund
                   </Button>
                 ) : (
                   <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
-                    <Button variant="outline" className="text-sm h-8 px-2">
-                      Contribute
+                    <Button variant="outline" className="text-sm h-8 px-4">
+                      Fund
                     </Button>
                   </Link>
                 )}
               </>
             )}
           </div>
-          {showContribute && (
+
+          {showFundProgress && (
             <>
-              {initLoading ? (
-                <div className="flex flex-col gap-1 max-w-[70%] w-full ">
-                  <Skeleton className="w-full h-4 rounded-xl" />
-                  <Skeleton className="h-2 w-24 rounded-xl" />
-                </div>
-              ) : (
-                <div className="flex flex-col gap-1 max-w-[70%]">
-                  <Progress
-                    value={getFundingPercentage(raisedAmount, totalCost)}
-                    max={100}
-                    className="h-2"
-                  />
-                  <div className="flex flex-row justify-between h-full w-full">
-                    {raisedAmount && raisedAmount > 0 ? (
-                      <Muted className="text-xs text-primary">{`$${raisedAmount} raised`}</Muted>
-                    ) : (
-                      <Muted className="text-xs">
-                        Not yet funded
-                        {/* {getFundingPercentage(raisedAmount, totalCost) + '% funded'} */}
-                      </Muted>
-                    )}
-                    <div className="">{renderContributors()}</div>
+              <div className="flex flex-col gap-1 max-w-[70%]">
+                {isFunded && (
+                  <div className="flex flex-row gap-2 w-full justify-end">
+                    <Muted className="text-xs text-accent">Funded</Muted>
+                    <Check className="w-4 h-4 text-accent" />
                   </div>
+                )}
+
+                <Progress value={percentageFunded} max={100} className={`h-2`} />
+
+                <div className="flex flex-row justify-between items-center h-full w-full">
+                  {raisedAmount && raisedAmount > 0 ? (
+                    <Muted className="text-xs text-primary font-bold">{`$${raisedAmount / 100} raised`}</Muted>
+                  ) : (
+                    <Muted className="text-xs">Not yet funded</Muted>
+                  )}
+                  <div>{renderContributors()}</div>
                 </div>
-              )}
+              </div>
             </>
           )}
+
           {date && <Muted className="text-xs">Updated {timeSince(date)}</Muted>}
         </div>
       </>
@@ -232,7 +221,9 @@ export default function ItemFundingRow({
         <Link
           href={determineLink(item)}
           key={item.id}
-          className="flex flex-row w-full gap-4 items-center border border-border py-3 rounded-xl bg-card pr-4 relative"
+          className={`flex flex-row w-full gap-4 items-center border border-border py-3 rounded-xl bg-card pr-4 relative transition-transform duration-300 ${
+            isHovered ? 'transform translate-y-[-5px]' : ''
+          }`}
           onMouseEnter={() => {
             setIsHovered(true)
           }}
@@ -241,14 +232,19 @@ export default function ItemFundingRow({
           }}
         >
           {renderCardBody()}
-          <ArrowRight
-            className={`w-4 h-4 text-muted-foreground absolute bottom-2 right-2 ${
-              isHovered ? 'opacity-100' : 'opacity-0'
-            }`}
-          />
         </Link>
       ) : (
-        <div className="flex flex-row gap-4 items-center border border-border py-3 rounded-xl bg-card pr-4 relative">
+        <div
+          className={`flex flex-row gap-4 items-center border border-border py-3 rounded-xl bg-card pr-4 relative transition-transform duration-300 ${
+            isHovered ? 'transform translate-y-[-5px]' : ''
+          }`}
+          onMouseEnter={() => {
+            setIsHovered(true)
+          }}
+          onMouseLeave={() => {
+            setIsHovered(false)
+          }}
+        >
           {renderCardBody()}
         </div>
       )}

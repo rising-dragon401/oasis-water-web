@@ -13,7 +13,7 @@ const TapWaterGlobe = React.memo(({ width, height }: { width: number; height: nu
 
   // Initialize globe controls
   useEffect(() => {
-    if (globeRef.current) {
+    if (typeof window !== 'undefined' && globeRef.current) {
       globeRef.current.controls().autoRotate = true
       globeRef.current.pointOfView({ lat: 37.0902, lng: -95.7129, altitude: 1.5 }, 0)
     }

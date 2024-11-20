@@ -15,9 +15,10 @@ type Props = {
     | (TapWaterLocation & ExtendedType)
     | (WaterFilter & ExtendedType)
     | (Ingredient & ExtendedType)
+  setItem?: (item: any) => void
 }
 
-export default function ResultsRow({ itemResult }: Props) {
+export default function ResultsRow({ itemResult, setItem }: Props) {
   const getIcon = () => {
     if (itemResult.type === 'tap_water') {
       return <Droplet className="text-secondary-foreground" />
@@ -35,6 +36,9 @@ export default function ResultsRow({ itemResult }: Props) {
   }
 
   //  @ts-ignore
+  const image = itemResult.image || itemResult.image_url || ''
+
+  //  @ts-ignore
   if (itemResult.type === 'user' && !itemResult?.username) {
     return null
   }
@@ -43,16 +47,23 @@ export default function ResultsRow({ itemResult }: Props) {
     <Link
       className="flex flex-row gap-2 px-2 py-1 justify-between items-center hover:bg-muted rounded-md"
       href={determineLink(itemResult)}
+      onClick={(e) => {
+        if (setItem) {
+          e.stopPropagation()
+          e.preventDefault()
+          setItem(itemResult)
+        }
+      }}
     >
       <div className="flex flex-row gap-2 items-center">
         <Image
-          src={itemResult.image || ''}
+          src={image}
           alt={itemResult.name || ''}
           width={50}
           height={50}
           quality={40}
-          blurDataURL={itemResult.image || ''}
-          placeholder={itemResult.image ? 'blur' : 'empty'}
+          blurDataURL={image}
+          placeholder={image ? 'blur' : 'empty'}
           className="rounded-md h-10 w-10 object-cover"
         />
         <Typography size="base" fontWeight="normal" className="max-w-64 overflow-hidden max-h-12">

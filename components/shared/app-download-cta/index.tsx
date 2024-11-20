@@ -8,7 +8,7 @@ const appPreviewImage =
   'https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/landing-graphic-dark.png?t=2024-11-18T18%3A13%3A09.535Z'
 
 export default function AppDownloadCta({
-  title = 'Get the Oasis app for the full picture',
+  title = 'Download the Oasis App for Complete Insights',
 }: {
   title?: string
 }) {
@@ -17,10 +17,10 @@ export default function AppDownloadCta({
       <H2 className="text-center text-background">{title}</H2>
 
       <P className="text-secondary-foreground text-center">
-        View scores and ratings, scan your water and get notified when lab results change.
+        Access ratings, scan your water, and stay updated with lab results—right from the app.
       </P>
 
-      <div className="flex flex-row gap-4 w-full max-w-lg">
+      <div className="flex flex-row gap-4 w-full max-w-sm">
         <GooglePlayButton />
         <AppleButton />
       </div>

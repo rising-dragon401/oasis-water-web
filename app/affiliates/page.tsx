@@ -11,29 +11,29 @@ import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export const metadata = {
-  title: 'Oasis Affiliates',
-  description: 'Get paid 💸 to share healthy water',
-  openGraph: {
-    title: 'Oasis Affiliates',
-    description: 'Get paid 💸 to share healthy water',
-    siteName: 'Oasis',
-    images: [
-      {
-        url: 'https://connect.live-oasis.com/storage/v1/object/public/website/landing/oasis%20affiliate%20open%20graph.png?t=2024-09-30T21%3A25%3A15.413Z',
-        width: 800,
-        height: 600,
-      },
-      {
-        url: 'https://connect.live-oasis.com/storage/v1/object/public/website/landing/oasis%20affiliate%20open%20graph.png?t=2024-09-30T21%3A25%3A15.413Z',
-        width: 1800,
-        height: 1600,
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-}
+// export const metadata = {
+//   title: 'Oasis Affiliates',
+//   description: 'Get paid 💸 to share healthy water',
+//   openGraph: {
+//     title: 'Oasis Affiliates',
+//     description: 'Get paid 💸 to share healthy water',
+//     siteName: 'Oasis',
+//     images: [
+//       {
+//         url: 'https://connect.live-oasis.com/storage/v1/object/public/website/landing/oasis%20affiliate%20open%20graph.png?t=2024-09-30T21%3A25%3A15.413Z',
+//         width: 800,
+//         height: 600,
+//       },
+//       {
+//         url: 'https://connect.live-oasis.com/storage/v1/object/public/website/landing/oasis%20affiliate%20open%20graph.png?t=2024-09-30T21%3A25%3A15.413Z',
+//         width: 1800,
+//         height: 1600,
+//       },
+//     ],
+//     locale: 'en_US',
+//     type: 'website',
+//   },
+// }
 
 const FAQ_LIST = [
   {

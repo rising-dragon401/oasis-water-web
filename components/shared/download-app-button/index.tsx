@@ -16,16 +16,18 @@ export default function DownloadAppButton({
   showIcon = false,
   className,
   overrideText,
+  variant = 'default',
 }: {
   referral?: string
   showIcon?: boolean
   className?: string
   overrideText?: string
+  variant?: 'default' | 'outline'
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="default" size="sm" className={className}>
+        <Button variant={variant} size="sm" className={className}>
           {overrideText || 'Download app'}
           {showIcon && <ArrowRight className="w-4 h-4 ml-2" />}
         </Button>

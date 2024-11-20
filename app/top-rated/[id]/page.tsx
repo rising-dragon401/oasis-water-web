@@ -3,7 +3,7 @@ import RankingList from '@/components/shared/ranking-list'
 
 export const metadata = {
   title: 'Top Rated Products | Oasis',
-  description: 'Explore the top rated products in each category',
+  description: 'Explore the top water products in each category',
 }
 
 export default async function TopRatedItems({ params }: { params: any }) {

@@ -15,12 +15,10 @@ const submitToOasisImage =
 export default function ContributeSection() {
   return (
     <div className="w-full p-8 max-w-4xl mx-auto">
-      {/* How It Works Section */}
-
-      <H1 className="text-center mb-4">Strengthed by people like you</H1>
+      <H1 className="text-center mb-4">Powered by People Like You</H1>
       <p className="text-center text-gray-600 mb-12 text-xl">
-        Our scoring system and data sources are open source so anyone in the community can
-        contribute, provide feedback or submit new reports income
+        Our open-source rating algorithm lets you contribute, provide feedback, and share new lab
+        reports.
       </p>
 
       <div className="space-y-36">
@@ -37,20 +35,21 @@ export default function ContributeSection() {
           <div className="w-full md:w-1/2">
             <H2 className="mb-2">Request new products</H2>
             <P className="text-lg text-gray-600 mb-4">
-              Let us know what we should add next. If you're a brand, submit your product
-              information along with any lab reports.
+              Suggest new products or, if you are a brand, submit your product details and lab
+              reports for review.
             </P>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-20 items-center">
+        <div className="flex flex-col-reverse md:flex-row gap-20 items-center">
           <div className="w-full md:w-1/2 flex flex-col justify-center">
-            <H2 className="mb-4">Provide updates</H2>
+            <H2 className="mb-4">Help us improve</H2>
             <P className="text-lg text-gray-600 mb-4">
-              See something wrong Provide feedback on that item and we'll update it.
+              Found an error? Share your feedback to help us update the data and maintain
+              transparency
             </P>
             <P className="text-lg text-gray-600 mb-4">
-              The goal is to build trust through transparency and open feedback
+              Your feedback keeps us accurate and transparent—submit updates to improve trust
             </P>
           </div>
           <div className="relative w-full md:w-1/2 order-1 md:order-2">
@@ -75,9 +74,9 @@ export default function ContributeSection() {
             />
           </div>
           <div className="w-full md:w-1/2">
-            <H2 className="mb-4">Join the community</H2>
+            <H2 className="mb-4">Be Part of a Healthier Future</H2>
             <P className="text-lg text-gray-600 mb-4">
-              Hydrate healthy with 40,000+ other like-minded people all dedicate to healthy living.
+              Join over 40,000 health enthusiasts committed to better hydration and living
             </P>
           </div>
         </div>

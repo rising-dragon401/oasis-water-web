@@ -184,6 +184,8 @@ export const CATEGORIES: CategoryType[] = [
   {
     id: 'flavored_water',
     title: 'Flavored drinks',
+    typeId: 'flavored_water',
+    dbTypes: ['flavored_water'],
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/sparkling_water_cover.png',
     tags: ['still', 'sparkling'],
@@ -191,6 +193,9 @@ export const CATEGORIES: CategoryType[] = [
   },
   {
     id: 'energy_drink',
+    typeId: 'energy_drink',
+    dbTypes: ['energy_drink'],
+    tags: ['energy_drink'],
     title: 'Energy drinks',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/energy%20drink%20cover.png',

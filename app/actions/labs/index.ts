@@ -11,17 +11,22 @@ export const fetchFundingStatus = async ({
   itemId,
   type,
   name,
+  createLab = true,
 }: {
   itemId: any
   type: string
   name: string
+  createLab: boolean
 }) => {
+  console.log('fetching funding status for item', itemId, type, name, createLab)
+
   if (!itemId || !type) {
     return {
       lab_id: null,
       raised_amount: 0,
       status: 'not_started',
       total_cost: 28500,
+      user_contributions: [],
     }
   }
 
@@ -42,7 +47,7 @@ export const fetchFundingStatus = async ({
   const labRow = data?.[0]
 
   // create new lab row for standard water testing
-  if (!labRow) {
+  if (!labRow && createLab) {
     console.log('no lab row, creating new lab row')
     // create new lab row for standard water testing
     const { data: newLabData, error: newLabError } = await supabase
@@ -90,34 +95,38 @@ export const fetchFundingStatus = async ({
     throw new Error(`Error fetching test kit: ${testKitError.message}`)
   }
 
-  // get all contributions for this lab along with user avatars
-  const { data: contributionsData, error: contributionsError } = await supabase
-    .from('contributions')
-    .select('user_id, amount, users!inner(avatar_url, full_name, username)')
-    .eq('lab_id', labRow?.id)
+  if (labRow?.id) {
+    const { data: contributionsData, error: contributionsError } = await supabase
+      .from('contributions')
+      .select('user_id, amount, users!inner(avatar_url, full_name, username)')
+      .eq('kind', 'donation')
+      .eq('lab_id', labRow.id)
 
-  if (contributionsError) {
-    throw new Error(`Error fetching contributions: ${contributionsError.message}`)
+    if (contributionsError) {
+      throw new Error(`Error fetching contributors: ${contributionsError.message}`)
+    }
+
+    // Restructure contributions to include user details in the same object
+    const userContributions = contributionsData.map((contribution) => ({
+      user_id: contribution.user_id,
+      amount: contribution.amount,
+      avatar_url: contribution.users?.avatar_url,
+      full_name: contribution.users?.full_name,
+      username: contribution.users?.username,
+    }))
+
+    const labDetails = {
+      lab_id: labRow.id,
+      raised_amount: labRow.raised_amount || 0,
+      status: labRow.status,
+      total_cost: testKitData?.[0]?.price || null,
+      user_contributions: userContributions,
+    }
+
+    return labDetails
+  } else {
+    throw new Error('Lab ID is undefined')
   }
-
-  // Restructure contributions to include user details in the same object
-  const userContributions = contributionsData.map((contribution) => ({
-    user_id: contribution.user_id,
-    amount: contribution.amount,
-    avatar_url: contribution.users?.avatar_url,
-    full_name: contribution.users?.full_name,
-    username: contribution.users?.username,
-  }))
-
-  const labDetails = {
-    lab_id: labRow?.id,
-    raised_amount: labRow?.raised_amount || 0,
-    status: labRow?.status,
-    total_cost: testKitData?.[0]?.price || null,
-    user_contributions: userContributions,
-  }
-
-  return labDetails
 }
 
 export const fetchUntestedThing = async ({ itemId, type }: { itemId: string; type: string }) => {
@@ -155,7 +164,7 @@ export const fetchUntestedThings = async ({
     for (const table of tables) {
       let query = supabase
         .from(table)
-        .select('id, name, image, test_request_count, type, labs')
+        .select('id, name, image, test_request_count, type, labs, is_indexed')
         .eq('is_indexed', false)
         .order('lab_updated_at', { ascending: true })
         .order('created_at', { ascending: true })
@@ -173,33 +182,38 @@ export const fetchUntestedThings = async ({
 
       const itemsWithLabs = await Promise.all(
         data.map(async (item) => {
-          if (item.labs === null) {
-            return {
-              ...item,
-              lab_id: 0,
-              funded_amount: 0,
-            }
-          } else {
-            const labData = await fetchFundingStatus({
-              itemId: item.id,
-              type: item.type,
-              name: item.name,
-            })
+          const labData = await fetchFundingStatus({
+            itemId: item.id,
+            type: item.type,
+            name: item.name,
+            createLab: true,
+          })
 
-            return {
-              ...item,
-              lab_id: labData.lab_id,
-              funded_amount: labData.raised_amount,
-            }
+          if (!labData) {
+            return null
+          }
+
+          // Exclude items where lab status is 'in_progress' or 'complete'
+          if (labData.status === 'in_progress' || labData.status === 'complete') {
+            return null
+          }
+
+          return {
+            ...item,
+            lab_id: labData.lab_id,
+            raised_amount: labData.raised_amount,
+            total_cost: labData.total_cost,
+            user_contributions: labData.user_contributions,
           }
         })
       )
 
-      allData = allData.concat(itemsWithLabs)
+      // Filter out null values from the results
+      allData = allData.concat(itemsWithLabs.filter((item) => item !== null))
     }
 
     // Sort the combined data by test_request_count in descending order
-    allData.sort((a, b) => b?.funded_amount - a?.funded_amount)
+    // allData.sort((a, b) => b?.funded_amount - a?.funded_amount)
 
     return allData
   } catch (error) {
@@ -208,7 +222,47 @@ export const fetchUntestedThings = async ({
   }
 }
 
-export const fetchTestedThings = async ({ tables, limit }: { tables: string[]; limit: number }) => {
+const checkLabExists = async ({
+  itemId,
+  type,
+  status,
+}: {
+  itemId: string
+  type: string
+  status: string
+}) => {
+  const supabase = await createSupabaseServerClient()
+
+  const query = supabase
+    .from('labs')
+    .select('id, raised_amount, total_cost, status')
+    .eq('product', itemId)
+    .eq('product_type', type)
+    .eq('status', status)
+
+  const { data, error } = await query
+
+  if (error) {
+    return {
+      status,
+      raised_amount: null,
+      total_cost: null,
+      lab_id: null,
+    }
+  }
+
+  return data?.[0]
+}
+
+export const fetchTestedThings = async ({
+  tables,
+  limit,
+  offset = 0,
+}: {
+  tables: string[]
+  limit: number
+  offset?: number
+}) => {
   const supabase = await createSupabaseServerClient()
   try {
     let allData: any[] = []
@@ -228,14 +282,47 @@ export const fetchTestedThings = async ({ tables, limit }: { tables: string[]; l
         .eq('is_indexed', true)
         .order('updated_at', { ascending: true })
         .order('created_at', { ascending: true })
+        .range(offset, offset + limit - 1)
 
-      const { data, error } = await query.limit(limit)
+      const { data, error } = await query
 
       if (error) {
         throw new Error(`Error fetchTestedThings fetching data from ${table}: ${error.message}`)
       }
 
-      allData = allData.concat(data)
+      // Check if lab exists for each item and attach raised_amount and total_cost
+      const itemsWithLabDetails = await Promise.all(
+        data.map(async (item: any) => {
+          if (!item.id || !item.type) {
+            return {
+              raised_amount: null,
+              total_cost: null,
+            }
+          }
+
+          const labData = await checkLabExists({
+            itemId: item.id,
+            type: item.type,
+            status: 'complete', // Assuming you want to check for completed labs
+          })
+
+          if (labData && 'raised_amount' in labData && 'total_cost' in labData) {
+            return {
+              ...item,
+              raised_amount: labData.raised_amount,
+              total_cost: labData.total_cost,
+            }
+          } else {
+            return {
+              ...item,
+              raised_amount: null,
+              total_cost: null,
+            }
+          }
+        })
+      )
+
+      allData = allData.concat(itemsWithLabDetails)
     }
 
     // Sort the combined data by updated_at in ascending order
@@ -263,20 +350,22 @@ export const fetchInProgressThings = async ({
       for (const t of type) {
         const query = supabase
           .from('labs')
-          .select('*, updated_at')
-          .eq('status', 'in_progress')
+          .select('updated_at, product, status')
           .eq('product_type', t)
+          .eq('status', 'in_progress')
 
-        const { data, error } = await query.limit(limit)
+        const { data: labData, error: labError } = await query.limit(limit)
 
-        if (error) {
-          throw new Error(`Error fetchInProgressThings fetching data from labs: ${error.message}`)
+        if (labError || !labData) {
+          throw new Error(
+            `Error fetchInProgressThings fetching data from labs: ${labError.message}`
+          )
         }
 
         const table = ITEM_TYPES.find((item) => item.typeId === t)?.tableName
 
         if (table) {
-          for (const labItem of data) {
+          for (const labItem of labData) {
             const itemQuery = supabase
               .from(table)
               .select('id, name, image, test_request_count, type')
@@ -288,10 +377,22 @@ export const fetchInProgressThings = async ({
               throw new Error(`Error getting table data from ${table}: ${itemError.message}`)
             }
 
-            if (itemData) {
+            const item = itemData[0]
+
+            if (item) {
+              const fundingStatus = await fetchFundingStatus({
+                itemId: item.id,
+                type: item.type,
+                name: item.name,
+                createLab: false,
+              })
+
               const detailedItems = itemData.map((item) => ({
                 ...item,
                 updated_at: labItem.updated_at,
+                raised_amount: fundingStatus?.raised_amount,
+                total_cost: fundingStatus?.total_cost,
+                user_contributions: fundingStatus?.user_contributions || [],
               }))
               allItemDetails = allItemDetails.concat(detailedItems)
             }
@@ -360,4 +461,44 @@ export const getFundingStats = async () => {
   return {
     totalRaised,
   }
+}
+
+export const submitRequest = async ({
+  name,
+  productId,
+  productType,
+  userId,
+  message,
+  attachment,
+  kind,
+}: {
+  name: string
+  productId?: string
+  productType?: string
+  userId: string | null
+  message: string
+  attachment?: string | null
+  kind: 'request_new_product' | 'update_existing_product'
+}) => {
+  const supabase = await createSupabaseServerClient()
+
+  // @ts-ignore
+  const { data, error } = await supabase.from('contributions').insert([
+    {
+      name,
+      product_id: productId,
+      product_type: productType,
+      user_id: userId,
+      note: message,
+      file_url: attachment,
+      kind,
+    },
+  ])
+
+  if (error) {
+    console.error('Error submitting request:', error)
+    return false
+  }
+
+  return true
 }

@@ -25,12 +25,12 @@ export const metadata = {
     siteName: 'Oasis',
     images: [
       {
-        url: 'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
+        url: 'https://connect.live-oasis.com/storage/v1/object/public/website/images/og/Oasis%20App%20Open%20Graph.png?t=2024-11-20T05%3A35%3A10.978Z',
         width: 800,
         height: 600,
       },
       {
-        url: 'https://inruqrymqosbfeygykdx.supabase.co/storage/v1/object/public/website/oaisys_open_graph.jpg',
+        url: 'https://connect.live-oasis.com/storage/v1/object/public/website/images/og/Oasis%20App%20Open%20Graph.png?t=2024-11-20T05%3A35%3A10.978Z',
         width: 1800,
         height: 1600,
         alt: 'water ratings',

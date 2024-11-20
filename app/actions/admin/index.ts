@@ -132,7 +132,7 @@ export const getAllLocationMarkers = async () => {
   }
 
   const formattedData = data.map((location) => {
-    const { latitude, longitude } = location.lat_long
+    const { latitude, longitude } = location.lat_long as { latitude: number; longitude: number }
     return {
       name: location.name,
       score: location.score,
@@ -141,7 +141,27 @@ export const getAllLocationMarkers = async () => {
     }
   })
 
-  console.log('formattedData', JSON.stringify(formattedData, null, 2))
-
   return formattedData
+}
+
+export const submitContact = async ({
+  name,
+  email,
+  message,
+}: {
+  name: string
+  email: string
+  message: string
+}) => {
+  const supabase = await createSupabaseServerClient()
+
+  const { data, error } = await supabase.from('contact_us').insert([
+    {
+      name,
+      email,
+      message,
+    },
+  ])
+
+  return { success: !error }
 }

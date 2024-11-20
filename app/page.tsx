@@ -6,6 +6,7 @@ import FundingRowsSection from '@/components/sections/funding-rows-section'
 import TapWaterSection from '@/components/sections/tap-water-section'
 import TopProductsSection from '@/components/sections/top-products-section'
 import AppDownloadCta from '@/components/shared/app-download-cta'
+
 import DownloadAppButton from '@/components/shared/download-app-button'
 import {
   Accordion,
@@ -27,7 +28,15 @@ export const metadata = {
     siteName: 'Oasis',
     images: [
       {
-        url: 'https://connect.live-oasis.com/storage/v1/object/public/website/oasis_og_scan.jpg',
+        url: 'https://connect.live-oasis.com/storage/v1/object/public/website/images/og/Oasis%20App%20Open%20Graph.png?t=2024-11-20T05%3A35%3A10.978Z',
+        width: 800,
+        height: 600,
+      },
+      {
+        url: 'https://connect.live-oasis.com/storage/v1/object/public/website/images/og/Oasis%20App%20Open%20Graph.png?t=2024-11-20T05%3A35%3A10.978Z',
+        width: 1800,
+        height: 1600,
+        alt: 'water ratings',
       },
     ],
     locale: 'en_US',
@@ -50,7 +59,7 @@ const FAQ_LIST = [
   },
   {
     value: 'why-do-you-charge',
-    trigger: 'Why do you charge to see the ratings?',
+    trigger: 'Why do I need to pay for ratings?',
     content:
       'Lab testing is very expensive and our aim is to independently test as many products as possible to ensure the most accurate and unbiased ratings. Funds go to further testing/research in addition to improving the product.',
   },
@@ -92,7 +101,7 @@ const FAQ_LIST = [
   },
 ]
 
-export default function NewLandingPage() {
+export default function HomePage() {
   return (
     <SubpageLayout>
       <div className="flex flex-col space-y-16 pb-10">
@@ -105,25 +114,16 @@ export default function NewLandingPage() {
               </H1>
               <P className="md:text-base sm:text-sm max-w-xl">
                 90% of our waters are polluted with toxins, microplastics and other contaminants.
-                Discover the best hydration products for your health
+                Empower your hydration with science-backed product recommendations.
               </P>
-              {/* 
-              <div className="mt-6 w-full justify-center">
-                <BasicSearch
-                  showSearch={true}
-                  size="medium"
-                  indices={['waters', 'filters']}
-                  placeholder="Search products"
-                  numResults={10}
-                />
-              </div> */}
+
               <div className="mt-6 flex gap-4 flex-row">
                 <Link href="/product-testing">
-                  <Button className="h-12 px-6 rounded-lg" variant="outline">
+                  <Button className="h-10 px-6 rounded-lg" variant="outline">
                     Contribute
                   </Button>
                 </Link>
-                <DownloadAppButton showIcon className="h-12 px-6" overrideText="Check your water" />
+                <DownloadAppButton showIcon className="h-10 px-6" overrideText="Check your water" />
               </div>
               <div className="mt-10 flex justify-center">
                 <Image

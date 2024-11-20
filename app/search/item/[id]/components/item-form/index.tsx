@@ -1,8 +1,8 @@
 'use client'
 
 import { getItemDetails } from '@/app/actions/items'
+import { fetchFundingStatus } from '@/app/actions/labs'
 import { incrementItemsViewed } from '@/app/actions/user'
-import ContaminantCard from '@/components/contamintant-card'
 import AppDownloadCta from '@/components/shared/app-download-cta'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemFundingRow from '@/components/shared/item-funding-row'
@@ -25,12 +25,25 @@ export default function ItemForm({ id }: Props) {
 
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
+  const [fundingDetails, setFundingDetails] = useState<any>({})
 
   const fetchItem = async (id: string) => {
     const item = await getItemDetails(id)
 
     if (item) {
       setItem(item)
+
+      console.log('fetching funding details for item', item?.id, item?.type, item?.name)
+      const fundingDetails = await fetchFundingStatus({
+        itemId: item?.id,
+        type: item.type,
+        name: item.name,
+        createLab: true,
+      })
+
+      console.log('fundingDetails', JSON.stringify(fundingDetails, null, 2))
+
+      setFundingDetails(fundingDetails)
     }
 
     setIsLoading(false)
@@ -207,8 +220,15 @@ export default function ItemForm({ id }: Props) {
             {!isTested && (
               <div className="md:mt-10 mt-4 h-full justify-end flex-col">
                 <Muted className="mb-1">Help fund the testing of this item:</Muted>
-                <ItemFundingRow item={item} showContribute={true} date={item.updated_at} />
-                {/* <UntestedCard item={item} /> */}
+                <ItemFundingRow
+                  item={item}
+                  raisedAmount={fundingDetails?.raised_amount}
+                  totalCost={fundingDetails?.total_cost}
+                  contributions={fundingDetails?.user_contributions}
+                  showFundButton={true}
+                  showFundProgress={true}
+                  date={item.updated_at}
+                />
               </div>
             )}
           </div>
@@ -228,7 +248,18 @@ export default function ItemForm({ id }: Props) {
               <H3>Contaminants and minerals</H3>
               {sortedContaminants && sortedContaminants.length > 0 ? (
                 <>
-                  {!subscription ? (
+                  <PaywallContent
+                    label="View contaminants"
+                    items={[
+                      'Ratings and scores 🌟',
+                      'Contaminant breakdown 🔬',
+                      'Lab results 🧪',
+                      'Health risks and benefits 🤍',
+                    ]}
+                  >
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-6 h-80 bg-muted rounded-md"></div>
+                  </PaywallContent>
+                  {/* {!subscription ? (
                     <PaywallContent
                       label="View contaminants"
                       items={[
@@ -246,7 +277,7 @@ export default function ItemForm({ id }: Props) {
                         <ContaminantCard key={contaminant.id || index} data={contaminant} />
                       ))}
                     </div>
-                  )}
+                  )} */}
                 </>
               ) : (
                 <>

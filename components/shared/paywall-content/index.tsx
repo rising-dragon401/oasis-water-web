@@ -36,7 +36,7 @@ const PaywallContent: React.FC<PaywallContentProps> = ({
     }
   }
 
-  if (subscription || !showPaywall) {
+  if (!showPaywall) {
     return <>{children}</>
   }
 
