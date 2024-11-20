@@ -1,12 +1,13 @@
 'use client'
 
 import { FeedbackModal } from '@/components/shared/feedback-modal'
-import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { P } from '@/components/ui/typography'
 import { useDebounce } from '@/lib/hooks/use-debounce'
 import algoliasearch from 'algoliasearch'
 import { Loader2, Search } from 'lucide-react'
+import Link from 'next/link'
 import React, { useEffect, useRef } from 'react'
 import ResultsRow from './results-row'
 
@@ -15,24 +16,6 @@ const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOIA_SEARCH_KEY!
 )
 
-const PLACEHOLDER_PROMPTS = [
-  'Fiji',
-  'Los Angeles',
-  'Mountain valley',
-  'Brita',
-  'Berkey',
-  'Acqua Panna',
-  'Crystal Geyser',
-  'Sams Club',
-  'Clearly filter',
-  'Zero filter',
-  'Arrowhead',
-  'Los Angeles',
-  'Primo',
-  'New York',
-  'Vichy Catalan',
-]
-
 export default function BasicSearch({
   showSearch,
   size,
@@ -40,6 +23,8 @@ export default function BasicSearch({
   placeholder,
   numResults,
   searchBoxStyle = 'bubble',
+  setItem,
+  manualDisable = false,
 }: {
   showSearch: boolean
   size: 'small' | 'medium' | 'large'
@@ -47,6 +32,8 @@ export default function BasicSearch({
   placeholder?: string
   numResults?: number
   searchBoxStyle?: 'bubble' | 'line'
+  setItem?: (item: string) => void
+  manualDisable?: boolean
 }) {
   const inputRef = useRef<HTMLInputElement>(null) // Create a ref for the input element
   const [isShowSearch, setIsShowSearch] = React.useState<boolean>(showSearch)
@@ -182,7 +169,7 @@ export default function BasicSearch({
   const getSearchPaddingY = () => {
     switch (size) {
       case 'small':
-        return 'py-2'
+        return 'py-1'
       case 'medium':
         return 'py-4'
       case 'large':
@@ -195,7 +182,7 @@ export default function BasicSearch({
   const getSearchTop = () => {
     switch (size) {
       case 'small':
-        return 'top-10'
+        return 'top-8'
       case 'medium':
         return 'top-12'
       case 'large':
@@ -240,6 +227,7 @@ export default function BasicSearch({
                 ref={inputRef}
                 placeholder={placeholder || 'Search'}
                 value={query}
+                disabled={manualDisable}
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => setInputFocused(true)}
                 icon={<Search className="w-4 h-4 md:ml-2 ml-0" />}
@@ -254,30 +242,24 @@ export default function BasicSearch({
                 {/* <AISearchDialog size="small" variant="icon" /> */}
               </div>
 
-              {showResults() && (
+              {showResults() && !manualDisable && (
                 <div
                   className={`flex flex-col gap-2 bg-card border-b border-x rounded-b-md absolute w-full z-20 overflow-y-scroll max-h-64  ${getSearchTop()}`}
                 >
                   {results.length > 0 && (
                     <div className="flex-grow">
                       {results.map((result) => (
-                        <ResultsRow key={result.id} itemResult={result} />
+                        <ResultsRow key={result.id} itemResult={result} setItem={setItem} />
                       ))}
                     </div>
                   )}
 
                   {!isLoading && (
-                    <div className="flex items-center flex-wrap justify-between px-2 py-1 bg-muted">
+                    <div className="flex items-center flex-wrap justify-between px-4 py-2">
                       <div className="flex flex-col gap-2 items-center justify-center">
-                        <div
-                          onClick={() => {
-                            setOpenFeedbackModal(true)
-                          }}
-                        >
-                          <Typography size="base" fontWeight="normal" className="italic">
-                            Are we missing something?
-                          </Typography>
-                        </div>
+                        <Link href="/contact">
+                          <P>Looking for something else?</P>
+                        </Link>
                       </div>
                     </div>
                   )}

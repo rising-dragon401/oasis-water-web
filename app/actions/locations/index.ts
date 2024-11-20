@@ -123,6 +123,79 @@ export const getLocation = async (id: string) => {
   return location
 }
 
+const calculateStateAverageScore = (locations: any[]) => {
+  const stateScores: {
+    [key: string]: {
+      id: string
+      totalScore: number
+      count: number
+      cities: Set<string>
+    }
+  } = {}
+
+  locations.forEach((location: any) => {
+    const state = location.state
+    const score = location.score || 0
+    const city = location.name
+
+    if (!stateScores[state]) {
+      stateScores[state] = {
+        id: location.id,
+        totalScore: 0,
+        count: 0,
+        cities: new Set(),
+      }
+    }
+
+    stateScores[state].totalScore += score
+    stateScores[state].count += 1
+    stateScores[state].cities.add(city)
+  })
+
+  const { id, totalScore, count, cities } = stateScores[locations[0].state]
+  let averageScore = Math.round(totalScore / count)
+  if (averageScore === 0) averageScore = 1
+
+  return {
+    id,
+    state: locations[0].state,
+    averageScore,
+    numberOfCities: cities.size,
+  }
+}
+
+export const getLocationStates = async () => {
+  const supabase = await createSupabaseServerClient()
+  const { data, error } = await supabase.from('tap_water_locations').select('*')
+
+  if (error) {
+    console.error('Error fetching locations:', error)
+    return []
+  }
+
+  const statesWithAverageScores = Object.values(
+    data.reduce((acc: { [key: string]: any }, location: any) => {
+      if (location.state) {
+        if (!acc[location.state]) {
+          acc[location.state] = {
+            locations: [],
+            image: location.image,
+          }
+        }
+        acc[location.state].locations.push(location)
+      }
+      return acc
+    }, {})
+  ).map(({ locations, image }) => ({
+    ...calculateStateAverageScore(locations),
+    image,
+  }))
+
+  statesWithAverageScores.sort((a, b) => (a.state || '').localeCompare(b.state || ''))
+
+  return statesWithAverageScores
+}
+
 export const getRandomLocations = async () => {
   const supabase = await createSupabaseServerClient()
 

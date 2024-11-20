@@ -1,7 +1,7 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import Typography from '@/components/typography'
+import { motion } from 'framer-motion'
 
 const meta = {
   title: 'About Oasis',
@@ -10,28 +10,28 @@ const meta = {
     'https://dcsladfmohmhomyxvhzz.supabase.co/storage/v1/object/public/general/website/twitter_open_graph.png',
 }
 
-export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasis.com'),
-  openGraph: {
-    title: meta.title,
-    description: meta.description,
-    images: [
-      {
-        url: meta.cardImage,
-        width: 800,
-        height: 600,
-      },
-    ],
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: meta.title,
-    description: meta.description,
-    images: [meta.cardImage],
-  },
-}
+// export const metadata = {
+//   metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://oasis.com'),
+//   openGraph: {
+//     title: meta.title,
+//     description: meta.description,
+//     images: [
+//       {
+//         url: meta.cardImage,
+//         width: 800,
+//         height: 600,
+//       },
+//     ],
+//     locale: 'en_US',
+//     type: 'website',
+//   },
+//   twitter: {
+//     card: 'summary_large_image',
+//     title: meta.title,
+//     description: meta.description,
+//     images: [meta.cardImage],
+//   },
+// }
 
 export default function AboutSection() {
   return (

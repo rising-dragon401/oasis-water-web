@@ -133,6 +133,41 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_us: {
+        Row: {
+          attachment: string | null
+          created_at: string
+          email: string | null
+          id: number
+          message: string | null
+          user_id: string | null
+        }
+        Insert: {
+          attachment?: string | null
+          created_at?: string
+          email?: string | null
+          id?: number
+          message?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          attachment?: string | null
+          created_at?: string
+          email?: string | null
+          id?: number
+          message?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_us_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contributions: {
         Row: {
           amount: number | null
@@ -418,6 +453,8 @@ export type Database = {
           affiliate_url: string | null
           brand: number | null
           company: number
+          contaminant_count: number | null
+          contaminants: number[] | null
           created_at: string
           description: string | null
           filtration_methods:
@@ -431,12 +468,14 @@ export type Database = {
           is_indexed: boolean | null
           is_private: boolean | null
           lab_updated_at: string | null
+          labs: number[] | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
           packaging: Database["public"]["Enums"]["packaging"] | null
           recommended: boolean | null
           score: number | null
+          score_updated_at: string | null
           sources: Json[] | null
           tags: string | null
           test_request_count: number | null
@@ -452,6 +491,8 @@ export type Database = {
           affiliate_url?: string | null
           brand?: number | null
           company: number
+          contaminant_count?: number | null
+          contaminants?: number[] | null
           created_at?: string
           description?: string | null
           filtration_methods?:
@@ -465,12 +506,14 @@ export type Database = {
           is_indexed?: boolean | null
           is_private?: boolean | null
           lab_updated_at?: string | null
+          labs?: number[] | null
           metadata?: Json | null
           name: string
           nutrients?: Json[] | null
           packaging?: Database["public"]["Enums"]["packaging"] | null
           recommended?: boolean | null
           score?: number | null
+          score_updated_at?: string | null
           sources?: Json[] | null
           tags?: string | null
           test_request_count?: number | null
@@ -486,6 +529,8 @@ export type Database = {
           affiliate_url?: string | null
           brand?: number | null
           company?: number
+          contaminant_count?: number | null
+          contaminants?: number[] | null
           created_at?: string
           description?: string | null
           filtration_methods?:
@@ -499,12 +544,14 @@ export type Database = {
           is_indexed?: boolean | null
           is_private?: boolean | null
           lab_updated_at?: string | null
+          labs?: number[] | null
           metadata?: Json | null
           name?: string
           nutrients?: Json[] | null
           packaging?: Database["public"]["Enums"]["packaging"] | null
           recommended?: boolean | null
           score?: number | null
+          score_updated_at?: string | null
           sources?: Json[] | null
           tags?: string | null
           test_request_count?: number | null
@@ -1183,6 +1230,7 @@ export type Database = {
           percent_uncommon_filtered: number | null
           recommended: boolean | null
           score: number | null
+          score_updated_at: string | null
           sources: Json[] | null
           tags: string | null
           test_request_count: number | null
@@ -1209,6 +1257,7 @@ export type Database = {
           percent_uncommon_filtered?: number | null
           recommended?: boolean | null
           score?: number | null
+          score_updated_at?: string | null
           sources?: Json[] | null
           tags?: string | null
           test_request_count?: number | null
@@ -1235,6 +1284,7 @@ export type Database = {
           percent_uncommon_filtered?: number | null
           recommended?: boolean | null
           score?: number | null
+          score_updated_at?: string | null
           sources?: Json[] | null
           tags?: string | null
           test_request_count?: number | null
@@ -1271,6 +1321,12 @@ export type Database = {
           contaminant_count: number
         }[]
       }
+      get_item_ingredient_details: {
+        Args: {
+          item_id: number
+        }
+        Returns: Json
+      }
       get_items_with_ingredient: {
         Args: {
           ingredient_id: number
@@ -1279,6 +1335,8 @@ export type Database = {
           affiliate_url: string | null
           brand: number | null
           company: number
+          contaminant_count: number | null
+          contaminants: number[] | null
           created_at: string
           description: string | null
           filtration_methods:
@@ -1292,12 +1350,14 @@ export type Database = {
           is_indexed: boolean | null
           is_private: boolean | null
           lab_updated_at: string | null
+          labs: number[] | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
           packaging: Database["public"]["Enums"]["packaging"] | null
           recommended: boolean | null
           score: number | null
+          score_updated_at: string | null
           sources: Json[] | null
           tags: string | null
           test_request_count: number | null
@@ -1341,6 +1401,7 @@ export type Database = {
           percent_uncommon_filtered: number | null
           recommended: boolean | null
           score: number | null
+          score_updated_at: string | null
           sources: Json[] | null
           tags: string | null
           test_request_count: number | null
@@ -1354,6 +1415,8 @@ export type Database = {
           affiliate_url: string | null
           brand: number | null
           company: number
+          contaminant_count: number | null
+          contaminants: number[] | null
           created_at: string
           description: string | null
           filtration_methods:
@@ -1367,12 +1430,14 @@ export type Database = {
           is_indexed: boolean | null
           is_private: boolean | null
           lab_updated_at: string | null
+          labs: number[] | null
           metadata: Json | null
           name: string
           nutrients: Json[] | null
           packaging: Database["public"]["Enums"]["packaging"] | null
           recommended: boolean | null
           score: number | null
+          score_updated_at: string | null
           sources: Json[] | null
           tags: string | null
           test_request_count: number | null

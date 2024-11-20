@@ -5,23 +5,35 @@ import { getItems } from '@/app/actions/items'
 import ItemPreviewCard from '@/components/shared/item-preview-card'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import { CATEGORIES } from '@/lib/constants/categories'
+import { CATEGORIES as CATEGORIES_CONST } from '@/lib/constants/categories'
 import { useModal } from '@/providers/ModalProvider'
 import { useUserProvider } from '@/providers/UserProvider'
-import { ArrowLeft, Lock } from 'lucide-react'
+import { Lock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import ItemSkeleton from './item-card-skeleton'
+
+const CATEOGRIES = [
+  {
+    id: 'water',
+    name: 'Water',
+    tags: 'gallon, sparkling, still, spring, alkaline',
+  },
+  {
+    id: 'filter',
+    name: 'Filter',
+    tags: 'shower, bottle, pitcher, countertop, sink, home',
+  },
+]
 
 export default function RankingList({ categoryId }: { categoryId: string }) {
   const { subscription, uid } = useUserProvider()
   const { openModal } = useModal()
   const router = useRouter()
 
-  const category = CATEGORIES.find((category) => category.id === categoryId)
-
   const [loading, setLoading] = useState(true)
   const [allItems, setAllItems] = useState<any[]>([])
+  const [title, setTitle] = useState('')
   const [completeInit, setCompleteInit] = useState(false)
   const [page, setPage] = useState(1)
   const [tags, setTags] = useState<string[]>([])
@@ -41,151 +53,75 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
 
   const fetchAndSetData = async (key: string, fetchFunction: () => Promise<any>) => {
     const data = await fetchFunction()
-    localStorage.setItem(key, JSON.stringify(data))
-
     setAllItems(data)
-
-    // Sort the data if the user has a subscription
-    // if (subscription && uid) {
-    //   const indexedItems = data.filter((item: any) => item.is_indexed !== false)
-    //   const nonIndexedItems = data.filter((item: any) => item.is_indexed === false)
-
-    //   indexedItems.sort((a: any, b: any) => b.score - a.score)
-    //   nonIndexedItems.sort((a: any, b: any) => b.score - a.score)
-
-    //   setAllItems([...indexedItems, ...nonIndexedItems])
-    // } else {
-    //   setAllItems(data)
-    // }
-
     setLoading(false)
   }
 
+  // Fetch items based on categoryId
   useEffect(() => {
-    switch (categoryId) {
-      case 'bottled_water':
+    const category = CATEGORIES_CONST.find((item) => item.id === categoryId)
+
+    const productType_ = category?.productType || ''
+
+    setTitle(category?.title || '')
+
+    switch (productType_) {
+      case 'water':
         fetchAndSetData('bottled_water', () =>
-          getItems({ limit: 500, sortMethod: 'name', type: 'bottled_water' })
+          getItems({
+            limit: 500,
+            sortMethod: 'name',
+            type: category?.dbTypes,
+            tags: category?.selectedTags,
+          })
         )
+
         break
       case 'filter':
         fetchAndSetData('filter', () =>
-          getFilters({ limit: 100, sortMethod: 'name', type: 'filter' })
+          getFilters({
+            limit: 250,
+            sortMethod: 'name',
+            type: category?.dbTypes,
+            tags: category?.tags,
+          })
         )
+
         break
-      case 'shower_filter':
-        fetchAndSetData('shower_filter', () =>
-          getFilters({ limit: 50, sortMethod: 'name', type: 'shower_filter' })
-        )
-        break
-      case 'flavored_water':
-        fetchAndSetData('flavored_water', () =>
-          getItems({ limit: 50, sortMethod: 'name', type: 'flavored_water' })
-        )
-        break
-      case 'energy_drink':
-        fetchAndSetData('energy_drink', () =>
-          getItems({ limit: 50, sortMethod: 'name', type: 'energy_drink' })
-        )
-        break
-      case 'sports_drink':
-        fetchAndSetData('sports_drink', () =>
-          getItems({ limit: 50, sortMethod: 'name', type: 'sports_drink' })
-        )
-        break
-      case 'gallons':
-        fetchAndSetData('gallons', () =>
-          getItems({ limit: 50, sortMethod: 'name', type: 'water_gallon' })
-        )
-        break
-      case 'coconut_water':
-        fetchAndSetData('coconut_water', () =>
-          getItems({ limit: 50, sortMethod: 'name', type: 'coconut_water' })
-        )
-        break
-      case 'bottle_filter':
-        fetchAndSetData('bottle_filter', () =>
-          getFilters({ limit: 50, sortMethod: 'name', type: 'bottle_filter' })
-        )
-        break
+
       default:
         break
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryId, subscription, uid])
 
-  // // handle sorting by score
-  // useEffect(() => {
-  //   if (subscription && uid) {
-  //     setAllItems((prevItems) => {
-  //       const indexedItems = prevItems.filter((item) => item.is_indexed !== false)
-  //       const nonIndexedItems = prevItems.filter((item) => item.is_indexed === false)
-
-  //       indexedItems.sort((a, b) => b.score - a.score)
-
-  //       return [...indexedItems, ...nonIndexedItems]
-  //     })
-  //   }
-  // }, [subscription, uid, loading])
+    setTags((CATEOGRIES.find((category) => category.id === productType_)?.tags || '').split(', '))
+  }, [categoryId])
 
   return (
     <div className="pb-14 mt-0 w-full">
       <div className="flex flex-col items-start gap-2 mb-6 w-full">
-        <Button
-          variant="ghost"
-          onClick={() => {
-            router.push('/top-rated')
-          }}
-          className="p-0 mb-0"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          All categories
-        </Button>
         <div className="flex md:flex-row md:gap-0 gap-2 flex-col justify-between w-full">
-          {subscription ? (
-            <div className="flex flex-col gap-2">
-              <Typography size="4xl" fontWeight="bold" className="max-w-lg">
-                {category?.title}
-              </Typography>
-              <Typography size="base" fontWeight="normal" className="max-w-lg">
-                View the most up to date list in the Oasis app - don&apos;t worry your account and
-                membership will transfer.
-              </Typography>
-              <Button
-                variant="default"
-                className="flex flex-row gap-1 w-56"
-                onClick={() => {
-                  openModal('SubscriptionModal')
-                }}
-              >
-                Get the Oasis app
-                <Lock className="w-4 h-4" />
-              </Button>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2">
-              <Typography size="4xl" fontWeight="bold" className="max-w-lg">
-                {category?.title}
-              </Typography>
-              <Typography size="base" fontWeight="normal" className="max-w-lg">
-                Want to know the best {category?.title.toLowerCase()} based on science?
-              </Typography>
-              <Button
-                variant="default"
-                className="flex flex-row gap-1"
-                onClick={() => {
-                  openModal('SubscriptionModal')
-                }}
-              >
-                Show me the ratings
-                <Lock className="w-4 h-4" />
-              </Button>
-            </div>
-          )}
+          <div className="flex flex-col gap-2">
+            <Typography size="4xl" fontWeight="bold" className="max-w-lg">
+              {title}
+            </Typography>
+            <Typography size="base" fontWeight="normal" className="max-w-lg">
+              All the best {title.toLowerCase()} based on lab reports and science.
+            </Typography>
+            <Button
+              variant="default"
+              className="flex flex-row gap-1"
+              onClick={() => {
+                openModal('SubscriptionModal')
+              }}
+            >
+              Show me the ratings
+              <Lock className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-2 md:gap-6 gap-2 w-full">
+      <div className="grid md:grid-cols-3 grid-cols-2 md:gap-6 gap-2 w-full min-w-xl">
         {allItems &&
           allItems
             .filter((item) => !item.is_draft)

@@ -31,6 +31,9 @@ html {
     --success: #2e8b57;
     --warning: #ffdd57;
     --neutral: #e5e7eb;
+
+    --background-secondary: #1b1c1d;
+
     --card-foreground: 0 0% 13%;
     --popover: #ffffff;
     --popover-foreground: 0 0% 13%;

@@ -1,8 +1,8 @@
 'use client'
 
 import { getItemDetails } from '@/app/actions/items'
+import { fetchFundingStatus } from '@/app/actions/labs'
 import { incrementItemsViewed } from '@/app/actions/user'
-import ContaminantCard from '@/components/contamintant-card'
 import AppDownloadCta from '@/components/shared/app-download-cta'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemFundingRow from '@/components/shared/item-funding-row'
@@ -12,7 +12,7 @@ import PaywallContent from '@/components/shared/paywall-content'
 import Score from '@/components/shared/score'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
-import { H2, Muted } from '@/components/ui/typography'
+import { H3, Muted, P } from '@/components/ui/typography'
 import { useUserProvider } from '@/providers/UserProvider'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -25,12 +25,25 @@ export default function ItemForm({ id }: Props) {
 
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
+  const [fundingDetails, setFundingDetails] = useState<any>({})
 
   const fetchItem = async (id: string) => {
     const item = await getItemDetails(id)
 
     if (item) {
       setItem(item)
+
+      console.log('fetching funding details for item', item?.id, item?.type, item?.name)
+      const fundingDetails = await fetchFundingStatus({
+        itemId: item?.id,
+        type: item.type,
+        name: item.name,
+        createLab: true,
+      })
+
+      console.log('fundingDetails', JSON.stringify(fundingDetails, null, 2))
+
+      setFundingDetails(fundingDetails)
     }
 
     setIsLoading(false)
@@ -129,9 +142,9 @@ export default function ItemForm({ id }: Props) {
           </div>
 
           <div className="flex flex-col w-full justify-between h-full md:max-h-96">
-            <div className="flex flex-row justify-between w-full items-start">
+            <div className="flex flex-row justify-between w-full items-start gap-4">
               <div className="flex flex-col w-full">
-                <H2>{item.name}</H2>
+                <P className="text-2xl">{item.name}</P>
                 <Link href={`/search/company/${item.company?.name}`}>
                   <Muted>{item.company?.name}</Muted>
                 </Link>
@@ -148,69 +161,74 @@ export default function ItemForm({ id }: Props) {
               </div>
             )}
 
-            <div className="flex flex-col h-full">
-              <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full mt-2 ">
-                {item.is_indexed && (
-                  <div className="flex flex-col gap-y-1 w-full">
-                    <BlurredLineItem
-                      label="Harmful ingredients"
-                      value={harmfulIngredients?.length}
-                      isPaywalled={true}
-                      score={harmfulIngredients?.length > 0 ? 'bad' : 'good'}
-                    />
+            <div className="flex md:flex-row flex-col gap-10 gap-y-1 w-full mt-2 ">
+              {item.is_indexed && (
+                <div className="flex flex-col gap-y-1 w-full ">
+                  <BlurredLineItem
+                    label="Harmful ingredients"
+                    value={harmfulIngredients?.length}
+                    isPaywalled={true}
+                    score={harmfulIngredients?.length > 0 ? 'bad' : 'good'}
+                  />
 
-                    <BlurredLineItem
-                      label="Beneficial ingredients"
-                      value={beneficialIngredients?.length}
-                      isPaywalled={true}
-                      score={beneficialIngredients?.length > 0 ? 'good' : 'bad'}
-                    />
+                  <BlurredLineItem
+                    label="Beneficial ingredients"
+                    value={beneficialIngredients?.length}
+                    isPaywalled={true}
+                    score={beneficialIngredients?.length > 0 ? 'good' : 'bad'}
+                  />
 
-                    <BlurredLineItem
-                      label="pH"
-                      value={
-                        item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
-                          ? 'Unknown'
-                          : item.metadata.ph_level
-                      }
-                      isPaywalled={false}
-                      score={parseFloat(item.metadata?.ph_level) > 7 ? 'good' : 'neutral'}
-                    />
+                  <BlurredLineItem
+                    label="pH"
+                    value={
+                      item.metadata?.ph_level === 0 || item.metadata?.ph_level == null
+                        ? 'Unknown'
+                        : item.metadata.ph_level
+                    }
+                    isPaywalled={false}
+                    score={parseFloat(item.metadata?.ph_level) > 7 ? 'good' : 'neutral'}
+                  />
 
-                    <BlurredLineItem
-                      label="TDS"
-                      value={item.metadata?.tds || 'N/A'}
-                      isPaywalled={false}
-                      score="neutral"
-                    />
+                  <BlurredLineItem
+                    label="TDS"
+                    value={item.metadata?.tds || 'N/A'}
+                    isPaywalled={false}
+                    score="neutral"
+                  />
 
-                    <BlurredLineItem
-                      label="PFAS"
-                      value={item.metadata?.pfas || 'N/A'}
-                      isPaywalled={false}
-                      score={item.metadata?.pfas === 'Yes' ? 'bad' : 'good'}
-                    />
+                  <BlurredLineItem
+                    label="PFAS"
+                    value={item.metadata?.pfas || 'N/A'}
+                    isPaywalled={false}
+                    score={item.metadata?.pfas === 'Yes' ? 'bad' : 'good'}
+                  />
 
-                    <BlurredLineItem
-                      label="Packaging"
-                      value={
-                        item?.packaging
-                          ? item.packaging.charAt(0).toUpperCase() + item.packaging.slice(1)
-                          : 'Unknown'
-                      }
-                      isPaywalled={false}
-                      score={item.packaging === 'glass' ? 'good' : 'bad'}
-                    />
-                  </div>
-                )}
-              </div>
+                  <BlurredLineItem
+                    label="Packaging"
+                    value={
+                      item?.packaging
+                        ? item.packaging.charAt(0).toUpperCase() + item.packaging.slice(1)
+                        : 'Unknown'
+                    }
+                    isPaywalled={false}
+                    score={item.packaging === 'glass' ? 'good' : 'bad'}
+                  />
+                </div>
+              )}
             </div>
 
             {!isTested && (
               <div className="md:mt-10 mt-4 h-full justify-end flex-col">
                 <Muted className="mb-1">Help fund the testing of this item:</Muted>
-                <ItemFundingRow item={item} showContribute={true} date={item.updated_at} />
-                {/* <UntestedCard item={item} /> */}
+                <ItemFundingRow
+                  item={item}
+                  raisedAmount={fundingDetails?.raised_amount}
+                  totalCost={fundingDetails?.total_cost}
+                  contributions={fundingDetails?.user_contributions}
+                  showFundButton={true}
+                  showFundProgress={true}
+                  date={item.updated_at}
+                />
               </div>
             )}
           </div>
@@ -226,13 +244,22 @@ export default function ItemForm({ id }: Props) {
 
         <>
           {isTested && (
-            <div className="flex flex-col gap-2 mt-6">
-              <Typography size="2xl" fontWeight="normal">
-                Contaminants and minerals
-              </Typography>
+            <div className="flex flex-col gap-2 mt-10">
+              <H3>Contaminants and minerals</H3>
               {sortedContaminants && sortedContaminants.length > 0 ? (
                 <>
-                  {!subscription ? (
+                  <PaywallContent
+                    label="View contaminants"
+                    items={[
+                      'Ratings and scores 🌟',
+                      'Contaminant breakdown 🔬',
+                      'Lab results 🧪',
+                      'Health risks and benefits 🤍',
+                    ]}
+                  >
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-6 h-80 bg-muted rounded-md"></div>
+                  </PaywallContent>
+                  {/* {!subscription ? (
                     <PaywallContent
                       label="View contaminants"
                       items={[
@@ -242,7 +269,7 @@ export default function ItemForm({ id }: Props) {
                         'Health risks and benefits 🤍',
                       ]}
                     >
-                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 h-80 bg-secondary rounded-md"></div>
+                      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 h-80 bg-muted rounded-md"></div>
                     </PaywallContent>
                   ) : (
                     <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
@@ -250,7 +277,7 @@ export default function ItemForm({ id }: Props) {
                         <ContaminantCard key={contaminant.id || index} data={contaminant} />
                       ))}
                     </div>
-                  )}
+                  )} */}
                 </>
               ) : (
                 <>

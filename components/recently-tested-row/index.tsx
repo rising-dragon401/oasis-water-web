@@ -47,8 +47,8 @@ export default function RecentlyTestedRow() {
   }, [controls, testedThings, isHovered])
 
   return (
-    <div className="flex flex-col  max-w-[90vw] mx-auto overflow-hidden">
-      <P className="text-center mb-4 text-muted-foreground">Recently Tested</P>
+    <div className="flex flex-col pt-0 max-w-[90vw] mx-auto overflow-hidden">
+      <P className="text-center mb-2 text-muted-foreground text-sm">Recently Tested</P>
 
       {isLoading ? (
         <div className="flex justify-center flex-row gap-4 items-center h-20 max-w-4xl">
@@ -80,13 +80,8 @@ export default function RecentlyTestedRow() {
                   item.name.length > 28 ? '' : ''
                 }`}
               >
-                <P
-                  className={`break-words text-xs font-bold w-40 h-8  ${
-                    item.name.length > 28 ? 'h-10' : 'h-10'
-                  }`}
-                >
-                  {item.name}
-                </P>
+                <P className="break-words text-xs font-bold w-36 h-8">{item.name}</P>
+
                 {/* {item.type === 'filter' && (
                 <P className="text-xs text-muted-foreground">
                   {15 - item.filtered_contaminant_categories.length} categories not filtered
@@ -100,7 +95,9 @@ export default function RecentlyTestedRow() {
                         item.cont_count > 0 ? 'bg-danger' : 'bg-neutral'
                       }`}
                     />
-                    <P className="text-xs text-muted-foreground">{item?.cont_count} contaminants</P>
+                    <P className="text-xs text-muted-foreground">
+                      {item?.cont_count} contaminant{item?.cont_count !== 1 ? 's' : ''}
+                    </P>
                   </div>
                 )}
               </div>

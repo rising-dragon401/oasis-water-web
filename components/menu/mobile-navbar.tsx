@@ -18,7 +18,7 @@ import SignUpButton from '../shared/sign-up-button'
 import SignOutButton from './log-out-button'
 
 export default function MobileNavbar() {
-  const { uid, user, userData, subscription } = useUserProvider()
+  const { uid, user, userData } = useUserProvider()
 
   const [isOpen, setIsOpen] = React.useState(false)
   const [isMounted, setIsMounted] = useState(false)

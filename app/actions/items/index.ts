@@ -7,15 +7,28 @@ export const getItems = async ({
   limit,
   sortMethod,
   type,
-}: { limit?: number; sortMethod?: 'name' | 'score'; type?: ItemType } = {}) => {
+  tags,
+}: {
+  limit?: number
+  sortMethod?: 'name' | 'score'
+  type?: any[]
+  tags?: string[]
+} = {}) => {
   const supabase = await createSupabaseServerClient()
 
-  let orderBy = sortMethod || 'name'
+  const orderBy = sortMethod || 'name'
 
-  let query = supabase.from('items').select().order(orderBy, { ascending: true })
+  let query = supabase
+    .from('items')
+    .select(`*, brand:brands(name)`)
+    .order(orderBy, { ascending: true })
 
-  if (type) {
-    query = query.eq('type', type)
+  if (type && type.length > 0) {
+    query = query.in('type', type)
+  }
+
+  if (tags && tags.length > 0) {
+    query = query.or(tags.map((tag) => `tags.ilike.%${tag}%`).join(','))
   }
 
   if (limit !== undefined) {
@@ -26,13 +39,18 @@ export const getItems = async ({
 
   let items = data || []
 
-  items = items.filter((item) => !item.is_private)
+  items = items.filter((item: any) => !item.is_private)
 
-  items = items.sort((a, b) => {
+  items = items.sort((a: any, b: any) => {
     if (a.is_indexed === false) return 1
     if (b.is_indexed === false) return -1
     return 0
   })
+
+  items = items.map((item: any) => ({
+    ...item,
+    brandName: item.brand?.name || null,
+  }))
 
   return items
 }
