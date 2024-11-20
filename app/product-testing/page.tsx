@@ -135,6 +135,7 @@ export default function AllProductsPage() {
         {items.map((item) => (
           <ItemFundingRow
             key={item.id}
+            lab_id={item.lab_id}
             raisedAmount={item.raised_amount}
             totalCost={item.total_cost}
             contributions={item.user_contributions}

@@ -21,7 +21,7 @@ type Props = {
 }
 
 export default function ItemForm({ id }: Props) {
-  const { uid, subscription } = useUserProvider()
+  const { uid } = useUserProvider()
 
   const [item, setItem] = useState<any>({})
   const [isLoading, setIsLoading] = useState(true)
@@ -33,15 +33,12 @@ export default function ItemForm({ id }: Props) {
     if (item) {
       setItem(item)
 
-      console.log('fetching funding details for item', item?.id, item?.type, item?.name)
       const fundingDetails = await fetchFundingStatus({
         itemId: item?.id,
         type: item.type,
         name: item.name,
         createLab: true,
       })
-
-      console.log('fundingDetails', JSON.stringify(fundingDetails, null, 2))
 
       setFundingDetails(fundingDetails)
     }
@@ -222,6 +219,7 @@ export default function ItemForm({ id }: Props) {
                 <Muted className="mb-1">Help fund the testing of this item:</Muted>
                 <ItemFundingRow
                   item={item}
+                  lab_id={fundingDetails?.lab_id}
                   raisedAmount={fundingDetails?.raised_amount}
                   totalCost={fundingDetails?.total_cost}
                   contributions={fundingDetails?.user_contributions}
