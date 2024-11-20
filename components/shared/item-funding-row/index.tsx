@@ -17,6 +17,7 @@ import { toast } from 'sonner'
 
 export default function ItemFundingRow({
   item,
+  lab_id = null,
   raisedAmount = null,
   totalCost = null,
   contributions = [],
@@ -27,6 +28,7 @@ export default function ItemFundingRow({
   titleClassName = '',
 }: {
   item: any
+  lab_id?: string | null
   raisedAmount?: number | null
   totalCost?: number | null
   contributions?: any[]
@@ -71,7 +73,7 @@ export default function ItemFundingRow({
       return
     }
 
-    if (!fundingDetails?.lab_id) {
+    if (!lab_id) {
       toast('Unable to process donation link. Please try again later')
       throw new Error('Unable to process donation link. Item lab id not found')
     }
@@ -84,7 +86,7 @@ export default function ItemFundingRow({
           product_type: item.type,
           product_name: item.name,
           image: item.image,
-          lab_id: fundingDetails.lab_id,
+          lab_id,
           user_id: uid,
         },
       }).catch((e) => {
@@ -96,8 +98,6 @@ export default function ItemFundingRow({
       if (!sessionId) {
         throw new Error('Unable to process donation link. Session ID not found')
       }
-
-      console.log('sessionId', sessionId)
 
       const stripe = await getStripe()
       stripe?.redirectToCheckout({ sessionId })
