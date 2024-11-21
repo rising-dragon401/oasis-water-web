@@ -13,11 +13,11 @@ export default function TopProductsSection() {
   return (
     <div className="w-full p-8 max-w-4xl mx-auto">
       <div className="flex flex-col gap-2 mb-4 items-start w-full">
-        <H2 className="text-left">The Best Products for Your Health</H2>
-        <P>Access real-time lab data to find the healthiest products for you</P>
+        <H2 className="text-left">Discover the top rated products</H2>
+        <P>Access real-time lab data to find the healthiest products for you across categories</P>
       </div>
 
-      <div className="grid grid-cols-2">
+      <div className="grid md:grid-cols-2 grid-cols-1">
         {CATEGORIES.map((category, index) => {
           const linkContent = (
             <div
@@ -38,9 +38,11 @@ export default function TopProductsSection() {
                 {/* <Muted>{category.description}</Muted> */}
               </div>
 
-              {hoveredCategory === category.id && (
-                <ArrowRight className="w-4 h-4 text-background absolute bottom-4 right-4" />
+              {/* {hoveredCategory === category.id && ( */}
+              {!category.isComingSoon && (
+                <ArrowRight className="w-4 h-4 text-muted-foreground absolute bottom-4 right-4" />
               )}
+              {/* )} */}
             </div>
           )
 

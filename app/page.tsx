@@ -15,7 +15,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { H1, H2, P } from '@/components/ui/typography'
+import { H1, H2, Muted } from '@/components/ui/typography'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -105,48 +105,47 @@ export default function HomePage() {
   return (
     <SubpageLayout>
       <div className="flex flex-col space-y-16 pb-10">
-        {/* Hero Section */}
-        <div className="relative isolate md:pt-24 pt-14">
-          <div className="overflow-hidden">
-            <div className="mx-auto max-w-6xl px-6 lg:px-8 text-center flex flex-col items-center">
-              <H1 className="md:text-5xl text-4xl max-w-2xl font-bold tracking-tight mb-2">
-                Water ratings backed by science
-              </H1>
-              <P className="md:text-base sm:text-sm max-w-xl">
-                90% of our waters are polluted with toxins, microplastics and other contaminants.
-                Empower your hydration with science-backed product recommendations.
-              </P>
+        <div className="md:pt-24 pt-12">
+          <div className="mx-auto max-w-6xl px-4 lg:px-8 text-center flex flex-col items-center">
+            <H1 className="md:text-5xl text-3xl md:max-w-none max-w-sm font-bold tracking-tight mb-2">
+              Know what you&apos;re drinking
+            </H1>
+            <Muted className="md:text-base sm:text-sm max-w-xl">
+              Many water contain toxic contaminants that degrade your health. We help you find the
+              healthiest options.
+            </Muted>
 
-              <div className="mt-6 flex gap-4 flex-row">
-                <Link href="/product-testing">
-                  <Button className="h-10 px-6 rounded-lg" variant="outline">
-                    Contribute
-                  </Button>
-                </Link>
-                <DownloadAppButton showIcon className="h-10 px-6" overrideText="Check your water" />
-              </div>
-              <div className="mt-10 flex justify-center">
-                <Image
-                  alt="Oasis water scanner"
-                  src="https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/acqua-pann-scan-light.png?t=2024-11-19T00%3A22%3A59.079Z"
-                  width={400}
-                  height={800}
-                  className="md:w-48 w-48 h-auto rounded-lg"
-                />
-              </div>
+            <div className="md:mt-6 mt-4 flex gap-4 md:flex-row justify-center flex-col-reverse items-center w-full">
+              <Link href="/product-testing">
+                <Button className="h-10 px-6 rounded-lg" variant="outline">
+                  Contribute
+                </Button>
+              </Link>
+              <DownloadAppButton showIcon className="h-10 px-6" overrideText="Check your water" />
+            </div>
+            <div className="md:mt-10 mt-8 flex justify-center">
+              <Image
+                alt="Oasis water scanner"
+                src="https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/acqua-pann-scan-light.png?t=2024-11-19T00%3A22%3A59.079Z"
+                width={400}
+                height={800}
+                className="md:w-48 w-44 h-auto rounded-lg"
+              />
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col items-center md:mt-6 mt-0">
-          <RecentlyTestedRow />
+          <div className="flex flex-col items-center md:mt-6 mt-4 max-w-screen overflow-hidden">
+            <RecentlyTestedRow />
+          </div>
         </div>
 
         <div className="max-w-4xl mx-auto py-10">
           <FundingRowsSection />
         </div>
 
-        <TapWaterSection />
+        <div className="max-w-4xl mx-auto py-10">
+          <TapWaterSection />
+        </div>
 
         <div className="max-w-4xl mx-auto py-10 w-full">
           <TopProductsSection />
