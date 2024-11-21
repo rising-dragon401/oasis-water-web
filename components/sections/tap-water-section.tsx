@@ -11,7 +11,7 @@ const TapWaterGlobe = dynamic(() => import('./tap-water-globe'), {
 })
 
 export default function TapWaterSection() {
-  const [globeDimensions, setGlobeDimensions] = useState({ width: 500, height: 500 })
+  const [globeDimensions, setGlobeDimensions] = useState({ width: 300, height: 300 })
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -33,15 +33,22 @@ export default function TapWaterSection() {
 
       return () => window.removeEventListener('resize', updateDimensions)
     }
-  }, [isClient])
+  }, [])
 
   return (
     <div className="w-full p-8 max-w-4xl mx-auto">
       <div className="flex flex-col gap-2 mb-8 items-center w-full">
-        <H2 className="text-center">Hydrate healthy anywhere</H2>
-        <P className="text-center">Locate the healthiest waters wherever you go - coming soon.</P>
+        <H2 className="text-center">Stay healthy wherever you go</H2>
+        <P className="text-center">
+          Find the healthiest options around you and check local water quality
+        </P>
       </div>
-      {isClient && <TapWaterGlobe width={globeDimensions.width} height={globeDimensions.height} />}
+      {isClient && (
+        <div>
+          <TapWaterGlobe width={globeDimensions.width} height={globeDimensions.height} />
+        </div>
+      )}
+
       <div className="flex flex-row justify-center w-full mt-4">
         <DownloadAppButton variant="outline" showIcon overrideText="Check your water" />
       </div>
