@@ -100,6 +100,19 @@ export default function RecentlyTestedRow() {
                     </P>
                   </div>
                 )}
+
+                {item.type === 'filter' && (
+                  <div className="flex flex-row gap-2 items-center">
+                    <div
+                      className={`w-2 h-2 rounded-full ${
+                        item.cont_not_removed > 0 ? 'bg-danger' : 'bg-neutral'
+                      }`}
+                    />
+                    <P className="text-xs text-muted-foreground">
+                      {item.cont_not_removed} unfiltered pollutants
+                    </P>
+                  </div>
+                )}
               </div>
             </Link>
           ))}
