@@ -1,6 +1,6 @@
 'use server'
 
-import { ITEM_TYPES } from '@/lib/constants/categories'
+import { FILTER_CONTAMINANT_CATEGORIES, ITEM_TYPES } from '@/lib/constants/categories'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 // if is_indexed === false,
@@ -414,7 +414,7 @@ export const fetchTestedPreview = async ({ limit }: { limit: number }) => {
   try {
     const { data: items, error } = await supabase
       .from('items')
-      .select('id, name, image, ingredients, type')
+      .select('id, name, image, ingredients, type, updated_at')
       .eq('is_indexed', true)
       .not('ingredients', 'is', null)
       .order('updated_at', { ascending: true })
@@ -437,7 +437,43 @@ export const fetchTestedPreview = async ({ limit }: { limit: number }) => {
       })
     )
 
-    return itemsWithContCount
+    const { data: filters, error: filtersError } = await supabase
+      .from('water_filters')
+      .select('id, name, image, type, filtered_contaminant_categories, updated_at')
+      .eq('is_indexed', true)
+      .order('updated_at', { ascending: true })
+      .limit(limit)
+
+    if (filtersError) {
+      throw new Error(
+        `Error fetchTestedPreview fetching data from filters: ${filtersError.message}`
+      )
+    }
+
+    const filtersWithContCount = await Promise.all(
+      filters.map(async (filter) => {
+        const filteredContaminantCategories = filter.filtered_contaminant_categories as any[]
+
+        const contaminantsNotRemoved = FILTER_CONTAMINANT_CATEGORIES.filter((category) => {
+          const matchedCategory = filteredContaminantCategories.find(
+            (contaminant) => contaminant.category === category
+          )
+          return !matchedCategory || matchedCategory.percentage < 50
+        }).length
+
+        return {
+          ...filter,
+          cont_not_removed: contaminantsNotRemoved,
+        }
+      })
+    )
+
+    const combinedItems = [...itemsWithContCount, ...filtersWithContCount]
+    combinedItems.sort(
+      (a, b) => new Date(b.updated_at || 0).getTime() - new Date(a.updated_at || 0).getTime()
+    )
+
+    return combinedItems
   } catch (error) {
     console.error(error)
     return []

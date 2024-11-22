@@ -209,3 +209,20 @@ export const CATEGORIES: CategoryType[] = [
   // 	is_new: false,
   // },
 ]
+
+export const FILTER_CONTAMINANT_CATEGORIES = [
+  'Chemical Disinfectants',
+  'Heavy Metals',
+  'Haloacetic Acids',
+  'Fluoride',
+  'Herbicides',
+  'Perfluorinated Chemicals (PFAS)',
+  'Pesticides',
+  'Pharmaceuticals',
+  'Phthalates',
+  'Radiological Elements',
+  'Semi-Volatile Compounds',
+  'Volatile Organic Compounds (VOCs)',
+  'Microbiologicals',
+  'Microplastics',
+]
