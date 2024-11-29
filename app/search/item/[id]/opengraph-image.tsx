@@ -1,7 +1,6 @@
 // Learn more: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image
 
 import { getItem } from '@/app/actions/items'
-import ScoreOG from '@/components/shared/score-og'
 import { OG_IMAGE } from '@/lib/constants/images'
 import { Item } from '@/types/custom'
 import { ImageResponse } from 'next/og'
@@ -18,55 +17,115 @@ export const size = {
 export const contentType = 'image/png'
 
 // Image generation
-export default async function Image({ params }: { params: { id: string } }) {
+export default async function Image({
+  params,
+  format = 'png',
+}: {
+  params: { id: string }
+  format?: 'png' | 'jpeg'
+}) {
   const id = params.id
 
-  // fetch data
+  const logoImage =
+    'https://connect.live-oasis.com/storage/v1/object/public/website/logo/oasis_icon_word.png'
+
+  // Fetch data
   const item = (await getItem(id)) as Item | null
 
-  const image = item && item.image
-  const score = item && item.score
+  const image = item?.image || OG_IMAGE
+  const name = item?.name || 'Oasis'
+  const title = 'Is ' + item?.name + ' healthy?' || 'Oasis'
+  const tagline = `Uncover the truth about ${name} and latest scientific data behind it.`
+
+  const contentType = format === 'jpeg' ? 'image/jpeg' : 'image/png'
 
   return new ImageResponse(
     (
       <div
         style={{
-          fontSize: 128,
-          background: 'white',
+          display: 'flex',
+          flexDirection: 'row',
           width: '100%',
           height: '100%',
-          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          background: '#fff',
+
+          paddingLeft: '70px',
+          paddingRight: '50px',
+          paddingTop: '40px',
+          paddingBottom: '20px',
         }}
       >
-        <img
-          src={image || OG_IMAGE}
-          width="100%"
-          height="100%"
-          style={{ objectFit: 'contain' }}
-          alt="image for water"
-        />
-        {score && (
-          <div style={{ display: 'flex', position: 'absolute', top: 60, right: 50 }}>
-            <ScoreOG score={score} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <img
+            src={logoImage}
+            width={100}
+            height={40}
+            style={{
+              marginBottom: '1rem',
+              objectFit: 'contain',
+            }}
+            alt={`Image for ${name}`}
+          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              justifyContent: 'center',
+              fontSize: '2.2rem',
+              fontWeight: 'bold',
+              marginTop: '-40px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                fontSize: '2.4rem',
+                fontWeight: 'bold',
+                maxWidth: '420px',
+                flexWrap: 'wrap',
+              }}
+            >
+              <p>{title}</p>
+            </div>
+            <div
+              style={{
+                fontSize: '1.4rem',
+                color: '#6b7280',
+                display: 'flex',
+                maxWidth: '420px',
+                flexWrap: 'wrap',
+              }}
+            >
+              {tagline}
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* Product Image */}
+        <img
+          src={image}
+          width={400}
+          height={400}
+          style={{
+            objectFit: 'contain',
+            borderRadius: '40px',
+            // boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          }}
+          alt={`Image for ${name}`}
+        />
       </div>
     ),
-    // ImageResponse options
-    {
-      // For convenience, we can re-use the exported opengraph-image
-      // size config to also set the ImageResponse's width and height.
-      ...size,
-      //   fonts: [
-      //     {
-      //       name: 'Inter',
-      //       data: await interSemiBold,
-      //       style: 'normal',
-      //       weight: 400,
-      //     },
-      //   ],
-    }
+    { headers: { 'Content-Type': contentType } }
   )
 }

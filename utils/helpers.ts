@@ -125,12 +125,12 @@ export const timeSince = (date: string) => {
   const diffDays = Math.floor(diffHours / 24)
 
   if (diffSeconds < 60) {
-    return `${diffSeconds} seconds ago`
+    return `${diffSeconds} second${diffSeconds !== 1 ? 's' : ''} ago`
   } else if (diffMinutes < 60) {
-    return `${diffMinutes} minutes ago`
+    return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`
   } else if (diffHours < 24) {
-    return `${diffHours} hours ago`
+    return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`
   } else {
-    return `${diffDays} days ago`
+    return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`
   }
 }

@@ -61,15 +61,15 @@ export default function SubpageLayout({ children }: PropsWithChildren) {
           <SearchParamsComponent openModal={openModal} isOpen={isOpen} />
         </Suspense>
         <div className="md:flex hidden w-full justify-center items-center py-2">
-          <div className="flex-1 flex justify-start w-full gap-4">
+          <div className="lg:flex-2 md:flex-2 flex justify-start w-full gap-4">
             <HomeNavbar />
           </div>
 
-          <div className="flex-1 justify-center items-center w-full">
+          <div className="lg:flex-2 md:flex-2 justify-center items-center w-full px-4">
             <BasicSearch showSearch={true} size="small" />
           </div>
 
-          <div className="flex-1 flex justify-end items-center gap-2">
+          <div className="lg:flex-1 md:flex justify-end items-center gap-2">
             {user ? (
               <div className="flex flex-row gap-4 items-center ml-4">
                 <DownloadAppButton />

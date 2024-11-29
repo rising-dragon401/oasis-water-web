@@ -15,7 +15,10 @@ export default function AllProductsPage() {
   useEffect(() => {
     const fetchUntestedItems = async () => {
       const untestedItems = await fetchUntestedThings({ tables: ['items'], limit: 5 })
-      setUntestedItems(untestedItems)
+
+      const sortedUntestedItems = untestedItems.sort((a, b) => b.raised_amount - a.raised_amount)
+
+      setUntestedItems(sortedUntestedItems)
       setIsLoading(false)
     }
 
@@ -25,9 +28,9 @@ export default function AllProductsPage() {
   return (
     <div className="md:max-w-4xl max-w-2xl mx-auto p-8">
       <div className="flex flex-col gap-2 mb-8 items-center">
-        <H2 className="text-center ">Contribute to product testing</H2>
+        <H2 className="text-center">Independent product testing</H2>
         <P className="text-center">
-          Support independent lab tests and help us share accurate, science-backed ratings
+          Support unbiased information and help us share accurate, science-backed ratings
         </P>
       </div>
 

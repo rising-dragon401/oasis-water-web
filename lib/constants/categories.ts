@@ -136,7 +136,7 @@ export const CATEGORIES: CategoryType[] = [
     tags: ['bottle'],
     selectedTags: ['bottle'],
     productType: 'filter',
-    title: 'Bottle filters',
+    title: 'Water bottle filters',
     image:
       'https://connect.live-oasis.com/storage/v1/object/public/website/images/categories/water_bottle_filter.png',
     isParentCategory: true,

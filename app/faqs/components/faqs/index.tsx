@@ -1,10 +1,10 @@
-import Typography from '@/components/typography'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { H1 } from '@/components/ui/typography'
 
 const FAQ_LIST = [
   {
@@ -65,13 +65,11 @@ const FAQ_LIST = [
 
 export default function FAQs() {
   return (
-    <div className="w-full mt-14">
-      <div className=" flex flex-row justify-between">
-        <Typography size="2xl" fontWeight="normal">
-          Frequently asked questions
-        </Typography>
+    <div className="w-full md:mt-14 mt-8">
+      <div className=" flex flex-row justify-between ">
+        <H1>Frequently asked questions</H1>
       </div>
-      <Accordion type="single" collapsible className="w-full gap-4">
+      <Accordion type="single" collapsible className="w-full gap-4 md:mt-14 mt-8">
         {FAQ_LIST.map((faq) => (
           <AccordionItem
             key={faq.value}
@@ -79,7 +77,7 @@ export default function FAQs() {
             className="border line my-4 rounded-md px-4"
           >
             <AccordionTrigger className="text-primary text-left">{faq.trigger}</AccordionTrigger>
-            <AccordionContent className="text-secondary">{faq.content}</AccordionContent>
+            <AccordionContent className="text-muted-foreground">{faq.content}</AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>

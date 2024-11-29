@@ -55,7 +55,7 @@ export default function BlurredLineItem({
         ) : (
           <Typography
             size="base"
-            fontWeight="semibold"
+            fontWeight="normal"
             className={cn(labelClassName, 'min-w-14 text-right')}
           >
             {value}

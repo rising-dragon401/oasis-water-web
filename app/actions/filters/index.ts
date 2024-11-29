@@ -1,6 +1,5 @@
 'use server'
 
-import { Ingredient } from '@/types/custom'
 import { createSupabaseServerClient } from '@/utils/supabase/server'
 
 export const getFilters = async ({
@@ -97,10 +96,10 @@ export const getTopFilters = async () => {
   }
 }
 
-export const getFilterDetails = async (id: string, allIngredients: Ingredient[] | []) => {
+export const getFilterDetails = async (id: string) => {
   const supabase = await createSupabaseServerClient()
 
-  const { data: item, error } = await supabase.from('water_filters').select().eq('id', id)
+  const { data: item, error } = await supabase.from('water_filters').select('*').eq('id', id)
 
   if (!item) {
     return null
@@ -108,24 +107,22 @@ export const getFilterDetails = async (id: string, allIngredients: Ingredient[] 
 
   const contaminants = item[0].contaminants_filtered
 
-  let contaminantData: any[] = []
-  if (contaminants && contaminants.length > 0) {
-    contaminantData = (
-      await Promise.all(
-        contaminants.map(async (contaminant: any) => {
-          const data = allIngredients.find((ingredient) => ingredient.id === contaminant)
-            ? [allIngredients.find((ingredient) => ingredient.id === contaminant)]
-            : null
+  // const contaminantData = await Promise.all(
+  //   contaminants.map(async (contaminantId: string) => {
+  //     const { data: ingredient, error } = await supabase
+  //       .from('ingredients')
+  //       .select('name')
+  //       .eq('id', contaminantId)
+  //       .single()
 
-          if (!data) {
-            return null
-          }
+  //     if (error) {
+  //       console.error('Error fetching ingredient name:', error)
+  //       return { id: contaminantId, name: 'Unknown' }
+  //     }
 
-          return data[0]
-        })
-      )
-    ).filter((contaminant) => contaminant !== null) // Filter out null values
-  }
+  //     return { id: contaminantId, name: ingredient.name }
+  //   })
+  // )
 
   const companyId = item[0].company
   const brandId = item[0].brand
@@ -149,7 +146,6 @@ export const getFilterDetails = async (id: string, allIngredients: Ingredient[] 
     ...item[0],
     brand,
     company,
-    contaminants_filtered: contaminantData,
   }
 
   return filterWithDetails

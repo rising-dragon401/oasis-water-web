@@ -1,6 +1,7 @@
 'use client'
 
 import { fetchTestedPreview } from '@/app/actions/labs'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { P } from '@/components/ui/typography'
 import { determineLink } from '@/utils/helpers'
@@ -47,77 +48,83 @@ export default function RecentlyTestedRow() {
   }, [controls, testedThings, isHovered])
 
   return (
-    <div className="flex flex-col pt-0 max-w-[90vw] mx-auto overflow-hidden">
-      <P className="text-center mb-2 text-muted-foreground text-sm">Recently Tested</P>
+    <div className="flex flex-col">
+      <P className="text-center mb-4 text-muted-foreground text-sm">Latest ratings</P>
 
-      {isLoading ? (
-        <div className="flex justify-center flex-row gap-4 items-center h-20 max-w-4xl">
-          <Skeleton className="w-96 h-20 rounded-lg" />
-          <Skeleton className="w-96 h-20 rounded-lg" />
-          <Skeleton className="w-96 h-20 rounded-lg" />
-        </div>
-      ) : (
-        <motion.div className="flex" animate={controls}>
-          {[...testedThings, ...testedThings].map((item, index) => (
-            <Link
-              href={determineLink(item)}
-              key={index}
-              className="flex flex-row items-start justify-center p-2 pr-6 shadow-lg mr-6 w-full h-20 rounded-lg bg-card border-border border"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <div className="w-14 h-14 overflow-hidden rounded-xs">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={100}
-                  height={100}
-                  className="object-contain w-full h-full"
-                />
-              </div>
-              <div
-                className={`ml-4 text-left flex flex-col justify-center gap-1 py-1 ${
-                  item.name.length > 28 ? '' : ''
-                }`}
+      <div
+        className="flex flex-col pt-0 max-w-[90vw] mx-auto overflow-x-scroll"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {isLoading ? (
+          <div className="flex justify-center flex-row gap-4 items-center h-20 max-w-4xl">
+            <Skeleton className="w-96 h-20 rounded-lg" />
+            <Skeleton className="w-96 h-20 rounded-lg" />
+            <Skeleton className="w-96 h-20 rounded-lg" />
+          </div>
+        ) : (
+          <motion.div className="flex" animate={controls}>
+            {[...testedThings, ...testedThings].map((item, index) => (
+              <Link
+                href={determineLink(item)}
+                key={index}
+                className="flex flex-row items-start justify-center p-2 pr-6 shadow-lg mr-6 w-full h-20 rounded-lg bg-card border-border border"
               >
-                <P className="break-words text-xs font-bold w-36 h-8">{item.name}</P>
+                <div className="w-14 h-14 overflow-hidden rounded-xs">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={100}
+                    height={100}
+                    className="object-contain w-full h-full"
+                  />
+                </div>
+                <div
+                  className={`ml-4 text-left flex flex-col justify-center gap-1 py-1 ${
+                    item.name.length > 28 ? '' : ''
+                  }`}
+                >
+                  <P className="break-words text-xs font-bold w-36 h-8 line-clamp-2">{item.name}</P>
 
-                {/* {item.type === 'filter' && (
-                <P className="text-xs text-muted-foreground">
-                  {15 - item.filtered_contaminant_categories.length} categories not filtered
-                </P>
-              )} */}
+                  {item.type === 'bottled_water' && (
+                    <div className="flex flex-row gap-2 items-center">
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          item.cont_count > 0 ? 'bg-danger' : 'bg-neutral'
+                        }`}
+                      />
+                      <P className="text-xs text-muted-foreground">
+                        {item?.cont_count} contaminant{item?.cont_count !== 1 ? 's' : ''}
+                      </P>
+                    </div>
+                  )}
 
-                {item.type === 'bottled_water' && (
-                  <div className="flex flex-row gap-2 items-center">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        item.cont_count > 0 ? 'bg-danger' : 'bg-neutral'
-                      }`}
-                    />
-                    <P className="text-xs text-muted-foreground">
-                      {item?.cont_count} contaminant{item?.cont_count !== 1 ? 's' : ''}
-                    </P>
-                  </div>
-                )}
+                  {item.type === 'filter' && (
+                    <div className="flex flex-row gap-2 items-center">
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          item.cont_not_removed > 0 ? 'bg-danger' : 'bg-neutral'
+                        }`}
+                      />
+                      <P className="text-xs text-muted-foreground">
+                        {item.cont_not_removed} unfiltered pollutants
+                      </P>
+                    </div>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </motion.div>
+        )}
+      </div>
 
-                {item.type === 'filter' && (
-                  <div className="flex flex-row gap-2 items-center">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        item.cont_not_removed > 0 ? 'bg-danger' : 'bg-neutral'
-                      }`}
-                    />
-                    <P className="text-xs text-muted-foreground">
-                      {item.cont_not_removed} unfiltered pollutants
-                    </P>
-                  </div>
-                )}
-              </div>
-            </Link>
-          ))}
-        </motion.div>
-      )}
+      <div className="flex flex-row justify-center w-full mt-4">
+        <Link href="/product-testing?tab=tested" className="text-sm text-muted-foreground">
+          <Button variant="outline" size="sm" className="h-8">
+            View all
+          </Button>
+        </Link>
+      </div>
     </div>
   )
 }

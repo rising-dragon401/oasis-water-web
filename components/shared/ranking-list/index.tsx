@@ -69,7 +69,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
       case 'water':
         fetchAndSetData('bottled_water', () =>
           getItems({
-            limit: 500,
+            limit: 1000,
             sortMethod: 'name',
             type: category?.dbTypes,
             tags: category?.selectedTags,
@@ -80,7 +80,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
       case 'filter':
         fetchAndSetData('filter', () =>
           getFilters({
-            limit: 250,
+            limit: 1000,
             sortMethod: 'name',
             type: category?.dbTypes,
             tags: category?.tags,
@@ -97,15 +97,15 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
   }, [categoryId])
 
   return (
-    <div className="pb-14 mt-0 w-full">
+    <div className="md:py-14 py-6 mt-0 w-full">
       <div className="flex flex-col items-start gap-2 mb-6 w-full">
         <div className="flex md:flex-row md:gap-0 gap-2 flex-col justify-between w-full">
           <div className="flex flex-col gap-2">
             <Typography size="4xl" fontWeight="bold" className="max-w-lg">
-              {title}
+              Top rated {title.charAt(0).toLowerCase() + title.slice(1)}
             </Typography>
-            <Typography size="base" fontWeight="normal" className="max-w-lg">
-              All the best {title.toLowerCase()} based on lab reports and science.
+            <Typography size="base" fontWeight="normal">
+              All the best {title.toLowerCase()} based on lab reports and the latest science.
             </Typography>
             <Button
               variant="default"
@@ -121,7 +121,7 @@ export default function RankingList({ categoryId }: { categoryId: string }) {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-2 md:gap-6 gap-2 w-full min-w-xl">
+      <div className="grid md:grid-cols-3 grid-cols-2 gap-4">
         {allItems &&
           allItems
             .filter((item) => !item.is_draft)

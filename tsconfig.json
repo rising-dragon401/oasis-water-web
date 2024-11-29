@@ -30,7 +30,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/not-found.js",
-    "app/api/og/item/route.ts"
+    "app/api/og/item/route.tsx"
   ],
   "exclude": ["node_modules"]
 }

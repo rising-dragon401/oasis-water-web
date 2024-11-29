@@ -13,7 +13,7 @@ export default function Footer() {
   return (
     <footer className="overflow-hidden w-full">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 w-full">
-        <div className="flex md:flex-row md:gap-2 flex-col-reverse justify-between md:items-start items-center gap-4">
+        <div className="flex md:flex-row md:gap-2 flex-col justify-between md:items-start items-center gap-4">
           <div className="mb-4 sm:mb-0 block md:hidden">
             <div className="mb-4 flex justify-center md:justify-start">
               <Link href="/" aria-label="Logo">
@@ -104,14 +104,14 @@ export default function Footer() {
                 </Link>
               </li>
 
-              <div
+              {/* <div
                 className="cursor-pointer text-muted-foreground"
                 onClick={() => {
                   setOpenFeedback(true)
                 }}
               >
                 Feedback
-              </div>
+              </div> */}
             </ul>
           </div>
 
@@ -138,7 +138,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="/faqs"
                   className="text-muted-foreground  transition duration-150 ease-in-out"
                 >
                   FAQs

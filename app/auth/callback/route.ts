@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  let finalRedirectUrl = requestUrl.origin + redirectUrl
+  let finalRedirectUrl = requestUrl.origin
   if (modalToOpen) {
     finalRedirectUrl += modalToOpen
   }

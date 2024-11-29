@@ -10,11 +10,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useUserProvider } from '@/providers/UserProvider'
-import { ActivitySquare, Home, Menu, Trophy, User, X } from 'lucide-react'
+import { Menu, User, X } from 'lucide-react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import DownloadAppButton from '../shared/download-app-button'
-import SignUpButton from '../shared/sign-up-button'
 import SignOutButton from './log-out-button'
 
 export default function MobileNavbar() {
@@ -51,19 +50,20 @@ export default function MobileNavbar() {
 
             <DropdownMenuItem className="flex flex-row gap-2 items-center">
               <Link href="/" className="flex flex-row gap-2 items-center">
-                <Home className="w-4 h-4" />
                 Home
               </Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem className="flex flex-row gap-2 items-center">
-              <Trophy className=" w-4 h-4" />
               <Link href="/product-testing">Product testing</Link>
             </DropdownMenuItem>
 
             <DropdownMenuItem className="flex flex-row gap-2 items-center">
-              <ActivitySquare className=" w-4 h-4" />
               <Link href="/blog">Research</Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem className="flex flex-row gap-2 items-center">
+              <Link href="/contact">Contact</Link>
             </DropdownMenuItem>
 
             <DropdownMenuSeparator />
@@ -88,8 +88,11 @@ export default function MobileNavbar() {
                     Login
                   </Link>
                 </DropdownMenuItem>
-
-                <SignUpButton />
+                <DropdownMenuItem>
+                  <Link href="/auth/signin?view=sign_up" className="text-sm pb-2">
+                    Sign up
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
             )}
           </DropdownMenuGroup>

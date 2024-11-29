@@ -269,7 +269,7 @@ export const fetchTestedThings = async ({
 
     for (const table of tables) {
       // Adjust the select statement based on the table name
-      let selectColumns = 'id, name, image, updated_at, type'
+      let selectColumns = 'id, name, image, updated_at, created_at, type'
       if (table === 'items') {
         selectColumns += ', ingredients'
       } else if (table === 'water_filters') {
@@ -290,39 +290,43 @@ export const fetchTestedThings = async ({
         throw new Error(`Error fetchTestedThings fetching data from ${table}: ${error.message}`)
       }
 
-      // Check if lab exists for each item and attach raised_amount and total_cost
-      const itemsWithLabDetails = await Promise.all(
+      // Check if lab exists for each item and attach raised_amount, total_cost, cont_count, and cont_not_removed
+      const itemsWithDetails = await Promise.all(
         data.map(async (item: any) => {
-          if (!item.id || !item.type) {
-            return {
-              raised_amount: null,
-              total_cost: null,
-            }
+          let contCount = null
+          let contNotRemoved = null
+
+          if (table === 'items' && item.ingredients) {
+            contCount = item.ingredients.filter(
+              (ingredient: any) => ingredient.is_contaminant
+            ).length
+          } else if (table === 'water_filters' && item.filtered_contaminant_categories) {
+            contNotRemoved = FILTER_CONTAMINANT_CATEGORIES.filter((category) => {
+              const matchedCategory = item.filtered_contaminant_categories.find(
+                (contaminant: any) => contaminant.category === category
+              )
+              return !matchedCategory || matchedCategory.percentage < 50
+            }).length
           }
 
-          const labData = await checkLabExists({
-            itemId: item.id,
-            type: item.type,
-            status: 'complete', // Assuming you want to check for completed labs
-          })
+          // const labData = await checkLabExists({
+          //   itemId: item.id,
+          //   type: item.type,
+          //   status: 'complete', // Assuming you want to check for completed labs
+          // })
 
-          if (labData && 'raised_amount' in labData && 'total_cost' in labData) {
-            return {
-              ...item,
-              raised_amount: labData.raised_amount,
-              total_cost: labData.total_cost,
-            }
-          } else {
-            return {
-              ...item,
-              raised_amount: null,
-              total_cost: null,
-            }
+          return {
+            ...item,
+            // raised_amount: labData?.raised_amount || null,
+            // total_cost: labData?.total_cost || null,
+            cont_count: contCount,
+            cont_not_removed: contNotRemoved,
+            updated_at: item.updated_at || item.created_at,
           }
         })
       )
 
-      allData = allData.concat(itemsWithLabDetails)
+      allData = allData.concat(itemsWithDetails)
     }
 
     // Sort the combined data by updated_at in ascending order
@@ -414,10 +418,11 @@ export const fetchTestedPreview = async ({ limit }: { limit: number }) => {
   try {
     const { data: items, error } = await supabase
       .from('items')
-      .select('id, name, image, ingredients, type, updated_at')
+      .select('id, name, image, ingredients, type, updated_at, created_at')
       .eq('is_indexed', true)
       .not('ingredients', 'is', null)
       .order('updated_at', { ascending: true })
+      .order('created_at', { ascending: true })
       .limit(limit)
 
     if (error) {
@@ -439,9 +444,10 @@ export const fetchTestedPreview = async ({ limit }: { limit: number }) => {
 
     const { data: filters, error: filtersError } = await supabase
       .from('water_filters')
-      .select('id, name, image, type, filtered_contaminant_categories, updated_at')
+      .select('id, name, image, type, filtered_contaminant_categories, updated_at, created_at')
       .eq('is_indexed', true)
       .order('updated_at', { ascending: true })
+      .order('created_at', { ascending: true })
       .limit(limit)
 
     if (filtersError) {
@@ -449,6 +455,13 @@ export const fetchTestedPreview = async ({ limit }: { limit: number }) => {
         `Error fetchTestedPreview fetching data from filters: ${filtersError.message}`
       )
     }
+
+    // Sort by created_at if updated_at is null
+    filters.sort((a, b) => {
+      const dateA = a.updated_at || a.created_at
+      const dateB = b.updated_at || b.created_at
+      return new Date(dateA).getTime() - new Date(dateB).getTime()
+    })
 
     const filtersWithContCount = await Promise.all(
       filters.map(async (filter) => {

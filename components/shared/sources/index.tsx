@@ -1,5 +1,6 @@
 import PaywallContent from '@/components/shared/paywall-content'
 import Typography from '@/components/typography'
+import { Muted } from '@/components/ui/typography'
 import { ArrowUpRight } from 'lucide-react'
 
 export default function Sources({ data }: any) {
@@ -9,13 +10,11 @@ export default function Sources({ data }: any) {
         Sources
       </Typography>
       <PaywallContent label="🔒" hideButton showPaywall={false}>
-        <div className="grid md:grid-cols-2 grid-cols-1 gap-6">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
           {data?.map((source: any) => (
             <div key={source.url} className="flex flex-row items-center gap-1">
               <a href={source.url} target="_blank" rel="noopener noreferrer">
-                <Typography size="base" fontWeight="normal" className="text-secondary underline">
-                  {source.label}
-                </Typography>
+                <Muted>{source.label}</Muted>
               </a>
               <ArrowUpRight className="w-4 h-4" />
             </div>

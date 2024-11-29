@@ -1,10 +1,7 @@
-// Learn more: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image
-
-import { ImageResponse } from 'next/og'
-import ScoreOG from '@/components/shared/score-og'
 import { getLocation } from '@/app/actions/locations'
 import { OG_IMAGE } from '@/lib/constants/images'
-import { TapWaterLocation } from '@/types/custom'
+import { Item } from '@/types/custom'
+import { ImageResponse } from 'next/og'
 
 // Route segment config
 export const runtime = 'edge'
@@ -18,46 +15,114 @@ export const size = {
 export const contentType = 'image/png'
 
 // Image generation
-export default async function Image({ params }: { params: { id: string } }) {
+export default async function Image({
+  params,
+  format = 'png',
+}: {
+  params: { id: string }
+  format?: 'png' | 'jpeg'
+}) {
   const id = params.id
 
-  // fetch data
-  const location = (await getLocation(id)) as TapWaterLocation | null
+  const logoImage =
+    'https://connect.live-oasis.com/storage/v1/object/public/website/logo/oasis_icon_word.png'
 
-  const image = location && location.image
-  const score =
-    // @ts-ignore
-    location?.utilities && location.utilities?.length > 0 ? location?.utilities[0]?.score : 0
+  // Fetch data
+  const location = (await getLocation(id)) as Item | null
+
+  const image = location?.image || OG_IMAGE
+  const name = location?.name || 'Oasis'
+  const title = 'Contaminants found in ' + location?.name + ' tap water' || 'Oasis'
+  const tagline = `Disocver the toxins and contaminants in ${location?.name} tap water.`
+
+  const contentType = format === 'jpeg' ? 'image/jpeg' : 'image/png'
 
   return new ImageResponse(
     (
       <div
         style={{
-          fontSize: 128,
-          background: 'white',
+          display: 'flex',
+          flexDirection: 'row',
           width: '100%',
           height: '100%',
-          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          background: '#fff',
+          gap: '40px',
+          paddingLeft: '70px',
+          paddingRight: '50px',
+          paddingTop: '40px',
+          paddingBottom: '20px',
         }}
       >
-        <img
-          src={image || OG_IMAGE}
-          width="100%"
-          height="100%"
-          style={{ objectFit: 'contain' }}
-          alt="image for water"
-        />
-        {score && (
-          <div style={{ display: 'flex', position: 'absolute', top: 60, right: 50 }}>
-            <ScoreOG score={score} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <img
+            src={logoImage}
+            width={100}
+            height={40}
+            style={{
+              marginBottom: '1rem',
+              objectFit: 'contain',
+            }}
+            alt={`Image for ${name}`}
+          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              justifyContent: 'center',
+              fontSize: '2.2rem',
+              fontWeight: 'bold',
+              marginTop: '-60px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                fontSize: '2.4rem',
+                fontWeight: 'bold',
+                maxWidth: '420px',
+                flexWrap: 'wrap',
+              }}
+            >
+              <p>{title}</p>
+            </div>
+            <div
+              style={{
+                fontSize: '1.4rem',
+                color: '#6b7280',
+                display: 'flex',
+                maxWidth: '420px',
+                flexWrap: 'wrap',
+              }}
+            >
+              {tagline}
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* Product Image */}
+        <img
+          src={image}
+          style={{
+            objectFit: 'cover',
+            height: '100%',
+            borderRadius: '40px',
+            // boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          }}
+          alt={`Image for ${name}`}
+        />
       </div>
     ),
-    {
-      ...size,
-    }
+    { headers: { 'Content-Type': contentType } }
   )
 }
