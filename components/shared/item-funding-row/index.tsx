@@ -26,6 +26,7 @@ export default function ItemFundingRow({
   showFundButton = false,
   date = null,
   titleClassName = '',
+  showContMeta = false,
 }: {
   item: any
   lab_id?: string | null
@@ -37,13 +38,13 @@ export default function ItemFundingRow({
   showFundButton?: boolean
   date?: string | null
   titleClassName?: string
+  showContMeta?: boolean
 }) {
   const router = useRouter()
   const { uid } = useUserProvider()
   const pathname = usePathname()
 
   const [loading, setLoading] = useState(false)
-  const [fundingDetails, setFundingDetails] = useState<any>(null)
   const [isHovered, setIsHovered] = useState(false)
 
   const getFundingPercentage = (amount: number | null, cost: number | null) => {
@@ -147,11 +148,10 @@ export default function ItemFundingRow({
           </div>
         </div>
         <div className="flex flex-col w-3/4 justify-between h-full py-1">
-          <div className="h-10 flex flex-row justify-between">
-            <div className="flex flex-col w-full">
-              <P className={` font-bold text-sm max-w-[80%] ${titleClassName}`}>{item.name}</P>
-              {/* <Muted>Standard water test</Muted> */}
-            </div>
+          <div className=" flex flex-row justify-between">
+            <P className={`font-bold h-10 text-sm max-w-[80%] ${titleClassName} w-full truncate`}>
+              {item.name}
+            </P>
 
             {showFundButton && (
               <>
@@ -172,12 +172,12 @@ export default function ItemFundingRow({
                     }}
                     loading={loading}
                   >
-                    Fund
+                    Donate
                   </Button>
                 ) : (
                   <Link href={`/auth/signin?redirectUrl=${pathname}`} className="text-sm ">
                     <Button variant="outline" className="text-sm h-8 px-4">
-                      Fund
+                      Donate
                     </Button>
                   </Link>
                 )}
@@ -209,7 +209,45 @@ export default function ItemFundingRow({
             </>
           )}
 
-          {date && <Muted className="text-xs">Updated {timeSince(date)}</Muted>}
+          {showContMeta && (
+            <>
+              {item.type === 'bottled_water' && (
+                <div className="flex flex-row gap-2 items-center">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      item.cont_count > 0 ? 'bg-danger' : 'bg-neutral'
+                    }`}
+                  />
+                  <P className="text-xs text-muted-foreground">
+                    {item?.cont_count > 0
+                      ? `${item?.cont_count} contaminant${item?.cont_count !== 1 ? 's' : ''}`
+                      : 'New data available'}
+                  </P>
+                </div>
+              )}
+
+              {item.type === 'filter' && (
+                <div className="flex flex-row gap-2 items-center">
+                  <div
+                    className={`w-2 h-2 rounded-full ${
+                      item.cont_not_removed > 0 ? 'bg-danger' : 'bg-neutral'
+                    }`}
+                  />
+                  <P className="text-xs text-muted-foreground">
+                    {item.cont_not_removed > 0
+                      ? `${item.cont_not_removed} unfiltered pollutants`
+                      : 'New data available'}
+                  </P>
+                </div>
+              )}
+            </>
+          )}
+
+          {date && (
+            <div className="flex justify-start mt-2">
+              <Muted className="text-xs">{timeSince(date)}</Muted>
+            </div>
+          )}
         </div>
       </>
     )

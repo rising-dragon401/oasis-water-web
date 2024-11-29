@@ -1,15 +1,11 @@
 'use client'
 
 import { getAllContaminants, getFilterDetails } from '@/app/actions/filters'
-import { getIngredients } from '@/app/actions/ingredients'
 import { incrementItemsViewed } from '@/app/actions/user'
-import RecommendedFiltersRow from '@/components/sections/recs-filter-row'
 import FilterSkeleton from '@/components/shared/filter-skeleton'
 import ItemImage from '@/components/shared/item-image'
-import OasisDisclaimer from '@/components/shared/oasis-disclaimer'
 import Score from '@/components/shared/score'
 import Sources from '@/components/shared/sources'
-import TestingCta from '@/components/shared/testing-cta'
 import { UntestedTooltip } from '@/components/shared/untested-tooltip'
 import Typography from '@/components/typography'
 import { Button } from '@/components/ui/button'
@@ -40,15 +36,10 @@ export default function FilterForm({ id }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [filter, setFilter] = useState<any>({})
 
-  const { data: allIngredients } = useSWR('ingredients', getIngredients)
   const { data: allContaminants } = useSWR('water-contaminants', getAllContaminants)
 
   const fetchFilter = async (id: string) => {
-    if (!allIngredients) {
-      return
-    }
-
-    const filter = await getFilterDetails(id, allIngredients)
+    const filter = await getFilterDetails(id)
     setFilter(filter)
 
     setIsLoading(false)
@@ -58,16 +49,9 @@ export default function FilterForm({ id }: Props) {
   }
 
   useEffect(() => {
-    if (uid) {
-      incrementItemsViewed()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uid])
-
-  useEffect(() => {
     fetchFilter(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, allIngredients])
+    incrementItemsViewed()
+  }, [id])
 
   const filteredContaminants = filter.contaminants_filtered
   const categories = filter.filtered_contaminant_categories
@@ -142,13 +126,7 @@ export default function FilterForm({ id }: Props) {
         <div className="md:pt-10 pt-6">
           <div className="flex md:flex-row flex-col gap-6">
             <div className="flex justify-center md:w-2/5 w-full">
-              {filter.affiliate_url ? (
-                <Link href={filter.affiliate_url} target="_blank" rel="noopener noreferrer">
-                  <ItemImage src={filter.image} alt={filter.name} item={filter} />
-                </Link>
-              ) : (
-                <ItemImage src={filter.image} alt={filter.name} item={filter} />
-              )}
+              <ItemImage src={filter.image} alt={filter.name} item={filter} />
             </div>
 
             <div className="flex flex-col justify-start md:w-3/5">
@@ -156,6 +134,9 @@ export default function FilterForm({ id }: Props) {
                 <div className="flex flex-col  w-2/3">
                   <Typography size="3xl" fontWeight="normal">
                     {filter.name}
+                    {filter.affiliate_url && (
+                      <ArrowUpRight size={16} className="ml-2 inline-block" />
+                    )}
                   </Typography>
                   <Link href={`/search/company/${filter.company?.name}`}>
                     <Typography
@@ -167,12 +148,6 @@ export default function FilterForm({ id }: Props) {
                     </Typography>
                   </Link>
                 </div>
-              </div>
-
-              <div className="max-w-sm mt-6">
-                <Typography size="base" fontWeight="normal">
-                  This filter has not been fully tested and rated yet. Please check again later
-                </Typography>
               </div>
             </div>
           </div>
@@ -200,6 +175,7 @@ export default function FilterForm({ id }: Props) {
               <div className="flex flex-col w-full">
                 <Typography size="3xl" fontWeight="normal">
                   {filter.name}
+                  {filter.affiliate_url && <ArrowUpRight size={16} className="ml-2 inline-block" />}
                 </Typography>
                 <Link href={`/search/company/${filter.company?.name}`}>
                   <Typography size="base" fontWeight="normal" className="text-secondary-foreground">
@@ -248,7 +224,7 @@ export default function FilterForm({ id }: Props) {
           </div>
         </div>
 
-        {filter.is_indexed !== false && <OasisDisclaimer />}
+        {/* {filter.is_indexed !== false && <OasisDisclaimer />} */}
 
         {filter.description && (
           <div className="flex flex-row gap-2 mt-4">
@@ -271,9 +247,13 @@ export default function FilterForm({ id }: Props) {
         </>
       </div>
 
-      <TestingCta />
+      <Link href="/top-rated">
+        <Button variant="outline">Explore top rated filters</Button>
+      </Link>
 
-      <RecommendedFiltersRow />
+      {/* <TestingCta /> */}
+
+      {/* <RecommendedFiltersRow /> */}
     </div>
   )
 }

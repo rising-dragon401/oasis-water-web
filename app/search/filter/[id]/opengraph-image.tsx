@@ -1,10 +1,6 @@
-// Learn more: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image
-
-import { ImageResponse } from 'next/og'
-import ScoreOG from '@/components/shared/score-og'
 import { getFilter } from '@/app/actions/filters'
-import { WaterFilter } from '@/types/custom'
 import { OG_IMAGE } from '@/lib/constants/images'
+import { ImageResponse } from 'next/og'
 
 // Route segment config
 export const runtime = 'edge'
@@ -18,44 +14,114 @@ export const size = {
 export const contentType = 'image/png'
 
 // Image generation
-export default async function Image({ params }: { params: { id: string } }) {
+export default async function Image({
+  params,
+  format = 'png',
+}: {
+  params: { id: string }
+  format?: 'png' | 'jpeg'
+}) {
   const id = params.id
 
-  // fetch data
-  const filter = (await getFilter(id)) as WaterFilter | null
+  const logoImage =
+    'https://connect.live-oasis.com/storage/v1/object/public/website/logo/oasis_icon_word.png'
 
-  const image = filter && filter.image
-  const score = filter && filter.score
+  // Fetch data
+  const filter = (await getFilter(id)) as any | null
+
+  const image = filter?.image || OG_IMAGE
+  const name = filter?.name || 'Oasis'
+  const title = 'Is the ' + filter?.name + ' effective?' || 'Oasis'
+  const tagline = `Uncover the truth about ${name} and how well it filters contaminants in your water.`
+
+  console.log('filter', filter)
+
+  const contentType = format === 'jpeg' ? 'image/jpeg' : 'image/png'
 
   return new ImageResponse(
     (
       <div
         style={{
-          fontSize: 128,
-          background: 'white',
+          display: 'flex',
+          flexDirection: 'row',
           width: '100%',
           height: '100%',
-          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          background: '#fff',
+          paddingLeft: '70px',
+          paddingRight: '50px',
+          paddingTop: '40px',
+          paddingBottom: '20px',
         }}
       >
-        <img
-          src={image || OG_IMAGE}
-          width="100%"
-          height="100%"
-          style={{ objectFit: 'contain' }}
-          alt="image for water"
-        />
-        {score && (
-          <div style={{ display: 'flex', position: 'absolute', top: 60, right: 50 }}>
-            <ScoreOG score={40} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            justifyContent: 'flex-start',
+          }}
+        >
+          <img
+            src={logoImage}
+            width={100}
+            height={40}
+            style={{
+              marginBottom: '1rem',
+              objectFit: 'contain',
+            }}
+            alt={`Image for ${name}`}
+          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              justifyContent: 'center',
+              fontSize: '2.2rem',
+              fontWeight: 'bold',
+              marginTop: '-40px',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                fontSize: '2.4rem',
+                fontWeight: 'bold',
+                maxWidth: '420px',
+                flexWrap: 'wrap',
+              }}
+            >
+              <p>{title}</p>
+            </div>
+            <div
+              style={{
+                fontSize: '1.4rem',
+                color: '#6b7280',
+                display: 'flex',
+                maxWidth: '420px',
+                flexWrap: 'wrap',
+              }}
+            >
+              {tagline}
+            </div>
           </div>
-        )}
+        </div>
+
+        <img
+          src={image}
+          width={400}
+          height={400}
+          style={{
+            objectFit: 'contain',
+            borderRadius: '40px',
+          }}
+          alt={`Image for ${name}`}
+        />
       </div>
     ),
-    {
-      ...size,
-    }
+    { headers: { 'Content-Type': contentType } }
   )
 }

@@ -22,6 +22,7 @@ module.exports = {
         ring: 'var(--ring)',
         background: 'var(--background)',
         backgroundSecondary: 'var(--background-secondary)',
+        backgroundTertiary: 'var(--background-tertiary)',
         foreground: 'var(--foreground)',
         primary: {
           DEFAULT: 'var(--primary)',

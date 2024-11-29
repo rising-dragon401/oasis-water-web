@@ -28,19 +28,19 @@ export default function DownloadAppButton({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={variant} size="sm" className={className}>
-          {overrideText || 'Download app'}
+          {overrideText || 'Download'}
           {showIcon && <ArrowRight className="w-4 h-4 ml-2" />}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">
-        <DropdownMenuItem>
-          <TbBrandApple className="w-4 h-4 mr-2" />
+        <DropdownMenuItem className="p-4 hover:bg-secondary">
+          <TbBrandApple className="w-5 h-5 mr-3" />
           <a href={kAppStore} target="_blank" rel="noopener noreferrer">
             iOS app
           </a>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <TbBrandGooglePlay className="w-4 h-4 mr-2" />
+        <DropdownMenuItem className="p-4 hover:bg-secondary">
+          <TbBrandGooglePlay className="w-5 h-5 mr-3" />
           <a href={kGooglePlay} target="_blank" rel="noopener noreferrer">
             Android app
           </a>

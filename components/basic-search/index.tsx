@@ -238,13 +238,11 @@ export default function BasicSearch({
                 {isLoading && (
                   <Loader2 size={20} className="animate-spin text-secondary-foreground" />
                 )}
-
-                {/* <AISearchDialog size="small" variant="icon" /> */}
               </div>
 
               {showResults() && !manualDisable && (
                 <div
-                  className={`flex flex-col gap-2 bg-card border-b border-x rounded-b-md absolute w-full z-20 overflow-y-scroll max-h-64  ${getSearchTop()}`}
+                  className={`flex flex-col gap-2 bg-card border-b top-4 border-x rounded-b-md absolute w-full z-20 overflow-y-scroll max-h-64  ${getSearchTop()}`}
                 >
                   {results.length > 0 && (
                     <div className="flex-grow">

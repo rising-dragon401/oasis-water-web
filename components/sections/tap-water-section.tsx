@@ -1,56 +1,39 @@
 'use client'
 
 import DownloadAppButton from '@/components/shared/download-app-button'
-import { H2, P } from '@/components/ui/typography'
-import dynamic from 'next/dynamic'
+import { H2 } from '@/components/ui/typography'
+import useDevice from '@/lib/hooks/use-device'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
-
-const TapWaterGlobe = dynamic(() => import('./tap-water-globe'), {
-  ssr: false,
-  loading: () => <div>Loading globe...</div>,
-})
+const oasisMap = `https://connect.live-oasis.com/storage/v1/object/public/website/landing/oasis_map.jpg`
+const oasisMapMobile = `https://connect.live-oasis.com/storage/v1/object/public/website/landing/oasis_map_mobile.jpg?t=2024-11-23T06%3A28%3A27.453Z`
 
 export default function TapWaterSection() {
-  const [globeDimensions, setGlobeDimensions] = useState({ width: 300, height: 300 })
-  const [isClient, setIsClient] = useState(false)
+  const [mapImage, setMapImage] = useState(oasisMap)
+  const { isMobile } = useDevice()
 
   useEffect(() => {
-    setIsClient(typeof window !== 'undefined')
-
-    if (isClient) {
-      const updateDimensions = () => {
-        const isMobile = window.innerWidth <= 768
-        const isTablet = window.innerWidth <= 1024
-
-        const width = isMobile ? 300 : isTablet ? 400 : 500
-        const height = isMobile ? 300 : isTablet ? 400 : 500
-
-        setGlobeDimensions({ width, height })
-      }
-
-      updateDimensions()
-      window.addEventListener('resize', updateDimensions)
-
-      return () => window.removeEventListener('resize', updateDimensions)
-    }
-  }, [])
+    setMapImage(isMobile ? oasisMapMobile : oasisMap)
+  }, [isMobile])
 
   return (
-    <div className="w-full p-8 max-w-4xl mx-auto">
-      <div className="flex flex-col gap-2 mb-8 items-center w-full">
-        <H2 className="text-center">Stay healthy wherever you go</H2>
-        <P className="text-center">
-          Find the healthiest options around you and check local water quality
-        </P>
-      </div>
-      {isClient && (
-        <div>
-          <TapWaterGlobe width={globeDimensions.width} height={globeDimensions.height} />
+    <div className="flex flex-col w-full p-0 mx-auto">
+      <div className="relative w-full h-full overflow-hidden">
+        <Image
+          src={mapImage}
+          alt="Oasis world map"
+          width={1000}
+          height={1000}
+          className={`md:h-[80%] h-full w-full ${isMobile ? 'mt-4' : ''}`}
+        />
+        <div className="absolute inset-x-0 md:top-16 top-0 flex flex-col items-center justify-start">
+          <H2 className="text-center md:text-4xl text-3xl md:max-w-none max-w-sm">
+            Prioritize your health, everywhere.
+          </H2>
+          <div className="mt-4">
+            <DownloadAppButton variant="outline" showIcon overrideText="Check your water" />
+          </div>
         </div>
-      )}
-
-      <div className="flex flex-row justify-center w-full mt-4">
-        <DownloadAppButton variant="outline" showIcon overrideText="Check your water" />
       </div>
     </div>
   )

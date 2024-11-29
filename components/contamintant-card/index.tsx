@@ -54,7 +54,7 @@ export default function ContaminantCard({ data }: Props) {
             <Typography size="base" fontWeight="medium">
               Risks
             </Typography>
-            <Typography size="xs" fontWeight="normal" className="text-secondary">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
               {data?.risks}
             </Typography>
           </div>
@@ -64,7 +64,7 @@ export default function ContaminantCard({ data }: Props) {
                 Amounts
               </Typography>
               <div className="flex flex-row w-full justify-between">
-                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
                   Contains:
                 </Typography>
                 <Typography size="sm" fontWeight="medium">
@@ -72,7 +72,7 @@ export default function ContaminantCard({ data }: Props) {
                 </Typography>
               </div>
               <div className="flex flex-row w-full justify-between">
-                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
                   Health Guideline:
                 </Typography>
                 <Typography size="sm" fontWeight="medium">
@@ -80,7 +80,7 @@ export default function ContaminantCard({ data }: Props) {
                 </Typography>
               </div>
               <div className="flex flex-row w-full justify-between">
-                <Typography size="xs" fontWeight="normal" className="text-secondary">
+                <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
                   Legal Limit:
                 </Typography>
                 <Typography size="sm" fontWeight="medium">
@@ -94,7 +94,7 @@ export default function ContaminantCard({ data }: Props) {
           {data?.sources ? <ArticlesDropdown sources={data?.sources || []} /> : <div></div>}
 
           <Link href={`/search/ingredient/${data?.id}`} className="hover:pointer">
-            <Typography size="xs" fontWeight="normal" className="text-secondary">
+            <Typography size="xs" fontWeight="normal" className="text-muted-foreground">
               Learn more
             </Typography>
           </Link>

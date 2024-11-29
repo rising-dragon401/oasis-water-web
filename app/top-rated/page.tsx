@@ -1,9 +1,24 @@
 import SubpageLayout from '@/components/home-layout'
 import Typography from '@/components/typography'
 import { CATEGORIES } from '@/lib/constants/categories'
+import { OG_IMAGE } from '@/lib/constants/images'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
+
+export const metadata = {
+  title: 'Top Rated Products | Oasis Water',
+  description: 'Discover the healthiest water and hydration options based on science.',
+  openGraph: {
+    title: 'Top Rated Products | Oasis Water',
+    description: 'Discover the healthiest water and hydration options based on science.',
+    siteName: 'Oasis',
+    images: [OG_IMAGE],
+    locale: 'en_US',
+    type: 'website',
+    url: new URL('/top-rated', process.env.NEXT_PUBLIC_BASE_URL || '').toString(),
+  },
+}
 
 export default async function TopRatedPage() {
   return (
@@ -46,7 +61,6 @@ export default async function TopRatedPage() {
               </Link>
             ))}
           </div>
-          {/* <RankingList /> */}
         </div>
       </Suspense>
     </SubpageLayout>

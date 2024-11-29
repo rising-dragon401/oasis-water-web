@@ -30,7 +30,7 @@ export default function ScorOG({ score, isFull }: Props) {
       />
       <circle
         className="stroke-primary"
-        stroke="#6b46c1"
+        stroke="#0d00f3"
         strokeWidth={strokeWidth}
         strokeDasharray={`${circumference} ${circumference}`}
         strokeDashoffset={offset}

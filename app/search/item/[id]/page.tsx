@@ -13,16 +13,29 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  // read route params
+  // Read route params
   const id = params.id
 
-  // fetch data
+  // Fetch data
   const item = (await getItem(id)) as Item | null
 
-  const name = item && item.name + ' Health Rating'
+  const name = item ? `${item.name} Health Rating` : 'Oasis - Trusted Product Health Ratings'
+  const description =
+    item &&
+    `Discover the health rating and contaminants inside of ${item.name}, based on the latest scientific data and lab tests.`
 
   return {
-    title: name || 'Oasis',
+    title: name,
+    description,
+    openGraph: {
+      title: name,
+      description: description || undefined,
+      type: 'website',
+    },
+    twitter: {
+      title: name,
+      description: description || undefined,
+    },
   }
 }
 

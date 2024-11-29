@@ -48,7 +48,7 @@ export const getCompanyItems = async (id: number) => {
       const { data: company, error: companyError } = await supabase
         .from('companies')
         .select('name')
-        .eq('id', filter.company)
+        .eq('id', filter.company ?? -1)
 
       return {
         ...filter,

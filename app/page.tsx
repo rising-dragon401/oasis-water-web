@@ -20,6 +20,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || ''),
   title: 'Oasis',
   description: 'Science-backed water and filter ratings',
   openGraph: {
@@ -105,14 +106,14 @@ export default function HomePage() {
   return (
     <SubpageLayout>
       <div className="flex flex-col space-y-16 pb-10">
-        <div className="md:pt-24 pt-12">
+        <div className="md:pt-16 pt-12">
           <div className="mx-auto max-w-6xl px-4 lg:px-8 text-center flex flex-col items-center">
             <H1 className="md:text-5xl text-3xl md:max-w-none max-w-sm font-bold tracking-tight mb-2">
-              Know what you&apos;re drinking
+              What&apos;s in your water?
             </H1>
             <Muted className="md:text-base sm:text-sm max-w-xl">
-              Many water contain toxic contaminants that degrade your health. We help you find the
-              healthiest options.
+              Uncover hidden contaminants in your water and choose the healthiest options for you
+              and your family based on science and unbiased ratings.
             </Muted>
 
             <div className="md:mt-6 mt-4 flex gap-4 md:flex-row justify-center flex-col-reverse items-center w-full">
@@ -143,7 +144,7 @@ export default function HomePage() {
           <FundingRowsSection />
         </div>
 
-        <div className="max-w-4xl mx-auto py-10">
+        <div className="w-screen md:pb-10 py-0 pt-14 md:px-0 px-4 bg-backgroundTertiary">
           <TapWaterSection />
         </div>
 

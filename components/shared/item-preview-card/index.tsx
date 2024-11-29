@@ -82,7 +82,7 @@ export default function ItemPreviewCard({
       case 'large':
         return 'h-64 md:h-72 lg:h-80'
       default:
-        return 'h-44 md:h-56 lg:h-64' // Default to medium if size is not specified
+        return 'h-40 md:h-56 lg:h-full' // Default to medium if size is not specified
     }
   }
 
@@ -95,7 +95,7 @@ export default function ItemPreviewCard({
       case 'large':
         return 'w-64 md:w-72 lg:w-80'
       default:
-        return 'w-44 md:w-56 lg:w-64' // Default to medium if size is not specified
+        return 'w-40 md:w-56 lg:w-full' // Default to medium if size is not specified
     }
   }
 
@@ -107,7 +107,7 @@ export default function ItemPreviewCard({
   }
 
   const renderImage = () => {
-    const size = 400 // Set a fixed size for both width and height to ensure a square
+    const size = 300 // Set a fixed size for both width and height to ensure a square
     return (
       <Image
         src={item.image || ''}
@@ -161,22 +161,6 @@ export default function ItemPreviewCard({
                   /100
                 </Typography>
               </div>
-              {/* {!subscription && item.type !== 'tap_water' ? (
-                <div className="flex flex-col items-end w-full text-right">
-                  <button onClick={() => openModal('SubscriptionModal')}>
-                    <Lock size={16} />
-                  </button>
-                  <Typography
-                    size="xs"
-                    fontWeight="normal"
-                    className="!no-underline text-secondary text-right"
-                  >
-                    /100
-                  </Typography>
-                </div>
-              ) : (
-                <>{item.score ? <div>{renderScore()}</div> : <div>{renderWarning()}</div>}</>
-              )} */}
             </>
           )}
         </div>

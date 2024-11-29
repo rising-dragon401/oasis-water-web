@@ -4,7 +4,6 @@ import { getIngredients } from '@/app/actions/ingredients'
 import { getLocationDetails } from '@/app/actions/locations'
 import { incrementItemsViewed } from '@/app/actions/user'
 import ContaminantCard from '@/components/contamintant-card'
-import RecommendedFilterRow from '@/components/sections/recommended-filter-row'
 import BlurredLineItem from '@/components/shared/blurred-line-item'
 import ItemImage from '@/components/shared/item-image'
 import Score from '@/components/shared/score'
@@ -68,12 +67,12 @@ export default function LocationForm({ id }: Props) {
           </div>
 
           <div className="flex flex-row w-full justify-between gap-2">
-            <div className="flex flex-col gap-y-2">
-              <Typography size="xl" fontWeight="normal" className="w-2/3">
+            <div className="flex flex-col gap-y-4">
+              <Typography size="xl" fontWeight="normal" className="w-full">
                 {location.name} Tap Water
               </Typography>
 
-              <div className="w-56 flex flex-col gap-y-2 border p-2 rounded-lg">
+              <div className="w-full flex flex-col gap-y-1 ">
                 <BlurredLineItem
                   label="Contaminants found"
                   value={contaminants.length}
@@ -99,9 +98,9 @@ export default function LocationForm({ id }: Props) {
         </div>
 
         {location?.utilities && (
-          <div className="flex flex-col mt-4">
+          <div className="flex flex-col mt-14">
             <Typography size="2xl" fontWeight="normal">
-              Contaminants found
+              Contaminants in this water
             </Typography>
             <Accordion type="single" collapsible value={openUtility} onValueChange={setOpenUtility}>
               {location.utilities.map((utility: any, index: number) => (
@@ -143,7 +142,7 @@ export default function LocationForm({ id }: Props) {
         )}
       </div>
 
-      <RecommendedFilterRow contaminants={location?.utilities[0]?.contaminants} />
+      {/* <RecommendedFilterRow contaminants={location?.utilities[0]?.contaminants} /> */}
     </div>
   )
 }

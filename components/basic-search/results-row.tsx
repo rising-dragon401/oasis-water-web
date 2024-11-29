@@ -1,9 +1,9 @@
-import Typography from '@/components/typography'
 import { Ingredient, Item, TapWaterLocation, WaterFilter } from '@/types/custom'
 import { determineLink } from '@/utils/helpers'
 import { Atom, Building, Droplet, Filter, Milk, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { P } from '../ui/typography'
 
 type ExtendedType = {
   type?: string
@@ -66,12 +66,12 @@ export default function ResultsRow({ itemResult, setItem }: Props) {
           placeholder={image ? 'blur' : 'empty'}
           className="rounded-md h-10 w-10 object-cover"
         />
-        <Typography size="base" fontWeight="normal" className="max-w-64 overflow-hidden max-h-12">
+        <P className="max-w-64 overflow-hidden line-clamp-2 md:text-base text-sm leading-tight sm:text-sm sm:leading-snug">
           {itemResult.name}
-        </Typography>
+        </P>
       </div>
 
-      {getIcon()}
+      {/* {getIcon()} */}
     </Link>
   )
 }

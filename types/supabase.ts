@@ -1117,8 +1117,12 @@ export type Database = {
           redeemed_invite_code: string | null
           referred_by: string | null
           score: number | null
+          scores: Json | null
           socials: Json | null
           tap_location_id: number | null
+          tap_score: Json | null
+          unlock_history: Json[] | null
+          unlocks_remaining: number | null
           username: string | null
         }
         Insert: {
@@ -1150,8 +1154,12 @@ export type Database = {
           redeemed_invite_code?: string | null
           referred_by?: string | null
           score?: number | null
+          scores?: Json | null
           socials?: Json | null
           tap_location_id?: number | null
+          tap_score?: Json | null
+          unlock_history?: Json[] | null
+          unlocks_remaining?: number | null
           username?: string | null
         }
         Update: {
@@ -1183,8 +1191,12 @@ export type Database = {
           redeemed_invite_code?: string | null
           referred_by?: string | null
           score?: number | null
+          scores?: Json | null
           socials?: Json | null
           tap_location_id?: number | null
+          tap_score?: Json | null
+          unlock_history?: Json[] | null
+          unlocks_remaining?: number | null
           username?: string | null
         }
         Relationships: [
@@ -1216,7 +1228,7 @@ export type Database = {
           affiliate_url: string | null
           brand: number | null
           certifications: Database["public"]["Enums"]["certifications"][] | null
-          company: number
+          company: number | null
           contaminants_filtered: number[] | null
           created_at: string
           description: string | null
@@ -1243,7 +1255,7 @@ export type Database = {
           certifications?:
             | Database["public"]["Enums"]["certifications"][]
             | null
-          company: number
+          company?: number | null
           contaminants_filtered?: number[] | null
           created_at?: string
           description?: string | null
@@ -1270,7 +1282,7 @@ export type Database = {
           certifications?:
             | Database["public"]["Enums"]["certifications"][]
             | null
-          company?: number
+          company?: number | null
           contaminants_filtered?: number[] | null
           created_at?: string
           description?: string | null
@@ -1387,7 +1399,7 @@ export type Database = {
           affiliate_url: string | null
           brand: number | null
           certifications: Database["public"]["Enums"]["certifications"][] | null
-          company: number
+          company: number | null
           contaminants_filtered: number[] | null
           created_at: string
           description: string | null

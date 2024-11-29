@@ -16,6 +16,7 @@ export default function ItemSelector({
         showSearch={true}
         size="medium"
         placeholder="Item name"
+        indices={['items', 'water_filters', 'tap_water_locations']}
         setItem={setItem}
         manualDisable={item !== null && item !== undefined}
       />

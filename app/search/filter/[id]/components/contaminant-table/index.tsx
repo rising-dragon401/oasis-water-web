@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { Muted, P } from '@/components/ui/typography'
 import { IngredientCategories } from '@/lib/constants/filters'
 import { Contaminant } from '@/types/custom'
 import { determineLink } from '@/utils/helpers'
@@ -81,29 +82,27 @@ export default function ContaminantTable({ filteredContaminants, categories, sho
   return (
     <div>
       <Typography size="xl" fontWeight="normal">
-        Contaminants categories
+        Filtration Capabilities by Contaminant
       </Typography>
       <PaywallContent label="Unlock contaminants this filter removes" showPaywall={false}>
-        <Typography size="xs" fontWeight="normal" className="text-secondary">
-          Individual contaminant filtration levels may vary. Check the lab report for exact
-          measurements
-        </Typography>
+        <Muted>
+          See how this filter performs against specific contaminants. Individual contaminant
+          filtration levels may vary. Check the lab report for exact measurements
+        </Muted>
 
         {contaminantsByCategory.map((item) => (
           <Accordion
             key={item.category}
             type="single"
             collapsible
-            className="w-full bg-card rounded-md my-4 px-4"
+            className="w-full bg-card my-4 px-4 shadow-sm rounded-lg"
           >
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="w-full flex flex-row justify-start rounded-md">
-                <div className="w-full justify-start flex">
-                  <Typography size="lg" fontWeight="normal" className="text-left">
-                    {item.category}
-                  </Typography>
+            <AccordionItem value="item-1" className=" hover:cursor-pointer">
+              <AccordionTrigger className="w-full flex flex-row justify-start">
+                <div className="flex w-3/4 justify-start">
+                  <P className="text-left">{item.category}</P>
                 </div>
-                <div className="flex justify-end w-full md:mr-10 mr-4">
+                <div className="flex justify-end  md:mr-10 mr-4 w-1/4">
                   {showPaywall ? (
                     <PaywallContent label="" buttonVariant="ghost">
                       <Typography
@@ -129,10 +128,10 @@ export default function ContaminantTable({ filteredContaminants, categories, sho
                       className="flex flex-row gap-6 justify-between items-center"
                       key={contaminant.name}
                     >
-                      <Typography size="sm" fontWeight="normal" className="text-secondary">
+                      <Muted>
                         {contaminant.name}
                         {index < item.contaminants.length - 1 ? ', ' : ''}
-                      </Typography>
+                      </Muted>
                     </Link>
                   ))}
                 </div>
