@@ -63,7 +63,7 @@ const kWeeklyPrice = 4.99
 export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const { user, subscription } = useUserProvider()
+  const { user, subscription, userData } = useUserProvider()
   const { closeModal } = useModal()
 
   const [products, setProducts] = useState<ProductWithPrices[]>([])
@@ -181,6 +181,9 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
   const appPreviewImage =
     'https://connect.live-oasis.com/storage/v1/object/public/website/images/landing/welcome-scan-graphic.png?t=2024-10-30T20%3A55%3A40.800Z'
 
+  const isCormac =
+    userData?.email?.includes('cormacncheese') || user?.email?.includes('cormacncheese')
+
   return (
     <Dialog
       open={open}
@@ -257,113 +260,68 @@ export default function SubscribeModal({ open, setOpen }: SubscribeModalProps) {
               <TbBrandGooglePlay className="w-4 h-4 mr-2" />
               Android app
             </Button>
-            {/* 
-            <div className="flex flex-row gap-2">
-              <Button
-                variant="outline"
-                className={`px-4 w-full !font-bold mb-2 flex !h-full !py-1 !rounded-md flex-row justify-between
-                ${selectedPlan === 'annual' ? 'border-primary border-2' : 'border'}
-              `}
-                onClick={() => setSelectedPlan('annual')}
-              >
-                <div className="flex flex-row gap-3 items-center w-full">
-                  <div className="flex flex-col items-start w-full">
-                    <Typography size="base" fontWeight="bold">
-                      Yearly
-                    </Typography>
-                    <div className="flex flex-row justify-between items-end w-full mt-2">
-                      <Typography size="sm" fontWeight="normal">
-                        ${kAnnualPrice}
-                      </Typography>
-                      <Typography size="xs" fontWeight="normal">
-                        ${(kAnnualPrice / 52).toFixed(2)} /wk
-                      </Typography>
-                    </div>
-                  </div>
-                </div>
-              </Button>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
+            {isCormac && (
+              <>
+                <div className="flex flex-row gap-2">
                   <Button
                     variant="outline"
-                    className={`px-4 w-full !font-bold mb-2 flex h-full  !py-1 !rounded-md flex-row justify-between 
-                ${selectedPlan === 'weekly' ? 'border-primary border-2' : 'border'}
+                    className={`px-4 w-full !font-bold mb-2 flex !h-full !py-1 !rounded-md flex-row justify-between
+                ${selectedPlan === 'annual' ? 'border-primary border-2' : 'border'}
               `}
-                    // onClick={() => setSelectedPlan('weekly')}
+                    onClick={() => setSelectedPlan('annual')}
                   >
                     <div className="flex flex-row gap-3 items-center w-full">
                       <div className="flex flex-col items-start w-full">
                         <Typography size="base" fontWeight="bold">
-                          Weekly
+                          Yearly
                         </Typography>
                         <div className="flex flex-row justify-between items-end w-full mt-2">
                           <Typography size="sm" fontWeight="normal">
-                            ${kWeeklyPrice}
+                            ${kAnnualPrice}
                           </Typography>
                           <Typography size="xs" fontWeight="normal">
-                            app only
+                            ${(kAnnualPrice / 52).toFixed(2)} /wk
                           </Typography>
                         </div>
                       </div>
                     </div>
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-40" align="end">
-                  <DropdownMenuItem>
-                    <TbBrandApple className="w-4 h-4 mr-2" />
-                    <a href={kAppStore} target="_blank" rel="noopener noreferrer">
-                      iOS app
+                </div>
+
+                <div className="flex flex-col gap-1 text-center">
+                  <Button
+                    variant="default"
+                    className="px-4 mt-4 w-full !font-bold mb-2 flex rounded-full h-12 shadow-md shadow-blue-600/50"
+                    onClick={() => redirectToPayment()}
+                    loading={loadingCheckoutSession}
+                  >
+                    Upgrade
+                  </Button>
+                  <Muted>
+                    We charge to support product lab testing and to keep Oasis unbiased.
+                  </Muted>
+                </div>
+
+                <div className="flex flex-row mt-4 w-full justify-between">
+                  <Muted className="text-center italic mt-1 text-xs">
+                    <a href="/terms" className="underline">
+                      Terms of service
                     </a>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <TbBrandGooglePlay className="w-4 h-4 mr-2" />
-                    <a href={kGooglePlay} target="_blank" rel="noopener noreferrer">
-                      Android app
+                  </Muted>
+                  <Muted className="text-center italic mt-1 text-xs">
+                    <a href="/privacy-policy" className="underline">
+                      Privacy policy
                     </a>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <div className="flex flex-col gap-1 text-center">
-              <Button
-                variant="default"
-                className="px-4 mt-4 w-full !font-bold mb-2 flex rounded-full h-12 shadow-md shadow-blue-600/50"
-                onClick={() => redirectToPayment()}
-                loading={loadingCheckoutSession}
-              >
-                Upgrade
-              </Button>
-              <Muted>We charge to support product lab testing and to keep Oasis unbiased.</Muted>
-            </div> */}
-
-            {/* <ReferralCodeInput /> */}
-
-            {/* <div
-              onClick={redirectToSignIn}
-              className="text-center text-secondary my-2 text-sm underline hover:cursor-pointer"
-            >
-              or sign in to existing Member account
-            </div> */}
-
-            {/* <div className="flex flex-row mt-4 w-full justify-between">
-              <Muted className="text-center italic mt-1 text-xs">
-                <a href="/terms" className="underline">
-                  Terms of service
-                </a>
-              </Muted>
-              <Muted className="text-center italic mt-1 text-xs">
-                <a href="/privacy-policy" className="underline">
-                  Privacy policy
-                </a>
-              </Muted>
-              <Muted className="text-center italic mt-1 text-xs">
-                <a href="/refund-policy" className="underline">
-                  Refund policy.
-                </a>
-              </Muted>
-            </div> */}
+                  </Muted>
+                  <Muted className="text-center italic mt-1 text-xs">
+                    <a href="/refund-policy" className="underline">
+                      Refund policy.
+                    </a>
+                  </Muted>
+                </div>
+              </>
+            )}
           </div>
         </DialogFooter>
       </DialogContent>

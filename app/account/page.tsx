@@ -63,8 +63,6 @@ export default function AccountSettings() {
     setReferralStats(stats)
   }
 
-  console.log('subProvider', subProvider)
-
   const handleManageSubscription = async () => {
     setLoadingSubscription(true)
 
