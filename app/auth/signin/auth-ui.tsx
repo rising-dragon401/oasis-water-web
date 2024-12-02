@@ -42,7 +42,7 @@ export default function AuthUI({ showToast, toastMessage }: Props) {
       <Auth
         supabaseClient={supabase}
         providers={['google']}
-        redirectTo={`${getURL()}/auth/callback?redirectUrl=${redirectUrl || '/'}?modalToOpen=${modal || ''}`}
+        redirectTo={`${getURL()}/auth/callback?modalToOpen=${modal || ''}`}
         magicLink={true}
         view={view || 'sign_in'}
         appearance={{

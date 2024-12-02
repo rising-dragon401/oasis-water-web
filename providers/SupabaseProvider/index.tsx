@@ -49,8 +49,6 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
 
         if (modalToOpen) {
           router.push(`${redirectUrl}?modalToOpen=${modalToOpen}`)
-        } else if (redirectUrl) {
-          router.push(redirectUrl)
         } else {
           router.push('/')
         }

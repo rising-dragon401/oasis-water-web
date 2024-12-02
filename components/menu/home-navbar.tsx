@@ -17,9 +17,9 @@ export default function HomeNavbar() {
         <P className="text-sm hover:font-bold">Testing</P>
       </Link>
 
-      {/* <Link href="/blog" className="cursor-pointer">
+      <Link href="/blog" className="cursor-pointer">
         <P className="text-sm hover:font-bold">Research</P>
-      </Link> */}
+      </Link>
 
       <Link href="/contact" className="cursor-pointer">
         <P className="text-sm hover:font-bold">Contact</P>
